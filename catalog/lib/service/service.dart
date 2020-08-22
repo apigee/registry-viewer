@@ -19,8 +19,24 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
 import '../components/alerts.dart';
+import '../generated/google/protobuf/empty.pb.dart';
 
 const int pageSize = 50;
+
+class StatusService {
+  static RegistryClient getClient() => RegistryClient(createClientChannel());
+
+  static Future<Status> getStatus() {
+    final client = getClient();
+    final request = Empty();
+    try {
+      return client.getStatus(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
+    }
+  }
+}
 
 class ProjectService {
   static RegistryClient getClient() => RegistryClient(createClientChannel());

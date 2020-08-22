@@ -15,11 +15,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../authorizations.dart';
 import '../application.dart';
+import '../service/service.dart';
 
 GoogleSignInAccount currentUser;
 bool currentUserIsAuthorized = false;
+String currentUserToken = "";
 
 GoogleSignIn googleSignIn = GoogleSignIn(
   scopes: <String>[
@@ -30,8 +31,19 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 Future<GoogleSignInAccount> attemptToSignIn() async {
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     currentUser = account;
-    currentUserIsAuthorized = authorizedUsers.contains(currentUser.email);
-    print("signed in: $currentUser (authorized = $currentUserIsAuthorized)");
+    print("signed in: $currentUser");
+    if (account == null) {
+      return;
+    }
+    account.authentication.then((auth) {
+      // save the token
+      currentUserToken = auth.idToken;
+      StatusService.getStatus().then((status) {
+        print("status $status");
+        currentUserIsAuthorized = true;
+        signInScreenState.setState(() {});
+      }).catchError((error) {});
+    });
   });
   return googleSignIn.signInSilently();
 }
@@ -41,6 +53,8 @@ class SignInScreen extends StatefulWidget {
   State createState() => SignInScreenState();
 }
 
+SignInScreenState signInScreenState;
+
 class SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
@@ -48,6 +62,7 @@ class SignInScreenState extends State<SignInScreen> {
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {});
     });
+    signInScreenState = this;
   }
 
   Future<void> _handleSignIn() async {

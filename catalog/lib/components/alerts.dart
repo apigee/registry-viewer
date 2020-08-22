@@ -18,6 +18,21 @@ showErrorAlert(BuildContext context, String message) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      if (message.contains("Permission denied")) {
+        return AlertDialog(
+          title: new Text("Unauthorized"),
+          content: new Text(
+              "The signed-in account does not have access to the necessary resources."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
       return AlertDialog(
         title: new Text("A problem:"),
         content: new Text(message),
