@@ -17,7 +17,7 @@ import 'package:grpc/grpc.dart' as grpc;
 import '../pages/signin.dart';
 
 // web app needs an openly-available test server
-String url = "https://registry-backend-3rqz64w4vq-uw.a.run.app";
+String url = "https://registry-backend-bsrnqp6kxq-uk.a.run.app";
 
 GrpcWebClientChannel createClientChannel() =>
     GrpcWebClientChannel.xhr(Uri.parse(url));

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import '../application.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -21,14 +22,20 @@ class HomeScreen extends StatelessWidget {
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Center(
-          child: RaisedButton(
-            child: const Text('CONTINUE'),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                "/projects",
-              );
-            },
+          child: Column(
+            children: [
+              Text(applicationName,
+                  style: Theme.of(context).textTheme.headline2),
+              RaisedButton(
+                child: const Text('CONTINUE'),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    "/projects",
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
