@@ -42,8 +42,8 @@ class VersionListScreen extends StatelessWidget {
   }
 }
 
-String routeNameForVersionDetail(Version api) {
-  final name = "/" + api.name.split("/").sublist(1).join("/");
+String routeNameForVersionDetail(Version version) {
+  final name = "/" + version.name.split("/").sublist(1).join("/");
   print("pushing " + name);
   return name;
 }

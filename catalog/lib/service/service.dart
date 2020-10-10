@@ -201,6 +201,20 @@ class VersionService {
       return null;
     }
   }
+
+  static Future<List<Version>> getVersions(String parent) async {
+    final client = getClient();
+    final request = ListVersionsRequest();
+    request.parent = parent;
+    request.pageSize = 20;
+    try {
+      final response =
+          await client.listVersions(request, options: callOptions());
+      return response.versions;
+    } catch (err) {
+      return null;
+    }
+  }
 }
 
 class SpecService {
@@ -250,7 +264,7 @@ class SpecService {
     final client = getClient();
     final request = GetSpecRequest();
     request.name = name;
-    request.view = SpecView.FULL;
+    request.view = View.FULL;
     print("requesting $request");
     try {
       return client.getSpec(request, options: callOptions());

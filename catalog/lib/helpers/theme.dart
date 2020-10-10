@@ -16,11 +16,9 @@ import 'package:flutter/material.dart';
 
 ThemeData appTheme() {
   return ThemeData(
-      /* Let's just use the defaults for now.
-
     // Define the default brightness and colors.
     brightness: Brightness.light,
-    primaryColor: Colors.blue,
+    primaryColor: Colors.blue[900],
     accentColor: Colors.greenAccent,
 
     // Define the default font family.
@@ -38,7 +36,5 @@ ThemeData appTheme() {
       bodyText1: TextStyle(fontSize: 16.0),
       bodyText2: TextStyle(fontSize: 14.0),
     ),
-
-    */
-      );
+  );
 }

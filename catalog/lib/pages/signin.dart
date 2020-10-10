@@ -127,6 +127,7 @@ class SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(applicationName, style: Theme.of(context).textTheme.headline2),
+          Container(height: 20),
           RaisedButton(
             child: const Text('SIGN IN WITH GOOGLE'),
             onPressed: _handleSignIn,

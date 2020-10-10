@@ -83,26 +83,29 @@ class ProjectList extends StatelessWidget {
   }
 
   Widget _itemBuilder(context, Project entry, _) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            Navigator.pushNamed(
-              context,
-              entry.routeNameForProjectDetail(),
-              arguments: entry,
-            );
-          },
-          child: ListTile(
-            title: Text(
-              entry.nameForDisplay(),
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(entry.description),
+    return Center(
+      child: GestureDetector(
+        onTap: () async {
+          Navigator.pushNamed(
+            context,
+            entry.routeNameForProjectDetail(),
+            arguments: entry,
+          );
+        },
+        child: Card(
+          color: Color(0xFFFFFFE0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              ListTile(
+                title: Text(entry.nameForDisplay()),
+                subtitle: Text(entry.description),
+              ),
+            ],
           ),
         ),
-        Divider(thickness: 2)
-      ],
+      ),
     );
   }
 }

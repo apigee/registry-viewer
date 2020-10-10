@@ -35,8 +35,6 @@ class ApiListScreen extends StatelessWidget {
       return Center(
         child: Row(
           children: [
-            //drawer(context),
-            //VerticalDivider(width: 5),
             Expanded(
               child: Scaffold(
                 appBar: buildAppBar(context, isDesktop),
@@ -50,7 +48,7 @@ class ApiListScreen extends StatelessWidget {
       return Scaffold(
         appBar: buildAppBar(context, isDesktop),
         body: ApiList(),
-        drawer: drawer(context),
+        //drawer: drawer(context),
       );
     }
   }
@@ -135,7 +133,7 @@ class ApiList extends StatelessWidget {
               entry.displayName,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(entry.description),
+            subtitle: Text(entry.owner),
           ),
         ),
         Divider(thickness: 2)

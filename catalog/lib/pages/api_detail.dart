@@ -72,8 +72,8 @@ class _ApiDetailWidgetState extends State<ApiDetailWidget> {
             children: [
               Row(children: [apiCard(context, api)]),
               Row(children: [
+                ApiVersionListWidget(api, "captain"),
                 apiInfoCard(context, api),
-                apiInfoCard(context, api)
               ]),
               Row(children: [
                 apiInfoCard(context, api),
@@ -98,7 +98,7 @@ Expanded apiCard(BuildContext context, Api api) {
             leading: Icon(Icons.album),
             title: Text(api.displayName,
                 style: Theme.of(context).textTheme.headline5),
-            subtitle: Text(api.description),
+            subtitle: Text(api.description + "\n" + api.owner),
           ),
           ButtonBar(
             children: <Widget>[
@@ -148,4 +148,83 @@ Expanded apiInfoCard(BuildContext context, Api api) {
       ),
     ),
   );
+}
+
+class ApiVersionListWidget extends StatefulWidget {
+  final Api api;
+  final String name;
+
+  ApiVersionListWidget(this.api, this.name);
+  @override
+  _ApiVersionListWidgetState createState() =>
+      _ApiVersionListWidgetState(this.api);
+}
+
+class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
+  final Api api;
+  List<Version> versions;
+
+  _ApiVersionListWidgetState(this.api);
+
+  @override
+  Widget build(BuildContext context) {
+    if (versions == null) {
+      // we need to fetch the versions from the API
+      final versionsFuture = VersionService.getVersions(api.name);
+      versionsFuture.then((versions) {
+        setState(() {
+          this.versions = versions;
+        });
+        print(versions);
+      });
+      return Expanded(
+        child: Card(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 400,
+            ),
+            child: ListTile(
+              title: Text("Loading...",
+                  style: Theme.of(context).textTheme.headline6),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Expanded(
+      child: Card(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 300),
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+                  Text("Versions"),
+                ] +
+                versions.map((version) {
+                  var name = version.name.split("/").last;
+                  return GestureDetector(
+                    onTap: () async {
+                      Navigator.pushNamed(
+                        context,
+                        routeNameForVersionDetail(version),
+                        arguments: version,
+                      );
+                    },
+                    child: ListTile(
+                      title: Text(name),
+                    ),
+                  );
+                }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+String routeNameForVersionDetail(Version version) {
+  final name = "/" + version.name.split("/").sublist(1).join("/");
+  print("pushing " + name);
+  return name;
 }
