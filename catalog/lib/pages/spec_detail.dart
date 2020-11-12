@@ -20,13 +20,13 @@ import 'package:catalog/generated/metrics/complexity.pb.dart';
 import '../service/service.dart';
 import '../application.dart';
 
-class SpecDetailWidget extends StatefulWidget {
+class SpecDetailPage extends StatefulWidget {
   final Spec spec;
   final String name;
 
-  SpecDetailWidget(this.spec, this.name);
+  SpecDetailPage(this.spec, this.name);
   @override
-  _SpecDetailWidgetState createState() => _SpecDetailWidgetState(this.spec);
+  _SpecDetailPageState createState() => _SpecDetailPageState(this.spec);
 }
 
 String projectNameForSpecName(String specName) {
@@ -34,12 +34,12 @@ String projectNameForSpecName(String specName) {
   return parts.sublist(0, 2).join("/");
 }
 
-class _SpecDetailWidgetState extends State<SpecDetailWidget> {
+class _SpecDetailPageState extends State<SpecDetailPage> {
   Spec spec;
   List<Property> properties;
   String body;
 
-  _SpecDetailWidgetState(this.spec);
+  _SpecDetailPageState(this.spec);
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +53,8 @@ class _SpecDetailWidgetState extends State<SpecDetailWidget> {
           if ((spec.contents != null) && (spec.contents.length > 0)) {
             final data = GZipDecoder().decodeBytes(spec.contents);
             this.body = Utf8Codec().decoder.convert(data);
-            print(this.body);
           }
         });
-        print(spec);
       });
       return Scaffold(
         appBar: AppBar(
@@ -77,7 +75,6 @@ class _SpecDetailWidgetState extends State<SpecDetailWidget> {
         setState(() {
           this.properties = properties.properties;
         });
-        print(properties);
       });
       return Scaffold(
         appBar: AppBar(
@@ -181,7 +178,6 @@ Expanded summaryCard(
   final summary = propertyWithName(properties, "complexity");
   Complexity complexitySummary =
       new Complexity.fromBuffer(summary.messageValue.value);
-  print("$summary");
   return Expanded(
     child: Card(
       child: Column(

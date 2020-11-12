@@ -25,27 +25,26 @@ extension StringSplitting on String {
   }
 }
 
-class VersionDetailWidget extends StatefulWidget {
+class VersionDetailPage extends StatefulWidget {
   final Version version;
   final String name;
 
-  VersionDetailWidget(this.version, this.name);
+  VersionDetailPage(this.version, this.name);
   @override
-  _VersionDetailWidgetState createState() =>
-      _VersionDetailWidgetState(this.version);
+  _VersionDetailPageState createState() =>
+      _VersionDetailPageState(this.version);
 }
 
 String routeNameForVersionDetailSpecs(Version version) {
   final name = "/" + version.name.split("/").sublist(1).join("/") + "/specs";
-  print("pushing " + name);
   return name;
 }
 
-class _VersionDetailWidgetState extends State<VersionDetailWidget> {
+class _VersionDetailPageState extends State<VersionDetailPage> {
   Version version;
   List<Property> properties;
 
-  _VersionDetailWidgetState(this.version);
+  _VersionDetailPageState(this.version);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,6 @@ class _VersionDetailWidgetState extends State<VersionDetailWidget> {
         setState(() {
           this.version = version;
         });
-        print(version);
       });
       return Scaffold(
         appBar: AppBar(

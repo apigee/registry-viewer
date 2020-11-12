@@ -25,7 +25,6 @@ extension Display on Spec {
 
   String routeNameForSpecDetail() {
     final name = "/" + this.name.split("/").sublist(1).join("/");
-    print("pushing " + name);
     return name;
   }
 }

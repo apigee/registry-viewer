@@ -17,26 +17,25 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../application.dart';
 
-class ApiDetailWidget extends StatefulWidget {
+class ApiDetailPage extends StatefulWidget {
   final Api api;
   final String name;
 
-  ApiDetailWidget(this.api, this.name);
+  ApiDetailPage(this.api, this.name);
   @override
-  _ApiDetailWidgetState createState() => _ApiDetailWidgetState(this.api);
+  _ApiDetailPageState createState() => _ApiDetailPageState(this.api);
 }
 
 String routeNameForApiDetailVersions(Api api) {
   final name = "/" + api.name.split("/").sublist(1).join("/") + "/versions";
-  print("pushing " + name);
   return name;
 }
 
-class _ApiDetailWidgetState extends State<ApiDetailWidget> {
+class _ApiDetailPageState extends State<ApiDetailPage> {
   Api api;
   List<Property> properties;
 
-  _ApiDetailWidgetState(this.api);
+  _ApiDetailPageState(this.api);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,6 @@ class _ApiDetailWidgetState extends State<ApiDetailWidget> {
         setState(() {
           this.api = api;
         });
-        print(api);
       });
       return Scaffold(
         appBar: AppBar(
@@ -175,7 +173,6 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
         setState(() {
           this.versions = versions;
         });
-        print(versions);
       });
       return Expanded(
         child: Card(
@@ -225,6 +222,5 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
 
 String routeNameForVersionDetail(Version version) {
   final name = "/" + version.name.split("/").sublist(1).join("/");
-  print("pushing " + name);
   return name;
 }

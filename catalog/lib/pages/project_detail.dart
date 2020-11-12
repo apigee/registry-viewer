@@ -18,27 +18,26 @@ import '../service/service.dart';
 import '../application.dart';
 import '../models/project.dart';
 
-class ProjectDetailWidget extends StatefulWidget {
+class ProjectDetailPage extends StatefulWidget {
   final Project project;
   final String name;
 
-  ProjectDetailWidget(this.project, this.name);
+  ProjectDetailPage(this.project, this.name);
   @override
-  _ProjectDetailWidgetState createState() =>
-      _ProjectDetailWidgetState(this.project);
+  _ProjectDetailPageState createState() =>
+      _ProjectDetailPageState(this.project);
 }
 
 String routeNameForProjectDetailApis(Project project) {
   final name = "/" + project.name.split("/").sublist(1).join("/") + "/apis";
-  print("pushing " + name);
   return name;
 }
 
-class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
+class _ProjectDetailPageState extends State<ProjectDetailPage> {
   Project project;
   List<Property> properties;
 
-  _ProjectDetailWidgetState(this.project);
+  _ProjectDetailPageState(this.project);
 
   String subtitlePropertyText() {
     if (project.description != null) {
@@ -65,13 +64,10 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
         setState(() {
           this.project = project;
         });
-        print(project);
       });
       return Scaffold(
         appBar: AppBar(
-          title: Text(
-            applicationName,
-          ),
+          title: Text(this.project.name),
         ),
         body: Text("loading..."),
       );
@@ -85,13 +81,12 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
         setState(() {
           this.properties = properties.properties;
         });
-        print(properties);
       });
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(applicationName),
+        title: Text(this.project.name),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -115,7 +110,7 @@ class _ProjectDetailWidgetState extends State<ProjectDetailWidget> {
                       ButtonBar(
                         children: <Widget>[
                           FlatButton(
-                            child: const Text('APIS',
+                            child: const Text('APIs',
                                 semanticsLabel: "APIs BUTTON"),
                             onPressed: () {
                               Navigator.pushNamed(

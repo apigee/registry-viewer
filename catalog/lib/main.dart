@@ -32,7 +32,7 @@ class Application extends StatelessWidget {
       title: applicationName,
       theme: appTheme(),
       initialRoute: "/",
-      onGenerateRoute: generateRoute,
+      onGenerateRoute: RegistryRouter().generateRoute,
     );
   }
 }

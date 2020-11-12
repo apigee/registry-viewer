@@ -18,19 +18,17 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../application.dart';
 
-class VersionListScreen extends StatelessWidget {
+class VersionListPage extends StatelessWidget {
   final String title;
   final String apiID;
-  VersionListScreen({Key key, this.title, this.apiID}) : super(key: key);
+  VersionListPage({Key key, this.title, this.apiID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     VersionService.apiID = apiID; // HACK
-
-    print("setting project ID to " + apiID);
     return Scaffold(
       appBar: AppBar(
-        title: Text(applicationName),
+        title: Text("Versions"),
         actions: <Widget>[
           VersionSearchBox(),
         ],
@@ -44,7 +42,6 @@ class VersionListScreen extends StatelessWidget {
 
 String routeNameForVersionDetail(Version version) {
   final name = "/" + version.name.split("/").sublist(1).join("/");
-  print("pushing " + name);
   return name;
 }
 

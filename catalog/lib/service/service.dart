@@ -55,10 +55,10 @@ class ProjectService {
     if (offset == 0) {
       tokens = Map();
     }
-    print("getProjects " + (filter ?? ""));
     final client = getClient();
     final request = ListProjectsRequest();
     request.pageSize = limit;
+
     if (filter != null) {
       request.filter = filter;
     }
@@ -110,7 +110,6 @@ class ApiService {
     if (offset == 0) {
       tokens = Map();
     }
-    print("getApis " + (filter ?? ""));
     final client = getClient();
     final request = ListApisRequest();
     request.parent = parent;
@@ -166,7 +165,6 @@ class VersionService {
     if (offset == 0) {
       tokens = Map();
     }
-    print("getVersions " + (filter ?? ""));
     final client = getClient();
     final request = ListVersionsRequest();
     request.parent = parent;
@@ -236,7 +234,6 @@ class SpecService {
     if (offset == 0) {
       tokens = Map();
     }
-    print("getSpecs " + (filter ?? ""));
     final client = getClient();
     final request = ListSpecsRequest();
     request.parent = parent;
@@ -249,7 +246,6 @@ class SpecService {
       request.pageToken = token;
     }
     try {
-      print('$request');
       final response = await client.listSpecs(request, options: callOptions());
       tokens[offset + limit] = response.nextPageToken;
       return response.specs;
@@ -265,7 +261,6 @@ class SpecService {
     final request = GetSpecRequest();
     request.name = name;
     request.view = View.FULL;
-    print("requesting $request");
     try {
       return client.getSpec(request, options: callOptions());
     } catch (err) {

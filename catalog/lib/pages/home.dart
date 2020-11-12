@@ -15,19 +15,21 @@
 import 'package:flutter/material.dart';
 import '../application.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(applicationName),
+      ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(applicationName,
-                  style: Theme.of(context).textTheme.headline2),
               RaisedButton(
-                child: const Text('CONTINUE'),
+                child: const Text('View Projects'),
                 onPressed: () {
                   Navigator.pushNamed(
                     context,

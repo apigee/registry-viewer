@@ -29,7 +29,6 @@ grpc.CallOptions callOptions() {
     return grpc.CallOptions();
   }
   Map<String, String> metadata = {"Authorization": "Bearer " + token};
-  print(metadata);
   grpc.CallOptions callOptions = grpc.CallOptions(metadata: metadata);
   return callOptions;
 }

@@ -18,17 +18,16 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../components/help.dart';
 import '../models/project.dart';
-import '../application.dart';
 
-class ProjectListScreen extends StatelessWidget {
+class ProjectListPage extends StatelessWidget {
   final String title;
-  ProjectListScreen({Key key, this.title}) : super(key: key);
+  ProjectListPage({Key key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(applicationName),
+        title: Text("projects"),
         actions: <Widget>[
           ProjectSearchBox(),
           IconButton(
@@ -45,7 +44,6 @@ class ProjectListScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/settings');
             },
           ),
-          // TextBox(),
           IconButton(
             icon: const Icon(Icons.power_settings_new),
             tooltip: 'Log out',

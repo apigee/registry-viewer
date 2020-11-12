@@ -12,7 +12,7 @@ enum DisplayType {
 const _desktopPortraitBreakpoint = 700.0;
 const _desktopLandscapeBreakpoint = 1000.0;
 
-/// Returns the [DisplayType] for the current screen. This app only supports
+/// Returns the [DisplayType] for the current Page. This app only supports
 /// mobile and desktop layouts, and as such we only have one breakpoint.
 DisplayType displayTypeOf(BuildContext context) {
   final orientation = MediaQuery.of(context).orientation;

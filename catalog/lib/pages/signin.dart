@@ -15,7 +15,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../application.dart';
+import '../authorizations.dart';
 import '../service/service.dart';
 
 GoogleSignInAccount currentUser;
@@ -31,7 +31,6 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 Future<GoogleSignInAccount> attemptToSignIn() async {
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     currentUser = account;
-    print("signed in: $currentUser");
     if (account == null) {
       return;
     }
@@ -39,30 +38,29 @@ Future<GoogleSignInAccount> attemptToSignIn() async {
       // save the token
       currentUserToken = auth.idToken;
       StatusService.getStatus().then((status) {
-        print("status $status");
-        currentUserIsAuthorized = true;
-        signInScreenState.setState(() {});
+        currentUserIsAuthorized = authorized_users.contains(account.email);
+        signInPageState.setState(() {});
       }).catchError((error) {});
     });
   });
   return googleSignIn.signInSilently();
 }
 
-class SignInScreen extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  State createState() => SignInScreenState();
+  State createState() => SignInPageState();
 }
 
-SignInScreenState signInScreenState;
+SignInPageState signInPageState;
 
-class SignInScreenState extends State<SignInScreen> {
+class SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {});
     });
-    signInScreenState = this;
+    signInPageState = this;
   }
 
   Future<void> _handleSignIn() async {
@@ -100,19 +98,15 @@ class SignInScreenState extends State<SignInScreen> {
                     ]),
               ),
               RaisedButton(
-                child: const Text('SIGN OUT'),
+                child: const Text('Sign out'),
                 onPressed: _handleSignOut,
               ),
             ],
           ),
           Container(height: 30),
-          Text(applicationName + " is an early-stage prototype."),
-          Container(height: 10),
-          Text("For information, contact govlife-team@google.com."),
-          Container(height: 10),
           if (currentUserIsAuthorized)
             RaisedButton(
-              child: const Text('CONTINUE'),
+              child: const Text('View Projects'),
               onPressed: () {
                 Navigator.pushNamed(
                   context,
@@ -120,20 +114,28 @@ class SignInScreenState extends State<SignInScreen> {
                 );
               },
             ),
+          if (!currentUserIsAuthorized)
+            Column(
+              children: [
+                Text("Thank you for signing in!"),
+                Container(height: 10),
+                Text("We're not yet open to the general public."),
+                Container(height: 10),
+              ],
+            ),
         ],
       );
     } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(applicationName, style: Theme.of(context).textTheme.headline2),
+          //Text(applicationName, style: Theme.of(context).textTheme.headline2),
           Container(height: 20),
           RaisedButton(
-            child: const Text('SIGN IN WITH GOOGLE'),
+            child: const Text('Sign in with Google'),
             onPressed: _handleSignIn,
           ),
           Container(height: 20),
-          Text("For evaluation only."),
         ],
       );
     }
@@ -142,6 +144,9 @@ class SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Registry"),
+      ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: _buildBody(context),

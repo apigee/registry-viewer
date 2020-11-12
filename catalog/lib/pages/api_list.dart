@@ -20,10 +20,10 @@ import '../components/drawer.dart';
 import '../helpers/adaptive.dart';
 import '../components/help.dart';
 
-class ApiListScreen extends StatelessWidget {
+class ApiListPage extends StatelessWidget {
   final String title;
   final String projectID;
-  ApiListScreen({Key key, this.title, this.projectID}) : super(key: key);
+  ApiListPage({Key key, this.title, this.projectID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +55,7 @@ class ApiListScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context, bool isDesktop) {
     return AppBar(
+      title: Text("apis"),
       //automaticallyImplyLeading: !isDesktop,
       actions: <Widget>[
         ApiSearchBox(),
@@ -86,7 +87,6 @@ class ApiListScreen extends StatelessWidget {
 
 String routeNameForApiDetail(Api api) {
   final name = "/" + api.name.split("/").sublist(1).join("/");
-  print("pushing " + name);
   return name;
 }
 

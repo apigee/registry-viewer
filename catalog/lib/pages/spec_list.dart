@@ -20,19 +20,17 @@ import '../components/help.dart';
 import '../application.dart';
 import '../models/spec.dart';
 
-class SpecListScreen extends StatelessWidget {
+class SpecListPage extends StatelessWidget {
   final String title;
   final String versionID;
-  SpecListScreen({Key key, this.title, this.versionID}) : super(key: key);
+  SpecListPage({Key key, this.title, this.versionID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SpecService.versionID = versionID; // HACK
-
-    print("setting project ID to " + versionID);
     return Scaffold(
       appBar: AppBar(
-        title: Text(applicationName),
+        title: Text("Specs"),
         actions: <Widget>[
           SpecSearchBox(),
           IconButton(

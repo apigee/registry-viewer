@@ -12,19 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-
-extension Display on Project {
-  String nameForDisplay() {
-    if (this.displayName != "") {
-      return this.displayName;
-    } else {
-      return this.name;
-    }
-  }
-
-  String routeNameForProjectDetail() {
-    final name = "/" + this.name.split("/").sublist(1).join("/");
-    return name;
-  }
-}
+// User IDs that are authorized to use the app.
+const authorized_users = ['timburks@gmail.com', 'timburks@google.com'];
