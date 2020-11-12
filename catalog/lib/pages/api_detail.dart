@@ -18,16 +18,16 @@ import '../service/service.dart';
 import '../application.dart';
 
 class ApiDetailPage extends StatefulWidget {
-  final Api api;
   final String name;
+  final Api api;
 
-  ApiDetailPage({this.api, this.name});
+  ApiDetailPage({this.name, this.api});
   @override
   _ApiDetailPageState createState() => _ApiDetailPageState(this.api);
 }
 
 String routeNameForApiDetailVersions(Api api) {
-  final name = "/" + api.name.split("/").sublist(1).join("/") + "/versions";
+  final name = "/" + api.name + "/versions";
   return name;
 }
 
@@ -39,7 +39,7 @@ class _ApiDetailPageState extends State<ApiDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final apiName = "projects" + widget.name;
+    final apiName = widget.api.name;
     if (api == null) {
       // we need to fetch the api from the API
       final apiFuture = ApiService.getApi(apiName);
@@ -221,6 +221,5 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
 }
 
 String routeNameForVersionDetail(Version version) {
-  final name = "/" + version.name.split("/").sublist(1).join("/");
-  return name;
+  return "/" + version.name;
 }

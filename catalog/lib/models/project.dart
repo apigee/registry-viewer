@@ -24,7 +24,6 @@ extension Display on Project {
   }
 
   String routeNameForProjectDetail() {
-    final name = "/" + this.name.split("/").sublist(1).join("/");
-    return name;
+    return "/" + this.name;
   }
 }

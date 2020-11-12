@@ -18,7 +18,7 @@ ThemeData appTheme() {
   return ThemeData(
     // Define the default brightness and colors.
     brightness: Brightness.light,
-    primaryColor: Colors.blue[900],
+    primaryColor: Colors.red[900],
     accentColor: Colors.greenAccent,
 
     // Define the default font family.

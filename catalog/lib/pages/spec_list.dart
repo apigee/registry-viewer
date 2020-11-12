@@ -21,13 +21,13 @@ import '../application.dart';
 import '../models/spec.dart';
 
 class SpecListPage extends StatelessWidget {
-  final String title;
-  final String versionID;
-  SpecListPage({Key key, this.title, this.versionID}) : super(key: key);
+  final String name;
+  final Version version;
+  SpecListPage({Key key, this.name, this.version}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SpecService.versionID = versionID; // HACK
+    SpecService.versionName = version.name; // HACK
     return Scaffold(
       appBar: AppBar(
         title: Text("Specs"),

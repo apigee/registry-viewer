@@ -96,13 +96,11 @@ class ApiService {
 
   static String filter;
   static Map<int, String> tokens;
-  static String projectID;
+  static String projectName;
 
   static Future<List<Api>> getApisPage(BuildContext context, int pageIndex) {
     return ApiService._getApis(context,
-        parent: "projects/" + projectID,
-        offset: pageIndex * pageSize,
-        limit: pageSize);
+        parent: projectName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
   static Future<List<Api>> _getApis(BuildContext context,
@@ -150,14 +148,12 @@ class VersionService {
 
   static String filter;
   static Map<int, String> tokens;
-  static String apiID;
+  static String apiName;
 
   static Future<List<Version>> getVersionsPage(
       BuildContext context, int pageIndex) {
     return VersionService._getVersions(context,
-        parent: "projects/" + apiID,
-        offset: pageIndex * pageSize,
-        limit: pageSize);
+        parent: apiName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
   static Future<List<Version>> _getVersions(BuildContext context,
@@ -220,13 +216,11 @@ class SpecService {
 
   static String filter;
   static Map<int, String> tokens;
-  static String versionID;
+  static String versionName;
 
   static Future<List<Spec>> getSpecsPage(BuildContext context, int pageIndex) {
     return SpecService._getSpecs(context,
-        parent: "projects/" + versionID,
-        offset: pageIndex * pageSize,
-        limit: pageSize);
+        parent: versionName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
   static Future<List<Spec>> _getSpecs(BuildContext context,

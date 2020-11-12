@@ -17,27 +17,17 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../application.dart';
 
-extension StringSplitting on String {
-  String last(int n) {
-    final parts = this.split("/");
-    final sublist = parts.sublist(parts.length - 2 * n, parts.length - 0);
-    return sublist.join("/");
-  }
-}
-
 class VersionDetailPage extends StatefulWidget {
-  final Version version;
   final String name;
-
-  VersionDetailPage({this.version, this.name});
+  final Version version;
+  VersionDetailPage({this.name, this.version});
   @override
   _VersionDetailPageState createState() =>
       _VersionDetailPageState(this.version);
 }
 
 String routeNameForVersionDetailSpecs(Version version) {
-  final name = "/" + version.name.split("/").sublist(1).join("/") + "/specs";
-  return name;
+  return "/" + version.name + "/specs";
 }
 
 class _VersionDetailPageState extends State<VersionDetailPage> {
@@ -48,7 +38,7 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final versionName = "projects" + widget.name;
+    final versionName = widget.version.name;
     if (version == null) {
       // we need to fetch the version from the API
       final versionFuture = VersionService.getVersion(versionName);

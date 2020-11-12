@@ -20,8 +20,8 @@ import '../components/help.dart';
 import '../models/project.dart';
 
 class ProjectListPage extends StatelessWidget {
-  final String title;
-  ProjectListPage({Key key, this.title}) : super(key: key);
+  final String name;
+  ProjectListPage({Key key, this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -19,13 +19,13 @@ import '../service/service.dart';
 import '../application.dart';
 
 class VersionListPage extends StatelessWidget {
-  final String title;
-  final String apiID;
-  VersionListPage({Key key, this.title, this.apiID}) : super(key: key);
+  final String name;
+  final Api api;
+  VersionListPage({Key key, this.name, this.api}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    VersionService.apiID = apiID; // HACK
+    VersionService.apiName = api.name; // HACK
     return Scaffold(
       appBar: AppBar(
         title: Text("Versions"),
@@ -41,8 +41,7 @@ class VersionListPage extends StatelessWidget {
 }
 
 String routeNameForVersionDetail(Version version) {
-  final name = "/" + version.name.split("/").sublist(1).join("/");
-  return name;
+  return "/" + version.name;
 }
 
 const int pageSize = 50;

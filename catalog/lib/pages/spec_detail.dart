@@ -21,17 +21,19 @@ import '../service/service.dart';
 import '../application.dart';
 
 class SpecDetailPage extends StatefulWidget {
-  final Spec spec;
   final String name;
+  final Spec spec;
 
-  SpecDetailPage({this.spec, this.name});
+  SpecDetailPage({this.name, this.spec});
   @override
   _SpecDetailPageState createState() => _SpecDetailPageState(this.spec);
 }
 
 String projectNameForSpecName(String specName) {
-  final parts = specName.split("/");
-  return parts.sublist(0, 2).join("/");
+  print("spec name $specName");
+  final projectName = specName.split("/").sublist(0, 2).join("/");
+  print("project name $projectName");
+  return projectName;
 }
 
 class _SpecDetailPageState extends State<SpecDetailPage> {
@@ -43,7 +45,7 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final specName = "projects" + widget.name;
+    final specName = widget.spec.name;
     if (spec == null) {
       // we need to fetch the spec from the API
       final specFuture = SpecService.getSpec(specName);

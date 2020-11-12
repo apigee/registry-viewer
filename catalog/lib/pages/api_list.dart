@@ -21,13 +21,13 @@ import '../helpers/adaptive.dart';
 import '../components/help.dart';
 
 class ApiListPage extends StatelessWidget {
+  final String name;
   final Project project;
-  final String projectID;
-  ApiListPage({Key key, this.project, this.projectID}) : super(key: key);
+  ApiListPage({Key key, this.name, this.project}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ApiService.projectID = projectID; // HACK
+    ApiService.projectName = project.name; // HACK
 
     final isDesktop = isDisplayDesktop(context);
 
@@ -77,8 +77,7 @@ class ApiListPage extends StatelessWidget {
 }
 
 String routeNameForApiDetail(Api api) {
-  final name = "/" + api.name.split("/").sublist(1).join("/");
-  return name;
+  return "/" + api.name;
 }
 
 const int pageSize = 50;

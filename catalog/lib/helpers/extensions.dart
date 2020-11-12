@@ -23,3 +23,11 @@ extension StringReduction on String {
     return this.split(separator).allButLast().join(separator);
   }
 }
+
+extension StringSplitting on String {
+  String last(int n) {
+    final parts = this.split("/");
+    final sublist = parts.sublist(parts.length - 2 * n, parts.length - 0);
+    return sublist.join("/");
+  }
+}

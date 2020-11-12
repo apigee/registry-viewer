@@ -15,22 +15,20 @@
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../application.dart';
 import '../models/project.dart';
 
 class ProjectDetailPage extends StatefulWidget {
-  final Project project;
   final String name;
+  final Project project;
 
-  ProjectDetailPage({this.project, this.name});
+  ProjectDetailPage({this.name, this.project});
   @override
   _ProjectDetailPageState createState() =>
       _ProjectDetailPageState(this.project);
 }
 
 String routeNameForProjectDetailApis(Project project) {
-  final name = "/" + project.name.split("/").sublist(1).join("/") + "/apis";
-  return name;
+  return "/" + project.name + "/apis";
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
@@ -56,7 +54,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final projectName = "projects" + widget.name;
+    final projectName = widget.name.substring(1);
     if (project == null) {
       // we need to fetch the project from the API
       final projectFuture = ProjectService.getProject(projectName);
@@ -67,7 +65,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       });
       return Scaffold(
         appBar: AppBar(
-          title: Text(this.project.name),
+          title: Text(widget.name),
         ),
         body: Text("loading..."),
       );

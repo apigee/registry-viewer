@@ -40,7 +40,8 @@ class RegistryRouter {
   RegistryRouter() {
     // build patterns
     const namePattern = r"([a-zA-Z0-9-_\.]+)";
-    const projectPattern = r"^/" + namePattern;
+    const projectsPattern = r"^/projects";
+    const projectPattern = projectsPattern + r"/" + namePattern;
     const apisPattern = projectPattern + r"/apis";
     const apiPattern = apisPattern + r"/" + namePattern;
     const versionsPattern = apiPattern + r"/versions";
@@ -59,7 +60,13 @@ class RegistryRouter {
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
-    print(settings.name);
+    print("routing " + settings.name);
+
+    if (kIsWeb && settings.name != "/" && currentUser == null) {
+      // try to sign in
+
+    }
+
     if (kIsWeb) {
       if ((settings.name == "/") ||
           (currentUser == null) ||
@@ -120,26 +127,33 @@ MaterialPageRoute projectListPage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      return ProjectListPage();
+      return ProjectListPage(
+        name: settings.name,
+      );
     },
   );
 }
 
 MaterialPageRoute projectPage(RouteSettings settings) {
   return MaterialPageRoute(
-      settings: settings,
-      builder: (context) {
-        return ProjectDetailPage(
-            project: settings.arguments, name: settings.name);
-      });
+    settings: settings,
+    builder: (context) {
+      return ProjectDetailPage(
+        name: settings.name,
+        project: settings.arguments,
+      );
+    },
+  );
 }
 
 MaterialPageRoute apisPage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      final projectID = settings.name.split("/")[1];
-      return ApiListPage(project: settings.arguments, projectID: projectID);
+      return ApiListPage(
+        name: settings.name,
+        project: settings.arguments,
+      );
     },
   );
 }
@@ -148,18 +162,22 @@ MaterialPageRoute apiPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return ApiDetailPage(api: settings.arguments, name: settings.name);
+        return ApiDetailPage(
+          name: settings.name,
+          api: settings.arguments,
+        );
       });
 }
 
 MaterialPageRoute versionsPage(RouteSettings settings) {
   return MaterialPageRoute(
-    settings: settings,
-    builder: (context) {
-      final apiID = settings.name.allButLast("/");
-      return VersionListPage(title: 'Versions', apiID: apiID);
-    },
-  );
+      settings: settings,
+      builder: (context) {
+        return VersionListPage(
+          name: settings.name,
+          api: settings.arguments,
+        );
+      });
 }
 
 MaterialPageRoute versionPage(RouteSettings settings) {
@@ -167,7 +185,9 @@ MaterialPageRoute versionPage(RouteSettings settings) {
       settings: settings,
       builder: (context) {
         return VersionDetailPage(
-            version: settings.arguments, name: settings.name);
+          name: settings.name,
+          version: settings.arguments,
+        );
       });
 }
 
@@ -175,8 +195,10 @@ MaterialPageRoute specsPage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      final versionID = settings.name.allButLast("/");
-      return SpecListPage(title: 'Specs', versionID: versionID);
+      return SpecListPage(
+        name: settings.name,
+        version: settings.arguments,
+      );
     },
   );
 }
@@ -185,7 +207,10 @@ MaterialPageRoute specPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return SpecDetailPage(spec: settings.arguments, name: settings.name);
+        return SpecDetailPage(
+          name: settings.name,
+          spec: settings.arguments,
+        );
       });
 }
 
@@ -198,7 +223,8 @@ MaterialPageRoute notFoundPage(RouteSettings settings) {
             title: const Text('NOT FOUND'),
           ),
           body: Center(
-            child: Text("You were sent to a page that doesn't exist."),
+            child: Text("You were sent to a page that doesn't exist.\n" +
+                settings.name),
           ),
         );
       });

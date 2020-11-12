@@ -21,6 +21,7 @@ import 'pages/signin.dart';
 
 void main() async {
   await attemptToSignIn();
+  print("current user is $currentUser");
   runApp(Application());
 }
 

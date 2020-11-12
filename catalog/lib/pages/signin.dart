@@ -28,22 +28,26 @@ GoogleSignIn googleSignIn = GoogleSignIn(
   ],
 );
 
-Future<GoogleSignInAccount> attemptToSignIn() async {
+// This runs before the application starts, main() waits for completion.
+Future attemptToSignIn() async {
+  var completer = new Completer();
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
     currentUser = account;
+    print("current user changed to $currentUser");
     if (account == null) {
       return;
     }
+    currentUserIsAuthorized = authorized_users.contains(account.email);
     account.authentication.then((auth) {
-      // save the token
       currentUserToken = auth.idToken;
       StatusService.getStatus().then((status) {
-        currentUserIsAuthorized = authorized_users.contains(account.email);
-        signInPageState.setState(() {});
+        completer.complete();
       }).catchError((error) {});
     });
   });
-  return googleSignIn.signInSilently();
+  googleSignIn.signInSilently();
+  return completer.future.timeout(new Duration(milliseconds: 1000),
+      onTimeout: () => {print("timeout")});
 }
 
 class SignInPage extends StatefulWidget {
