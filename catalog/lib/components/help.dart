@@ -19,8 +19,8 @@ void showHelp(context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: new Text("Help!"),
-        content: new Text("I need some body."),
+        title: new Text("Help"),
+        content: new Text(""),
         actions: <Widget>[
           new FlatButton(
             child: new Text("Close"),

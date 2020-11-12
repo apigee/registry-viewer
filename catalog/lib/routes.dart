@@ -29,13 +29,13 @@ import 'pages/signin.dart';
 import 'pages/home.dart';
 
 class RegistryRouter {
-  RegExp projectDetailRegExp,
-      apiListRegExp,
-      apiDetailRegExp,
-      versionListRegExp,
-      versionDetailRegExp,
-      specListRegExp,
-      specDetailRegExp;
+  RegExp projectRegExp,
+      apisRegExp,
+      apiRegExp,
+      versionsRegExp,
+      versionRegExp,
+      specsRegExp,
+      specRegExp;
 
   RegistryRouter() {
     // build patterns
@@ -49,13 +49,13 @@ class RegistryRouter {
     const specPattern = specsPattern + r"/" + namePattern;
     const endPattern = r"$";
     // use patterns to build regular expressions
-    projectDetailRegExp = RegExp(projectPattern + endPattern);
-    apiListRegExp = RegExp(apisPattern + endPattern);
-    apiDetailRegExp = RegExp(apiPattern + endPattern);
-    versionListRegExp = RegExp(versionsPattern + endPattern);
-    versionDetailRegExp = RegExp(versionPattern + endPattern);
-    specListRegExp = RegExp(specsPattern + endPattern);
-    specDetailRegExp = RegExp(specPattern + endPattern);
+    projectRegExp = RegExp(projectPattern + endPattern);
+    apisRegExp = RegExp(apisPattern + endPattern);
+    apiRegExp = RegExp(apiPattern + endPattern);
+    versionsRegExp = RegExp(versionsPattern + endPattern);
+    versionRegExp = RegExp(versionPattern + endPattern);
+    specsRegExp = RegExp(specsPattern + endPattern);
+    specRegExp = RegExp(specPattern + endPattern);
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
@@ -78,19 +78,19 @@ class RegistryRouter {
       return settingsPage(settings);
     }
     // handle regex patterns next, watch for possible ordering sensitivities
-    if (specDetailRegExp.hasMatch(settings.name)) {
+    if (specRegExp.hasMatch(settings.name)) {
       return specPage(settings);
-    } else if (specListRegExp.hasMatch(settings.name)) {
+    } else if (specsRegExp.hasMatch(settings.name)) {
       return specsPage(settings);
-    } else if (versionDetailRegExp.hasMatch(settings.name)) {
+    } else if (versionRegExp.hasMatch(settings.name)) {
       return versionPage(settings);
-    } else if (versionListRegExp.hasMatch(settings.name)) {
+    } else if (versionsRegExp.hasMatch(settings.name)) {
       return versionsPage(settings);
-    } else if (apiDetailRegExp.hasMatch(settings.name)) {
+    } else if (apiRegExp.hasMatch(settings.name)) {
       return apiPage(settings);
-    } else if (apiListRegExp.hasMatch(settings.name)) {
+    } else if (apisRegExp.hasMatch(settings.name)) {
       return apisPage(settings);
-    } else if (projectDetailRegExp.hasMatch(settings.name)) {
+    } else if (projectRegExp.hasMatch(settings.name)) {
       return projectPage(settings);
     }
     // if nothing matches, display a "not found" page.
@@ -129,7 +129,8 @@ MaterialPageRoute projectPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return ProjectDetailPage(settings.arguments, settings.name);
+        return ProjectDetailPage(
+            project: settings.arguments, name: settings.name);
       });
 }
 
@@ -138,7 +139,7 @@ MaterialPageRoute apisPage(RouteSettings settings) {
     settings: settings,
     builder: (context) {
       final projectID = settings.name.split("/")[1];
-      return ApiListPage(title: 'Apis', projectID: projectID);
+      return ApiListPage(project: settings.arguments, projectID: projectID);
     },
   );
 }
@@ -147,7 +148,7 @@ MaterialPageRoute apiPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return ApiDetailPage(settings.arguments, settings.name);
+        return ApiDetailPage(api: settings.arguments, name: settings.name);
       });
 }
 
@@ -165,7 +166,8 @@ MaterialPageRoute versionPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return VersionDetailPage(settings.arguments, settings.name);
+        return VersionDetailPage(
+            version: settings.arguments, name: settings.name);
       });
 }
 
@@ -183,7 +185,7 @@ MaterialPageRoute specPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return SpecDetailPage(settings.arguments, settings.name);
+        return SpecDetailPage(spec: settings.arguments, name: settings.name);
       });
 }
 

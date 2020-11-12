@@ -22,7 +22,7 @@ class ProjectDetailPage extends StatefulWidget {
   final Project project;
   final String name;
 
-  ProjectDetailPage(this.project, this.name);
+  ProjectDetailPage({this.project, this.name});
   @override
   _ProjectDetailPageState createState() =>
       _ProjectDetailPageState(this.project);

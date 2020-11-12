@@ -31,13 +31,6 @@ class ProjectListPage extends StatelessWidget {
         actions: <Widget>[
           ProjectSearchBox(),
           IconButton(
-            icon: const Icon(Icons.question_answer),
-            tooltip: 'Help',
-            onPressed: () {
-              showHelp(context);
-            },
-          ),
-          IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {

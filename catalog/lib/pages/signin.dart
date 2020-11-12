@@ -145,7 +145,7 @@ class SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registry"),
+        title: Text("Welcome"),
       ),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),

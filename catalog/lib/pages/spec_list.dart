@@ -34,20 +34,12 @@ class SpecListPage extends StatelessWidget {
         actions: <Widget>[
           SpecSearchBox(),
           IconButton(
-            icon: const Icon(Icons.question_answer),
-            tooltip: 'Help',
-            onPressed: () {
-              showHelp(context);
-            },
-          ),
-          IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
               Navigator.pushNamed(context, '/settings');
             },
           ),
-          // TextBox(),
           IconButton(
             icon: const Icon(Icons.power_settings_new),
             tooltip: 'Log out',

@@ -21,9 +21,9 @@ import '../helpers/adaptive.dart';
 import '../components/help.dart';
 
 class ApiListPage extends StatelessWidget {
-  final String title;
+  final Project project;
   final String projectID;
-  ApiListPage({Key key, this.title, this.projectID}) : super(key: key);
+  ApiListPage({Key key, this.project, this.projectID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,6 @@ class ApiListPage extends StatelessWidget {
       return Scaffold(
         appBar: buildAppBar(context, isDesktop),
         body: ApiList(),
-        //drawer: drawer(context),
       );
     }
   }
@@ -56,16 +55,8 @@ class ApiListPage extends StatelessWidget {
   AppBar buildAppBar(BuildContext context, bool isDesktop) {
     return AppBar(
       title: Text("apis"),
-      //automaticallyImplyLeading: !isDesktop,
       actions: <Widget>[
         ApiSearchBox(),
-        IconButton(
-          icon: const Icon(Icons.question_answer),
-          tooltip: 'Help',
-          onPressed: () {
-            showHelp(context);
-          },
-        ),
         IconButton(
           icon: const Icon(Icons.settings),
           tooltip: 'Settings',

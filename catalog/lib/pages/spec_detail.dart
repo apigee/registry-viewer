@@ -24,7 +24,7 @@ class SpecDetailPage extends StatefulWidget {
   final Spec spec;
   final String name;
 
-  SpecDetailPage(this.spec, this.name);
+  SpecDetailPage({this.spec, this.name});
   @override
   _SpecDetailPageState createState() => _SpecDetailPageState(this.spec);
 }

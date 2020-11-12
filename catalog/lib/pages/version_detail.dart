@@ -29,7 +29,7 @@ class VersionDetailPage extends StatefulWidget {
   final Version version;
   final String name;
 
-  VersionDetailPage(this.version, this.name);
+  VersionDetailPage({this.version, this.name});
   @override
   _VersionDetailPageState createState() =>
       _VersionDetailPageState(this.version);

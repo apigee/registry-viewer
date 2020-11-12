@@ -21,7 +21,7 @@ class ApiDetailPage extends StatefulWidget {
   final Api api;
   final String name;
 
-  ApiDetailPage(this.api, this.name);
+  ApiDetailPage({this.api, this.name});
   @override
   _ApiDetailPageState createState() => _ApiDetailPageState(this.api);
 }
