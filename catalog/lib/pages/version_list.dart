@@ -16,7 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
+import '../models/version.dart';
 import '../application.dart';
+import '../helpers/title.dart';
 
 class VersionListPage extends StatelessWidget {
   final String name;
@@ -28,7 +30,7 @@ class VersionListPage extends StatelessWidget {
     VersionService.apiName = api.name; // HACK
     return Scaffold(
       appBar: AppBar(
-        title: Text("Versions"),
+        title: Text(title(name)),
         actions: <Widget>[
           VersionSearchBox(),
         ],
@@ -38,10 +40,6 @@ class VersionListPage extends StatelessWidget {
       ),
     );
   }
-}
-
-String routeNameForVersionDetail(Version version) {
-  return "/" + version.name;
 }
 
 const int pageSize = 50;
@@ -64,15 +62,15 @@ class VersionList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Version entry, _) {
+  Widget _itemBuilder(context, Version version, _) {
     return Column(
       children: <Widget>[
         GestureDetector(
           onTap: () async {
             Navigator.pushNamed(
               context,
-              routeNameForVersionDetail(entry),
-              arguments: entry,
+              version.routeNameForDetail(),
+              arguments: version,
             );
           },
           child: ListTile(
@@ -85,10 +83,10 @@ class VersionList extends StatelessWidget {
                   print("save this API");
                 }),
             title: Text(
-              entry.name.split("/").last,
+              version.name.split("/").last,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(entry.name),
+            subtitle: Text(version.name),
           ),
         ),
         Divider(thickness: 2)

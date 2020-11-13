@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../components/help.dart';
 import '../models/project.dart';
+import '../helpers/title.dart';
 
 class ProjectListPage extends StatelessWidget {
   final String name;
@@ -27,7 +28,7 @@ class ProjectListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("projects"),
+        title: Text(title(name)),
         actions: <Widget>[
           ProjectSearchBox(),
           IconButton(
@@ -73,14 +74,14 @@ class ProjectList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Project entry, _) {
+  Widget _itemBuilder(context, Project project, _) {
     return Center(
       child: GestureDetector(
         onTap: () async {
           Navigator.pushNamed(
             context,
-            entry.routeNameForProjectDetail(),
-            arguments: entry,
+            project.routeNameForDetail(),
+            arguments: project,
           );
         },
         child: Card(
@@ -90,8 +91,8 @@ class ProjectList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               ListTile(
-                title: Text(entry.nameForDisplay()),
-                subtitle: Text(entry.description),
+                title: Text(project.nameForDisplay()),
+                subtitle: Text(project.description),
               ),
             ],
           ),

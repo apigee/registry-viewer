@@ -14,20 +14,12 @@
 
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 
-extension Display on Project {
-  String nameForDisplay() {
-    if (this.displayName != "") {
-      return this.displayName;
-    } else {
-      return this.name;
-    }
-  }
-
+extension Display on Version {
   String routeNameForDetail() {
     return "/" + this.name;
   }
 
-  String routeNameForApis() {
-    return "/" + this.name + "/apis";
+  String routeNameForSpecs() {
+    return "/" + this.name + "/specs";
   }
 }

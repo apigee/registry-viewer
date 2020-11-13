@@ -19,6 +19,8 @@ import '../service/service.dart';
 import '../components/drawer.dart';
 import '../helpers/adaptive.dart';
 import '../components/help.dart';
+import '../models/api.dart';
+import '../helpers/title.dart';
 
 class ApiListPage extends StatelessWidget {
   final String name;
@@ -54,7 +56,7 @@ class ApiListPage extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context, bool isDesktop) {
     return AppBar(
-      title: Text("apis"),
+      title: Text(title(name)),
       actions: <Widget>[
         ApiSearchBox(),
         IconButton(
@@ -76,10 +78,6 @@ class ApiListPage extends StatelessWidget {
   }
 }
 
-String routeNameForApiDetail(Api api) {
-  return "/" + api.name;
-}
-
 const int pageSize = 50;
 PagewiseLoadController<Api> pageLoadController;
 
@@ -99,15 +97,15 @@ class ApiList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Api entry, _) {
+  Widget _itemBuilder(context, Api api, _) {
     return Column(
       children: <Widget>[
         GestureDetector(
           onTap: () async {
             Navigator.pushNamed(
               context,
-              routeNameForApiDetail(entry),
-              arguments: entry,
+              api.routeNameForDetail(),
+              arguments: api,
             );
           },
           child: ListTile(
@@ -120,10 +118,10 @@ class ApiList extends StatelessWidget {
                   print("save this API");
                 }),
             title: Text(
-              entry.displayName,
+              api.displayName,
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(entry.owner),
+            subtitle: Text(api.owner),
           ),
         ),
         Divider(thickness: 2)

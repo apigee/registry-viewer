@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/project.dart';
+import '../helpers/title.dart';
 
 class ProjectDetailPage extends StatefulWidget {
   final String name;
@@ -25,10 +26,6 @@ class ProjectDetailPage extends StatefulWidget {
   @override
   _ProjectDetailPageState createState() =>
       _ProjectDetailPageState(this.project);
-}
-
-String routeNameForProjectDetailApis(Project project) {
-  return "/" + project.name + "/apis";
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
@@ -65,7 +62,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       });
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.name),
+          title: Text(title(widget.name)),
         ),
         body: Text("loading..."),
       );
@@ -84,7 +81,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.project.name),
+        title: Text(title(widget.name)),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -113,7 +110,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                             onPressed: () {
                               Navigator.pushNamed(
                                 context,
-                                routeNameForProjectDetailApis(project),
+                                project.routeNameForApis(),
                                 arguments: project,
                               );
                             },

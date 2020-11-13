@@ -23,7 +23,7 @@ extension Display on Spec {
     }
   }
 
-  String routeNameForSpecDetail() {
+  String routeNameForDetail() {
     return "/" + this.name;
   }
 }

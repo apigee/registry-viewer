@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+const pathLength = 3;
 
-extension Display on Project {
-  String nameForDisplay() {
-    if (this.displayName != "") {
-      return this.displayName;
-    } else {
-      return this.name;
-    }
+// title converts a path into a string suitable for display in the app bar.
+String title(String path) {
+  var parts = path.split("/").sublist(1);
+  if (parts.length > pathLength) {
+    parts = parts.sublist(parts.length - pathLength);
+    parts.insert(0, "...");
   }
-
-  String routeNameForDetail() {
-    return "/" + this.name;
-  }
-
-  String routeNameForApis() {
-    return "/" + this.name + "/apis";
-  }
+  return parts.join("/");
 }

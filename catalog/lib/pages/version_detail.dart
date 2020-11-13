@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../application.dart';
+import '../models/version.dart';
+import '../helpers/title.dart';
 
 class VersionDetailPage extends StatefulWidget {
   final String name;
@@ -24,10 +26,6 @@ class VersionDetailPage extends StatefulWidget {
   @override
   _VersionDetailPageState createState() =>
       _VersionDetailPageState(this.version);
-}
-
-String routeNameForVersionDetailSpecs(Version version) {
-  return "/" + version.name + "/specs";
 }
 
 class _VersionDetailPageState extends State<VersionDetailPage> {
@@ -50,7 +48,7 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            applicationName,
+            title(widget.name),
           ),
         ),
         body: Text("loading..."),
@@ -59,7 +57,7 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          applicationName,
+          title(widget.name),
         ),
       ),
       body: SingleChildScrollView(
@@ -94,7 +92,7 @@ Expanded versionCard(BuildContext context, Version version) {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    routeNameForVersionDetailSpecs(version),
+                    version.routeNameForSpecs(),
                     arguments: version,
                   );
                 },

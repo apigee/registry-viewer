@@ -19,6 +19,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import 'package:catalog/generated/metrics/complexity.pb.dart';
 import '../service/service.dart';
 import '../application.dart';
+import '../helpers/title.dart';
 
 class SpecDetailPage extends StatefulWidget {
   final String name;
@@ -61,7 +62,7 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            applicationName,
+            title(widget.name),
           ),
         ),
         body: Text("loading..."),
@@ -81,7 +82,7 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            applicationName,
+            title(widget.name),
           ),
         ),
         body: Text("loading..."),
@@ -91,7 +92,7 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          applicationName,
+          title(widget.name),
         ),
       ),
       body: SingleChildScrollView(

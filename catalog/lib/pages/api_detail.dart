@@ -15,7 +15,10 @@
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
+import '../models/api.dart';
+import '../models/version.dart';
 import '../application.dart';
+import '../helpers/title.dart';
 
 class ApiDetailPage extends StatefulWidget {
   final String name;
@@ -24,11 +27,6 @@ class ApiDetailPage extends StatefulWidget {
   ApiDetailPage({this.name, this.api});
   @override
   _ApiDetailPageState createState() => _ApiDetailPageState(this.api);
-}
-
-String routeNameForApiDetailVersions(Api api) {
-  final name = "/" + api.name + "/versions";
-  return name;
 }
 
 class _ApiDetailPageState extends State<ApiDetailPage> {
@@ -51,7 +49,7 @@ class _ApiDetailPageState extends State<ApiDetailPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            applicationName,
+            title(widget.name),
           ),
         ),
         body: Text("loading..."),
@@ -61,7 +59,7 @@ class _ApiDetailPageState extends State<ApiDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          applicationName,
+          title(widget.name),
         ),
       ),
       body: SingleChildScrollView(
@@ -105,14 +103,10 @@ Expanded apiCard(BuildContext context, Api api) {
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
-                    routeNameForApiDetailVersions(api),
+                    api.routeNameForVersions(),
                     arguments: api,
                   );
                 },
-              ),
-              FlatButton(
-                child: const Text('MORE'),
-                onPressed: () {/* ... */},
               ),
             ],
           ),
@@ -204,7 +198,7 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
                     onTap: () async {
                       Navigator.pushNamed(
                         context,
-                        routeNameForVersionDetail(version),
+                        version.routeNameForDetail(),
                         arguments: version,
                       );
                     },
@@ -218,8 +212,4 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
       ),
     );
   }
-}
-
-String routeNameForVersionDetail(Version version) {
-  return "/" + version.name;
 }

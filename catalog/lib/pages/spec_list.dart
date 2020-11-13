@@ -19,6 +19,7 @@ import '../service/service.dart';
 import '../components/help.dart';
 import '../application.dart';
 import '../models/spec.dart';
+import '../helpers/title.dart';
 
 class SpecListPage extends StatelessWidget {
   final String name;
@@ -30,7 +31,7 @@ class SpecListPage extends StatelessWidget {
     SpecService.versionName = version.name; // HACK
     return Scaffold(
       appBar: AppBar(
-        title: Text("Specs"),
+        title: Text(title(name)),
         actions: <Widget>[
           SpecSearchBox(),
           IconButton(
@@ -76,15 +77,15 @@ class SpecList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Spec entry, _) {
+  Widget _itemBuilder(context, Spec spec, _) {
     return Column(
       children: <Widget>[
         GestureDetector(
           onTap: () async {
             Navigator.pushNamed(
               context,
-              entry.routeNameForSpecDetail(),
-              arguments: entry,
+              spec.routeNameForDetail(),
+              arguments: spec,
             );
           },
           child: ListTile(
@@ -97,10 +98,10 @@ class SpecList extends StatelessWidget {
                   print("save this API");
                 }),
             title: Text(
-              entry.nameForDisplay(),
+              spec.nameForDisplay(),
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text("$entry"),
+            subtitle: Text("$spec"),
           ),
         ),
         Divider(thickness: 2)
