@@ -18,57 +18,72 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/api.dart';
 import '../helpers/title.dart';
+import '../components/logout.dart';
 
+const int pageSize = 50;
+
+// convert /projects/{project}/apis to projects/{project}
+String parent(String name) {
+  var parts = name.split('/');
+  return parts.sublist(1, 3).join('/');
+}
+
+// ApiListPage is a full-page display of a list of apis.
 class ApiListPage extends StatelessWidget {
   final String name;
-  final Project project;
-  ApiListPage({Key key, this.name, this.project}) : super(key: key);
+  final String projectName;
+  ApiListPage(String name, {Key key})
+      : name = name,
+        projectName = parent(name),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ApiService.projectName = project.name; // HACK
-
+    var apiList = ApiList(ApiService(projectName));
     return Scaffold(
-      appBar: buildAppBar(context),
-      body: ApiList(),
-    );
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      title: Text(title(name)),
-      actions: <Widget>[
-        ApiSearchBox(),
-        IconButton(
-          icon: const Icon(Icons.settings),
-          tooltip: 'Settings',
-          onPressed: () {
-            Navigator.pushNamed(context, '/settings');
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.power_settings_new),
-          tooltip: 'Log out',
-          onPressed: () {
-            Navigator.popUntil(context, ModalRoute.withName('/'));
-          },
-        ),
-      ],
+      appBar: AppBar(
+        title: Text(title(name)),
+        actions: <Widget>[
+          ApiSearchBox(apiList),
+          logoutButton(context),
+        ],
+      ),
+      body: Center(child: apiList),
     );
   }
 }
 
-const int pageSize = 50;
-PagewiseLoadController<Api> pageLoadController;
+// ApiListCard is a card that displays a list of projects.
+class ApiListCard extends StatelessWidget {
+  final String projectName;
+  ApiListCard(this.projectName);
+  @override
+  Widget build(BuildContext context) {
+    var apiList = ApiList(ApiService(projectName));
+    return Card(
+      child: Column(
+        children: [
+          ApiSearchBox(apiList),
+          Expanded(child: apiList),
+        ],
+      ),
+    );
+  }
+}
 
+// ApiList contains a ListView of apis.
 class ApiList extends StatelessWidget {
-  ApiList();
+  final PagewiseLoadController<Api> pageLoadController;
+  final ApiService apiService;
+
+  ApiList(ApiService apiService)
+      : apiService = apiService,
+        pageLoadController = PagewiseLoadController<Api>(
+            pageSize: pageSize,
+            pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
 
   @override
   Widget build(BuildContext context) {
-    pageLoadController = PagewiseLoadController<Api>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => ApiService.getApisPage(context, pageIndex));
     return Scrollbar(
       child: PagewiseListView<Api>(
         itemBuilder: this._itemBuilder,
@@ -110,7 +125,10 @@ class ApiList extends StatelessWidget {
   }
 }
 
+// ApiSearchBox provides a search box for apis.
 class ApiSearchBox extends StatelessWidget {
+  final ApiList apiList;
+  ApiSearchBox(this.apiList);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -130,11 +148,11 @@ class ApiSearchBox extends StatelessWidget {
             hintText: 'Search APIs'),
         onSubmitted: (s) {
           if (s == "") {
-            ApiService.filter = "";
+            apiList.apiService.filter = "";
           } else {
-            ApiService.filter = "api_id.contains('$s')";
+            apiList.apiService.filter = "api_id.contains('$s')";
           }
-          pageLoadController.reset();
+          apiList.pageLoadController.reset();
         },
       ),
     );

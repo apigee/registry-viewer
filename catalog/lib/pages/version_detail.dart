@@ -39,7 +39,7 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
     final versionName = widget.version.name;
     if (version == null) {
       // we need to fetch the version from the API
-      final versionFuture = VersionService.getVersion(versionName);
+      final versionFuture = VersionService("").getVersion(versionName);
       versionFuture.then((version) {
         setState(() {
           this.version = version;

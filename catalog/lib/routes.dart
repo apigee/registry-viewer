@@ -128,7 +128,7 @@ MaterialPageRoute projectListPage(RouteSettings settings) {
     settings: settings,
     builder: (context) {
       return ProjectListPage(
-        name: settings.name,
+        settings.name,
       );
     },
   );
@@ -151,8 +151,7 @@ MaterialPageRoute apisPage(RouteSettings settings) {
     settings: settings,
     builder: (context) {
       return ApiListPage(
-        name: settings.name,
-        project: settings.arguments,
+        settings.name,
       );
     },
   );
@@ -174,8 +173,7 @@ MaterialPageRoute versionsPage(RouteSettings settings) {
       settings: settings,
       builder: (context) {
         return VersionListPage(
-          name: settings.name,
-          api: settings.arguments,
+          settings.name,
         );
       });
 }
@@ -196,8 +194,7 @@ MaterialPageRoute specsPage(RouteSettings settings) {
     settings: settings,
     builder: (context) {
       return SpecListPage(
-        name: settings.name,
-        version: settings.arguments,
+        settings.name,
       );
     },
   );

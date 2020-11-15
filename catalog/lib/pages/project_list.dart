@@ -25,7 +25,9 @@ const int pageSize = 50;
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatelessWidget {
   final String name;
-  ProjectListPage({Key key, this.name}) : super(key: key);
+  ProjectListPage(String name, {Key key})
+      : name = name,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

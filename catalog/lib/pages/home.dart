@@ -15,6 +15,9 @@
 import 'package:flutter/material.dart';
 import '../application.dart';
 import 'project_list.dart';
+import 'api_list.dart';
+import 'version_list.dart';
+import 'spec_list.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -29,10 +32,15 @@ class HomePage extends StatelessWidget {
             child: ProjectListCard(),
           ),
           Expanded(
-            child: ProjectListCard(),
+            child: ApiListCard("projects/atlas"),
           ),
           Expanded(
-            child: ProjectListCard(),
+            child: VersionListCard(
+                "projects/atlas/apis/googleapis.com-apigateway"),
+          ),
+          Expanded(
+            child: SpecListCard(
+                "projects/atlas/apis/googleapis.com-apigateway/versions/v1beta"),
           ),
         ],
       ),

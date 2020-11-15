@@ -49,7 +49,7 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
     final specName = widget.spec.name;
     if (spec == null) {
       // we need to fetch the spec from the API
-      final specFuture = SpecService.getSpec(specName);
+      final specFuture = SpecService("").getSpec(specName);
       specFuture.then((spec) {
         setState(() {
           this.spec = spec;

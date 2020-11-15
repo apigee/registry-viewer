@@ -16,59 +16,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../components/help.dart';
-import '../application.dart';
 import '../models/spec.dart';
 import '../helpers/title.dart';
+import '../components/logout.dart';
 
+const int pageSize = 50;
+
+// convert /projects/{project}/apis/{api}/versions/{version}/specs
+// to projects/{project}/apis/{api}/versions/{version}
+String parent(String name) {
+  var parts = name.split('/');
+  return parts.sublist(1, 7).join('/');
+}
+
+// SpecListPage is a full-page display of a list of specs.
 class SpecListPage extends StatelessWidget {
   final String name;
-  final Version version;
-  SpecListPage({Key key, this.name, this.version}) : super(key: key);
+  final String versionName;
+  SpecListPage(String name, {Key key})
+      : name = name,
+        versionName = parent(name),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SpecService.versionName = version.name; // HACK
+    var specList = SpecList(SpecService(versionName));
     return Scaffold(
       appBar: AppBar(
         title: Text(title(name)),
         actions: <Widget>[
-          SpecSearchBox(),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.power_settings_new),
-            tooltip: 'Log out',
-            onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-            },
-          ),
+          SpecSearchBox(specList),
+          logoutButton(context),
         ],
       ),
-      body: Center(
-        child: SpecList(),
+      body: Center(child: specList),
+    );
+  }
+}
+
+// SpecListCard is a card that displays a list of specs.
+class SpecListCard extends StatelessWidget {
+  final String versionName;
+  SpecListCard(this.versionName);
+  @override
+  Widget build(BuildContext context) {
+    var specList = SpecList(SpecService(versionName));
+    return Card(
+      child: Column(
+        children: [
+          SpecSearchBox(specList),
+          Expanded(child: specList),
+        ],
       ),
     );
   }
 }
 
-const int pageSize = 50;
-PagewiseLoadController<Spec> pageLoadController;
-
+// SpecList contains a ListView of specs.
 class SpecList extends StatelessWidget {
-  SpecList();
+  final PagewiseLoadController<Spec> pageLoadController;
+  final SpecService specService;
+
+  SpecList(SpecService specService)
+      : specService = specService,
+        pageLoadController = PagewiseLoadController<Spec>(
+            pageSize: pageSize,
+            pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
 
   @override
   Widget build(BuildContext context) {
-    pageLoadController = PagewiseLoadController<Spec>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            SpecService.getSpecsPage(context, pageIndex));
     return Scrollbar(
       child: PagewiseListView<Spec>(
         itemBuilder: this._itemBuilder,
@@ -110,7 +126,10 @@ class SpecList extends StatelessWidget {
   }
 }
 
+// SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends StatelessWidget {
+  final SpecList specList;
+  SpecSearchBox(this.specList);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -130,11 +149,11 @@ class SpecSearchBox extends StatelessWidget {
             hintText: 'Search API specs'),
         onSubmitted: (s) {
           if (s == "") {
-            SpecService.filter = "";
+            specList.specService.filter = "";
           } else {
-            SpecService.filter = "spec_id.contains('$s')";
+            specList.specService.filter = "spec_id.contains('$s')";
           }
-          pageLoadController.reset();
+          specList.pageLoadController.reset();
         },
       ),
     );

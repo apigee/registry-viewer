@@ -17,7 +17,6 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/api.dart';
 import '../models/version.dart';
-import '../application.dart';
 import '../helpers/title.dart';
 
 class ApiDetailPage extends StatefulWidget {
@@ -40,7 +39,7 @@ class _ApiDetailPageState extends State<ApiDetailPage> {
     final apiName = widget.api.name;
     if (api == null) {
       // we need to fetch the api from the API
-      final apiFuture = ApiService.getApi(apiName);
+      final apiFuture = ApiService("").getApi(apiName);
       apiFuture.then((api) {
         setState(() {
           this.api = api;
@@ -162,7 +161,7 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
   Widget build(BuildContext context) {
     if (versions == null) {
       // we need to fetch the versions from the API
-      final versionsFuture = VersionService.getVersions(api.name);
+      final versionsFuture = VersionService("").getVersions(api.name);
       versionsFuture.then((versions) {
         setState(() {
           this.versions = versions;

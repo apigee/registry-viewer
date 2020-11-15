@@ -17,43 +17,75 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/version.dart';
-import '../application.dart';
 import '../helpers/title.dart';
+import '../components/logout.dart';
 
+const int pageSize = 50;
+
+// convert /projects/{project}/apis/{api}/versions
+// to projects/{project}/apis/{api}
+String parent(String name) {
+  var parts = name.split('/');
+  return parts.sublist(1, 5).join('/');
+}
+
+// VersionListPage is a full-page display of a list of versions.
 class VersionListPage extends StatelessWidget {
   final String name;
-  final Api api;
-  VersionListPage({Key key, this.name, this.api}) : super(key: key);
+  final String apiName;
+  VersionListPage(String name, {Key key})
+      : name = name,
+        apiName = parent(name),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    VersionService.apiName = api.name; // HACK
+    var versionList = VersionList(VersionService(apiName));
     return Scaffold(
       appBar: AppBar(
         title: Text(title(name)),
         actions: <Widget>[
-          VersionSearchBox(),
+          VersionSearchBox(versionList),
+          logoutButton(context),
         ],
       ),
-      body: Center(
-        child: VersionList(),
+      body: Center(child: versionList),
+    );
+  }
+}
+
+// VersionListCard is a card that displays a list of versions.
+class VersionListCard extends StatelessWidget {
+  final String apiName;
+  VersionListCard(this.apiName);
+  @override
+  Widget build(BuildContext context) {
+    var versionList = VersionList(VersionService(apiName));
+    return Card(
+      child: Column(
+        children: [
+          VersionSearchBox(versionList),
+          Expanded(child: versionList),
+        ],
       ),
     );
   }
 }
 
-const int pageSize = 50;
-PagewiseLoadController<Version> pageLoadController;
-
+// VersionList contains a ListView of versions.
 class VersionList extends StatelessWidget {
-  VersionList();
+  final PagewiseLoadController<Version> pageLoadController;
+  final VersionService versionService;
+
+  VersionList(VersionService versionService)
+      : versionService = versionService,
+        pageLoadController = PagewiseLoadController<Version>(
+            pageSize: pageSize,
+            pageFuture: (pageIndex) =>
+                versionService.getVersionsPage(pageIndex));
 
   @override
   Widget build(BuildContext context) {
-    pageLoadController = PagewiseLoadController<Version>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            VersionService.getVersionsPage(context, pageIndex));
     return Scrollbar(
       child: PagewiseListView<Version>(
         itemBuilder: this._itemBuilder,
@@ -95,7 +127,10 @@ class VersionList extends StatelessWidget {
   }
 }
 
+// VersionSearchBox provides a search box for versions.
 class VersionSearchBox extends StatelessWidget {
+  final VersionList versionList;
+  VersionSearchBox(this.versionList);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -115,11 +150,11 @@ class VersionSearchBox extends StatelessWidget {
             hintText: 'Search API versions'),
         onSubmitted: (s) {
           if (s == "") {
-            VersionService.filter = "";
+            versionList.versionService.filter = "";
           } else {
-            VersionService.filter = "version_id.contains('$s')";
+            versionList.versionService.filter = "version_id.contains('$s')";
           }
-          pageLoadController.reset();
+          versionList.pageLoadController.reset();
         },
       ),
     );

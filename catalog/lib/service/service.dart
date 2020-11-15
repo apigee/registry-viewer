@@ -88,19 +88,20 @@ class ProjectService {
 }
 
 class ApiService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static String filter;
-  static Map<int, String> tokens;
-  static String projectName;
+  String filter;
+  Map<int, String> tokens;
+  final String projectName;
 
-  static Future<List<Api>> getApisPage(BuildContext context, int pageIndex) {
-    return ApiService._getApis(context,
+  ApiService(this.projectName);
+
+  Future<List<Api>> getApisPage(int pageIndex) {
+    return _getApis(
         parent: projectName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  static Future<List<Api>> _getApis(BuildContext context,
-      {parent: String, offset: int, limit: int}) async {
+  Future<List<Api>> _getApis({parent: String, offset: int, limit: int}) async {
     if (offset == 0) {
       tokens = Map();
     }
@@ -121,12 +122,11 @@ class ApiService {
       return response.apis;
     } catch (err) {
       print('Caught error: $err');
-      showErrorAlert(context, "$err");
       return null;
     }
   }
 
-  static Future<Api> getApi(String name) {
+  Future<Api> getApi(String name) {
     final client = getClient();
     final request = GetApiRequest();
     request.name = name;
@@ -140,19 +140,20 @@ class ApiService {
 }
 
 class VersionService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static String filter;
-  static Map<int, String> tokens;
-  static String apiName;
+  String filter;
+  Map<int, String> tokens;
+  final String apiName;
 
-  static Future<List<Version>> getVersionsPage(
-      BuildContext context, int pageIndex) {
-    return VersionService._getVersions(context,
+  VersionService(this.apiName);
+
+  Future<List<Version>> getVersionsPage(int pageIndex) {
+    return _getVersions(
         parent: apiName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  static Future<List<Version>> _getVersions(BuildContext context,
+  Future<List<Version>> _getVersions(
       {parent: String, offset: int, limit: int}) async {
     if (offset == 0) {
       tokens = Map();
@@ -175,12 +176,11 @@ class VersionService {
       return response.versions;
     } catch (err) {
       print('Caught error: $err');
-      showErrorAlert(context, "$err");
       return null;
     }
   }
 
-  static Future<Version> getVersion(String name) {
+  Future<Version> getVersion(String name) {
     final client = getClient();
     final request = GetVersionRequest();
     request.name = name;
@@ -192,7 +192,7 @@ class VersionService {
     }
   }
 
-  static Future<List<Version>> getVersions(String parent) async {
+  Future<List<Version>> getVersions(String parent) async {
     final client = getClient();
     final request = ListVersionsRequest();
     request.parent = parent;
@@ -208,18 +208,19 @@ class VersionService {
 }
 
 class SpecService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static String filter;
-  static Map<int, String> tokens;
-  static String versionName;
+  String filter;
+  Map<int, String> tokens;
+  final String versionName;
+  SpecService(this.versionName);
 
-  static Future<List<Spec>> getSpecsPage(BuildContext context, int pageIndex) {
-    return SpecService._getSpecs(context,
+  Future<List<Spec>> getSpecsPage(int pageIndex) {
+    return _getSpecs(
         parent: versionName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  static Future<List<Spec>> _getSpecs(BuildContext context,
+  Future<List<Spec>> _getSpecs(
       {parent: String, offset: int, limit: int}) async {
     if (offset == 0) {
       tokens = Map();
@@ -241,12 +242,11 @@ class SpecService {
       return response.specs;
     } catch (err) {
       print('Caught error: $err');
-      showErrorAlert(context, "$err");
       return null;
     }
   }
 
-  static Future<Spec> getSpec(String name) {
+  Future<Spec> getSpec(String name) {
     final client = getClient();
     final request = GetSpecRequest();
     request.name = name;
