@@ -16,56 +16,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../components/help.dart';
 import '../models/project.dart';
 import '../helpers/title.dart';
+import '../components/logout.dart';
 
+const int pageSize = 50;
+
+// ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatelessWidget {
   final String name;
   ProjectListPage({Key key, this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var projectList = ProjectList(ProjectService());
     return Scaffold(
       appBar: AppBar(
         title: Text(title(name)),
         actions: <Widget>[
-          ProjectSearchBox(),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.power_settings_new),
-            tooltip: 'Log out',
-            onPressed: () {
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-            },
-          ),
+          ProjectSearchBox(projectList),
+          logoutButton(context),
         ],
       ),
-      body: Center(
-        child: ProjectList(),
+      body: Center(child: projectList),
+    );
+  }
+}
+
+// ProjectListCard is a card that displays a list of projects.
+class ProjectListCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var projectList = ProjectList(ProjectService());
+    return Card(
+      child: Column(
+        children: [
+          ProjectSearchBox(projectList),
+          Expanded(child: projectList),
+        ],
       ),
     );
   }
 }
 
-const int pageSize = 50;
-PagewiseLoadController<Project> pageLoadController;
-
+// ProjectList contains a ListView of projects.
 class ProjectList extends StatelessWidget {
-  ProjectList();
+  final PagewiseLoadController<Project> pageLoadController;
+  final ProjectService projectService;
+
+  ProjectList(ProjectService projectService)
+      : projectService = projectService,
+        pageLoadController = PagewiseLoadController<Project>(
+            pageSize: pageSize,
+            pageFuture: (pageIndex) =>
+                projectService.getProjectsPage(pageIndex));
 
   @override
   Widget build(BuildContext context) {
-    pageLoadController = PagewiseLoadController<Project>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            ProjectService.getProjectsPage(context, pageIndex));
     return Scrollbar(
       child: PagewiseListView<Project>(
         itemBuilder: this._itemBuilder,
@@ -102,32 +109,37 @@ class ProjectList extends StatelessWidget {
   }
 }
 
+// ProjectSearchBox provides a search box for projects.
 class ProjectSearchBox extends StatelessWidget {
+  final ProjectList projectList;
+  ProjectSearchBox(this.projectList);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        8,
-        0,
-        8,
-      ),
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
-            border: InputBorder.none,
-            hintText: 'Search Projects'),
-        onSubmitted: (s) {
-          if (s == "") {
-            ProjectService.filter = "";
-          } else {
-            ProjectService.filter = "project_id.contains('$s')";
-          }
-          pageLoadController.reset();
-        },
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 80, minWidth: 200, maxWidth: 300),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(
+          0,
+          8,
+          0,
+          8,
+        ),
+        alignment: Alignment.centerLeft,
+        color: Colors.white,
+        child: TextField(
+          decoration: InputDecoration(
+              prefixIcon: Icon(Icons.search, color: Colors.black),
+              border: InputBorder.none,
+              hintText: 'Search Projects'),
+          onSubmitted: (s) {
+            if (s == "") {
+              projectList.projectService.filter = "";
+            } else {
+              projectList.projectService.filter = "project_id.contains('$s')";
+            }
+            projectList.pageLoadController.reset();
+          },
+        ),
       ),
     );
   }

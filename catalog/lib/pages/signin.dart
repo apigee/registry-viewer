@@ -40,7 +40,7 @@ Future attemptToSignIn() async {
     currentUserIsAuthorized = authorized_users.contains(account.email);
     account.authentication.then((auth) {
       currentUserToken = auth.idToken;
-      StatusService.getStatus().then((status) {
+      StatusService().getStatus().then((status) {
         completer.complete();
       }).catchError((error) {});
     });

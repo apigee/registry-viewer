@@ -16,9 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../components/drawer.dart';
-import '../helpers/adaptive.dart';
-import '../components/help.dart';
 import '../models/api.dart';
 import '../helpers/title.dart';
 
@@ -31,30 +28,13 @@ class ApiListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ApiService.projectName = project.name; // HACK
 
-    final isDesktop = isDisplayDesktop(context);
-
-    if (isDesktop) {
-      return Center(
-        child: Row(
-          children: [
-            Expanded(
-              child: Scaffold(
-                appBar: buildAppBar(context, isDesktop),
-                body: ApiList(),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Scaffold(
-        appBar: buildAppBar(context, isDesktop),
-        body: ApiList(),
-      );
-    }
+    return Scaffold(
+      appBar: buildAppBar(context),
+      body: ApiList(),
+    );
   }
 
-  AppBar buildAppBar(BuildContext context, bool isDesktop) {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(title(name)),
       actions: <Widget>[

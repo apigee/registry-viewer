@@ -54,7 +54,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     final projectName = widget.name.substring(1);
     if (project == null) {
       // we need to fetch the project from the API
-      final projectFuture = ProjectService.getProject(projectName);
+      final projectFuture = ProjectService().getProject(projectName);
       projectFuture.then((project) {
         setState(() {
           this.project = project;

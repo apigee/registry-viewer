@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import '../application.dart';
+import 'project_list.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -22,24 +23,18 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(applicationName),
       ),
-      body: ConstrainedBox(
-        constraints: const BoxConstraints.expand(),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RaisedButton(
-                child: const Text('View Projects'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    "/projects",
-                  );
-                },
-              ),
-            ],
+      body: Row(
+        children: [
+          Expanded(
+            child: ProjectListCard(),
           ),
-        ),
+          Expanded(
+            child: ProjectListCard(),
+          ),
+          Expanded(
+            child: ProjectListCard(),
+          ),
+        ],
       ),
     );
   }

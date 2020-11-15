@@ -24,9 +24,9 @@ import '../generated/google/protobuf/empty.pb.dart';
 const int pageSize = 50;
 
 class StatusService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static Future<Status> getStatus() {
+  Future<Status> getStatus() {
     final client = getClient();
     final request = Empty();
     try {
@@ -39,19 +39,16 @@ class StatusService {
 }
 
 class ProjectService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static String filter;
-  static Map<int, String> tokens;
+  String filter;
+  Map<int, String> tokens;
 
-  static Future<List<Project>> getProjectsPage(
-      BuildContext context, int pageIndex) {
-    return ProjectService._getProjects(context,
-        offset: pageIndex * pageSize, limit: pageSize);
+  Future<List<Project>> getProjectsPage(int pageIndex) {
+    return _getProjects(offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  static Future<List<Project>> _getProjects(BuildContext context,
-      {offset: int, limit: int}) async {
+  Future<List<Project>> _getProjects({offset: int, limit: int}) async {
     if (offset == 0) {
       tokens = Map();
     }
@@ -73,12 +70,11 @@ class ProjectService {
       return response.projects;
     } catch (err) {
       print('Caught error: $err');
-      showErrorAlert(context, "$err");
       return null;
     }
   }
 
-  static Future<Project> getProject(String name) {
+  Future<Project> getProject(String name) {
     final client = getClient();
     final request = GetProjectRequest();
     request.name = name;
