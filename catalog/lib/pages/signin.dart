@@ -17,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../authorizations.dart';
 import '../service/service.dart';
+import '../components/spec_picker.dart';
+import '../application.dart';
 
 GoogleSignInAccount currentUser;
 bool currentUserIsAuthorized = false;
@@ -79,47 +81,39 @@ class SignInPageState extends State<SignInPage> {
 
   Future<void> _handleSignOut() => googleSignIn.disconnect();
 
+  Widget _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text((currentUser == null) ? "Welcome" : applicationName),
+      actions: <Widget>[
+        if (currentUser != null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(currentUser.displayName ?? '',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.headline6),
+                  Text(currentUser.email ?? '',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.bodyText1),
+                ]),
+          ),
+        if (currentUser != null)
+          RaisedButton(
+            child: const Text('Sign out'),
+            onPressed: _handleSignOut,
+          ),
+      ],
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     if (currentUser != null) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GoogleUserCircleAvatar(
-                identity: currentUser,
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(currentUser.displayName ?? '',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.headline6),
-                      Text(currentUser.email ?? '',
-                          textAlign: TextAlign.left,
-                          style: Theme.of(context).textTheme.bodyText1),
-                    ]),
-              ),
-              RaisedButton(
-                child: const Text('Sign out'),
-                onPressed: _handleSignOut,
-              ),
-            ],
-          ),
-          Container(height: 30),
-          if (currentUserIsAuthorized)
-            RaisedButton(
-              child: const Text('View Projects'),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  "/projects",
-                );
-              },
-            ),
           if (!currentUserIsAuthorized)
             Column(
               children: [
@@ -129,6 +123,7 @@ class SignInPageState extends State<SignInPage> {
                 Container(height: 10),
               ],
             ),
+          if (currentUserIsAuthorized) Expanded(child: SpecPicker()),
         ],
       );
     } else {
@@ -150,9 +145,7 @@ class SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome"),
-      ),
+      appBar: _buildAppBar(context),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: _buildBody(context),

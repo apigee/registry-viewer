@@ -13,15 +13,10 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../models/project.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
-import 'home.dart';
-
-const int pageSize = 50;
+import '../components/project_list.dart';
 
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatelessWidget {
@@ -42,114 +37,6 @@ class ProjectListPage extends StatelessWidget {
         ],
       ),
       body: Center(child: projectList),
-    );
-  }
-}
-
-// ProjectListCard is a card that displays a list of projects.
-class ProjectListCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var projectList = ProjectList(ProjectService());
-    return Card(
-      child: Column(
-        children: [
-          ProjectSearchBox(projectList),
-          Expanded(child: projectList),
-        ],
-      ),
-    );
-  }
-}
-
-// ProjectList contains a ListView of projects.
-class ProjectList extends StatelessWidget {
-  final PagewiseLoadController<Project> pageLoadController;
-  final ProjectService projectService;
-
-  ProjectList(ProjectService projectService)
-      : projectService = projectService,
-        pageLoadController = PagewiseLoadController<Project>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) =>
-                projectService.getProjectsPage(pageIndex));
-
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-      child: PagewiseListView<Project>(
-        itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
-      ),
-    );
-  }
-
-  Widget _itemBuilder(context, Project project, _) {
-    return Center(
-      child: GestureDetector(
-        onTap: () async {
-          SelectionModel model = ModelProvider.of(context);
-          if (model != null) {
-            print("tapped for project ${project.name}");
-            model.updateProject(project.name);
-          } else {
-            Navigator.pushNamed(
-              context,
-              project.routeNameForDetail(),
-              arguments: project,
-            );
-          }
-        },
-        child: Card(
-          color: Color(0xFFFFFFE0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ListTile(
-                title: Text(project.nameForDisplay()),
-                subtitle: Text(project.description),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ProjectSearchBox provides a search box for projects.
-class ProjectSearchBox extends StatelessWidget {
-  final ProjectList projectList;
-  ProjectSearchBox(this.projectList);
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 80, minWidth: 200, maxWidth: 300),
-      child: Container(
-        margin: EdgeInsets.fromLTRB(
-          0,
-          8,
-          0,
-          8,
-        ),
-        alignment: Alignment.centerLeft,
-        color: Colors.white,
-        child: TextField(
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search, color: Colors.black),
-              border: InputBorder.none,
-              hintText: 'Search Projects'),
-          onSubmitted: (s) {
-            if (s == "") {
-              projectList.projectService.filter = "";
-            } else {
-              projectList.projectService.filter = "project_id.contains('$s')";
-            }
-            projectList.pageLoadController.reset();
-          },
-        ),
-      ),
     );
   }
 }

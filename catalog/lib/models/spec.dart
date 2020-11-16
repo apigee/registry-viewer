@@ -16,11 +16,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 
 extension Display on Spec {
   String nameForDisplay() {
-    if (this.name != "") {
-      return this.name;
-    } else {
-      return this.filename;
-    }
+    return this.name.split("/").last;
   }
 
   String routeNameForDetail() {

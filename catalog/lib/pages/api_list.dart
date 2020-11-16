@@ -13,15 +13,10 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../models/api.dart';
 import '../helpers/title.dart';
+import '../components/api_list.dart';
 import '../components/logout.dart';
-import 'home.dart';
-
-const int pageSize = 50;
 
 // convert /projects/{project}/apis to projects/{project}
 String parent(String name) {
@@ -50,130 +45,6 @@ class ApiListPage extends StatelessWidget {
         ],
       ),
       body: Center(child: apiList),
-    );
-  }
-}
-
-// ApiListCard is a card that displays a list of projects.
-class ApiListCard extends StatefulWidget {
-  @override
-  _ApiListCardState createState() => _ApiListCardState();
-}
-
-class _ApiListCardState extends State<ApiListCard> {
-  String projectName;
-
-  @override
-  void didChangeDependencies() {
-    ModelProvider.of(context).project.addListener(() => setState(() {}));
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    projectName = ModelProvider.of(context).project.value;
-    var apiList = ApiList(ApiService(projectName));
-    return Card(
-      child: Column(
-        children: [
-          ApiSearchBox(apiList),
-          Expanded(child: apiList),
-        ],
-      ),
-    );
-  }
-}
-
-// ApiList contains a ListView of apis.
-class ApiList extends StatelessWidget {
-  final PagewiseLoadController<Api> pageLoadController;
-  final ApiService apiService;
-
-  ApiList(ApiService apiService)
-      : apiService = apiService,
-        pageLoadController = PagewiseLoadController<Api>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
-
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-      child: PagewiseListView<Api>(
-        itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
-      ),
-    );
-  }
-
-  Widget _itemBuilder(context, Api api, _) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            SelectionModel model = ModelProvider.of(context);
-            if (model != null) {
-              print("tapped for api ${api.name}");
-              model.updateApi(api.name);
-            } else {
-              Navigator.pushNamed(
-                context,
-                api.routeNameForDetail(),
-                arguments: api,
-              );
-            }
-          },
-          child: ListTile(
-            leading: GestureDetector(
-                child: Icon(
-                  Icons.bookmark_border,
-                  color: Colors.black,
-                ),
-                onTap: () async {
-                  print("save this API");
-                }),
-            title: Text(
-              api.displayName,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(api.owner),
-          ),
-        ),
-        Divider(thickness: 2)
-      ],
-    );
-  }
-}
-
-// ApiSearchBox provides a search box for apis.
-class ApiSearchBox extends StatelessWidget {
-  final ApiList apiList;
-  ApiSearchBox(this.apiList);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        8,
-        0,
-        8,
-      ),
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
-            border: InputBorder.none,
-            hintText: 'Search APIs'),
-        onSubmitted: (s) {
-          if (s == "") {
-            apiList.apiService.filter = "";
-          } else {
-            apiList.apiService.filter = "api_id.contains('$s')";
-          }
-          apiList.pageLoadController.reset();
-        },
-      ),
     );
   }
 }
