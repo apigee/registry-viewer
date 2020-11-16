@@ -62,11 +62,6 @@ class RegistryRouter {
   MaterialPageRoute generateRoute(RouteSettings settings) {
     print("routing " + settings.name);
 
-    if (kIsWeb && settings.name != "/" && currentUser == null) {
-      // try to sign in
-
-    }
-
     if (kIsWeb) {
       if ((settings.name == "/") ||
           (currentUser == null) ||

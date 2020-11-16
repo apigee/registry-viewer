@@ -66,7 +66,7 @@ class ModelProvider extends InheritedWidget {
         super(key: key, child: child);
 
   static SelectionModel of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<ModelProvider>().model;
+      context.dependOnInheritedWidgetOfExactType<ModelProvider>()?.model;
 
   @override
   bool updateShouldNotify(ModelProvider oldWidget) => model != oldWidget.model;
