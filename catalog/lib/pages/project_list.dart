@@ -19,6 +19,7 @@ import '../service/service.dart';
 import '../models/project.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
+import 'home.dart';
 
 const int pageSize = 50;
 
@@ -87,11 +88,17 @@ class ProjectList extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () async {
-          Navigator.pushNamed(
-            context,
-            project.routeNameForDetail(),
-            arguments: project,
-          );
+          SelectionModel model = ModelProvider.of(context);
+          if (model != null) {
+            print("tapped for project ${project.name}");
+            model.updateProject(project.name);
+          } else {
+            Navigator.pushNamed(
+              context,
+              project.routeNameForDetail(),
+              arguments: project,
+            );
+          }
         },
         child: Card(
           color: Color(0xFFFFFFE0),

@@ -19,6 +19,7 @@ import '../service/service.dart';
 import '../models/version.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
+import 'home.dart';
 
 const int pageSize = 50;
 
@@ -55,11 +56,23 @@ class VersionListPage extends StatelessWidget {
 }
 
 // VersionListCard is a card that displays a list of versions.
-class VersionListCard extends StatelessWidget {
-  final String apiName;
-  VersionListCard(this.apiName);
+class VersionListCard extends StatefulWidget {
+  @override
+  _VersionListCardState createState() => _VersionListCardState();
+}
+
+class _VersionListCardState extends State<VersionListCard> {
+  String apiName;
+
+  @override
+  void didChangeDependencies() {
+    ModelProvider.of(context).addListener(() => setState(() {}));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    apiName = ModelProvider.of(context).api;
     var versionList = VersionList(VersionService(apiName));
     return Card(
       child: Column(
@@ -99,11 +112,17 @@ class VersionList extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () async {
-            Navigator.pushNamed(
-              context,
-              version.routeNameForDetail(),
-              arguments: version,
-            );
+            SelectionModel model = ModelProvider.of(context);
+            if (model != null) {
+              print("tapped for version ${version.name}");
+              model.updateVersion(version.name);
+            } else {
+              Navigator.pushNamed(
+                context,
+                version.routeNameForDetail(),
+                arguments: version,
+              );
+            }
           },
           child: ListTile(
             leading: GestureDetector(

@@ -19,6 +19,7 @@ import '../service/service.dart';
 import '../models/spec.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
+import 'home.dart';
 
 const int pageSize = 50;
 
@@ -55,11 +56,23 @@ class SpecListPage extends StatelessWidget {
 }
 
 // SpecListCard is a card that displays a list of specs.
-class SpecListCard extends StatelessWidget {
-  final String versionName;
-  SpecListCard(this.versionName);
+class SpecListCard extends StatefulWidget {
+  @override
+  _SpecListCardState createState() => _SpecListCardState();
+}
+
+class _SpecListCardState extends State<SpecListCard> {
+  String versionName;
+
+  @override
+  void didChangeDependencies() {
+    ModelProvider.of(context).addListener(() => setState(() {}));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    versionName = ModelProvider.of(context).version;
     var specList = SpecList(SpecService(versionName));
     return Card(
       child: Column(

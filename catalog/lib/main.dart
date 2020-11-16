@@ -20,9 +20,15 @@ import 'helpers/theme.dart';
 import 'pages/signin.dart';
 
 void main() async {
-  await attemptToSignIn();
-  print("current user is $currentUser");
-  runApp(Application());
+  attemptToSignIn().then((_) {
+    runApp(Application());
+  },
+      onError: (err) => runApp(Center(
+            child: Text(
+              "Error: $err",
+              textDirection: TextDirection.ltr,
+            ),
+          )));
 }
 
 class Application extends StatelessWidget {

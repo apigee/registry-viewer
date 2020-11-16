@@ -19,6 +19,7 @@ import '../service/service.dart';
 import '../models/api.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
+import 'home.dart';
 
 const int pageSize = 50;
 
@@ -54,11 +55,23 @@ class ApiListPage extends StatelessWidget {
 }
 
 // ApiListCard is a card that displays a list of projects.
-class ApiListCard extends StatelessWidget {
-  final String projectName;
-  ApiListCard(this.projectName);
+class ApiListCard extends StatefulWidget {
+  @override
+  _ApiListCardState createState() => _ApiListCardState();
+}
+
+class _ApiListCardState extends State<ApiListCard> {
+  String projectName;
+
+  @override
+  void didChangeDependencies() {
+    ModelProvider.of(context).addListener(() => setState(() {}));
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    projectName = ModelProvider.of(context).project;
     var apiList = ApiList(ApiService(projectName));
     return Card(
       child: Column(
@@ -97,11 +110,17 @@ class ApiList extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () async {
-            Navigator.pushNamed(
-              context,
-              api.routeNameForDetail(),
-              arguments: api,
-            );
+            SelectionModel model = ModelProvider.of(context);
+            if (model != null) {
+              print("tapped for api ${api.name}");
+              model.updateApi(api.name);
+            } else {
+              Navigator.pushNamed(
+                context,
+                api.routeNameForDetail(),
+                arguments: api,
+              );
+            }
           },
           child: ListTile(
             leading: GestureDetector(

@@ -42,7 +42,9 @@ Future attemptToSignIn() async {
       currentUserToken = auth.idToken;
       StatusService().getStatus().then((status) {
         completer.complete();
-      }).catchError((error) {});
+      }).catchError((error) {
+        throw error;
+      });
     });
   });
   googleSignIn.signInSilently();
