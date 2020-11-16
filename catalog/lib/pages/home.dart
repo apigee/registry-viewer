@@ -22,8 +22,10 @@ import 'spec_list.dart';
 class ObservableString extends ChangeNotifier {
   String value;
   void update(String value) {
-    this.value = value;
-    notifyListeners();
+    if (this.value != value) {
+      this.value = value;
+      notifyListeners();
+    }
   }
 }
 
