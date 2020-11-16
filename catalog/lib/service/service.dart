@@ -100,6 +100,9 @@ class ApiService {
   }
 
   Future<List<Api>> _getApis({parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
     if (offset == 0) {
       tokens = Map();
     }
@@ -153,6 +156,9 @@ class VersionService {
 
   Future<List<Version>> _getVersions(
       {parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
     if (offset == 0) {
       tokens = Map();
     }
@@ -220,6 +226,9 @@ class SpecService {
 
   Future<List<Spec>> _getSpecs(
       {parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
     if (offset == 0) {
       tokens = Map();
     }

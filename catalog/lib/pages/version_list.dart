@@ -66,13 +66,13 @@ class _VersionListCardState extends State<VersionListCard> {
 
   @override
   void didChangeDependencies() {
-    ModelProvider.of(context).addListener(() => setState(() {}));
+    ModelProvider.of(context).api.addListener(() => setState(() {}));
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    apiName = ModelProvider.of(context).api;
+    apiName = ModelProvider.of(context).api.value;
     var versionList = VersionList(VersionService(apiName));
     return Card(
       child: Column(

@@ -65,13 +65,13 @@ class _ApiListCardState extends State<ApiListCard> {
 
   @override
   void didChangeDependencies() {
-    ModelProvider.of(context).addListener(() => setState(() {}));
+    ModelProvider.of(context).project.addListener(() => setState(() {}));
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    projectName = ModelProvider.of(context).project;
+    projectName = ModelProvider.of(context).project.value;
     var apiList = ApiList(ApiService(projectName));
     return Card(
       child: Column(

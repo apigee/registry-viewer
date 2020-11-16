@@ -66,13 +66,13 @@ class _SpecListCardState extends State<SpecListCard> {
 
   @override
   void didChangeDependencies() {
-    ModelProvider.of(context).addListener(() => setState(() {}));
+    ModelProvider.of(context).version.addListener(() => setState(() {}));
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    versionName = ModelProvider.of(context).version;
+    versionName = ModelProvider.of(context).version.value;
     var specList = SpecList(SpecService(versionName));
     return Card(
       child: Column(

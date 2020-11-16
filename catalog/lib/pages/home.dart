@@ -19,36 +19,41 @@ import 'api_list.dart';
 import 'version_list.dart';
 import 'spec_list.dart';
 
+class ObservableString extends ChangeNotifier {
+  String value;
+  void update(String value) {
+    this.value = value;
+    notifyListeners();
+  }
+}
+
 class SelectionModel extends ChangeNotifier {
-  String project;
-  String api;
-  String version;
-  String spec;
+  ObservableString project = ObservableString();
+  ObservableString api = ObservableString();
+  ObservableString version = ObservableString();
+  ObservableString spec = ObservableString();
 
   void updateProject(String project) {
-    this.project = project;
-    this.api = "";
-    this.version = "";
-    this.spec = "";
-    notifyListeners();
+    this.project.update(project);
+    this.api.update("");
+    this.version.update("");
+    this.spec.update("");
   }
 
   void updateApi(String api) {
-    this.api = api;
-    this.version = "";
-    this.spec = "";
-    notifyListeners();
+    this.api.update(api);
+    this.version.update("");
+    this.spec.update("");
   }
 
   void updateVersion(String version) {
-    this.version = version;
-    this.spec = "";
-    notifyListeners();
+    this.version.update(version);
+    this.spec.update("");
+    ;
   }
 
   void updateSpec(String spec) {
-    this.spec = spec;
-    notifyListeners();
+    this.spec.update(spec);
   }
 }
 
