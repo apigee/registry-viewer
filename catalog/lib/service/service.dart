@@ -25,9 +25,9 @@ class StatusService {
   RegistryClient getClient() => RegistryClient(createClientChannel());
 
   Future<Status> getStatus() {
-    final client = getClient();
-    final request = Empty();
     try {
+      final client = getClient();
+      final request = Empty();
       return client.getStatus(request, options: callOptions());
     } catch (err) {
       print('Caught error: $err');

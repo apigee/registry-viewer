@@ -43,7 +43,7 @@ Future attemptToSignIn() async {
       StatusService().getStatus().then((status) {
         completer.complete();
       }).catchError((error) {
-        throw error;
+        print("error calling GetStatus $error");
       });
     });
   });

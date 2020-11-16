@@ -13,6 +13,7 @@ mkdir -p lib/generated
 
 echo "Generating dart support code."
 protoc \
+	--proto_path=${PROTOC} \
 	--proto_path=${COMMON} \
 	--proto_path=${REGISTRY} \
 	${PROTOC}/google/protobuf/any.proto \
