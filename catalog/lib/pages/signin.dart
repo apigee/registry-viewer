@@ -119,7 +119,7 @@ class SignInPageState extends State<SignInPage> {
               children: [
                 Text("Thank you for signing in!"),
                 Container(height: 10),
-                Text("We're not yet open to the general public."),
+                Text("We're not yet open to the public."),
                 Container(height: 10),
               ],
             ),
