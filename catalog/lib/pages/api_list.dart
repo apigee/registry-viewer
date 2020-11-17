@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../service/service.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
 import '../components/logout.dart';
+import '../models/selection.dart';
+import '../models/api.dart';
 
 // convert /projects/{project}/apis to projects/{project}
 String parent(String name) {
@@ -35,16 +36,29 @@ class ApiListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var apiList = ApiList(ApiService(projectName));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title(name)),
-        actions: <Widget>[
-          ApiSearchBox(apiList),
-          logoutButton(context),
-        ],
+    final selectionModel = SelectionModel();
+    selectionModel.project.update(projectName);
+    return SelectionProvider(
+      model: selectionModel,
+      child: ObservableStringProvider(
+        observable: ObservableString(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(title(name)),
+            actions: <Widget>[
+              ApiSearchBox(),
+              logoutButton(context),
+            ],
+          ),
+          body: Center(child: ApiList((context, api) {
+            Navigator.pushNamed(
+              context,
+              api.routeNameForDetail(),
+              arguments: api,
+            );
+          })),
+        ),
       ),
-      body: Center(child: apiList),
     );
   }
 }

@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../service/service.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
 import '../components/project_list.dart';
+import '../models/selection.dart';
+import '../models/project.dart';
 
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatelessWidget {
@@ -27,16 +28,28 @@ class ProjectListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var projectList = ProjectList(ProjectService());
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title(name)),
-        actions: <Widget>[
-          ProjectSearchBox(projectList),
-          logoutButton(context),
-        ],
+    return ObservableStringProvider(
+      observable: ObservableString(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(title(name)),
+          actions: <Widget>[
+            ProjectSearchBox(),
+            logoutButton(context),
+          ],
+        ),
+        body: Center(
+          child: ProjectList(
+            (context, project) {
+              Navigator.pushNamed(
+                context,
+                project.routeNameForDetail(),
+                arguments: project,
+              );
+            },
+          ),
+        ),
       ),
-      body: Center(child: projectList),
     );
   }
 }

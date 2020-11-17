@@ -24,6 +24,24 @@ class ObservableString extends ChangeNotifier {
   }
 }
 
+class ObservableStringProvider extends InheritedWidget {
+  final ObservableString observable;
+
+  const ObservableStringProvider(
+      {Key key, @required this.observable, @required Widget child})
+      : assert(observable != null),
+        assert(child != null),
+        super(key: key, child: child);
+
+  static ObservableString of(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<ObservableStringProvider>()
+      ?.observable;
+
+  @override
+  bool updateShouldNotify(ObservableStringProvider oldWidget) =>
+      observable != oldWidget.observable;
+}
+
 class SelectionModel extends ChangeNotifier {
   ObservableString project = ObservableString();
   ObservableString api = ObservableString();
@@ -54,17 +72,19 @@ class SelectionModel extends ChangeNotifier {
   }
 }
 
-class ModelProvider extends InheritedWidget {
+class SelectionProvider extends InheritedWidget {
   final SelectionModel model;
 
-  const ModelProvider({Key key, @required this.model, @required Widget child})
+  const SelectionProvider(
+      {Key key, @required this.model, @required Widget child})
       : assert(model != null),
         assert(child != null),
         super(key: key, child: child);
 
   static SelectionModel of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<ModelProvider>()?.model;
+      context.dependOnInheritedWidgetOfExactType<SelectionProvider>()?.model;
 
   @override
-  bool updateShouldNotify(ModelProvider oldWidget) => model != oldWidget.model;
+  bool updateShouldNotify(SelectionProvider oldWidget) =>
+      model != oldWidget.model;
 }

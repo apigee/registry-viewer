@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../service/service.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
 import '../components/version_list.dart';
+import '../models/selection.dart';
+import '../models/version.dart';
 
 // convert /projects/{project}/apis/{api}/versions
 // to projects/{project}/apis/{api}
@@ -36,16 +37,33 @@ class VersionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var versionList = VersionList(VersionService(apiName));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title(name)),
-        actions: <Widget>[
-          VersionSearchBox(versionList),
-          logoutButton(context),
-        ],
+    final selectionModel = SelectionModel();
+    selectionModel.api.update(apiName);
+    return SelectionProvider(
+      model: selectionModel,
+      child: ObservableStringProvider(
+        observable: ObservableString(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(title(name)),
+            actions: <Widget>[
+              VersionSearchBox(),
+              logoutButton(context),
+            ],
+          ),
+          body: Center(
+            child: VersionList(
+              (context, version) {
+                Navigator.pushNamed(
+                  context,
+                  version.routeNameForDetail(),
+                  arguments: version,
+                );
+              },
+            ),
+          ),
+        ),
       ),
-      body: Center(child: versionList),
     );
   }
 }

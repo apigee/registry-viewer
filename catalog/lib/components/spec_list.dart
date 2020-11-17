@@ -21,49 +21,69 @@ import '../models/selection.dart';
 
 const int pageSize = 50;
 
+typedef SpecSelectionHandler = Function(BuildContext context, Spec spec);
+
 // SpecListCard is a card that displays a list of specs.
-class SpecListCard extends StatefulWidget {
-  @override
-  _SpecListCardState createState() => _SpecListCardState();
-}
-
-class _SpecListCardState extends State<SpecListCard> {
-  String versionName;
-
-  @override
-  void didChangeDependencies() {
-    ModelProvider.of(context).version.addListener(() => setState(() {}));
-    super.didChangeDependencies();
-  }
-
+class SpecListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    versionName = ModelProvider.of(context).version.value;
-    var specList = SpecList(SpecService(versionName));
-    return Card(
-      child: Column(
-        children: [
-          SpecSearchBox(specList),
-          Expanded(child: specList),
-        ],
+    return ObservableStringProvider(
+      observable: ObservableString(),
+      child: Card(
+        child: Column(
+          children: [
+            SpecSearchBox(),
+            Expanded(child: SpecList(null)),
+          ],
+        ),
       ),
     );
   }
 }
 
 // SpecList contains a ListView of specs.
-class SpecList extends StatelessWidget {
-  final PagewiseLoadController<Spec> pageLoadController;
-  final SpecService specService;
+class SpecList extends StatefulWidget {
+  final SpecSelectionHandler selectionHandler;
+  SpecList(this.selectionHandler);
+  @override
+  _SpecListState createState() => _SpecListState();
+}
 
-  SpecList(SpecService specService)
-      : specService = specService,
-        pageLoadController = PagewiseLoadController<Spec>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+class _SpecListState extends State<SpecList> {
+  String versionName;
+  PagewiseLoadController<Spec> pageLoadController;
+  SpecService specService;
+  int selectedIndex = -1;
+
+  _SpecListState() {
+    specService = SpecService();
+    pageLoadController = PagewiseLoadController<Spec>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).version.addListener(() => setState(() {}));
+    ObservableStringProvider.of(context).addListener(() => setState(() {
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            specService.filter = filter.value;
+            pageLoadController.reset();
+            selectedIndex = -1;
+          }
+        }));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (specService.versionName !=
+        SelectionProvider.of(context).version.value) {
+      specService.versionName = SelectionProvider.of(context).version.value;
+      pageLoadController.reset();
+      selectedIndex = -1;
+    }
     return Scrollbar(
       child: PagewiseListView<Spec>(
         itemBuilder: this._itemBuilder,
@@ -72,32 +92,26 @@ class SpecList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Spec spec, _) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            Navigator.pushNamed(
-              context,
-              spec.routeNameForDetail(),
-              arguments: spec,
-            );
-          },
-          child: ListTile(
-            title: Text(spec.nameForDisplay()),
-            subtitle: Text(spec.style),
-          ),
-        ),
-        Divider(thickness: 2)
-      ],
+  Widget _itemBuilder(context, Spec spec, index) {
+    return ListTile(
+      title: Text(spec.nameForDisplay()),
+      subtitle: Text(spec.style),
+      selected: index == selectedIndex,
+      onTap: () async {
+        setState(() {
+          selectedIndex = index;
+        });
+        if (widget.selectionHandler != null) {
+          widget.selectionHandler(context, spec);
+        }
+      },
     );
   }
 }
 
 // SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends StatelessWidget {
-  final SpecList specList;
-  SpecSearchBox(this.specList);
+  SpecSearchBox();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -116,12 +130,14 @@ class SpecSearchBox extends StatelessWidget {
             border: InputBorder.none,
             hintText: 'Filter API specs'),
         onSubmitted: (s) {
-          if (s == "") {
-            specList.specService.filter = "";
-          } else {
-            specList.specService.filter = "spec_id.contains('$s')";
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            if (s == "") {
+              filter.update("");
+            } else {
+              filter.update("spec_id.contains('$s')");
+            }
           }
-          specList.pageLoadController.reset();
         },
       ),
     );

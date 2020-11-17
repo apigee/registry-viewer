@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../service/service.dart';
 import '../helpers/title.dart';
 import '../components/logout.dart';
 import '../components/spec_list.dart';
+import '../models/selection.dart';
+import '../models/spec.dart';
 
 // convert /projects/{project}/apis/{api}/versions/{version}/specs
 // to projects/{project}/apis/{api}/versions/{version}
@@ -36,16 +37,29 @@ class SpecListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var specList = SpecList(SpecService(versionName));
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title(name)),
-        actions: <Widget>[
-          SpecSearchBox(specList),
-          logoutButton(context),
-        ],
+    final selectionModel = SelectionModel();
+    selectionModel.version.update(versionName);
+    return SelectionProvider(
+      model: selectionModel,
+      child: ObservableStringProvider(
+        observable: ObservableString(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(title(name)),
+            actions: <Widget>[
+              SpecSearchBox(),
+              logoutButton(context),
+            ],
+          ),
+          body: Center(child: SpecList((context, spec) {
+            Navigator.pushNamed(
+              context,
+              spec.routeNameForDetail(),
+              arguments: spec,
+            );
+          })),
+        ),
       ),
-      body: Center(child: specList),
     );
   }
 }

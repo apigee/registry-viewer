@@ -29,7 +29,7 @@ class SpecPicker extends StatelessWidget {
     final versionListCard = VersionListCard();
     final specListCard = SpecListCard();
 
-    return ModelProvider(
+    return SelectionProvider(
       model: model,
       child: Row(
         children: [

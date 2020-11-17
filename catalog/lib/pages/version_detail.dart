@@ -15,7 +15,6 @@
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../application.dart';
 import '../models/version.dart';
 import '../helpers/title.dart';
 
@@ -36,10 +35,10 @@ class _VersionDetailPageState extends State<VersionDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final versionName = widget.version.name;
+    final versionName = widget.name.substring(1);
     if (version == null) {
       // we need to fetch the version from the API
-      final versionFuture = VersionService("").getVersion(versionName);
+      final versionFuture = VersionService().getVersion(versionName);
       versionFuture.then((version) {
         setState(() {
           this.version = version;

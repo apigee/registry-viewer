@@ -21,33 +21,59 @@ import '../models/selection.dart';
 
 const int pageSize = 50;
 
+typedef ProjectSelectionHandler = Function(
+    BuildContext context, Project project);
+
 // ProjectListCard is a card that displays a list of projects.
 class ProjectListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var projectList = ProjectList(ProjectService());
-    return Card(
-      child: Column(
-        children: [
-          ProjectSearchBox(projectList),
-          Expanded(child: projectList),
-        ],
+    return ObservableStringProvider(
+      observable: ObservableString(),
+      child: Card(
+        child: Column(
+          children: [
+            ProjectSearchBox(),
+            Expanded(child: ProjectList(null)),
+          ],
+        ),
       ),
     );
   }
 }
 
 // ProjectList contains a ListView of projects.
-class ProjectList extends StatelessWidget {
-  final PagewiseLoadController<Project> pageLoadController;
-  final ProjectService projectService;
+class ProjectList extends StatefulWidget {
+  final ProjectSelectionHandler selectionHandler;
+  ProjectList(this.selectionHandler);
+  @override
+  _ProjectListState createState() => _ProjectListState();
+}
 
-  ProjectList(ProjectService projectService)
-      : projectService = projectService,
-        pageLoadController = PagewiseLoadController<Project>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) =>
-                projectService.getProjectsPage(pageIndex));
+class _ProjectListState extends State<ProjectList> {
+  PagewiseLoadController<Project> pageLoadController;
+  ProjectService projectService;
+  int selectedIndex = -1;
+
+  _ProjectListState() {
+    projectService = ProjectService();
+    pageLoadController = PagewiseLoadController<Project>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
+  }
+
+  @override
+  void didChangeDependencies() {
+    ObservableStringProvider.of(context).addListener(() => setState(() {
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            projectService.filter = filter.value;
+            pageLoadController.reset();
+            selectedIndex = -1;
+          }
+        }));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,43 +85,29 @@ class ProjectList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Project project, _) {
-    return Center(
-      child: GestureDetector(
+  Widget _itemBuilder(context, Project project, index) {
+    return ListTile(
+        title: Text(project.nameForDisplay()),
+        subtitle: Text(project.description),
+        selected: index == selectedIndex,
         onTap: () async {
-          SelectionModel model = ModelProvider.of(context);
+          setState(() {
+            selectedIndex = index;
+          });
+          SelectionModel model = SelectionProvider.of(context);
           if (model != null) {
-            print("tapped for project ${project.name}");
             model.updateProject(project.name);
-          } else {
-            Navigator.pushNamed(
-              context,
-              project.routeNameForDetail(),
-              arguments: project,
-            );
           }
-        },
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ListTile(
-                title: Text(project.nameForDisplay()),
-                subtitle: Text(project.description),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+          if (widget.selectionHandler != null) {
+            widget.selectionHandler(context, project);
+          }
+        });
   }
 }
 
 // ProjectSearchBox provides a search box for projects.
 class ProjectSearchBox extends StatelessWidget {
-  final ProjectList projectList;
-  ProjectSearchBox(this.projectList);
+  ProjectSearchBox();
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -115,12 +127,14 @@ class ProjectSearchBox extends StatelessWidget {
               border: InputBorder.none,
               hintText: 'Filter Projects'),
           onSubmitted: (s) {
-            if (s == "") {
-              projectList.projectService.filter = "";
-            } else {
-              projectList.projectService.filter = "project_id.contains('$s')";
+            ObservableString filter = ObservableStringProvider.of(context);
+            if (filter != null) {
+              if (s == "") {
+                filter.update("");
+              } else {
+                filter.update("project_id.contains('$s')");
+              }
             }
-            projectList.pageLoadController.reset();
           },
         ),
       ),

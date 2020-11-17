@@ -90,9 +90,7 @@ class ApiService {
 
   String filter;
   Map<int, String> tokens;
-  final String projectName;
-
-  ApiService(this.projectName);
+  String projectName;
 
   Future<List<Api>> getApisPage(int pageIndex) {
     return _getApis(
@@ -145,9 +143,7 @@ class VersionService {
 
   String filter;
   Map<int, String> tokens;
-  final String apiName;
-
-  VersionService(this.apiName);
+  String apiName;
 
   Future<List<Version>> getVersionsPage(int pageIndex) {
     return _getVersions(
@@ -216,8 +212,8 @@ class SpecService {
 
   String filter;
   Map<int, String> tokens;
-  final String versionName;
-  SpecService(this.versionName);
+  String versionName;
+  SpecService();
 
   Future<List<Spec>> getSpecsPage(int pageIndex) {
     return _getSpecs(

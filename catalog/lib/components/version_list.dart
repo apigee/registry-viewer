@@ -21,50 +21,69 @@ import '../models/selection.dart';
 
 const int pageSize = 50;
 
+typedef VersionSelectionHandler = Function(
+    BuildContext context, Version version);
+
 // VersionListCard is a card that displays a list of versions.
-class VersionListCard extends StatefulWidget {
-  @override
-  _VersionListCardState createState() => _VersionListCardState();
-}
-
-class _VersionListCardState extends State<VersionListCard> {
-  String apiName;
-
-  @override
-  void didChangeDependencies() {
-    ModelProvider.of(context).api.addListener(() => setState(() {}));
-    super.didChangeDependencies();
-  }
-
+class VersionListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    apiName = ModelProvider.of(context).api.value;
-    var versionList = VersionList(VersionService(apiName));
-    return Card(
-      child: Column(
-        children: [
-          VersionSearchBox(versionList),
-          Expanded(child: versionList),
-        ],
+    return ObservableStringProvider(
+      observable: ObservableString(),
+      child: Card(
+        child: Column(
+          children: [
+            VersionSearchBox(),
+            Expanded(child: VersionList(null)),
+          ],
+        ),
       ),
     );
   }
 }
 
 // VersionList contains a ListView of versions.
-class VersionList extends StatelessWidget {
-  final PagewiseLoadController<Version> pageLoadController;
-  final VersionService versionService;
+class VersionList extends StatefulWidget {
+  final VersionSelectionHandler selectionHandler;
+  VersionList(this.selectionHandler);
+  @override
+  _VersionListState createState() => _VersionListState();
+}
 
-  VersionList(VersionService versionService)
-      : versionService = versionService,
-        pageLoadController = PagewiseLoadController<Version>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) =>
-                versionService.getVersionsPage(pageIndex));
+class _VersionListState extends State<VersionList> {
+  String apiName;
+  PagewiseLoadController<Version> pageLoadController;
+  VersionService versionService;
+  int selectedIndex = -1;
+
+  _VersionListState() {
+    versionService = VersionService();
+    pageLoadController = PagewiseLoadController<Version>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).api.addListener(() => setState(() {}));
+    ObservableStringProvider.of(context).addListener(() => setState(() {
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            versionService.filter = filter.value;
+            pageLoadController.reset();
+            selectedIndex = -1;
+          }
+        }));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (versionService.apiName != SelectionProvider.of(context).api.value) {
+      versionService.apiName = SelectionProvider.of(context).api.value;
+      pageLoadController.reset();
+      selectedIndex = -1;
+    }
     return Scrollbar(
       child: PagewiseListView<Version>(
         itemBuilder: this._itemBuilder,
@@ -73,38 +92,30 @@ class VersionList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Version version, _) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            SelectionModel model = ModelProvider.of(context);
-            if (model != null) {
-              print("tapped for version ${version.name}");
-              model.updateVersion(version.name);
-            } else {
-              Navigator.pushNamed(
-                context,
-                version.routeNameForDetail(),
-                arguments: version,
-              );
-            }
-          },
-          child: ListTile(
-            title: Text(version.nameForDisplay()),
-            subtitle: Text(version.description),
-          ),
-        ),
-        Divider(thickness: 2)
-      ],
+  Widget _itemBuilder(context, Version version, index) {
+    return ListTile(
+      title: Text(version.nameForDisplay()),
+      subtitle: Text(version.description),
+      selected: index == selectedIndex,
+      onTap: () async {
+        setState(() {
+          selectedIndex = index;
+        });
+        SelectionModel model = SelectionProvider.of(context);
+        if (model != null) {
+          model.updateVersion(version.name);
+        }
+        if (widget.selectionHandler != null) {
+          widget.selectionHandler(context, version);
+        }
+      },
     );
   }
 }
 
 // VersionSearchBox provides a search box for versions.
 class VersionSearchBox extends StatelessWidget {
-  final VersionList versionList;
-  VersionSearchBox(this.versionList);
+  VersionSearchBox();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -123,12 +134,14 @@ class VersionSearchBox extends StatelessWidget {
             border: InputBorder.none,
             hintText: 'Filter API versions'),
         onSubmitted: (s) {
-          if (s == "") {
-            versionList.versionService.filter = "";
-          } else {
-            versionList.versionService.filter = "version_id.contains('$s')";
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            if (s == "") {
+              filter.update("");
+            } else {
+              filter.update("version_id.contains('$s')");
+            }
           }
-          versionList.pageLoadController.reset();
         },
       ),
     );

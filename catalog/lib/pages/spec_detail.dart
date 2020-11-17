@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import 'package:catalog/generated/metrics/complexity.pb.dart';
 import '../service/service.dart';
-import '../application.dart';
 import '../helpers/title.dart';
 
 class SpecDetailPage extends StatefulWidget {
@@ -46,10 +45,10 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final specName = widget.spec.name;
+    final specName = widget.name.substring(1);
     if (spec == null) {
       // we need to fetch the spec from the API
-      final specFuture = SpecService("").getSpec(specName);
+      final specFuture = SpecService().getSpec(specName);
       specFuture.then((spec) {
         setState(() {
           this.spec = spec;

@@ -36,10 +36,10 @@ class _ApiDetailPageState extends State<ApiDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final apiName = widget.api.name;
+    final apiName = widget.name.substring(1);
     if (api == null) {
       // we need to fetch the api from the API
-      final apiFuture = ApiService("").getApi(apiName);
+      final apiFuture = ApiService().getApi(apiName);
       apiFuture.then((api) {
         setState(() {
           this.api = api;
@@ -161,7 +161,7 @@ class _ApiVersionListWidgetState extends State<ApiVersionListWidget> {
   Widget build(BuildContext context) {
     if (versions == null) {
       // we need to fetch the versions from the API
-      final versionsFuture = VersionService("").getVersions(api.name);
+      final versionsFuture = VersionService().getVersions(api.name);
       versionsFuture.then((versions) {
         setState(() {
           this.versions = versions;

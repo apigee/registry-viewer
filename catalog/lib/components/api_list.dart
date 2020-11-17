@@ -21,49 +21,69 @@ import '../models/selection.dart';
 
 const int pageSize = 50;
 
+typedef ApiSelectionHandler = Function(BuildContext context, Api api);
+
 // ApiListCard is a card that displays a list of projects.
-class ApiListCard extends StatefulWidget {
-  @override
-  _ApiListCardState createState() => _ApiListCardState();
-}
-
-class _ApiListCardState extends State<ApiListCard> {
-  String projectName;
-
-  @override
-  void didChangeDependencies() {
-    ModelProvider.of(context).project.addListener(() => setState(() {}));
-    super.didChangeDependencies();
-  }
-
+class ApiListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    projectName = ModelProvider.of(context).project.value;
-    var apiList = ApiList(ApiService(projectName));
-    return Card(
-      child: Column(
-        children: [
-          ApiSearchBox(apiList),
-          Expanded(child: apiList),
-        ],
+    return ObservableStringProvider(
+      observable: ObservableString(),
+      child: Card(
+        child: Column(
+          children: [
+            ApiSearchBox(),
+            Expanded(child: ApiList(null)),
+          ],
+        ),
       ),
     );
   }
 }
 
 // ApiList contains a ListView of apis.
-class ApiList extends StatelessWidget {
-  final PagewiseLoadController<Api> pageLoadController;
-  final ApiService apiService;
+class ApiList extends StatefulWidget {
+  final ApiSelectionHandler selectionHandler;
+  ApiList(this.selectionHandler);
 
-  ApiList(ApiService apiService)
-      : apiService = apiService,
-        pageLoadController = PagewiseLoadController<Api>(
-            pageSize: pageSize,
-            pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+  @override
+  _ApiListState createState() => _ApiListState();
+}
+
+class _ApiListState extends State<ApiList> {
+  String projectName;
+  PagewiseLoadController<Api> pageLoadController;
+  ApiService apiService;
+  int selectedIndex = -1;
+
+  _ApiListState() {
+    apiService = ApiService();
+    pageLoadController = PagewiseLoadController<Api>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).project.addListener(() => setState(() {}));
+    ObservableStringProvider.of(context).addListener(() => setState(() {
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            apiService.filter = filter.value;
+            pageLoadController.reset();
+            selectedIndex = -1;
+          }
+        }));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (apiService.projectName != SelectionProvider.of(context).project.value) {
+      apiService.projectName = SelectionProvider.of(context).project.value;
+      pageLoadController.reset();
+      selectedIndex = -1;
+    }
     return Scrollbar(
       child: PagewiseListView<Api>(
         itemBuilder: this._itemBuilder,
@@ -72,38 +92,30 @@ class ApiList extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(context, Api api, _) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            SelectionModel model = ModelProvider.of(context);
-            if (model != null) {
-              print("tapped for api ${api.name}");
-              model.updateApi(api.name);
-            } else {
-              Navigator.pushNamed(
-                context,
-                api.routeNameForDetail(),
-                arguments: api,
-              );
-            }
-          },
-          child: ListTile(
-            title: Text(api.nameForDisplay()),
-            subtitle: Text(api.owner),
-          ),
-        ),
-        Divider(thickness: 2)
-      ],
+  Widget _itemBuilder(context, Api api, index) {
+    return ListTile(
+      title: Text(api.nameForDisplay()),
+      subtitle: Text(api.owner),
+      selected: index == selectedIndex,
+      onTap: () async {
+        setState(() {
+          selectedIndex = index;
+        });
+        SelectionModel model = SelectionProvider.of(context);
+        if (model != null) {
+          model.updateApi(api.name);
+        }
+        if (widget.selectionHandler != null) {
+          widget.selectionHandler(context, api);
+        }
+      },
     );
   }
 }
 
 // ApiSearchBox provides a search box for apis.
 class ApiSearchBox extends StatelessWidget {
-  final ApiList apiList;
-  ApiSearchBox(this.apiList);
+  ApiSearchBox();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,12 +134,14 @@ class ApiSearchBox extends StatelessWidget {
             border: InputBorder.none,
             hintText: 'Filter APIs'),
         onSubmitted: (s) {
-          if (s == "") {
-            apiList.apiService.filter = "";
-          } else {
-            apiList.apiService.filter = "api_id.contains('$s')";
+          ObservableString filter = ObservableStringProvider.of(context);
+          if (filter != null) {
+            if (s == "") {
+              filter.update("");
+            } else {
+              filter.update("api_id.contains('$s')");
+            }
           }
-          apiList.pageLoadController.reset();
         },
       ),
     );

@@ -124,6 +124,7 @@ class SignInPageState extends State<SignInPage> {
               ],
             ),
           if (currentUserIsAuthorized) Expanded(child: SpecPicker()),
+          if (currentUserIsAuthorized) Expanded(child: Container(height: 100)),
         ],
       );
     } else {
