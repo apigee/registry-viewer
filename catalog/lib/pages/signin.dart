@@ -152,7 +152,7 @@ class SignInPageState extends State<SignInPage> {
       appBar: _buildAppBar(context),
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
-        child: _buildBody(context),
+        child: Container(color: Colors.grey[400], child: _buildBody(context)),
       ),
     );
   }

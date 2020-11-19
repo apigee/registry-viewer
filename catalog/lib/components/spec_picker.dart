@@ -34,6 +34,7 @@ class SpecPicker extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 5,
               child: Row(
                 children: [
                   Expanded(
@@ -52,6 +53,7 @@ class SpecPicker extends StatelessWidget {
               ),
             ),
             Expanded(
+              flex: 3,
               child: Row(
                 children: [
                   Expanded(
