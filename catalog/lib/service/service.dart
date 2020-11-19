@@ -18,6 +18,8 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
 import '../generated/google/protobuf/empty.pb.dart';
+import '../helpers/errors.dart';
+import 'package:flutter/material.dart';
 
 const int pageSize = 50;
 
@@ -39,6 +41,7 @@ class StatusService {
 class ProjectService {
   RegistryClient getClient() => RegistryClient(createClientChannel());
 
+  BuildContext context;
   String filter;
   Map<int, String> tokens;
 
@@ -67,8 +70,8 @@ class ProjectService {
       tokens[offset + limit] = response.nextPageToken;
       return response.projects;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 
@@ -88,6 +91,7 @@ class ProjectService {
 class ApiService {
   RegistryClient getClient() => RegistryClient(createClientChannel());
 
+  BuildContext context;
   String filter;
   Map<int, String> tokens;
   String projectName;
@@ -120,8 +124,8 @@ class ApiService {
       tokens[offset + limit] = response.nextPageToken;
       return response.apis;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 
@@ -141,6 +145,7 @@ class ApiService {
 class VersionService {
   RegistryClient getClient() => RegistryClient(createClientChannel());
 
+  BuildContext context;
   String filter;
   Map<int, String> tokens;
   String apiName;
@@ -175,8 +180,8 @@ class VersionService {
       tokens[offset + limit] = response.nextPageToken;
       return response.versions;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 
@@ -210,6 +215,7 @@ class VersionService {
 class SpecService {
   RegistryClient getClient() => RegistryClient(createClientChannel());
 
+  BuildContext context;
   String filter;
   Map<int, String> tokens;
   String versionName;
@@ -244,8 +250,8 @@ class SpecService {
       tokens[offset + limit] = response.nextPageToken;
       return response.specs;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 

@@ -79,6 +79,7 @@ class _SpecListState extends State<SpecList> {
 
   @override
   Widget build(BuildContext context) {
+    specService.context = context;
     if (specService.versionName !=
         SelectionProvider.of(context).version.value) {
       specService.versionName = SelectionProvider.of(context).version.value;
@@ -115,15 +116,9 @@ class _SpecListState extends State<SpecList> {
         setState(() {
           selectedIndex = index;
         });
-
         SelectionModel model = SelectionProvider.of(context);
-        if (model != null) {
-          model.updateSpec(spec.name);
-        }
-
-        if (widget.selectionHandler != null) {
-          widget.selectionHandler(context, spec);
-        }
+        model?.updateSpec(spec.name);
+        widget.selectionHandler?.call(context, spec);
       },
     );
   }

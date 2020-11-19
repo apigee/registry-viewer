@@ -78,6 +78,8 @@ class RegistryRouter {
       return projectListPage(settings);
     } else if (settings.name == "/settings") {
       return settingsPage(settings);
+    } else if (settings.name == "/error") {
+      return errorPage(settings);
     }
     // handle regex patterns next, watch for possible ordering sensitivities
     if (specRegExp.hasMatch(settings.name)) {
@@ -229,6 +231,22 @@ MaterialPageRoute settingsPage(RouteSettings settings) {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Settings Page'),
+        ),
+      );
+    },
+  );
+}
+
+MaterialPageRoute errorPage(RouteSettings settings) {
+  return MaterialPageRoute(
+    settings: settings,
+    builder: (context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Error'),
+        ),
+        body: Center(
+          child: Text("${settings.arguments}"),
         ),
       );
     },

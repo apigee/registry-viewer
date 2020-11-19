@@ -80,6 +80,7 @@ class _ApiListState extends State<ApiList> {
 
   @override
   Widget build(BuildContext context) {
+    apiService.context = context;
     if (apiService.projectName != SelectionProvider.of(context).project.value) {
       apiService.projectName = SelectionProvider.of(context).project.value;
       pageLoadController.reset();
@@ -116,12 +117,8 @@ class _ApiListState extends State<ApiList> {
           selectedIndex = index;
         });
         SelectionModel model = SelectionProvider.of(context);
-        if (model != null) {
-          model.updateApi(api.name);
-        }
-        if (widget.selectionHandler != null) {
-          widget.selectionHandler(context, api);
-        }
+        model?.updateApi(api.name);
+        widget.selectionHandler?.call(context, api);
       },
     );
   }

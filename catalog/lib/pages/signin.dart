@@ -54,8 +54,8 @@ Future attemptToSignIn() async {
     });
   });
   googleSignIn.signInSilently();
-  return completer.future.timeout(new Duration(milliseconds: 1000),
-      onTimeout: () => {print("timeout")});
+  return completer.future
+      .timeout(new Duration(milliseconds: 1000), onTimeout: () => {});
 }
 
 class SignInPage extends StatefulWidget {

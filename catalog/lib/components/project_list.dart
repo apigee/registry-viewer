@@ -78,6 +78,7 @@ class _ProjectListState extends State<ProjectList> {
 
   @override
   Widget build(BuildContext context) {
+    projectService.context = context;
     return Scrollbar(
       child: PagewiseListView<Project>(
         itemBuilder: this._itemBuilder,
@@ -109,12 +110,8 @@ class _ProjectListState extends State<ProjectList> {
             selectedIndex = index;
           });
           SelectionModel model = SelectionProvider.of(context);
-          if (model != null) {
-            model.updateProject(project.name);
-          }
-          if (widget.selectionHandler != null) {
-            widget.selectionHandler(context, project);
-          }
+          model?.updateProject(project.name);
+          widget.selectionHandler?.call(context, project);
         });
   }
 }

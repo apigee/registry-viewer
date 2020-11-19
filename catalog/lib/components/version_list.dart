@@ -80,6 +80,7 @@ class _VersionListState extends State<VersionList> {
 
   @override
   Widget build(BuildContext context) {
+    versionService.context = context;
     if (versionService.apiName != SelectionProvider.of(context).api.value) {
       versionService.apiName = SelectionProvider.of(context).api.value;
       pageLoadController.reset();
@@ -109,19 +110,15 @@ class _VersionListState extends State<VersionList> {
 
     return ListTile(
       title: Text(version.nameForDisplay()),
-      subtitle: Text(version.description),
+      subtitle: Text(version.state),
       selected: index == selectedIndex,
       onTap: () async {
         setState(() {
           selectedIndex = index;
         });
         SelectionModel model = SelectionProvider.of(context);
-        if (model != null) {
-          model.updateVersion(version.name);
-        }
-        if (widget.selectionHandler != null) {
-          widget.selectionHandler(context, version);
-        }
+        model?.updateVersion(version.name);
+        widget.selectionHandler?.call(context, version);
       },
     );
   }
