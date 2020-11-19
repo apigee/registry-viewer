@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/version.dart';
 import '../models/selection.dart';
+import 'custom_search_box.dart';
 
 const int pageSize = 50;
 
@@ -93,6 +94,19 @@ class _VersionListState extends State<VersionList> {
   }
 
   Widget _itemBuilder(context, Version version, index) {
+    if (index == 0) {
+      Future.delayed(const Duration(milliseconds: 0), () {
+        SelectionModel model = SelectionProvider.of(context);
+        if ((model != null) &&
+            ((model.version.value == null) || (model.version.value == ""))) {
+          model.updateVersion(version.name);
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+      });
+    }
+
     return ListTile(
       title: Text(version.nameForDisplay()),
       subtitle: Text(version.description),
@@ -114,36 +128,7 @@ class _VersionListState extends State<VersionList> {
 }
 
 // VersionSearchBox provides a search box for versions.
-class VersionSearchBox extends StatelessWidget {
-  VersionSearchBox();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        8,
-        0,
-        8,
-      ),
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
-            border: InputBorder.none,
-            hintText: 'Filter API versions'),
-        onSubmitted: (s) {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            if (s == "") {
-              filter.update("");
-            } else {
-              filter.update("version_id.contains('$s')");
-            }
-          }
-        },
-      ),
-    );
-  }
+class VersionSearchBox extends CustomSearchBox {
+  VersionSearchBox()
+      : super("Filter API versions", "version_id.contains('TEXT')");
 }

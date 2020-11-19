@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/project.dart';
 import '../models/selection.dart';
+import 'custom_search_box.dart';
 
 const int pageSize = 50;
 
@@ -86,6 +87,19 @@ class _ProjectListState extends State<ProjectList> {
   }
 
   Widget _itemBuilder(context, Project project, index) {
+    if (index == 0) {
+      Future.delayed(const Duration(milliseconds: 0), () {
+        SelectionModel model = SelectionProvider.of(context);
+        if ((model != null) &&
+            ((model.project.value == null) || (model.project.value == ""))) {
+          model.updateProject(project.name);
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+      });
+    }
+
     return ListTile(
         title: Text(project.nameForDisplay()),
         subtitle: Text(project.description),
@@ -106,38 +120,6 @@ class _ProjectListState extends State<ProjectList> {
 }
 
 // ProjectSearchBox provides a search box for projects.
-class ProjectSearchBox extends StatelessWidget {
-  ProjectSearchBox();
-  @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 80, minWidth: 200, maxWidth: 300),
-      child: Container(
-        margin: EdgeInsets.fromLTRB(
-          0,
-          8,
-          0,
-          8,
-        ),
-        alignment: Alignment.centerLeft,
-        color: Colors.white,
-        child: TextField(
-          decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search, color: Colors.black),
-              border: InputBorder.none,
-              hintText: 'Filter Projects'),
-          onSubmitted: (s) {
-            ObservableString filter = ObservableStringProvider.of(context);
-            if (filter != null) {
-              if (s == "") {
-                filter.update("");
-              } else {
-                filter.update("project_id.contains('$s')");
-              }
-            }
-          },
-        ),
-      ),
-    );
-  }
+class ProjectSearchBox extends CustomSearchBox {
+  ProjectSearchBox() : super("Filter Projects", "project_id.contains('TEXT')");
 }

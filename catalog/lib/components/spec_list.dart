@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/spec.dart';
 import '../models/selection.dart';
+import 'custom_search_box.dart';
 
 const int pageSize = 50;
 
@@ -93,6 +94,19 @@ class _SpecListState extends State<SpecList> {
   }
 
   Widget _itemBuilder(context, Spec spec, index) {
+    if (index == 0) {
+      Future.delayed(const Duration(milliseconds: 0), () {
+        SelectionModel model = SelectionProvider.of(context);
+        if ((model != null) &&
+            ((model.spec.value == null) || (model.spec.value == ""))) {
+          model.updateSpec(spec.name);
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+      });
+    }
+
     return ListTile(
       title: Text(spec.nameForDisplay()),
       subtitle: Text(spec.style),
@@ -101,6 +115,12 @@ class _SpecListState extends State<SpecList> {
         setState(() {
           selectedIndex = index;
         });
+
+        SelectionModel model = SelectionProvider.of(context);
+        if (model != null) {
+          model.updateSpec(spec.name);
+        }
+
         if (widget.selectionHandler != null) {
           widget.selectionHandler(context, spec);
         }
@@ -110,36 +130,6 @@ class _SpecListState extends State<SpecList> {
 }
 
 // SpecSearchBox provides a search box for specs.
-class SpecSearchBox extends StatelessWidget {
-  SpecSearchBox();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        8,
-        0,
-        8,
-      ),
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
-            border: InputBorder.none,
-            hintText: 'Filter API specs'),
-        onSubmitted: (s) {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            if (s == "") {
-              filter.update("");
-            } else {
-              filter.update("spec_id.contains('$s')");
-            }
-          }
-        },
-      ),
-    );
-  }
+class SpecSearchBox extends CustomSearchBox {
+  SpecSearchBox() : super("Filter API specs", "spec_id.contains('TEXT')");
 }

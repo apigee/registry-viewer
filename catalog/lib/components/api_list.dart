@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/api.dart';
 import '../models/selection.dart';
+import 'custom_search_box.dart';
 
 const int pageSize = 50;
 
@@ -93,6 +94,19 @@ class _ApiListState extends State<ApiList> {
   }
 
   Widget _itemBuilder(context, Api api, index) {
+    if (index == 0) {
+      Future.delayed(const Duration(milliseconds: 0), () {
+        SelectionModel model = SelectionProvider.of(context);
+        if ((model != null) &&
+            ((model.api.value == null) || (model.api.value == ""))) {
+          model.updateApi(api.name);
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+      });
+    }
+
     return ListTile(
       title: Text(api.nameForDisplay()),
       subtitle: Text(api.owner),
@@ -114,36 +128,6 @@ class _ApiListState extends State<ApiList> {
 }
 
 // ApiSearchBox provides a search box for apis.
-class ApiSearchBox extends StatelessWidget {
-  ApiSearchBox();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      margin: EdgeInsets.fromLTRB(
-        0,
-        8,
-        0,
-        8,
-      ),
-      alignment: Alignment.centerLeft,
-      color: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
-            border: InputBorder.none,
-            hintText: 'Filter APIs'),
-        onSubmitted: (s) {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            if (s == "") {
-              filter.update("");
-            } else {
-              filter.update("api_id.contains('$s')");
-            }
-          }
-        },
-      ),
-    );
-  }
+class ApiSearchBox extends CustomSearchBox {
+  ApiSearchBox() : super("Filter APIs", "api_id.contains('TEXT')");
 }

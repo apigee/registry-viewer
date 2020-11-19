@@ -40,6 +40,10 @@ Future attemptToSignIn() async {
       return;
     }
     currentUserIsAuthorized = authorized_users.contains(account.email);
+    if (!currentUserIsAuthorized) {
+      currentUserIsAuthorized =
+          authorized_domains.contains(account.email.split("@").last);
+    }
     account.authentication.then((auth) {
       currentUserToken = auth.idToken;
       StatusService().getStatus().then((status) {
@@ -124,7 +128,6 @@ class SignInPageState extends State<SignInPage> {
               ],
             ),
           if (currentUserIsAuthorized) Expanded(child: SpecPicker()),
-          if (currentUserIsAuthorized) Expanded(child: Container(height: 100)),
         ],
       );
     } else {

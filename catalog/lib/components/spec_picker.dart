@@ -17,6 +17,10 @@ import 'project_list.dart';
 import 'api_list.dart';
 import 'version_list.dart';
 import 'spec_list.dart';
+import 'project_detail.dart';
+import 'api_detail.dart';
+import 'version_detail.dart';
+import 'spec_detail.dart';
 import '../models/selection.dart';
 
 class SpecPicker extends StatelessWidget {
@@ -24,28 +28,49 @@ class SpecPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final SelectionModel model = SelectionModel();
 
-    final projectListCard = ProjectListCard();
-    final apiListCard = ApiListCard();
-    final versionListCard = VersionListCard();
-    final specListCard = SpecListCard();
-
     return SelectionProvider(
       model: model,
-      child: Row(
-        children: [
-          Expanded(
-            child: projectListCard,
-          ),
-          Expanded(
-            child: apiListCard,
-          ),
-          Expanded(
-            child: versionListCard,
-          ),
-          Expanded(
-            child: specListCard,
-          ),
-        ],
+      child: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ProjectListCard(),
+                  ),
+                  Expanded(
+                    child: ApiListCard(),
+                  ),
+                  Expanded(
+                    child: VersionListCard(),
+                  ),
+                  Expanded(
+                    child: SpecListCard(),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox.expand(child: ProjectDetailCard()),
+                  ),
+                  Expanded(
+                    child: SizedBox.expand(child: ApiDetailCard()),
+                  ),
+                  Expanded(
+                    child: SizedBox.expand(child: VersionDetailCard()),
+                  ),
+                  Expanded(
+                    child: SizedBox.expand(child: SpecDetailCard()),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -19,7 +19,7 @@ extension Display on Api {
     if (this.displayName != "") {
       return this.displayName;
     } else {
-      return this.name;
+      return this.name.split("/").last;
     }
   }
 
