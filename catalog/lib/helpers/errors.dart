@@ -15,14 +15,25 @@
 import 'package:flutter/material.dart';
 
 void reportError(BuildContext context, Object err) {
-  print("$err");
   if (context != null) {
-    Future.delayed(const Duration(milliseconds: 10), () {
-      Navigator.pushNamed(
-        context,
-        "/error",
-        arguments: err,
-      );
-    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // TODO: interpret error to provide actionable guidance.
+        return AlertDialog(
+          content: Text("$err"),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop(); // dismiss dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    print("$err");
   }
 }
