@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/selection.dart';
+import '../models/version.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
@@ -52,8 +53,30 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
       return Card();
     } else {
       return Card(
-        child: SingleChildScrollView(
-          child: Text("$version"),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text("$version"),
+              ),
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                TextButton(
+                  child: Text("Version Details"),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      version.routeNameForDetail(),
+                      arguments: version,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       );
     }

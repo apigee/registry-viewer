@@ -98,10 +98,16 @@ class SignInPageState extends State<SignInPage> {
                 children: [
                   Text(currentUser.displayName ?? '',
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.headline6),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .apply(color: Colors.white)),
                   Text(currentUser.email ?? '',
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .apply(color: Colors.white)),
                 ]),
           ),
         if (currentUser != null)

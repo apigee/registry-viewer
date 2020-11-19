@@ -47,7 +47,7 @@ class SpecListPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(title(name)),
             actions: <Widget>[
-              SpecSearchBox(),
+              Container(width: 400, child: SpecSearchBox()),
               logoutButton(context),
             ],
           ),

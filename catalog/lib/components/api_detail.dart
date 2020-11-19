@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/selection.dart';
+import '../models/api.dart';
 
 // ApiDetailCard is a card that displays details about a api.
 class ApiDetailCard extends StatefulWidget {
@@ -52,8 +53,30 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
       return Card();
     } else {
       return Card(
-        child: SingleChildScrollView(
-          child: Text("$api"),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text("$api"),
+              ),
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                TextButton(
+                  child: Text("API Details"),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      api.routeNameForDetail(),
+                      arguments: api,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       );
     }

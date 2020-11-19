@@ -47,7 +47,7 @@ class VersionListPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(title(name)),
             actions: <Widget>[
-              VersionSearchBox(),
+              Container(width: 400, child: VersionSearchBox()),
               logoutButton(context),
             ],
           ),

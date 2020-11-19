@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/selection.dart';
+import '../models/project.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
@@ -52,8 +53,30 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
       return Card();
     } else {
       return Card(
-        child: SingleChildScrollView(
-          child: Text("$project"),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text("$project"),
+              ),
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                TextButton(
+                  child: Text("Project Details"),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      project.routeNameForDetail(),
+                      arguments: project,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       );
     }

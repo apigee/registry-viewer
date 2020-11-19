@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/selection.dart';
+import '../models/spec.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -53,8 +54,30 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       return Card();
     } else {
       return Card(
-        child: SingleChildScrollView(
-          child: Text("$spec"),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Text("$spec"),
+              ),
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                TextButton(
+                  child: Text("Spec Details"),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      spec.routeNameForDetail(),
+                      arguments: spec,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       );
     }

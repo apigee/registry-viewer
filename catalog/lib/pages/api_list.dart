@@ -46,7 +46,7 @@ class ApiListPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(title(name)),
             actions: <Widget>[
-              ApiSearchBox(),
+              Container(width: 400, child: ApiSearchBox()),
               logoutButton(context),
             ],
           ),

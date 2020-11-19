@@ -34,7 +34,7 @@ class ProjectListPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(title(name)),
           actions: <Widget>[
-            ProjectSearchBox(),
+            Container(width: 400, child: ProjectSearchBox()),
             logoutButton(context),
           ],
         ),
