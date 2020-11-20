@@ -19,14 +19,46 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import 'package:catalog/generated/metrics/complexity.pb.dart';
 import '../service/service.dart';
 import '../helpers/title.dart';
+import '../components/spec_file.dart';
+import '../models/selection.dart';
 
-class SpecDetailPage extends StatefulWidget {
+class SpecDetailPage extends StatelessWidget {
   final String name;
-  final Spec spec;
-
+  final Spec spec; // ignored
   SpecDetailPage({this.name, this.spec});
+
   @override
-  _SpecDetailPageState createState() => _SpecDetailPageState(this.spec);
+  Widget build(BuildContext context) {
+    final SelectionModel model = SelectionModel();
+
+    Future.delayed(const Duration(milliseconds: 0), () {
+      final specName = name.substring(1);
+      model.updateSpec(specName);
+      print("SETTING SPEC NAME TO $specName");
+    });
+
+    return SelectionProvider(
+      model: model,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            title(name),
+          ),
+        ),
+        body: Column(children: [
+          SpecInfoCard(),
+          SpecPropertiesCard(),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(child: SpecFileCard()),
+              ],
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
 }
 
 String projectNameForSpecName(String specName) {
@@ -36,40 +68,92 @@ String projectNameForSpecName(String specName) {
   return projectName;
 }
 
-class _SpecDetailPageState extends State<SpecDetailPage> {
-  Spec spec;
-  List<Property> properties;
-  String body;
+class SpecInfoCard extends StatefulWidget {
+  SpecInfoCard();
+  @override
+  _SpecInfoCardState createState() => _SpecInfoCardState();
+}
 
-  _SpecDetailPageState(this.spec);
+class _SpecInfoCardState extends State<SpecInfoCard> {
+  String specName;
+  Spec spec;
+
+  _SpecInfoCardState();
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).spec.addListener(() => setState(() {
+          specName = SelectionProvider.of(context).spec.value;
+          if (specName == null) {
+            specName = "";
+          }
+          this.spec = null;
+        }));
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final specName = widget.name.substring(1);
+    if (specName == null) {
+      return Card();
+    }
     if (spec == null) {
       // we need to fetch the spec from the API
       final specFuture = SpecService().getSpec(specName);
       specFuture.then((spec) {
         setState(() {
           this.spec = spec;
-          if ((spec.contents != null) && (spec.contents.length > 0)) {
-            final data = GZipDecoder().decodeBytes(spec.contents);
-            this.body = Utf8Codec().decoder.convert(data);
-          }
         });
       });
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            title(widget.name),
-          ),
-        ),
-        body: Text("loading..."),
-      );
+      return Card();
     }
+    return specCard(context, spec);
+  }
+}
 
+Card specCard(BuildContext context, Spec spec) {
+  return Card(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.album),
+          title: Text(spec.name, style: Theme.of(context).textTheme.headline5),
+        ),
+      ],
+    ),
+  );
+}
+
+class SpecPropertiesCard extends StatefulWidget {
+  @override
+  _SpecPropertiesCardState createState() => _SpecPropertiesCardState();
+}
+
+class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
+  String specName;
+  List<Property> properties;
+  _SpecPropertiesCardState();
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).spec.addListener(() => setState(() {
+          specName = SelectionProvider.of(context).spec.value;
+          if (specName == null) {
+            specName = "";
+          }
+          this.properties = null;
+        }));
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (specName == null) {
+      return Card();
+    }
     if (properties == null) {
-      // fetch the properties
+      // we need to fetch the properties from the API
       final propertiesFuture = PropertiesService.listProperties(
           projectNameForSpecName(specName),
           subject: specName);
@@ -78,59 +162,15 @@ class _SpecDetailPageState extends State<SpecDetailPage> {
           this.properties = properties.properties;
         });
       });
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            title(widget.name),
-          ),
-        ),
-        body: Text("loading..."),
-      );
+      return Card();
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title(widget.name),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Row(children: [specCard(context, spec)]),
-          if (propertiesContain(properties, "summary"))
-            Row(children: [
-              summaryCard(context, spec, properties),
-            ]),
-          Row(children: [Text(body != null ? body : "")]),
-        ]),
-      ),
-    );
+    if (propertiesContain(properties, "complexity")) {
+      return Row(children: [
+        summaryCard(context, properties),
+      ]);
+    }
+    return Card();
   }
-}
-
-Expanded specCard(BuildContext context, Spec spec) {
-  return Expanded(
-    child: Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.album),
-            title:
-                Text(spec.name, style: Theme.of(context).textTheme.headline5),
-          ),
-          ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: const Text('MORE'),
-                onPressed: () {/* ... */},
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 bool propertiesContain(List<Property> properties, String propertyName) {
@@ -175,11 +215,11 @@ TableRow row(BuildContext context, String label, String value) {
   );
 }
 
-Expanded summaryCard(
-    BuildContext context, Spec spec, List<Property> properties) {
+Expanded summaryCard(BuildContext context, List<Property> properties) {
   final summary = propertyWithName(properties, "complexity");
   Complexity complexitySummary =
       new Complexity.fromBuffer(summary.messageValue.value);
+  print("complexity $summary");
   return Expanded(
     child: Card(
       child: Column(

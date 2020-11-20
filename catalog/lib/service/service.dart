@@ -277,6 +277,7 @@ class PropertiesService {
     final client = getClient();
     final request = ListPropertiesRequest();
     request.parent = subject;
+    request.view = View.FULL;
     try {
       return client.listProperties(request, options: callOptions());
     } catch (err) {
