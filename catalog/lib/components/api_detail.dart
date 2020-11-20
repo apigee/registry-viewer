@@ -54,6 +54,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     } else {
       return Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: SingleChildScrollView(

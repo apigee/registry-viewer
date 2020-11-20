@@ -55,6 +55,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     } else {
       return Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: SingleChildScrollView(

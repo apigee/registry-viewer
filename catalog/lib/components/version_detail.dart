@@ -54,6 +54,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     } else {
       return Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: SingleChildScrollView(

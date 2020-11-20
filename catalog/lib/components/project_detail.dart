@@ -54,6 +54,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     } else {
       return Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: SingleChildScrollView(
