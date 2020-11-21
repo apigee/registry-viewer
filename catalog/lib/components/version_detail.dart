@@ -17,6 +17,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
+import 'info.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
@@ -53,33 +54,50 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
       return Card();
     } else {
       return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text("$version"),
-              ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                TextButton(
-                  child: Text("Version Details"),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      version.routeNameForDetail(),
-                      arguments: version,
-                    );
-                  },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: VersionInfoWidget(version),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }
+  }
+}
+
+class VersionInfoWidget extends StatelessWidget {
+  final Version version;
+  VersionInfoWidget(this.version);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ResourceNameButtonRow(
+          version.name.split("/").sublist(4).join("/"),
+          () {
+            Navigator.pushNamed(
+              context,
+              version.routeNameForDetail(),
+              arguments: version,
+            );
+          },
+        ),
+        SizedBox(height: 10),
+        TitleRow(version.name.split("/").last),
+        SizedBox(height: 10),
+        if (version.description != "") BodyRow(version.description),
+        SizedBox(height: 10),
+        TimestampRow("created", version.createTime),
+        TimestampRow("updated", version.updateTime),
+      ],
+    );
   }
 }

@@ -17,6 +17,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
+import 'info.dart';
 
 // ApiDetailCard is a card that displays details about a api.
 class ApiDetailCard extends StatefulWidget {
@@ -53,33 +54,50 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
       return Card();
     } else {
       return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text("$api"),
-              ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                TextButton(
-                  child: Text("API Details"),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      api.routeNameForDetail(),
-                      arguments: api,
-                    );
-                  },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: ApiInfoWidget(api),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }
+  }
+}
+
+class ApiInfoWidget extends StatelessWidget {
+  final Api api;
+  ApiInfoWidget(this.api);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ResourceNameButtonRow(
+          api.name.split("/").sublist(2).join("/"),
+          () {
+            Navigator.pushNamed(
+              context,
+              api.routeNameForDetail(),
+              arguments: api,
+            );
+          },
+        ),
+        SizedBox(height: 10),
+        TitleRow(api.displayName),
+        SizedBox(height: 10),
+        BodyRow(api.description),
+        SizedBox(height: 10),
+        TimestampRow("created", api.createTime),
+        TimestampRow("updated", api.updateTime),
+      ],
+    );
   }
 }

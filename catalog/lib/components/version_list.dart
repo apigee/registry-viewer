@@ -112,6 +112,7 @@ class _VersionListState extends State<VersionList> {
       title: Text(version.nameForDisplay()),
       subtitle: Text(version.state),
       selected: index == selectedIndex,
+      dense: false,
       onTap: () async {
         setState(() {
           selectedIndex = index;

@@ -31,7 +31,7 @@ class CustomSearchBox extends StatelessWidget {
         8,
       ),
       alignment: Alignment.centerLeft,
-      color: Colors.grey[300],
+      color: Theme.of(context).secondaryHeaderColor,
       child: TextField(
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.search, color: Colors.black),

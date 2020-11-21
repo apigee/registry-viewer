@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:convert';
-import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import 'package:catalog/generated/metrics/complexity.pb.dart';
@@ -118,7 +116,6 @@ Card specCard(BuildContext context, Spec spec) {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.album),
           title: Text(spec.name, style: Theme.of(context).textTheme.headline5),
         ),
       ],

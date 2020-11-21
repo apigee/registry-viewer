@@ -112,6 +112,7 @@ class _ApiListState extends State<ApiList> {
       title: Text(api.nameForDisplay()),
       subtitle: Text(api.owner),
       selected: index == selectedIndex,
+      dense: false,
       onTap: () async {
         setState(() {
           selectedIndex = index;

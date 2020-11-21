@@ -105,6 +105,7 @@ class _ProjectListState extends State<ProjectList> {
         title: Text(project.nameForDisplay()),
         subtitle: Text(project.description),
         selected: index == selectedIndex,
+        dense: false,
         onTap: () async {
           setState(() {
             selectedIndex = index;

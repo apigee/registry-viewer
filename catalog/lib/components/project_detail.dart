@@ -17,6 +17,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/project.dart';
+import 'info.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
@@ -53,33 +54,47 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
       return Card();
     } else {
       return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text("$project"),
-              ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                TextButton(
-                  child: Text("Project Details"),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      project.routeNameForDetail(),
-                      arguments: project,
-                    );
-                  },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: ProjectInfoWidget(project),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }
+  }
+}
+
+class ProjectInfoWidget extends StatelessWidget {
+  final Project project;
+  ProjectInfoWidget(this.project);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ResourceNameButtonRow(project.name, () {
+          Navigator.pushNamed(
+            context,
+            project.routeNameForDetail(),
+            arguments: project,
+          );
+        }),
+        SizedBox(height: 10),
+        TitleRow(project.displayName),
+        SizedBox(height: 10),
+        BodyRow(project.description),
+        SizedBox(height: 10),
+        TimestampRow("created", project.createTime),
+        TimestampRow("updated", project.updateTime),
+      ],
+    );
   }
 }

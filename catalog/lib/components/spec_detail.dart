@@ -17,6 +17,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
+import 'info.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -54,33 +55,53 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       return Card();
     } else {
       return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text("$spec"),
-              ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                TextButton(
-                  child: Text("Spec Details"),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      spec.routeNameForDetail(),
-                      arguments: spec,
-                    );
-                  },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SpecInfoWidget(spec),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       );
     }
+  }
+}
+
+class SpecInfoWidget extends StatelessWidget {
+  final Spec spec;
+  SpecInfoWidget(this.spec);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ResourceNameButtonRow(
+          spec.name.split("/").sublist(6).join("/"),
+          () {
+            Navigator.pushNamed(
+              context,
+              spec.routeNameForDetail(),
+              arguments: spec,
+            );
+          },
+        ),
+        SizedBox(height: 10),
+        TitleRow(spec.filename),
+        SizedBox(height: 10),
+        BodyRow("revision " + spec.revisionId),
+        BodyRow(spec.style),
+        BodyRow("${spec.sizeBytes} bytes"),
+        if (spec.description != "") BodyRow(spec.description),
+        SizedBox(height: 10),
+        TimestampRow("created", spec.createTime),
+        TimestampRow("updated", spec.updateTime),
+      ],
+    );
   }
 }

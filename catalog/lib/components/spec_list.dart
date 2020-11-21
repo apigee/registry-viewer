@@ -112,6 +112,7 @@ class _SpecListState extends State<SpecList> {
       title: Text(spec.nameForDisplay()),
       subtitle: Text(spec.style),
       selected: index == selectedIndex,
+      dense: false,
       onTap: () async {
         setState(() {
           selectedIndex = index;
