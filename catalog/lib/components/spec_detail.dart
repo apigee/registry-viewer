@@ -92,7 +92,7 @@ class SpecInfoWidget extends StatelessWidget {
           },
         ),
         SizedBox(height: 10),
-        TitleRow(spec.filename),
+        TitleRow(spec.name.split("/").last),
         SizedBox(height: 10),
         BodyRow("revision " + spec.revisionId),
         BodyRow(spec.style),

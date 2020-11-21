@@ -29,6 +29,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
   Spec spec;
   String body;
   List<Item> items;
+  int selectedItemIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -61,7 +62,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
                   if (file.isFile) {
                     String body;
                     try {
-                      body = String.fromCharCodes(file.content);
+                      // body = String.fromCharCodes(file.content);
+                      body = Utf8Codec().decoder.convert(file.content);
                     } catch (e) {
                       body = "unavailable";
                     }
@@ -87,8 +89,48 @@ class _SpecFileCardState extends State<SpecFileCard> {
           ),
         );
       } else {
+        final ScrollController controller = ScrollController();
         return Card(
-          child: MyStatefulWidget(items: items),
+          child: Row(children: [
+            Expanded(
+              flex: 5,
+              child: Scrollbar(
+                controller: controller,
+                isAlwaysShown: true,
+                child: ListView.builder(
+                  itemCount: this.items.length,
+                  controller: controller,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      selected: index == selectedItemIndex,
+                      title: Text(this.items[index].headerValue),
+                      onTap: () async {
+                        setState(() {
+                          selectedItemIndex = index;
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child:
+                            Text(this.items[selectedItemIndex].expandedValue),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
         );
       }
     }
@@ -100,74 +142,8 @@ class Item {
   Item({
     this.expandedValue,
     this.headerValue,
-    this.isExpanded = false,
   });
 
   String expandedValue;
   String headerValue;
-  bool isExpanded;
-}
-
-List<Item> generateItems(int numberOfItems) {
-  return List.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: 'Panel $index',
-      expandedValue: 'This is item number $index',
-    );
-  });
-}
-
-/// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  final List<Item> items;
-
-  MyStatefulWidget({Key key, List<Item> items})
-      : items = items,
-        super(key: key);
-
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(items);
-}
-
-/// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  List<Item> _data;
-
-  _MyStatefulWidgetState(this._data);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [_buildPanel()],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(item.headerValue),
-            );
-          },
-          body: ListTile(
-            title: Text(item.expandedValue),
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
-    );
-  }
 }
