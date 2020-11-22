@@ -36,10 +36,10 @@ class ApiListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectionModel = SelectionModel();
+    final selectionModel = Selection();
     selectionModel.project.update(projectName);
     return SelectionProvider(
-      model: selectionModel,
+      selection: selectionModel,
       child: ObservableStringProvider(
         observable: ObservableString(),
         child: Scaffold(
@@ -50,7 +50,7 @@ class ApiListPage extends StatelessWidget {
               logoutButton(context),
             ],
           ),
-          body: Center(child: ApiList((context, api) {
+          body: Center(child: ApiListView((context, api) {
             Navigator.pushNamed(
               context,
               api.routeNameForDetail(),

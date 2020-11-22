@@ -35,7 +35,7 @@ class ProjectListCard extends StatelessWidget {
         child: Column(
           children: [
             ProjectSearchBox(),
-            Expanded(child: ProjectList(null)),
+            Expanded(child: ProjectListView(null)),
           ],
         ),
       ),
@@ -43,20 +43,20 @@ class ProjectListCard extends StatelessWidget {
   }
 }
 
-// ProjectList contains a ListView of projects.
-class ProjectList extends StatefulWidget {
+// ProjectListView is a scrollable ListView of projects.
+class ProjectListView extends StatefulWidget {
   final ProjectSelectionHandler selectionHandler;
-  ProjectList(this.selectionHandler);
+  ProjectListView(this.selectionHandler);
   @override
-  _ProjectListState createState() => _ProjectListState();
+  _ProjectListViewState createState() => _ProjectListViewState();
 }
 
-class _ProjectListState extends State<ProjectList> {
+class _ProjectListViewState extends State<ProjectListView> {
   PagewiseLoadController<Project> pageLoadController;
   ProjectService projectService;
   int selectedIndex = -1;
 
-  _ProjectListState() {
+  _ProjectListViewState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
@@ -90,10 +90,11 @@ class _ProjectListState extends State<ProjectList> {
   Widget _itemBuilder(context, Project project, index) {
     if (index == 0) {
       Future.delayed(const Duration(milliseconds: 0), () {
-        SelectionModel model = SelectionProvider.of(context);
-        if ((model != null) &&
-            ((model.project.value == null) || (model.project.value == ""))) {
-          model.updateProject(project.name);
+        Selection selection = SelectionProvider.of(context);
+        if ((selection != null) &&
+            ((selection.project.value == null) ||
+                (selection.project.value == ""))) {
+          selection.updateProject(project.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -110,8 +111,8 @@ class _ProjectListState extends State<ProjectList> {
           setState(() {
             selectedIndex = index;
           });
-          SelectionModel model = SelectionProvider.of(context);
-          model?.updateProject(project.name);
+          Selection selection = SelectionProvider.of(context);
+          selection?.updateProject(project.name);
           widget.selectionHandler?.call(context, project);
         });
   }

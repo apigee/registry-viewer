@@ -39,7 +39,7 @@ class ProjectListPage extends StatelessWidget {
           ],
         ),
         body: Center(
-          child: ProjectList(
+          child: ProjectListView(
             (context, project) {
               Navigator.pushNamed(
                 context,

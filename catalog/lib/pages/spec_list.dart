@@ -37,10 +37,10 @@ class SpecListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectionModel = SelectionModel();
+    final selectionModel = Selection();
     selectionModel.version.update(versionName);
     return SelectionProvider(
-      model: selectionModel,
+      selection: selectionModel,
       child: ObservableStringProvider(
         observable: ObservableString(),
         child: Scaffold(
@@ -51,7 +51,7 @@ class SpecListPage extends StatelessWidget {
               logoutButton(context),
             ],
           ),
-          body: Center(child: SpecList((context, spec) {
+          body: Center(child: SpecListView((context, spec) {
             Navigator.pushNamed(
               context,
               spec.routeNameForDetail(),

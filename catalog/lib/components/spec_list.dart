@@ -34,7 +34,7 @@ class SpecListCard extends StatelessWidget {
         child: Column(
           children: [
             SpecSearchBox(),
-            Expanded(child: SpecList(null)),
+            Expanded(child: SpecListView(null)),
           ],
         ),
       ),
@@ -42,21 +42,21 @@ class SpecListCard extends StatelessWidget {
   }
 }
 
-// SpecList contains a ListView of specs.
-class SpecList extends StatefulWidget {
+// SpecListView is a scrollable ListView of specs.
+class SpecListView extends StatefulWidget {
   final SpecSelectionHandler selectionHandler;
-  SpecList(this.selectionHandler);
+  SpecListView(this.selectionHandler);
   @override
-  _SpecListState createState() => _SpecListState();
+  _SpecListViewState createState() => _SpecListViewState();
 }
 
-class _SpecListState extends State<SpecList> {
+class _SpecListViewState extends State<SpecListView> {
   String versionName;
   PagewiseLoadController<Spec> pageLoadController;
   SpecService specService;
   int selectedIndex = -1;
 
-  _SpecListState() {
+  _SpecListViewState() {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<Spec>(
         pageSize: pageSize,
@@ -97,10 +97,10 @@ class _SpecListState extends State<SpecList> {
   Widget _itemBuilder(context, Spec spec, index) {
     if (index == 0) {
       Future.delayed(const Duration(milliseconds: 0), () {
-        SelectionModel model = SelectionProvider.of(context);
-        if ((model != null) &&
-            ((model.spec.value == null) || (model.spec.value == ""))) {
-          model.updateSpec(spec.name);
+        Selection selection = SelectionProvider.of(context);
+        if ((selection != null) &&
+            ((selection.spec.value == null) || (selection.spec.value == ""))) {
+          selection.updateSpec(spec.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -117,8 +117,8 @@ class _SpecListState extends State<SpecList> {
         setState(() {
           selectedIndex = index;
         });
-        SelectionModel model = SelectionProvider.of(context);
-        model?.updateSpec(spec.name);
+        Selection selection = SelectionProvider.of(context);
+        selection?.updateSpec(spec.name);
         widget.selectionHandler?.call(context, spec);
       },
     );

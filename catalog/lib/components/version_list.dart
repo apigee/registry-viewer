@@ -35,7 +35,7 @@ class VersionListCard extends StatelessWidget {
         child: Column(
           children: [
             VersionSearchBox(),
-            Expanded(child: VersionList(null)),
+            Expanded(child: VersionListView(null)),
           ],
         ),
       ),
@@ -43,21 +43,21 @@ class VersionListCard extends StatelessWidget {
   }
 }
 
-// VersionList contains a ListView of versions.
-class VersionList extends StatefulWidget {
+// VersionListView is a scrollable ListView of versions.
+class VersionListView extends StatefulWidget {
   final VersionSelectionHandler selectionHandler;
-  VersionList(this.selectionHandler);
+  VersionListView(this.selectionHandler);
   @override
-  _VersionListState createState() => _VersionListState();
+  _VersionListViewState createState() => _VersionListViewState();
 }
 
-class _VersionListState extends State<VersionList> {
+class _VersionListViewState extends State<VersionListView> {
   String apiName;
   PagewiseLoadController<Version> pageLoadController;
   VersionService versionService;
   int selectedIndex = -1;
 
-  _VersionListState() {
+  _VersionListViewState() {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<Version>(
         pageSize: pageSize,
@@ -97,10 +97,11 @@ class _VersionListState extends State<VersionList> {
   Widget _itemBuilder(context, Version version, index) {
     if (index == 0) {
       Future.delayed(const Duration(milliseconds: 0), () {
-        SelectionModel model = SelectionProvider.of(context);
-        if ((model != null) &&
-            ((model.version.value == null) || (model.version.value == ""))) {
-          model.updateVersion(version.name);
+        Selection selection = SelectionProvider.of(context);
+        if ((selection != null) &&
+            ((selection.version.value == null) ||
+                (selection.version.value == ""))) {
+          selection.updateVersion(version.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -117,8 +118,8 @@ class _VersionListState extends State<VersionList> {
         setState(() {
           selectedIndex = index;
         });
-        SelectionModel model = SelectionProvider.of(context);
-        model?.updateVersion(version.name);
+        Selection selection = SelectionProvider.of(context);
+        selection?.updateVersion(version.name);
         widget.selectionHandler?.call(context, version);
       },
     );

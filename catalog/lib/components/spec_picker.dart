@@ -26,10 +26,10 @@ import '../models/selection.dart';
 class SpecPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final SelectionModel model = SelectionModel();
+    final Selection selection = Selection();
 
     return SelectionProvider(
-      model: model,
+      selection: selection,
       child: Container(
         child: Column(
           children: [

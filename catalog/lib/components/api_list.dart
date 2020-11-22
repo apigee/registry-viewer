@@ -34,7 +34,7 @@ class ApiListCard extends StatelessWidget {
         child: Column(
           children: [
             ApiSearchBox(),
-            Expanded(child: ApiList(null)),
+            Expanded(child: ApiListView(null)),
           ],
         ),
       ),
@@ -42,22 +42,22 @@ class ApiListCard extends StatelessWidget {
   }
 }
 
-// ApiList contains a ListView of apis.
-class ApiList extends StatefulWidget {
+// ApiListView is a scrollable ListView of apis.
+class ApiListView extends StatefulWidget {
   final ApiSelectionHandler selectionHandler;
-  ApiList(this.selectionHandler);
+  ApiListView(this.selectionHandler);
 
   @override
-  _ApiListState createState() => _ApiListState();
+  _ApiListViewState createState() => _ApiListViewState();
 }
 
-class _ApiListState extends State<ApiList> {
+class _ApiListViewState extends State<ApiListView> {
   String projectName;
   PagewiseLoadController<Api> pageLoadController;
   ApiService apiService;
   int selectedIndex = -1;
 
-  _ApiListState() {
+  _ApiListViewState() {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
@@ -97,10 +97,10 @@ class _ApiListState extends State<ApiList> {
   Widget _itemBuilder(context, Api api, index) {
     if (index == 0) {
       Future.delayed(const Duration(milliseconds: 0), () {
-        SelectionModel model = SelectionProvider.of(context);
-        if ((model != null) &&
-            ((model.api.value == null) || (model.api.value == ""))) {
-          model.updateApi(api.name);
+        Selection selection = SelectionProvider.of(context);
+        if ((selection != null) &&
+            ((selection.api.value == null) || (selection.api.value == ""))) {
+          selection.updateApi(api.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -117,8 +117,8 @@ class _ApiListState extends State<ApiList> {
         setState(() {
           selectedIndex = index;
         });
-        SelectionModel model = SelectionProvider.of(context);
-        model?.updateApi(api.name);
+        Selection selection = SelectionProvider.of(context);
+        selection?.updateApi(api.name);
         widget.selectionHandler?.call(context, api);
       },
     );

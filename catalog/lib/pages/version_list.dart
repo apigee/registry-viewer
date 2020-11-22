@@ -37,10 +37,10 @@ class VersionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectionModel = SelectionModel();
+    final selectionModel = Selection();
     selectionModel.api.update(apiName);
     return SelectionProvider(
-      model: selectionModel,
+      selection: selectionModel,
       child: ObservableStringProvider(
         observable: ObservableString(),
         child: Scaffold(
@@ -52,7 +52,7 @@ class VersionListPage extends StatelessWidget {
             ],
           ),
           body: Center(
-            child: VersionList(
+            child: VersionListView(
               (context, version) {
                 Navigator.pushNamed(
                   context,

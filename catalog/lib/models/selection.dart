@@ -42,7 +42,7 @@ class ObservableStringProvider extends InheritedWidget {
       observable != oldWidget.observable;
 }
 
-class SelectionModel extends ChangeNotifier {
+class Selection extends ChangeNotifier {
   ObservableString project = ObservableString();
   ObservableString api = ObservableString();
   ObservableString version = ObservableString();
@@ -64,7 +64,6 @@ class SelectionModel extends ChangeNotifier {
   void updateVersion(String version) {
     this.version.update(version);
     this.spec.update("");
-    ;
   }
 
   void updateSpec(String spec) {
@@ -73,18 +72,19 @@ class SelectionModel extends ChangeNotifier {
 }
 
 class SelectionProvider extends InheritedWidget {
-  final SelectionModel model;
+  final Selection selection;
 
   const SelectionProvider(
-      {Key key, @required this.model, @required Widget child})
-      : assert(model != null),
+      {Key key, @required this.selection, @required Widget child})
+      : assert(selection != null),
         assert(child != null),
         super(key: key, child: child);
 
-  static SelectionModel of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<SelectionProvider>()?.model;
+  static Selection of(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<SelectionProvider>()
+      ?.selection;
 
   @override
   bool updateShouldNotify(SelectionProvider oldWidget) =>
-      model != oldWidget.model;
+      selection != oldWidget.selection;
 }

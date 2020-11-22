@@ -27,16 +27,16 @@ class SpecDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SelectionModel model = SelectionModel();
+    final Selection selection = Selection();
 
     Future.delayed(const Duration(milliseconds: 0), () {
       final specName = name.substring(1);
-      model.updateSpec(specName);
+      selection.updateSpec(specName);
       print("SETTING SPEC NAME TO $specName");
     });
 
     return SelectionProvider(
-      model: model,
+      selection: selection,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
