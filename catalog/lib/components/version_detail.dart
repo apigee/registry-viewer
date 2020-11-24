@@ -81,8 +81,8 @@ class VersionInfoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ResourceNameButtonRow(
-          version.name.split("/").sublist(4).join("/"),
-          () {
+          name: version.name.split("/").sublist(4).join("/"),
+          show: () {
             Navigator.pushNamed(
               context,
               version.routeNameForDetail(),

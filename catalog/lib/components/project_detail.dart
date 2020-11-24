@@ -80,13 +80,16 @@ class ProjectInfoWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ResourceNameButtonRow(project.name, () {
-          Navigator.pushNamed(
-            context,
-            project.routeNameForDetail(),
-            arguments: project,
-          );
-        }),
+        ResourceNameButtonRow(
+          name: project.name,
+          show: () {
+            Navigator.pushNamed(
+              context,
+              project.routeNameForDetail(),
+              arguments: project,
+            );
+          },
+        ),
         SizedBox(height: 10),
         TitleRow(project.displayName),
         SizedBox(height: 10),

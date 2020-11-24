@@ -18,6 +18,7 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
 import '../generated/google/protobuf/empty.pb.dart';
+import '../generated/google/protobuf/field_mask.pb.dart';
 import '../helpers/errors.dart';
 import 'package:flutter/material.dart';
 
@@ -135,6 +136,22 @@ class ApiService {
     request.name = name;
     try {
       return client.getApi(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
+    }
+  }
+
+  Future<Api> updateApi(Api api, List<String> paths) {
+    final client = getClient();
+    final request = UpdateApiRequest();
+    request.api = api;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    try {
+      return client.updateApi(request, options: callOptions());
     } catch (err) {
       print('Caught error: $err');
       return null;

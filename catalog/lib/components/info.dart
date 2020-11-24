@@ -18,17 +18,22 @@ import 'package:catalog/generated/google/protobuf/timestamp.pb.dart';
 
 class ResourceNameButtonRow extends StatelessWidget {
   final String name;
-  final void Function() action;
-  ResourceNameButtonRow(this.name, this.action);
+  final void Function() show;
+  final void Function() edit;
+  ResourceNameButtonRow({this.name, this.show, this.edit});
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: [
         TextButton(
+          child: Text("EDIT"),
+          onPressed: edit != null ? edit : () {},
+        ),
+        TextButton(
           child: Text(name),
-          onPressed: action,
+          onPressed: show,
         ),
       ],
     );

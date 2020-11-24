@@ -18,6 +18,7 @@ import '../service/service.dart';
 import '../models/api.dart';
 import '../models/version.dart';
 import '../helpers/title.dart';
+import '../components/api_edit.dart';
 
 class ApiDetailPage extends StatefulWidget {
   final String name;
@@ -97,6 +98,18 @@ Expanded apiCard(BuildContext context, Api api) {
           ),
           ButtonBar(
             children: <Widget>[
+              FlatButton(
+                child: const Text('EDIT'),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: EditAPIForm(api),
+                        );
+                      });
+                },
+              ),
               FlatButton(
                 child: const Text('VERSIONS'),
                 onPressed: () {

@@ -82,8 +82,8 @@ class SpecInfoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ResourceNameButtonRow(
-          spec.name.split("/").sublist(6).join("/"),
-          () {
+          name: spec.name.split("/").sublist(6).join("/"),
+          show: () {
             Navigator.pushNamed(
               context,
               spec.routeNameForDetail(),

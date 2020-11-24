@@ -81,8 +81,8 @@ class ApiInfoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ResourceNameButtonRow(
-          api.name.split("/").sublist(2).join("/"),
-          () {
+          name: api.name.split("/").sublist(2).join("/"),
+          show: () {
             Navigator.pushNamed(
               context,
               api.routeNameForDetail(),
