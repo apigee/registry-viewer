@@ -14,10 +14,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
 import 'info.dart';
+import '../service/registry.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -27,31 +27,46 @@ class SpecDetailCard extends StatefulWidget {
 class _SpecDetailCardState extends State<SpecDetailCard> {
   String specName = "";
   Spec spec;
+  SpecManager manager;
+  VoidCallback listener;
+
+  _SpecDetailCardState() {
+    listener = () {
+      setState(() {
+        this.spec = manager.spec();
+      });
+    };
+  }
+
+  void setSpecName(String name) {
+    if (name == specName) {
+      return;
+    }
+    // forget the old manager
+    manager?.removeListener(listener);
+    manager = null;
+    // set the name
+    specName = name ?? "";
+    // get the new manager
+    manager = RegistryProvider.of(context).getSpecManager(specName);
+    manager.addListener(listener);
+    // get the value from the manager
+    listener();
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).spec.addListener(() => setState(() {
-          specName = SelectionProvider.of(context).spec.value;
-          if (specName == null) {
-            specName = "";
-          }
-          this.spec = null;
-        }));
+    SelectionProvider.of(context).spec.addListener(() {
+      setState(() {
+        setSpecName(SelectionProvider.of(context).spec.value);
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     if (spec == null) {
-      if (specName != "") {
-        // we need to fetch the spec from the API
-        SpecService().getSpec(specName).then((spec) {
-          setState(() {
-            spec.contents = List<int>();
-            this.spec = spec;
-          });
-        });
-      }
       return Card();
     } else {
       return Card(

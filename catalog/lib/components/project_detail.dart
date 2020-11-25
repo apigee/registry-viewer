@@ -18,6 +18,7 @@ import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/project.dart';
 import 'info.dart';
+import '../service/registry.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
@@ -27,30 +28,46 @@ class ProjectDetailCard extends StatefulWidget {
 class _ProjectDetailCardState extends State<ProjectDetailCard> {
   String projectName = "";
   Project project;
+  ProjectManager manager;
+  VoidCallback listener;
+
+  _ProjectDetailCardState() {
+    listener = () {
+      setState(() {
+        this.project = manager.project();
+      });
+    };
+  }
+
+  void setProjectName(String name) {
+    if (name == projectName) {
+      return;
+    }
+    // forget the old manager
+    manager?.removeListener(listener);
+    manager = null;
+    // set the name
+    projectName = name ?? "";
+    // get the new manager
+    manager = RegistryProvider.of(context).getProjectManager(projectName);
+    manager.addListener(listener);
+    // get the value from the manager
+    listener();
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).project.addListener(() => setState(() {
-          projectName = SelectionProvider.of(context).project.value;
-          if (projectName == null) {
-            projectName = "";
-          }
-          this.project = null;
-        }));
+    SelectionProvider.of(context).project.addListener(() {
+      setState(() {
+        setProjectName(SelectionProvider.of(context).project.value);
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     if (project == null) {
-      if (projectName != "") {
-        // we need to fetch the project from the API
-        ProjectService().getProject(projectName).then((project) {
-          setState(() {
-            this.project = project;
-          });
-        });
-      }
       return Card();
     } else {
       return Card(

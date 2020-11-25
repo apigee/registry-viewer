@@ -18,6 +18,7 @@ import 'application.dart';
 import 'routes.dart';
 import 'helpers/theme.dart';
 import 'pages/signin.dart';
+import 'service/registry.dart';
 
 void main() async {
   attemptToSignIn().then((_) {
@@ -32,14 +33,17 @@ void main() async {
 }
 
 class Application extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: applicationName,
-      theme: appTheme(),
-      initialRoute: "/",
-      onGenerateRoute: RegistryRouter().generateRoute,
+    Registry registry = Registry();
+    return RegistryProvider(
+      registry: registry,
+      child: MaterialApp(
+        title: applicationName,
+        theme: appTheme(),
+        initialRoute: "/",
+        onGenerateRoute: RegistryRouter().generateRoute,
+      ),
     );
   }
 }

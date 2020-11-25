@@ -14,10 +14,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
 import 'info.dart';
+import '../service/registry.dart';
 
 // ApiDetailCard is a card that displays details about a api.
 class ApiDetailCard extends StatefulWidget {
@@ -27,30 +27,46 @@ class ApiDetailCard extends StatefulWidget {
 class _ApiDetailCardState extends State<ApiDetailCard> {
   String apiName = "";
   Api api;
+  ApiManager manager;
+  VoidCallback listener;
+
+  _ApiDetailCardState() {
+    listener = () {
+      setState(() {
+        this.api = manager.api();
+      });
+    };
+  }
+
+  void setApiName(String name) {
+    if (name == apiName) {
+      return;
+    }
+    // forget the old manager
+    manager?.removeListener(listener);
+    manager = null;
+    // set the name
+    apiName = name ?? "";
+    // get the new manager
+    manager = RegistryProvider.of(context).getApiManager(apiName);
+    manager.addListener(listener);
+    // get the value from the manager
+    listener();
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).api.addListener(() => setState(() {
-          apiName = SelectionProvider.of(context).api.value;
-          if (apiName == null) {
-            apiName = "";
-          }
-          this.api = null;
-        }));
+    SelectionProvider.of(context).api.addListener(() {
+      setState(() {
+        setApiName(SelectionProvider.of(context).api.value);
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     if (api == null) {
-      if (apiName != "") {
-        // we need to fetch the api from the API
-        ApiService().getApi(apiName).then((api) {
-          setState(() {
-            this.api = api;
-          });
-        });
-      }
       return Card();
     } else {
       return Card(

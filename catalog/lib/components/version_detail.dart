@@ -14,10 +14,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
 import 'info.dart';
+import '../service/registry.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
@@ -27,30 +27,46 @@ class VersionDetailCard extends StatefulWidget {
 class _VersionDetailCardState extends State<VersionDetailCard> {
   String versionName = "";
   Version version;
+  VersionManager manager;
+  VoidCallback listener;
+
+  _VersionDetailCardState() {
+    listener = () {
+      setState(() {
+        this.version = manager.version();
+      });
+    };
+  }
+
+  void setVersionName(String name) {
+    if (name == versionName) {
+      return;
+    }
+    // forget the old manager
+    manager?.removeListener(listener);
+    manager = null;
+    // set the name
+    versionName = name ?? "";
+    // get the new manager
+    manager = RegistryProvider.of(context).getVersionManager(versionName);
+    manager.addListener(listener);
+    // get the value from the manager
+    listener();
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).version.addListener(() => setState(() {
-          versionName = SelectionProvider.of(context).version.value;
-          if (versionName == null) {
-            versionName = "";
-          }
-          this.version = null;
-        }));
+    SelectionProvider.of(context).version.addListener(() {
+      setState(() {
+        setVersionName(SelectionProvider.of(context).version.value);
+      });
+    });
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     if (version == null) {
-      if (versionName != "") {
-        // we need to fetch the version from the API
-        VersionService().getVersion(versionName).then((version) {
-          setState(() {
-            this.version = version;
-          });
-        });
-      }
       return Card();
     } else {
       return Card(
