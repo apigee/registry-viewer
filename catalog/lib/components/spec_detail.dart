@@ -25,31 +25,21 @@ class SpecDetailCard extends StatefulWidget {
 }
 
 class _SpecDetailCardState extends State<SpecDetailCard> {
-  String specName = "";
-  Spec spec;
-  SpecManager manager;
-  VoidCallback listener;
-
-  _SpecDetailCardState() {
-    listener = () {
-      setState(() {
-        this.spec = manager.spec();
-      });
-    };
+  SpecManager specManager;
+  void listener() {
+    setState(() {});
   }
 
   void setSpecName(String name) {
-    if (name == specName) {
+    if (specManager?.name == name) {
       return;
     }
     // forget the old manager
-    manager?.removeListener(listener);
-    manager = null;
-    // set the name
-    specName = name ?? "";
+    specManager?.removeListener(listener);
+    specManager = null;
     // get the new manager
-    manager = RegistryProvider.of(context).getSpecManager(specName);
-    manager.addListener(listener);
+    specManager = RegistryProvider.of(context).getSpecManager(name);
+    specManager.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -66,7 +56,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (spec == null) {
+    if (specManager?.value == null) {
       return Card();
     } else {
       return Card(
@@ -77,7 +67,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: SpecInfoWidget(spec),
+                  child: SpecInfoWidget(specManager.value),
                 ),
               ),
             ],

@@ -79,13 +79,14 @@ class ProjectManager extends ChangeNotifier {
   Future<Project> _future;
 
   void _fetch() {
+    if (name == null) return;
     final client = getClient();
     final request = GetProjectRequest();
     request.name = name;
     try {
       _future = client.getProject(request, options: callOptions());
-      _future.then((Project p) {
-        _value = p;
+      _future.then((Project value) {
+        _value = value;
         _future = null;
         notifyListeners();
       });
@@ -94,7 +95,7 @@ class ProjectManager extends ChangeNotifier {
     }
   }
 
-  Project project() {
+  Project get value {
     if (_value != null) {
       return _value;
     }
@@ -112,13 +113,14 @@ class ApiManager extends ChangeNotifier {
   Future<Api> _future;
 
   void fetch() {
+    if (name == "") return;
     final client = getClient();
     final request = GetApiRequest();
     request.name = name;
     try {
       _future = client.getApi(request, options: callOptions());
-      _future.then((Api a) {
-        _value = a;
+      _future.then((Api value) {
+        _value = value;
         _future = null;
         notifyListeners();
       });
@@ -127,7 +129,7 @@ class ApiManager extends ChangeNotifier {
     }
   }
 
-  Api api() {
+  Api get value {
     if (_value != null) {
       return _value;
     }
@@ -145,13 +147,14 @@ class VersionManager extends ChangeNotifier {
   Future<Version> _future;
 
   void _fetch() {
+    if (name == "") return;
     final client = getClient();
     final request = GetVersionRequest();
     request.name = name;
     try {
       _future = client.getVersion(request, options: callOptions());
-      _future.then((Version v) {
-        _value = v;
+      _future.then((Version value) {
+        _value = value;
         _future = null;
         notifyListeners();
       });
@@ -160,7 +163,7 @@ class VersionManager extends ChangeNotifier {
     }
   }
 
-  Version version() {
+  Version get value {
     if (_value != null) {
       return _value;
     }
@@ -176,15 +179,16 @@ class SpecManager extends ChangeNotifier {
   SpecManager(this.name);
   Spec _value;
   Future<Spec> _future;
-
   void _fetch() {
+    if (name == "") return;
+
     final client = getClient();
     final request = GetSpecRequest();
     request.name = name;
     try {
       _future = client.getSpec(request, options: callOptions());
-      _future.then((Spec s) {
-        _value = s;
+      _future.then((Spec value) {
+        _value = value;
         _future = null;
         notifyListeners();
       });
@@ -193,7 +197,7 @@ class SpecManager extends ChangeNotifier {
     }
   }
 
-  Spec spec() {
+  Spec get value {
     if (_value != null) {
       return _value;
     }

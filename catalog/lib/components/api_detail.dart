@@ -25,31 +25,22 @@ class ApiDetailCard extends StatefulWidget {
 }
 
 class _ApiDetailCardState extends State<ApiDetailCard> {
-  String apiName = "";
-  Api api;
-  ApiManager manager;
-  VoidCallback listener;
+  ApiManager apiManager;
 
-  _ApiDetailCardState() {
-    listener = () {
-      setState(() {
-        this.api = manager.api();
-      });
-    };
+  void listener() {
+    setState(() {});
   }
 
   void setApiName(String name) {
-    if (name == apiName) {
+    if (apiManager?.name == name) {
       return;
     }
     // forget the old manager
-    manager?.removeListener(listener);
-    manager = null;
-    // set the name
-    apiName = name ?? "";
+    apiManager?.removeListener(listener);
+    apiManager = null;
     // get the new manager
-    manager = RegistryProvider.of(context).getApiManager(apiName);
-    manager.addListener(listener);
+    apiManager = RegistryProvider.of(context).getApiManager(name);
+    apiManager.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -66,7 +57,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (api == null) {
+    if (apiManager?.value == null) {
       return Card();
     } else {
       return Card(
@@ -77,7 +68,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: ApiInfoWidget(api),
+                  child: ApiInfoWidget(apiManager.value),
                 ),
               ),
             ],

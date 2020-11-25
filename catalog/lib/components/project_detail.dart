@@ -14,7 +14,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
 import '../models/selection.dart';
 import '../models/project.dart';
 import 'info.dart';
@@ -26,31 +25,21 @@ class ProjectDetailCard extends StatefulWidget {
 }
 
 class _ProjectDetailCardState extends State<ProjectDetailCard> {
-  String projectName = "";
-  Project project;
-  ProjectManager manager;
-  VoidCallback listener;
-
-  _ProjectDetailCardState() {
-    listener = () {
-      setState(() {
-        this.project = manager.project();
-      });
-    };
+  ProjectManager projectManager;
+  void listener() {
+    setState(() {});
   }
 
   void setProjectName(String name) {
-    if (name == projectName) {
+    if (projectManager?.name == name) {
       return;
     }
     // forget the old manager
-    manager?.removeListener(listener);
-    manager = null;
-    // set the name
-    projectName = name ?? "";
+    projectManager?.removeListener(listener);
+    projectManager = null;
     // get the new manager
-    manager = RegistryProvider.of(context).getProjectManager(projectName);
-    manager.addListener(listener);
+    projectManager = RegistryProvider.of(context).getProjectManager(name);
+    projectManager.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -67,7 +56,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (project == null) {
+    if (projectManager?.value == null) {
       return Card();
     } else {
       return Card(
@@ -78,7 +67,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: ProjectInfoWidget(project),
+                  child: ProjectInfoWidget(projectManager.value),
                 ),
               ),
             ],

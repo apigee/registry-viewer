@@ -25,31 +25,21 @@ class VersionDetailCard extends StatefulWidget {
 }
 
 class _VersionDetailCardState extends State<VersionDetailCard> {
-  String versionName = "";
-  Version version;
-  VersionManager manager;
-  VoidCallback listener;
+  VersionManager versionManager;
 
-  _VersionDetailCardState() {
-    listener = () {
-      setState(() {
-        this.version = manager.version();
-      });
-    };
+  void listener() {
+    setState(() {});
   }
 
   void setVersionName(String name) {
-    if (name == versionName) {
+    if (versionManager?.name == name) {
       return;
     }
     // forget the old manager
-    manager?.removeListener(listener);
-    manager = null;
-    // set the name
-    versionName = name ?? "";
-    // get the new manager
-    manager = RegistryProvider.of(context).getVersionManager(versionName);
-    manager.addListener(listener);
+    versionManager?.removeListener(listener);
+    // get a manager for the new name
+    versionManager = RegistryProvider.of(context).getVersionManager(name);
+    versionManager.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -66,7 +56,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (version == null) {
+    if (versionManager?.value == null) {
       return Card();
     } else {
       return Card(
@@ -77,7 +67,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: VersionInfoWidget(version),
+                  child: VersionInfoWidget(versionManager.value),
                 ),
               ),
             ],
