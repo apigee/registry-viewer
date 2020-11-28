@@ -21,6 +21,7 @@ import '../service/registry.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
+  @override
   _SpecDetailCardState createState() => _SpecDetailCardState();
 }
 

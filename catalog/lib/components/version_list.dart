@@ -96,7 +96,7 @@ class _VersionListViewState extends State<VersionListView> {
 
   Widget _itemBuilder(context, Version version, index) {
     if (index == 0) {
-      Future.delayed(const Duration(milliseconds: 0), () {
+      Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.version.value == null) ||

@@ -17,26 +17,38 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/project.dart';
 import '../helpers/title.dart';
+import '../service/registry.dart';
 
 class ProjectDetailPage extends StatefulWidget {
   final String name;
-  final Project project;
-
-  ProjectDetailPage({this.name, this.project});
+  ProjectDetailPage({this.name});
   @override
-  _ProjectDetailPageState createState() =>
-      _ProjectDetailPageState(this.project);
+  _ProjectDetailPageState createState() => _ProjectDetailPageState();
 }
 
 class _ProjectDetailPageState extends State<ProjectDetailPage> {
-  Project project;
+  ProjectManager projectManager;
   List<Property> properties;
 
-  _ProjectDetailPageState(this.project);
+  void listener() {
+    setState(() {});
+  }
+
+  _ProjectDetailPageState();
+
+  @override
+  void didChangeDependencies() {
+    projectManager?.removeListener(listener);
+    projectManager = RegistryProvider.of(context)
+        .getProjectManager(widget.name.substring(1));
+    projectManager.addListener(listener);
+    listener();
+    super.didChangeDependencies();
+  }
 
   String subtitlePropertyText() {
-    if (project.description != null) {
-      return project.description;
+    if (projectManager.value.description != null) {
+      return projectManager.value.description;
     }
     if (properties == null) {
       return "";
@@ -52,14 +64,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
   @override
   Widget build(BuildContext context) {
     final projectName = widget.name.substring(1);
-    if (project == null) {
-      // we need to fetch the project from the API
-      final projectFuture = ProjectService().getProject(projectName);
-      projectFuture.then((project) {
-        setState(() {
-          this.project = project;
-        });
-      });
+    if (projectManager?.value == null) {
       return Scaffold(
         appBar: AppBar(
           title: Text(title(widget.name)),
@@ -98,7 +103,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
-                        title: Text(project.nameForDisplay(),
+                        title: Text(projectManager.value.nameForDisplay(),
                             style: Theme.of(context).textTheme.headline2),
                         subtitle: Text(subtitlePropertyText()),
                       ),
@@ -110,8 +115,8 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                             onPressed: () {
                               Navigator.pushNamed(
                                 context,
-                                project.routeNameForApis(),
-                                arguments: project,
+                                projectManager.value.routeNameForApis(),
+                                arguments: projectManager.value,
                               );
                             },
                           ),

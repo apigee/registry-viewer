@@ -44,6 +44,7 @@ class Registry {
   Map<String, SpecManager> specManagers = Map();
 
   ProjectManager getProjectManager(String name) {
+    Manager.removeUnused(projectManagers);
     if (projectManagers[name] == null) {
       projectManagers[name] = ProjectManager(name);
     }
@@ -51,6 +52,7 @@ class Registry {
   }
 
   ApiManager getApiManager(String name) {
+    Manager.removeUnused(apiManagers);
     if (apiManagers[name] == null) {
       apiManagers[name] = ApiManager(name);
     }
@@ -58,6 +60,7 @@ class Registry {
   }
 
   VersionManager getVersionManager(String name) {
+    Manager.removeUnused(versionManagers);
     if (versionManagers[name] == null) {
       versionManagers[name] = VersionManager(name);
     }
@@ -65,6 +68,7 @@ class Registry {
   }
 
   SpecManager getSpecManager(String name) {
+    Manager.removeUnused(specManagers);
     if (specManagers[name] == null) {
       specManagers[name] = SpecManager(name);
     }
@@ -72,138 +76,94 @@ class Registry {
   }
 }
 
-class ProjectManager extends ChangeNotifier {
+// A Manager is a ChangeNotifier that we use to get and manage a resource.
+// When managers are unused, we delete them.
+class Manager extends ChangeNotifier {
+  bool get isUnused {
+    return !hasListeners;
+  }
+
+  static void removeUnused(Map<String, Manager> managers) {
+    List<String> names = List();
+    managers.forEach((name, m) {
+      if (m.isUnused) {
+        names.add(name);
+      }
+    });
+    names.forEach((name) {
+      managers.remove(name);
+    });
+  }
+}
+
+// A ResourceManager gets and updates a resource of a specific type.
+abstract class ResourceManager<T> extends Manager {
   final String name;
-  ProjectManager(this.name);
-  Project _value;
-  Future<Project> _future;
+  ResourceManager(this.name);
+  T _value;
+  Future<T> _future;
+
+  T get value {
+    if (_value != null) {
+      return _value;
+    }
+    if (_future == null) {
+      _fetch();
+    }
+    return null;
+  }
 
   void _fetch() {
-    if (name == null) return;
+    if (name == "") return;
     final client = getClient();
+    try {
+      _future = fetchFuture(client);
+      _future.then((T value) {
+        _value = value;
+        _future = null;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
+  }
+
+  // fetchFuture must be overridden to return a future for the fetched resource.
+  Future<T> fetchFuture(RegistryClient client);
+}
+
+class ProjectManager extends ResourceManager<Project> {
+  ProjectManager(String name) : super(name);
+  Future<Project> fetchFuture(RegistryClient client) {
     final request = GetProjectRequest();
     request.name = name;
-    try {
-      _future = client.getProject(request, options: callOptions());
-      _future.then((Project value) {
-        _value = value;
-        _future = null;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
-  }
-
-  Project get value {
-    if (_value != null) {
-      return _value;
-    }
-    if (_future == null) {
-      _fetch();
-    }
-    return null;
+    return client.getProject(request, options: callOptions());
   }
 }
 
-class ApiManager extends ChangeNotifier {
-  final String name;
-  ApiManager(this.name);
-  Api _value;
-  Future<Api> _future;
-
-  void fetch() {
-    if (name == "") return;
-    final client = getClient();
+class ApiManager extends ResourceManager<Api> {
+  ApiManager(String name) : super(name);
+  Future<Api> fetchFuture(RegistryClient client) {
     final request = GetApiRequest();
     request.name = name;
-    try {
-      _future = client.getApi(request, options: callOptions());
-      _future.then((Api value) {
-        _value = value;
-        _future = null;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
-  }
-
-  Api get value {
-    if (_value != null) {
-      return _value;
-    }
-    if (_future == null) {
-      fetch();
-    }
-    return null;
+    return client.getApi(request, options: callOptions());
   }
 }
 
-class VersionManager extends ChangeNotifier {
-  final String name;
-  VersionManager(this.name);
-  Version _value;
-  Future<Version> _future;
-
-  void _fetch() {
-    if (name == "") return;
-    final client = getClient();
+class VersionManager extends ResourceManager<Version> {
+  VersionManager(String name) : super(name);
+  Future<Version> fetchFuture(RegistryClient client) {
     final request = GetVersionRequest();
     request.name = name;
-    try {
-      _future = client.getVersion(request, options: callOptions());
-      _future.then((Version value) {
-        _value = value;
-        _future = null;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
-  }
-
-  Version get value {
-    if (_value != null) {
-      return _value;
-    }
-    if (_future == null) {
-      _fetch();
-    }
-    return null;
+    return client.getVersion(request, options: callOptions());
   }
 }
 
-class SpecManager extends ChangeNotifier {
-  final String name;
-  SpecManager(this.name);
-  Spec _value;
-  Future<Spec> _future;
-  void _fetch() {
-    if (name == "") return;
-
-    final client = getClient();
+class SpecManager extends ResourceManager<Spec> {
+  SpecManager(String name) : super(name);
+  Future<Spec> fetchFuture(RegistryClient client) {
     final request = GetSpecRequest();
     request.name = name;
-    try {
-      _future = client.getSpec(request, options: callOptions());
-      _future.then((Spec value) {
-        _value = value;
-        _future = null;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
-  }
-
-  Spec get value {
-    if (_value != null) {
-      return _value;
-    }
-    if (_future == null) {
-      _fetch();
-    }
-    return null;
+    return client.getSpec(request, options: callOptions());
   }
 }

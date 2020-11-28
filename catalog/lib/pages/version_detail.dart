@@ -13,97 +13,36 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
-import '../models/version.dart';
 import '../helpers/title.dart';
+import '../models/selection.dart';
+import '../components/version_name.dart';
+import '../components/version_detail.dart';
 
-class VersionDetailPage extends StatefulWidget {
+class VersionDetailPage extends StatelessWidget {
   final String name;
-  final Version version;
-  VersionDetailPage({this.name, this.version});
-  @override
-  _VersionDetailPageState createState() =>
-      _VersionDetailPageState(this.version);
-}
-
-class _VersionDetailPageState extends State<VersionDetailPage> {
-  Version version;
-  List<Property> properties;
-
-  _VersionDetailPageState(this.version);
+  VersionDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {
-    final versionName = widget.name.substring(1);
-    if (version == null) {
-      // we need to fetch the version from the API
-      final versionFuture = VersionService().getVersion(versionName);
-      versionFuture.then((version) {
-        setState(() {
-          this.version = version;
-        });
-      });
-      return Scaffold(
+    final Selection selection = Selection();
+    Future.delayed(const Duration(), () {
+      selection.updateVersion(name.substring(1));
+    });
+    return SelectionProvider(
+      selection: selection,
+      child: Scaffold(
         appBar: AppBar(
           title: Text(
-            title(widget.name),
+            title(name),
           ),
         ),
-        body: Text("loading..."),
-      );
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title(widget.name),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Row(children: [versionCard(context, version)]),
-            ],
+        body: Column(children: [
+          VersionNameCard(),
+          Expanded(
+            child: VersionDetailCard(),
           ),
-        ),
+        ]),
       ),
     );
   }
-}
-
-Expanded versionCard(BuildContext context, Version version) {
-  return Expanded(
-    child: Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.album),
-            title: Text(version.name,
-                style: Theme.of(context).textTheme.headline5),
-            subtitle: Text("$version"),
-          ),
-          ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: const Text('SPECS'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    version.routeNameForSpecs(),
-                    arguments: version,
-                  );
-                },
-              ),
-              FlatButton(
-                child: const Text('MORE'),
-                onPressed: () {/* ... */},
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
 }

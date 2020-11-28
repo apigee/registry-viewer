@@ -96,7 +96,7 @@ class _SpecListViewState extends State<SpecListView> {
 
   Widget _itemBuilder(context, Spec spec, index) {
     if (index == 0) {
-      Future.delayed(const Duration(milliseconds: 0), () {
+      Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.spec.value == null) || (selection.spec.value == ""))) {

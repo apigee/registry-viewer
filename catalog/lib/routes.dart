@@ -137,7 +137,6 @@ MaterialPageRoute projectPage(RouteSettings settings) {
     builder: (context) {
       return ProjectDetailPage(
         name: settings.name,
-        project: settings.arguments,
       );
     },
   );
@@ -181,7 +180,6 @@ MaterialPageRoute versionPage(RouteSettings settings) {
       builder: (context) {
         return VersionDetailPage(
           name: settings.name,
-          version: settings.arguments,
         );
       });
 }
@@ -203,7 +201,6 @@ MaterialPageRoute specPage(RouteSettings settings) {
       builder: (context) {
         return SpecDetailPage(
           name: settings.name,
-          spec: settings.arguments,
         );
       });
 }

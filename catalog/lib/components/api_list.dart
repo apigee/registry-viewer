@@ -96,7 +96,7 @@ class _ApiListViewState extends State<ApiListView> {
 
   Widget _itemBuilder(context, Api api, index) {
     if (index == 0) {
-      Future.delayed(const Duration(milliseconds: 0), () {
+      Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.api.value == null) || (selection.api.value == ""))) {

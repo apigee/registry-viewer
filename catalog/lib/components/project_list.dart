@@ -89,7 +89,7 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   Widget _itemBuilder(context, Project project, index) {
     if (index == 0) {
-      Future.delayed(const Duration(milliseconds: 0), () {
+      Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.project.value == null) ||
