@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
+import '../generated/google/protobuf/field_mask.pb.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
 
@@ -147,6 +148,24 @@ class ApiManager extends ResourceManager<Api> {
     final request = GetApiRequest();
     request.name = name;
     return client.getApi(request, options: callOptions());
+  }
+
+  void update(Api newValue, List<String> paths) {
+    final client = getClient();
+    final request = UpdateApiRequest();
+    request.api = newValue;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    try {
+      client.updateApi(request, options: callOptions()).then((value) {
+        _value = value;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
   }
 }
 

@@ -159,7 +159,6 @@ MaterialPageRoute apiPage(RouteSettings settings) {
       builder: (context) {
         return ApiDetailPage(
           name: settings.name,
-          api: settings.arguments,
         );
       });
 }

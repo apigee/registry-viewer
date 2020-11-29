@@ -18,6 +18,7 @@ import '../models/selection.dart';
 import '../models/api.dart';
 import 'info.dart';
 import '../service/registry.dart';
+import '../components/api_edit.dart';
 
 // ApiDetailCard is a card that displays details about a api.
 class ApiDetailCard extends StatefulWidget {
@@ -56,6 +57,12 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
   }
 
   @override
+  void dispose() {
+    apiManager?.removeListener(listener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (apiManager?.value == null) {
       return Card();
@@ -88,15 +95,27 @@ class ApiInfoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ResourceNameButtonRow(
-          name: api.name.split("/").sublist(2).join("/"),
-          show: () {
-            Navigator.pushNamed(
-              context,
-              api.routeNameForDetail(),
-              arguments: api,
-            );
-          },
-        ),
+            name: api.name.split("/").sublist(2).join("/"),
+            show: () {
+              Navigator.pushNamed(
+                context,
+                api.routeNameForDetail(),
+                arguments: api,
+              );
+            },
+            edit: () {
+              final selection = SelectionProvider.of(context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SelectionProvider(
+                      selection: selection,
+                      child: AlertDialog(
+                        content: EditAPIForm(),
+                      ),
+                    );
+                  });
+            }),
         SizedBox(height: 10),
         TitleRow(api.displayName),
         SizedBox(height: 10),
