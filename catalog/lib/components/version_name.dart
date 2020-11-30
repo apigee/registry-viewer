@@ -93,10 +93,6 @@ class _VersionNameCardState extends State<VersionNameCard> {
                     );
                   },
                 ),
-                FlatButton(
-                  child: const Text('MORE'),
-                  onPressed: () {/* ... */},
-                ),
               ],
             ),
           ],

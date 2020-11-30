@@ -15,8 +15,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'helpers/extensions.dart';
-
 import 'pages/project_list.dart';
 import 'pages/project_detail.dart';
 import 'pages/api_list.dart';

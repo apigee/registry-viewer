@@ -85,17 +85,13 @@ class _ProjectNameCardState extends State<ProjectNameCard> {
                   },
                 ),
                 FlatButton(
-                  child: const Text('VERSIONS'),
+                  child: const Text('APIs'),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
                       projectManager.value.routeNameForApis(),
                     );
                   },
-                ),
-                FlatButton(
-                  child: const Text('MORE'),
-                  onPressed: () {/* ... */},
                 ),
               ],
             ),

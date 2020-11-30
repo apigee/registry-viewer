@@ -93,10 +93,6 @@ class _ApiNameCardState extends State<ApiNameCard> {
                     );
                   },
                 ),
-                FlatButton(
-                  child: const Text('MORE'),
-                  onPressed: () {/* ... */},
-                ),
               ],
             ),
           ],

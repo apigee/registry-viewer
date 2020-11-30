@@ -82,10 +82,6 @@ class _SpecNameCardState extends State<SpecNameCard> {
                         });
                   },
                 ),
-                FlatButton(
-                  child: const Text('MORE'),
-                  onPressed: () {/* ... */},
-                ),
               ],
             ),
           ],
