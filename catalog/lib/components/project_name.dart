@@ -15,38 +15,38 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
-import '../models/version.dart';
-import '../components/version_edit.dart';
+import '../models/project.dart';
+import '../components/project_edit.dart';
 
-class VersionNameCard extends StatefulWidget {
+class ProjectNameCard extends StatefulWidget {
   @override
-  _VersionNameCardState createState() => _VersionNameCardState();
+  _ProjectNameCardState createState() => _ProjectNameCardState();
 }
 
-class _VersionNameCardState extends State<VersionNameCard> {
-  VersionManager versionManager;
+class _ProjectNameCardState extends State<ProjectNameCard> {
+  ProjectManager projectManager;
   void listener() {
     setState(() {});
   }
 
-  void setVersionName(String name) {
-    if (versionManager?.name == name) {
+  void setProjectName(String name) {
+    if (projectManager?.name == name) {
       return;
     }
     // forget the old manager
-    versionManager?.removeListener(listener);
+    projectManager?.removeListener(listener);
     // get the new manager
-    versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(listener);
+    projectManager = RegistryProvider.of(context).getProjectManager(name);
+    projectManager.addListener(listener);
     // get the value from the manager
     listener();
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(() {
+    SelectionProvider.of(context).projectName.addListener(() {
       setState(() {
-        setVersionName(SelectionProvider.of(context).versionName.value);
+        setProjectName(SelectionProvider.of(context).projectName.value);
       });
     });
     super.didChangeDependencies();
@@ -54,7 +54,7 @@ class _VersionNameCardState extends State<VersionNameCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (versionManager?.value == null) {
+    if (projectManager?.value == null) {
       return Card();
     } else {
       return Card(
@@ -62,9 +62,9 @@ class _VersionNameCardState extends State<VersionNameCard> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text(versionManager.value.name,
+              title: Text(projectManager.value.name,
                   style: Theme.of(context).textTheme.headline5),
-              subtitle: Text("${versionManager.value}"),
+              subtitle: Text("${projectManager.value}"),
             ),
             ButtonBar(
               children: <Widget>[
@@ -78,18 +78,18 @@ class _VersionNameCardState extends State<VersionNameCard> {
                           return SelectionProvider(
                             selection: selection,
                             child: AlertDialog(
-                              content: EditVersionForm(),
+                              content: EditProjectForm(),
                             ),
                           );
                         });
                   },
                 ),
                 FlatButton(
-                  child: const Text('SPECS'),
+                  child: const Text('VERSIONS'),
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
-                      versionManager.value.routeNameForSpecs(),
+                      projectManager.value.routeNameForApis(),
                     );
                   },
                 ),

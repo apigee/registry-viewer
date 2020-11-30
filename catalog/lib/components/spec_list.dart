@@ -66,7 +66,9 @@ class _SpecListViewState extends State<SpecListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).version.addListener(() => setState(() {}));
+    SelectionProvider.of(context)
+        .versionName
+        .addListener(() => setState(() {}));
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
@@ -82,8 +84,8 @@ class _SpecListViewState extends State<SpecListView> {
   Widget build(BuildContext context) {
     specService.context = context;
     if (specService.versionName !=
-        SelectionProvider.of(context).version.value) {
-      specService.versionName = SelectionProvider.of(context).version.value;
+        SelectionProvider.of(context).versionName.value) {
+      specService.versionName = SelectionProvider.of(context).versionName.value;
       pageLoadController.reset();
       selectedIndex = -1;
     }

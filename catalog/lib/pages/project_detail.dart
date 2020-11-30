@@ -13,121 +13,77 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
-import '../models/project.dart';
 import '../helpers/title.dart';
-import '../service/registry.dart';
+import '../models/selection.dart';
+import '../components/project_name.dart';
+import '../components/project_detail.dart';
+import '../components/api_list.dart';
+import '../components/api_detail.dart';
+import '../components/version_list.dart';
+import '../components/version_detail.dart';
+import '../components/spec_list.dart';
+import '../components/spec_detail.dart';
 
-class ProjectDetailPage extends StatefulWidget {
+class ProjectDetailPage extends StatelessWidget {
   final String name;
   ProjectDetailPage({this.name});
-  @override
-  _ProjectDetailPageState createState() => _ProjectDetailPageState();
-}
-
-class _ProjectDetailPageState extends State<ProjectDetailPage> {
-  ProjectManager projectManager;
-  List<Property> properties;
-
-  void listener() {
-    setState(() {});
-  }
-
-  _ProjectDetailPageState();
-
-  @override
-  void didChangeDependencies() {
-    projectManager?.removeListener(listener);
-    projectManager = RegistryProvider.of(context)
-        .getProjectManager(widget.name.substring(1));
-    projectManager.addListener(listener);
-    listener();
-    super.didChangeDependencies();
-  }
-
-  String subtitlePropertyText() {
-    if (projectManager.value.description != null) {
-      return projectManager.value.description;
-    }
-    if (properties == null) {
-      return "";
-    }
-    for (var property in properties) {
-      if (property.relation == "subtitle") {
-        return property.stringValue;
-      }
-    }
-    return "";
-  }
 
   @override
   Widget build(BuildContext context) {
-    final projectName = widget.name.substring(1);
-    if (projectManager?.value == null) {
-      return Scaffold(
+    final Selection selection = Selection();
+    Future.delayed(const Duration(), () {
+      selection.updateProjectName(name.substring(1));
+    });
+
+    return SelectionProvider(
+      selection: selection,
+      child: Scaffold(
         appBar: AppBar(
-          title: Text(title(widget.name)),
-        ),
-        body: Text("loading..."),
-      );
-    }
-
-    if (properties == null) {
-      // fetch the properties
-      final propertiesFuture =
-          PropertiesService.listProperties(projectName, subject: projectName);
-      propertiesFuture.then((properties) {
-        setState(() {
-          this.properties = properties.properties;
-        });
-      });
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title(widget.name)),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                //color:Colors.yellow,
-                ),
-            margin: EdgeInsets.fromLTRB(40, 20, 40, 0),
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: Column(
-              children: [
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(projectManager.value.nameForDisplay(),
-                            style: Theme.of(context).textTheme.headline2),
-                        subtitle: Text(subtitlePropertyText()),
-                      ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('APIs',
-                                semanticsLabel: "APIs BUTTON"),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                projectManager.value.routeNameForApis(),
-                                arguments: projectManager.value,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          title: Text(
+            title(name),
           ),
+        ),
+        body: Column(
+          children: [
+            ProjectNameCard(),
+            Expanded(
+              child: Row(children: [
+                Expanded(
+                  child: SizedBox.expand(child: ApiListCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: ApiDetailCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: VersionListCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: VersionDetailCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: SpecListCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: SpecDetailCard()),
+                ),
+              ]),
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox.expand(child: ProjectDetailCard()),
+                  ),
+                  Expanded(
+                    child: SizedBox.expand(child: ProjectDetailCard()),
+                  ),
+                  Expanded(
+                    child: SizedBox.expand(child: ProjectDetailCard()),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -18,24 +18,24 @@ import 'observable.dart';
 class Selection extends ChangeNotifier {
   ObservableString projectName = ObservableString();
   ObservableString apiName = ObservableString();
-  ObservableString version = ObservableString();
+  ObservableString versionName = ObservableString();
   ObservableString specName = ObservableString();
 
   void updateProjectName(String project) {
     this.projectName.update(project);
     this.apiName.update("");
-    this.version.update("");
+    this.versionName.update("");
     this.specName.update("");
   }
 
   void updateApiName(String api) {
     this.apiName.update(api);
-    this.version.update("");
+    this.versionName.update("");
     this.specName.update("");
   }
 
   void updateVersionName(String version) {
-    this.version.update(version);
+    this.versionName.update(version);
     this.specName.update("");
   }
 

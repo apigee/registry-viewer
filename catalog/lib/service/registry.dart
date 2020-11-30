@@ -140,6 +140,24 @@ class ProjectManager extends ResourceManager<Project> {
     request.name = name;
     return client.getProject(request, options: callOptions());
   }
+
+  void update(Project newValue, List<String> paths) {
+    final client = getClient();
+    final request = UpdateProjectRequest();
+    request.project = newValue;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    try {
+      client.updateProject(request, options: callOptions()).then((value) {
+        _value = value;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
+  }
 }
 
 class ApiManager extends ResourceManager<Api> {
@@ -176,6 +194,24 @@ class VersionManager extends ResourceManager<Version> {
     request.name = name;
     return client.getVersion(request, options: callOptions());
   }
+
+  void update(Version newValue, List<String> paths) {
+    final client = getClient();
+    final request = UpdateVersionRequest();
+    request.version = newValue;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    try {
+      client.updateVersion(request, options: callOptions()).then((value) {
+        _value = value;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
+  }
 }
 
 class SpecManager extends ResourceManager<Spec> {
@@ -184,5 +220,23 @@ class SpecManager extends ResourceManager<Spec> {
     final request = GetSpecRequest();
     request.name = name;
     return client.getSpec(request, options: callOptions());
+  }
+
+  void update(Spec newValue, List<String> paths) {
+    final client = getClient();
+    final request = UpdateSpecRequest();
+    request.spec = newValue;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    try {
+      client.updateSpec(request, options: callOptions()).then((value) {
+        _value = value;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
   }
 }

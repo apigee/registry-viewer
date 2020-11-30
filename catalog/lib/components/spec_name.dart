@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../components/spec_edit.dart';
 
 class SpecNameCard extends StatefulWidget {
   @override
@@ -62,6 +63,30 @@ class _SpecNameCardState extends State<SpecNameCard> {
             ListTile(
               title: Text(specManager.value.name,
                   style: Theme.of(context).textTheme.headline5),
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('EDIT'),
+                  onPressed: () {
+                    final selection = SelectionProvider.of(context);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SelectionProvider(
+                            selection: selection,
+                            child: AlertDialog(
+                              content: EditSpecForm(),
+                            ),
+                          );
+                        });
+                  },
+                ),
+                FlatButton(
+                  child: const Text('MORE'),
+                  onPressed: () {/* ... */},
+                ),
+              ],
             ),
           ],
         ),

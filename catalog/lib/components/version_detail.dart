@@ -18,6 +18,7 @@ import '../models/selection.dart';
 import '../models/version.dart';
 import 'detail_rows.dart';
 import '../service/registry.dart';
+import '../components/version_edit.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
@@ -46,9 +47,9 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).version.addListener(() {
+    SelectionProvider.of(context).versionName.addListener(() {
       setState(() {
-        setVersionName(SelectionProvider.of(context).version.value);
+        setVersionName(SelectionProvider.of(context).versionName.value);
       });
     });
     super.didChangeDependencies();
@@ -94,6 +95,19 @@ class VersionInfoWidget extends StatelessWidget {
               version.routeNameForDetail(),
               arguments: version,
             );
+          },
+          edit: () {
+            final selection = SelectionProvider.of(context);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return SelectionProvider(
+                    selection: selection,
+                    child: AlertDialog(
+                      content: EditVersionForm(),
+                    ),
+                  );
+                });
           },
         ),
         SizedBox(height: 10),

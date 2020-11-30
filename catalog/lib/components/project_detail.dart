@@ -18,6 +18,7 @@ import '../models/selection.dart';
 import '../models/project.dart';
 import 'detail_rows.dart';
 import '../service/registry.dart';
+import '../components/project_edit.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
@@ -86,15 +87,27 @@ class ProjectInfoWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ResourceNameButtonRow(
-          name: project.name,
-          show: () {
-            Navigator.pushNamed(
-              context,
-              project.routeNameForDetail(),
-              arguments: project,
-            );
-          },
-        ),
+            name: project.name,
+            show: () {
+              Navigator.pushNamed(
+                context,
+                project.routeNameForDetail(),
+                arguments: project,
+              );
+            },
+            edit: () {
+              final selection = SelectionProvider.of(context);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SelectionProvider(
+                      selection: selection,
+                      child: AlertDialog(
+                        content: EditProjectForm(),
+                      ),
+                    );
+                  });
+            }),
         SizedBox(height: 10),
         TitleRow(project.displayName),
         SizedBox(height: 10),

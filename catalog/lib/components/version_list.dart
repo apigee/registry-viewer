@@ -100,8 +100,8 @@ class _VersionListViewState extends State<VersionListView> {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
-            ((selection.version.value == null) ||
-                (selection.version.value == ""))) {
+            ((selection.versionName.value == null) ||
+                (selection.versionName.value == ""))) {
           selection.updateVersionName(version.name);
           setState(() {
             selectedIndex = 0;

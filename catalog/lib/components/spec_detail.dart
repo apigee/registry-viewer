@@ -18,6 +18,7 @@ import '../models/selection.dart';
 import '../models/spec.dart';
 import 'detail_rows.dart';
 import '../service/registry.dart';
+import '../components/spec_edit.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -94,6 +95,19 @@ class SpecInfoWidget extends StatelessWidget {
               spec.routeNameForDetail(),
               arguments: spec,
             );
+          },
+          edit: () {
+            final selection = SelectionProvider.of(context);
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return SelectionProvider(
+                    selection: selection,
+                    child: AlertDialog(
+                      content: EditSpecForm(),
+                    ),
+                  );
+                });
           },
         ),
         SizedBox(height: 10),

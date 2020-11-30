@@ -39,7 +39,7 @@ class SpecListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.version.update(versionName);
+    selectionModel.versionName.update(versionName);
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(
