@@ -14,8 +14,9 @@
 
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
-import '../components/logout.dart';
+import '../components/logout_button.dart';
 import '../components/version_list.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
 
@@ -38,7 +39,7 @@ class VersionListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.api.update(apiName);
+    selectionModel.apiName.update(apiName);
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(

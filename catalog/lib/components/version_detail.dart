@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
-import 'info.dart';
+import 'detail_rows.dart';
 import '../service/registry.dart';
 
 // VersionDetailCard is a card that displays details about a version.

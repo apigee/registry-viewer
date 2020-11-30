@@ -30,7 +30,7 @@ class ApiDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Selection selection = Selection();
     Future.delayed(const Duration(), () {
-      selection.updateApi(name.substring(1));
+      selection.updateApiName(name.substring(1));
     });
 
     return SelectionProvider(

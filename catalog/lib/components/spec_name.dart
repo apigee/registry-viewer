@@ -33,7 +33,6 @@ class _SpecNameCardState extends State<SpecNameCard> {
     }
     // forget the old manager
     specManager?.removeListener(listener);
-    specManager = null;
     // get the new manager
     specManager = RegistryProvider.of(context).getSpecManager(name);
     specManager.addListener(listener);
@@ -43,9 +42,9 @@ class _SpecNameCardState extends State<SpecNameCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).spec.addListener(() {
+    SelectionProvider.of(context).specName.addListener(() {
       setState(() {
-        setSpecName(SelectionProvider.of(context).spec.value);
+        setSpecName(SelectionProvider.of(context).specName.value);
       });
     });
     super.didChangeDependencies();

@@ -17,6 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/spec.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -99,8 +100,9 @@ class _SpecListViewState extends State<SpecListView> {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
-            ((selection.spec.value == null) || (selection.spec.value == ""))) {
-          selection.updateSpec(spec.name);
+            ((selection.specName.value == null) ||
+                (selection.specName.value == ""))) {
+          selection.updateSpecName(spec.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -118,7 +120,7 @@ class _SpecListViewState extends State<SpecListView> {
           selectedIndex = index;
         });
         Selection selection = SelectionProvider.of(context);
-        selection?.updateSpec(spec.name);
+        selection?.updateSpecName(spec.name);
         widget.selectionHandler?.call(context, spec);
       },
     );

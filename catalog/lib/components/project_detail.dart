@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/project.dart';
-import 'info.dart';
+import 'detail_rows.dart';
 import '../service/registry.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
@@ -36,7 +36,6 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     }
     // forget the old manager
     projectManager?.removeListener(listener);
-    projectManager = null;
     // get the new manager
     projectManager = RegistryProvider.of(context).getProjectManager(name);
     projectManager.addListener(listener);
@@ -46,9 +45,9 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).project.addListener(() {
+    SelectionProvider.of(context).projectName.addListener(() {
       setState(() {
-        setProjectName(SelectionProvider.of(context).project.value);
+        setProjectName(SelectionProvider.of(context).projectName.value);
       });
     });
     super.didChangeDependencies();

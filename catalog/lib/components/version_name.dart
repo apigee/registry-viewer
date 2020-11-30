@@ -34,7 +34,6 @@ class _VersionNameCardState extends State<VersionNameCard> {
     }
     // forget the old manager
     versionManager?.removeListener(listener);
-    versionManager = null;
     // get the new manager
     versionManager = RegistryProvider.of(context).getVersionManager(name);
     versionManager.addListener(listener);
@@ -44,7 +43,7 @@ class _VersionNameCardState extends State<VersionNameCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).spec.addListener(() {
+    SelectionProvider.of(context).specName.addListener(() {
       setState(() {
         setVersionName(SelectionProvider.of(context).version.value);
       });

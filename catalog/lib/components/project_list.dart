@@ -17,6 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/project.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -92,9 +93,9 @@ class _ProjectListViewState extends State<ProjectListView> {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
-            ((selection.project.value == null) ||
-                (selection.project.value == ""))) {
-          selection.updateProject(project.name);
+            ((selection.projectName.value == null) ||
+                (selection.projectName.value == ""))) {
+          selection.updateProjectName(project.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -112,7 +113,7 @@ class _ProjectListViewState extends State<ProjectListView> {
             selectedIndex = index;
           });
           Selection selection = SelectionProvider.of(context);
-          selection?.updateProject(project.name);
+          selection?.updateProjectName(project.name);
           widget.selectionHandler?.call(context, project);
         });
   }

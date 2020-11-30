@@ -42,8 +42,8 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).spec.addListener(() => setState(() {
-          specName = SelectionProvider.of(context).spec.value;
+    SelectionProvider.of(context).specName.addListener(() => setState(() {
+          specName = SelectionProvider.of(context).specName.value;
           if (specName == null) {
             specName = "";
           }

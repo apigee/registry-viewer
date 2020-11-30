@@ -17,6 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/version.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -66,7 +67,7 @@ class _VersionListViewState extends State<VersionListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).api.addListener(() => setState(() {}));
+    SelectionProvider.of(context).apiName.addListener(() => setState(() {}));
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
@@ -81,8 +82,8 @@ class _VersionListViewState extends State<VersionListView> {
   @override
   Widget build(BuildContext context) {
     versionService.context = context;
-    if (versionService.apiName != SelectionProvider.of(context).api.value) {
-      versionService.apiName = SelectionProvider.of(context).api.value;
+    if (versionService.apiName != SelectionProvider.of(context).apiName.value) {
+      versionService.apiName = SelectionProvider.of(context).apiName.value;
       pageLoadController.reset();
       selectedIndex = -1;
     }
@@ -101,7 +102,7 @@ class _VersionListViewState extends State<VersionListView> {
         if ((selection != null) &&
             ((selection.version.value == null) ||
                 (selection.version.value == ""))) {
-          selection.updateVersion(version.name);
+          selection.updateVersionName(version.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -119,7 +120,7 @@ class _VersionListViewState extends State<VersionListView> {
           selectedIndex = index;
         });
         Selection selection = SelectionProvider.of(context);
-        selection?.updateVersion(version.name);
+        selection?.updateVersionName(version.name);
         widget.selectionHandler?.call(context, version);
       },
     );

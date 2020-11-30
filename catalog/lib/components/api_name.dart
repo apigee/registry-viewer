@@ -35,7 +35,6 @@ class _ApiNameCardState extends State<ApiNameCard> {
     }
     // forget the old manager
     apiManager?.removeListener(listener);
-    apiManager = null;
     // get the new manager
     apiManager = RegistryProvider.of(context).getApiManager(name);
     apiManager.addListener(listener);
@@ -45,9 +44,9 @@ class _ApiNameCardState extends State<ApiNameCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).api.addListener(() {
+    SelectionProvider.of(context).apiName.addListener(() {
       setState(() {
-        setApiName(SelectionProvider.of(context).api.value);
+        setApiName(SelectionProvider.of(context).apiName.value);
       });
     });
     super.didChangeDependencies();

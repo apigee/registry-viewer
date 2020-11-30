@@ -14,8 +14,9 @@
 
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
-import '../components/logout.dart';
+import '../components/logout_button.dart';
 import '../components/project_list.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/project.dart';
 

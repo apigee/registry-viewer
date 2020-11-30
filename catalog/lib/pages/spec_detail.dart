@@ -28,7 +28,7 @@ class SpecDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Selection selection = Selection();
     Future.delayed(const Duration(), () {
-      selection.updateSpec(name.substring(1));
+      selection.updateSpecName(name.substring(1));
     });
     return SelectionProvider(
       selection: selection,

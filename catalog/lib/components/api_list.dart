@@ -17,6 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/api.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -66,7 +67,9 @@ class _ApiListViewState extends State<ApiListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).project.addListener(() => setState(() {}));
+    SelectionProvider.of(context)
+        .projectName
+        .addListener(() => setState(() {}));
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
@@ -81,8 +84,9 @@ class _ApiListViewState extends State<ApiListView> {
   @override
   Widget build(BuildContext context) {
     apiService.context = context;
-    if (apiService.projectName != SelectionProvider.of(context).project.value) {
-      apiService.projectName = SelectionProvider.of(context).project.value;
+    if (apiService.projectName !=
+        SelectionProvider.of(context).projectName.value) {
+      apiService.projectName = SelectionProvider.of(context).projectName.value;
       pageLoadController.reset();
       selectedIndex = -1;
     }
@@ -99,8 +103,9 @@ class _ApiListViewState extends State<ApiListView> {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
-            ((selection.api.value == null) || (selection.api.value == ""))) {
-          selection.updateApi(api.name);
+            ((selection.apiName.value == null) ||
+                (selection.apiName.value == ""))) {
+          selection.updateApiName(api.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -118,7 +123,7 @@ class _ApiListViewState extends State<ApiListView> {
           selectedIndex = index;
         });
         Selection selection = SelectionProvider.of(context);
-        selection?.updateApi(api.name);
+        selection?.updateApiName(api.name);
         widget.selectionHandler?.call(context, api);
       },
     );

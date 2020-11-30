@@ -33,26 +33,24 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   void nameChangeListener() {
     setState(() {
-      setApiName(SelectionProvider.of(context).api.value);
+      setApiName(SelectionProvider.of(context).apiName.value);
     });
   }
 
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).api.addListener(nameChangeListener);
+    SelectionProvider.of(context).apiName.addListener(nameChangeListener);
     super.didChangeDependencies();
-    setApiName(SelectionProvider.of(context)?.api?.value);
+    setApiName(SelectionProvider.of(context)?.apiName?.value);
   }
 
   void setApiName(String name) {
-    print("setting API to name $name");
     if (apiManager?.name == name) {
       return;
     }
     // forget the old manager
     apiManager?.removeListener(listener);
-    apiManager = null;
     // get the new manager
     apiManager = RegistryProvider.of(context).getApiManager(name);
     apiManager.addListener(listener);
@@ -72,7 +70,7 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   @override
   void dispose() {
-    selection?.api?.removeListener(nameChangeListener);
+    selection?.apiName?.removeListener(nameChangeListener);
     apiManager?.removeListener(listener);
     displayNameController.dispose();
     descriptionController.dispose();

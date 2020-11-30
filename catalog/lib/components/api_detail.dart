@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
-import 'info.dart';
+import 'detail_rows.dart';
 import '../service/registry.dart';
 import '../components/api_edit.dart';
 
@@ -38,7 +38,6 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     }
     // forget the old manager
     apiManager?.removeListener(listener);
-    apiManager = null;
     // get the new manager
     apiManager = RegistryProvider.of(context).getApiManager(name);
     apiManager.addListener(listener);
@@ -48,9 +47,9 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).api.addListener(() {
+    SelectionProvider.of(context).apiName.addListener(() {
       setState(() {
-        setApiName(SelectionProvider.of(context).api.value);
+        setApiName(SelectionProvider.of(context).apiName.value);
       });
     });
     super.didChangeDependencies();

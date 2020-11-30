@@ -13,61 +13,34 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-
-class ObservableString extends ChangeNotifier {
-  String value;
-  void update(String value) {
-    if (this.value != value) {
-      this.value = value;
-      notifyListeners();
-    }
-  }
-}
-
-class ObservableStringProvider extends InheritedWidget {
-  final ObservableString observable;
-
-  const ObservableStringProvider(
-      {Key key, @required this.observable, @required Widget child})
-      : assert(observable != null),
-        assert(child != null),
-        super(key: key, child: child);
-
-  static ObservableString of(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<ObservableStringProvider>()
-      ?.observable;
-
-  @override
-  bool updateShouldNotify(ObservableStringProvider oldWidget) =>
-      observable != oldWidget.observable;
-}
+import 'observable.dart';
 
 class Selection extends ChangeNotifier {
-  ObservableString project = ObservableString();
-  ObservableString api = ObservableString();
+  ObservableString projectName = ObservableString();
+  ObservableString apiName = ObservableString();
   ObservableString version = ObservableString();
-  ObservableString spec = ObservableString();
+  ObservableString specName = ObservableString();
 
-  void updateProject(String project) {
-    this.project.update(project);
-    this.api.update("");
+  void updateProjectName(String project) {
+    this.projectName.update(project);
+    this.apiName.update("");
     this.version.update("");
-    this.spec.update("");
+    this.specName.update("");
   }
 
-  void updateApi(String api) {
-    this.api.update(api);
+  void updateApiName(String api) {
+    this.apiName.update(api);
     this.version.update("");
-    this.spec.update("");
+    this.specName.update("");
   }
 
-  void updateVersion(String version) {
+  void updateVersionName(String version) {
     this.version.update(version);
-    this.spec.update("");
+    this.specName.update("");
   }
 
-  void updateSpec(String spec) {
-    this.spec.update(spec);
+  void updateSpecName(String spec) {
+    this.specName.update(spec);
   }
 }
 

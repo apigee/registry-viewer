@@ -15,7 +15,8 @@
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
-import '../components/logout.dart';
+import '../components/logout_button.dart';
+import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
 
@@ -37,7 +38,7 @@ class ApiListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.project.update(projectName);
+    selectionModel.projectName.update(projectName);
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(

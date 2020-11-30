@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
-import 'info.dart';
+import 'detail_rows.dart';
 import '../service/registry.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
@@ -37,7 +37,6 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     }
     // forget the old manager
     specManager?.removeListener(listener);
-    specManager = null;
     // get the new manager
     specManager = RegistryProvider.of(context).getSpecManager(name);
     specManager.addListener(listener);
@@ -47,9 +46,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).spec.addListener(() {
+    SelectionProvider.of(context).specName.addListener(() {
       setState(() {
-        setSpecName(SelectionProvider.of(context).spec.value);
+        setSpecName(SelectionProvider.of(context).specName.value);
       });
     });
     super.didChangeDependencies();
