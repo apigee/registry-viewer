@@ -22,6 +22,9 @@ import '../components/version_edit.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
+  final bool selflink;
+  final bool editable;
+  VersionDetailCard({this.selflink, this.editable});
   _VersionDetailCardState createState() => _VersionDetailCardState();
 }
 
@@ -57,9 +60,31 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    Function selflink = onlyIf(widget.selflink, () {
+      Version version = versionManager?.value;
+      Navigator.pushNamed(
+        context,
+        version.routeNameForDetail(),
+      );
+    });
+    Function editable = onlyIf(widget.editable, () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: EditVersionForm(),
+              ),
+            );
+          });
+    });
+
     if (versionManager?.value == null) {
       return Card();
     } else {
+      Version version = versionManager.value;
       return Card(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -68,7 +93,26 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: VersionInfoWidget(versionManager.value),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ResourceNameButtonRow(
+                        name: version.name.split("/").sublist(4).join("/"),
+                        show: selflink,
+                        edit: editable,
+                      ),
+                      SizedBox(height: 10),
+                      TitleRow(version.name.split("/").last, action: selflink),
+                      SizedBox(height: 10),
+                      if (version.description != "")
+                        BodyRow(version.description),
+                      SizedBox(height: 10),
+                      TimestampRow("created", version.createTime),
+                      TimestampRow("updated", version.updateTime),
+                      DetailRow(""),
+                      DetailRow("$version"),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -76,51 +120,5 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
         ),
       );
     }
-  }
-}
-
-class VersionInfoWidget extends StatelessWidget {
-  final Version version;
-  VersionInfoWidget(this.version);
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ResourceNameButtonRow(
-          name: version.name.split("/").sublist(4).join("/"),
-          show: () {
-            Navigator.pushNamed(
-              context,
-              version.routeNameForDetail(),
-              arguments: version,
-            );
-          },
-          edit: () {
-            final selection = SelectionProvider.of(context);
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return SelectionProvider(
-                    selection: selection,
-                    child: AlertDialog(
-                      content: EditVersionForm(),
-                    ),
-                  );
-                });
-          },
-        ),
-        SuperTitleRow("VERSION"),
-        SizedBox(height: 10),
-        TitleRow(version.name.split("/").last),
-        SizedBox(height: 10),
-        if (version.description != "") BodyRow(version.description),
-        SizedBox(height: 10),
-        TimestampRow("created", version.createTime),
-        TimestampRow("updated", version.updateTime),
-        DetailRow(""),
-        DetailRow("$version"),
-      ],
-    );
   }
 }

@@ -29,11 +29,14 @@ class RegistryDetailCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 10),
                     TitleRow("Welcome"),
                     SizedBox(height: 10),
                     BodyRow(
-                        "The API Registry is an online catalog of APIs and a storehouse for information about APIs."),
+                        "The API Registry is an online catalog and storehouse of information about APIs."),
                     SizedBox(height: 10),
+                    BodyRow(
+                        "This demo viewer allows exploration of multiple projects. In practice, we recommend that all APIs be stored under a single project corresponding to a Google Cloud Platform project."),
                   ],
                 ),
               ),

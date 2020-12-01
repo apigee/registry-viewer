@@ -15,7 +15,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../models/selection.dart';
-import '../components/spec_name.dart';
 import '../components/spec_complexity.dart';
 import '../components/spec_detail.dart';
 import '../components/spec_properties.dart';
@@ -42,9 +41,10 @@ class SpecDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
+            flex: 3,
             child: Row(
               children: [
-                Expanded(child: SpecDetailCard()),
+                Expanded(child: SpecDetailCard(editable: true)),
                 Expanded(child: SpecLabelsCard()),
                 Expanded(child: SpecPropertiesCard()),
                 Expanded(child: SpecComplexityCard()),
@@ -52,6 +52,7 @@ class SpecDetailPage extends StatelessWidget {
             ),
           ),
           Expanded(
+            flex: 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

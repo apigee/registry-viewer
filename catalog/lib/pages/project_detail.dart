@@ -18,10 +18,6 @@ import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
-import '../components/version_list.dart';
-import '../components/version_detail.dart';
-import '../components/spec_list.dart';
-import '../components/spec_detail.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -45,21 +41,24 @@ class ProjectDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
+              flex: 3,
               child: Row(
                 children: [
                   Expanded(
-                    child: SizedBox.expand(child: ProjectDetailCard()),
+                    child: SizedBox.expand(
+                        child: ProjectDetailCard(editable: true)),
                   ),
                 ],
               ),
             ),
             Expanded(
+              flex: 5,
               child: Row(children: [
                 Expanded(
                   child: SizedBox.expand(child: ApiListCard()),
                 ),
                 Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
+                  child: SizedBox.expand(child: ApiDetailCard(selflink: true)),
                 ),
               ]),
             ),

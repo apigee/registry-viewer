@@ -22,6 +22,9 @@ import '../components/project_edit.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
+  final bool selflink;
+  final bool editable;
+  ProjectDetailCard({this.selflink, this.editable});
   _ProjectDetailCardState createState() => _ProjectDetailCardState();
 }
 
@@ -56,9 +59,33 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    Function selflink = onlyIf(widget.selflink, () {
+      Project project = projectManager?.value;
+      Navigator.pushNamed(
+        context,
+        project.routeNameForDetail(),
+        arguments: project,
+      );
+    });
+
+    Function editable = onlyIf(widget.editable, () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: EditProjectForm(),
+              ),
+            );
+          });
+    });
+
     if (projectManager?.value == null) {
       return Card();
     } else {
+      Project project = projectManager.value;
       return Card(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -67,7 +94,22 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: ProjectInfoWidget(projectManager.value),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ResourceNameButtonRow(
+                          name: project.name, show: selflink, edit: editable),
+                      SizedBox(height: 10),
+                      TitleRow(project.displayName, action: selflink),
+                      SizedBox(height: 10),
+                      BodyRow(project.description),
+                      SizedBox(height: 10),
+                      TimestampRow("created", project.createTime),
+                      TimestampRow("updated", project.updateTime),
+                      DetailRow(""),
+                      DetailRow("$project"),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -75,50 +117,5 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
         ),
       );
     }
-  }
-}
-
-class ProjectInfoWidget extends StatelessWidget {
-  final Project project;
-  ProjectInfoWidget(this.project);
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ResourceNameButtonRow(
-            name: project.name,
-            show: () {
-              Navigator.pushNamed(
-                context,
-                project.routeNameForDetail(),
-                arguments: project,
-              );
-            },
-            edit: () {
-              final selection = SelectionProvider.of(context);
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SelectionProvider(
-                      selection: selection,
-                      child: AlertDialog(
-                        content: EditProjectForm(),
-                      ),
-                    );
-                  });
-            }),
-        SuperTitleRow("PROJECT"),
-        SizedBox(height: 10),
-        TitleRow(project.displayName),
-        SizedBox(height: 10),
-        BodyRow(project.description),
-        SizedBox(height: 10),
-        TimestampRow("created", project.createTime),
-        TimestampRow("updated", project.updateTime),
-        DetailRow(""),
-        DetailRow("$project"),
-      ],
-    );
   }
 }

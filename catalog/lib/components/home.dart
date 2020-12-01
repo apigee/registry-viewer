@@ -29,6 +29,7 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 3,
               child: Row(
                 children: [
                   Expanded(
@@ -38,13 +39,14 @@ class Home extends StatelessWidget {
               ),
             ),
             Expanded(
+              flex: 5,
               child: Row(
                 children: [
                   Expanded(
                     child: ProjectListCard(),
                   ),
                   Expanded(
-                    child: ProjectDetailCard(),
+                    child: ProjectDetailCard(selflink: true, editable: false),
                   ),
                 ],
               ),

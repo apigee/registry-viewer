@@ -22,6 +22,9 @@ import '../components/spec_edit.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
+  final bool selflink;
+  final bool editable;
+  SpecDetailCard({this.selflink, this.editable});
   @override
   _SpecDetailCardState createState() => _SpecDetailCardState();
 }
@@ -57,9 +60,31 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    Function selflink = onlyIf(widget.selflink, () {
+      Spec spec = specManager?.value;
+      Navigator.pushNamed(
+        context,
+        spec.routeNameForDetail(),
+      );
+    });
+    Function editable = onlyIf(widget.editable, () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: EditSpecForm(),
+              ),
+            );
+          });
+    });
+
     if (specManager?.value == null) {
       return Card();
     } else {
+      Spec spec = specManager.value;
       return Card(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -68,7 +93,28 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: SpecInfoWidget(specManager.value),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ResourceNameButtonRow(
+                        name: spec.name.split("/").sublist(6).join("/"),
+                        show: selflink,
+                        edit: editable,
+                      ),
+                      SizedBox(height: 10),
+                      TitleRow(spec.name.split("/").last, action: selflink),
+                      SizedBox(height: 10),
+                      BodyRow("revision " + spec.revisionId),
+                      BodyRow(spec.style),
+                      BodyRow("${spec.sizeBytes} bytes"),
+                      if (spec.description != "") BodyRow(spec.description),
+                      SizedBox(height: 10),
+                      TimestampRow("created", spec.createTime),
+                      TimestampRow("updated", spec.updateTime),
+                      DetailRow(""),
+                      DetailRow("$spec"),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -76,54 +122,5 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
         ),
       );
     }
-  }
-}
-
-class SpecInfoWidget extends StatelessWidget {
-  final Spec spec;
-  SpecInfoWidget(this.spec);
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ResourceNameButtonRow(
-          name: spec.name.split("/").sublist(6).join("/"),
-          show: () {
-            Navigator.pushNamed(
-              context,
-              spec.routeNameForDetail(),
-              arguments: spec,
-            );
-          },
-          edit: () {
-            final selection = SelectionProvider.of(context);
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return SelectionProvider(
-                    selection: selection,
-                    child: AlertDialog(
-                      content: EditSpecForm(),
-                    ),
-                  );
-                });
-          },
-        ),
-        SuperTitleRow("SPEC"),
-        SizedBox(height: 10),
-        TitleRow(spec.name.split("/").last),
-        SizedBox(height: 10),
-        BodyRow("revision " + spec.revisionId),
-        BodyRow(spec.style),
-        BodyRow("${spec.sizeBytes} bytes"),
-        if (spec.description != "") BodyRow(spec.description),
-        SizedBox(height: 10),
-        TimestampRow("created", spec.createTime),
-        TimestampRow("updated", spec.updateTime),
-        DetailRow(""),
-        DetailRow("$spec"),
-      ],
-    );
   }
 }

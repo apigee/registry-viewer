@@ -15,12 +15,9 @@
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../models/selection.dart';
-import '../components/api_name.dart';
 import '../components/api_detail.dart';
 import '../components/version_detail.dart';
 import '../components/version_list.dart';
-import '../components/spec_detail.dart';
-import '../components/spec_list.dart';
 
 class ApiDetailPage extends StatelessWidget {
   final String name;
@@ -44,19 +41,22 @@ class ApiDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
+              flex: 3,
               child: Row(children: [
                 Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
+                  child: SizedBox.expand(child: ApiDetailCard(editable: true)),
                 ),
               ]),
             ),
             Expanded(
+              flex: 5,
               child: Row(children: [
                 Expanded(
                   child: SizedBox.expand(child: VersionListCard()),
                 ),
                 Expanded(
-                  child: SizedBox.expand(child: VersionDetailCard()),
+                  child: SizedBox.expand(
+                      child: VersionDetailCard(selflink: true, editable: true)),
                 ),
               ]),
             ),

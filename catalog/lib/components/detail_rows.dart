@@ -16,6 +16,13 @@ import 'package:flutter/material.dart';
 import '../helpers/timestamp.dart';
 import 'package:catalog/generated/google/protobuf/timestamp.pb.dart';
 
+Function onlyIf(bool condition, Function action) {
+  if (condition == null || !condition) {
+    return null;
+  }
+  return action;
+}
+
 class ResourceNameButtonRow extends StatelessWidget {
   final String name;
   final void Function() show;
@@ -27,17 +34,30 @@ class ResourceNameButtonRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: [
-        TextButton(
-          child: Text(name),
-          onPressed: show,
-        ),
-        TextButton(
-          child: Text(
-            "EDIT",
-            textAlign: TextAlign.right,
+        if (show == null) Text(name),
+        if (show != null)
+          GestureDetector(
+            child: Text(
+              name,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.blue),
+            ),
+            onTap: show,
           ),
-          onPressed: edit != null ? edit : () {},
-        ),
+        if (edit != null)
+          GestureDetector(
+            child: Text(
+              "EDIT",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.blue),
+              textAlign: TextAlign.right,
+            ),
+            onTap: edit != null ? edit : () {},
+          ),
       ],
     );
   }
@@ -45,17 +65,34 @@ class ResourceNameButtonRow extends StatelessWidget {
 
 class TitleRow extends StatelessWidget {
   final String text;
-  TitleRow(this.text);
+  final Function action;
+  TitleRow(this.text, {this.action});
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Expanded(
-          child: Text(
-        text,
-        style: Theme.of(context).textTheme.headline3,
-        textAlign: TextAlign.left,
-      )),
-    ]);
+    return Row(
+      children: [
+        action != null
+            ? Expanded(
+                child: GestureDetector(
+                    child: Text(
+                      text,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3
+                          .copyWith(color: Colors.blue),
+                      textAlign: TextAlign.left,
+                    ),
+                    onTap: action),
+              )
+            : Expanded(
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.headline3,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+      ],
+    );
   }
 }
 

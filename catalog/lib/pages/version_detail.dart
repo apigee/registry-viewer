@@ -15,7 +15,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../models/selection.dart';
-import '../components/version_name.dart';
 import '../components/version_detail.dart';
 import '../components/spec_list.dart';
 import '../components/spec_detail.dart';
@@ -40,15 +39,17 @@ class VersionDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            child: VersionDetailCard(),
+            flex: 3,
+            child: VersionDetailCard(editable: true),
           ),
           Expanded(
+            flex: 5,
             child: Row(children: [
               Expanded(
                 child: SizedBox.expand(child: SpecListCard()),
               ),
               Expanded(
-                child: SizedBox.expand(child: SpecDetailCard()),
+                child: SizedBox.expand(child: SpecDetailCard(selflink: true)),
               ),
             ]),
           ),
