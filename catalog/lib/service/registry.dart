@@ -43,6 +43,7 @@ class Registry {
   Map<String, ApiManager> apiManagers = Map();
   Map<String, VersionManager> versionManagers = Map();
   Map<String, SpecManager> specManagers = Map();
+  Map<String, PropertyManager> propertyManagers = Map();
 
   ProjectManager getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -74,6 +75,14 @@ class Registry {
       specManagers[name] = SpecManager(name);
     }
     return specManagers[name];
+  }
+
+  PropertyManager getPropertyManager(String name) {
+    Manager.removeUnused(propertyManagers);
+    if (propertyManagers[name] == null) {
+      propertyManagers[name] = PropertyManager(name);
+    }
+    return propertyManagers[name];
   }
 }
 
@@ -232,6 +241,30 @@ class SpecManager extends ResourceManager<Spec> {
     }
     try {
       client.updateSpec(request, options: callOptions()).then((value) {
+        _value = value;
+        notifyListeners();
+      });
+    } catch (err) {
+      print('Caught error: $err');
+    }
+  }
+}
+
+class PropertyManager extends ResourceManager<Property> {
+  PropertyManager(String name) : super(name);
+  Future<Property> fetchFuture(RegistryClient client) {
+    final request = GetPropertyRequest();
+    request.name = name;
+    request.view = View.FULL;
+    return client.getProperty(request, options: callOptions());
+  }
+
+  void update(Property newValue, List<String> paths) {
+    final client = getClient();
+    final request = UpdatePropertyRequest();
+    request.property = newValue;
+    try {
+      client.updateProperty(request, options: callOptions()).then((value) {
         _value = value;
         notifyListeners();
       });

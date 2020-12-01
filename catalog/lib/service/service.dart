@@ -303,3 +303,20 @@ class PropertiesService {
     }
   }
 }
+
+class LabelsService {
+  static RegistryClient getClient() => RegistryClient(createClientChannel());
+
+  static Future<ListLabelsResponse> listLabels(String parent,
+      {subject: String}) {
+    final client = getClient();
+    final request = ListLabelsRequest();
+    request.parent = subject;
+    try {
+      return client.listLabels(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
+    }
+  }
+}

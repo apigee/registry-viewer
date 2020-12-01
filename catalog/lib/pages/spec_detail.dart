@@ -16,9 +16,11 @@ import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/spec_name.dart';
+import '../components/spec_complexity.dart';
 import '../components/spec_detail.dart';
 import '../components/spec_properties.dart';
 import '../components/spec_file.dart';
+import '../components/spec_labels.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String name;
@@ -41,9 +43,15 @@ class SpecDetailPage extends StatelessWidget {
         body: Column(children: [
           SpecNameCard(),
           Expanded(
-            child: SpecDetailCard(),
+            child: Row(
+              children: [
+                Expanded(child: SpecDetailCard()),
+                Expanded(child: SpecComplexityCard()),
+                Expanded(child: SpecPropertiesCard()),
+                Expanded(child: SpecLabelsCard()),
+              ],
+            ),
           ),
-          SpecPropertiesCard(),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

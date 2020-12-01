@@ -24,17 +24,17 @@ String projectNameForSpecName(String specName) {
   return projectName;
 }
 
-// SpecPropertiesCard
+// SpecLabelsCard
 
-class SpecPropertiesCard extends StatefulWidget {
+class SpecLabelsCard extends StatefulWidget {
   @override
-  _SpecPropertiesCardState createState() => _SpecPropertiesCardState();
+  _SpecLabelsCardState createState() => _SpecLabelsCardState();
 }
 
-class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
+class _SpecLabelsCardState extends State<SpecLabelsCard> {
   String specName;
-  List<Property> properties;
-  _SpecPropertiesCardState();
+  List<Label> labels;
+  _SpecLabelsCardState();
 
   @override
   void didChangeDependencies() {
@@ -43,7 +43,7 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
           if (specName == null) {
             specName = "";
           }
-          this.properties = null;
+          this.labels = null;
         }));
     super.didChangeDependencies();
   }
@@ -53,14 +53,14 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
     if (specName == null) {
       return Card();
     }
-    if (properties == null) {
-      // we need to fetch the properties from the API
-      final propertiesFuture = PropertiesService.listProperties(
+    if (labels == null) {
+      // we need to fetch the tags from the API
+      final labelsFuture = LabelsService.listLabels(
           projectNameForSpecName(specName),
           subject: specName);
-      propertiesFuture.then((properties) {
+      labelsFuture.then((labels) {
         setState(() {
-          this.properties = properties.properties;
+          this.labels = labels.labels;
         });
       });
       return Card();
@@ -72,7 +72,7 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Properties",
+              "Labels",
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
@@ -80,13 +80,13 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
               columnWidths: {
                 0: IntrinsicColumnWidth(),
               },
-              children: properties.map(
-                (property) {
+              children: labels.map(
+                (label) {
                   return TableRow(
                     children: [
                       TableCell(
                         child: Text(
-                          property.relation,
+                          label.label,
                           textAlign: TextAlign.left,
                         ),
                       ),
