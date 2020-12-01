@@ -17,7 +17,6 @@ import '../helpers/title.dart';
 import '../components/logout_button.dart';
 import '../components/project_list.dart';
 import '../models/observable.dart';
-import '../models/selection.dart';
 import '../models/project.dart';
 
 // ProjectListPage is a full-page display of a list of projects.
