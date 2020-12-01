@@ -13,55 +13,41 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/title.dart';
-import '../models/selection.dart';
+import '../components/project_list.dart';
 import '../components/project_detail.dart';
-import '../components/api_list.dart';
-import '../components/api_detail.dart';
-import '../components/version_list.dart';
-import '../components/version_detail.dart';
-import '../components/spec_list.dart';
-import '../components/spec_detail.dart';
+import '../components/registry_detail.dart';
+import '../models/selection.dart';
 
-class ProjectDetailPage extends StatelessWidget {
-  final String name;
-  ProjectDetailPage({this.name});
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
-    Future.delayed(const Duration(), () {
-      selection.updateProjectName(name.substring(1));
-    });
 
     return SelectionProvider(
       selection: selection,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            title(name),
-          ),
-        ),
-        body: Column(
+      child: Container(
+        child: Column(
           children: [
             Expanded(
               child: Row(
                 children: [
                   Expanded(
-                    child: SizedBox.expand(child: ProjectDetailCard()),
+                    child: RegistryDetailCard(),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: Row(children: [
-                Expanded(
-                  child: SizedBox.expand(child: ApiListCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
-                ),
-              ]),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ProjectListCard(),
+                  ),
+                  Expanded(
+                    child: ProjectDetailCard(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

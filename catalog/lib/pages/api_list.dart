@@ -20,25 +20,22 @@ import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
 
-// convert /projects/{project}/apis to projects/{project}
-String parent(String name) {
-  var parts = name.split('/');
-  return parts.sublist(1, 3).join('/');
-}
-
 // ApiListPage is a full-page display of a list of apis.
 class ApiListPage extends StatelessWidget {
   final String name;
-  final String projectName;
   ApiListPage(String name, {Key key})
       : name = name,
-        projectName = parent(name),
         super(key: key);
+
+  // convert /projects/{project}/apis to projects/{project}
+  String parentName() {
+    return name.split('/').sublist(1, 3).join('/');
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.projectName.update(projectName);
+    selectionModel.projectName.update(parentName());
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(

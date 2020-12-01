@@ -20,26 +20,23 @@ import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
 
-// convert /projects/{project}/apis/{api}/versions/{version}/specs
-// to projects/{project}/apis/{api}/versions/{version}
-String parent(String name) {
-  var parts = name.split('/');
-  return parts.sublist(1, 7).join('/');
-}
-
 // SpecListPage is a full-page display of a list of specs.
 class SpecListPage extends StatelessWidget {
   final String name;
-  final String versionName;
   SpecListPage(String name, {Key key})
       : name = name,
-        versionName = parent(name),
         super(key: key);
+
+  // convert /projects/{project}/apis/{api}/versions/{version}/specs
+  // to projects/{project}/apis/{api}/versions/{version}
+  String parentName() {
+    return name.split('/').sublist(1, 7).join('/');
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.versionName.update(versionName);
+    selectionModel.versionName.update(parentName());
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(

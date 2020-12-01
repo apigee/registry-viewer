@@ -20,26 +20,23 @@ import '../models/observable.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
 
-// convert /projects/{project}/apis/{api}/versions
-// to projects/{project}/apis/{api}
-String parent(String name) {
-  var parts = name.split('/');
-  return parts.sublist(1, 5).join('/');
-}
-
 // VersionListPage is a full-page display of a list of versions.
 class VersionListPage extends StatelessWidget {
   final String name;
-  final String apiName;
   VersionListPage(String name, {Key key})
       : name = name,
-        apiName = parent(name),
         super(key: key);
+
+  // convert /projects/{project}/apis/{api}/versions
+  // to projects/{project}/apis/{api}
+  String parentName() {
+    return name.split('/').sublist(1, 5).join('/');
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectionModel = Selection();
-    selectionModel.apiName.update(apiName);
+    selectionModel.apiName.update(parentName());
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(

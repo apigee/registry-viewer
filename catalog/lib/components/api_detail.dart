@@ -115,6 +115,7 @@ class ApiInfoWidget extends StatelessWidget {
                     );
                   });
             }),
+        SuperTitleRow("API"),
         SizedBox(height: 10),
         TitleRow(api.displayName),
         SizedBox(height: 10),
@@ -122,6 +123,8 @@ class ApiInfoWidget extends StatelessWidget {
         SizedBox(height: 10),
         TimestampRow("created", api.createTime),
         TimestampRow("updated", api.updateTime),
+        DetailRow(""),
+        DetailRow("$api"),
       ],
     );
   }

@@ -110,6 +110,7 @@ class VersionInfoWidget extends StatelessWidget {
                 });
           },
         ),
+        SuperTitleRow("VERSION"),
         SizedBox(height: 10),
         TitleRow(version.name.split("/").last),
         SizedBox(height: 10),
@@ -117,6 +118,8 @@ class VersionInfoWidget extends StatelessWidget {
         SizedBox(height: 10),
         TimestampRow("created", version.createTime),
         TimestampRow("updated", version.updateTime),
+        DetailRow(""),
+        DetailRow("$version"),
       ],
     );
   }

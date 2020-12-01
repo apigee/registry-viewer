@@ -41,14 +41,13 @@ class SpecDetailPage extends StatelessWidget {
           ),
         ),
         body: Column(children: [
-          SpecNameCard(),
           Expanded(
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard()),
-                Expanded(child: SpecComplexityCard()),
-                Expanded(child: SpecPropertiesCard()),
                 Expanded(child: SpecLabelsCard()),
+                Expanded(child: SpecPropertiesCard()),
+                Expanded(child: SpecComplexityCard()),
               ],
             ),
           ),

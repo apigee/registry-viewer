@@ -110,6 +110,7 @@ class SpecInfoWidget extends StatelessWidget {
                 });
           },
         ),
+        SuperTitleRow("SPEC"),
         SizedBox(height: 10),
         TitleRow(spec.name.split("/").last),
         SizedBox(height: 10),
@@ -120,6 +121,8 @@ class SpecInfoWidget extends StatelessWidget {
         SizedBox(height: 10),
         TimestampRow("created", spec.createTime),
         TimestampRow("updated", spec.updateTime),
+        DetailRow(""),
+        DetailRow("$spec"),
       ],
     );
   }

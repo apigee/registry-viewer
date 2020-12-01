@@ -28,12 +28,15 @@ class ResourceNameButtonRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         TextButton(
-          child: Text("EDIT"),
-          onPressed: edit != null ? edit : () {},
-        ),
-        TextButton(
           child: Text(name),
           onPressed: show,
+        ),
+        TextButton(
+          child: Text(
+            "EDIT",
+            textAlign: TextAlign.right,
+          ),
+          onPressed: edit != null ? edit : () {},
         ),
       ],
     );
@@ -50,6 +53,25 @@ class TitleRow extends StatelessWidget {
           child: Text(
         text,
         style: Theme.of(context).textTheme.headline3,
+        textAlign: TextAlign.left,
+      )),
+    ]);
+  }
+}
+
+class SuperTitleRow extends StatelessWidget {
+  final String text;
+  SuperTitleRow(this.text);
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Expanded(
+          child: Text(
+        text,
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(color: Colors.grey[500]),
         textAlign: TextAlign.left,
       )),
     ]);
@@ -110,5 +132,24 @@ class TimestampRow extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class DetailRow extends StatelessWidget {
+  final String text;
+  DetailRow(this.text);
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Expanded(
+          child: Text(
+        text,
+        style: Theme.of(context)
+            .textTheme
+            .bodyText2
+            .copyWith(color: Colors.grey[500]),
+        textAlign: TextAlign.left,
+      )),
+    ]);
   }
 }

@@ -108,6 +108,7 @@ class ProjectInfoWidget extends StatelessWidget {
                     );
                   });
             }),
+        SuperTitleRow("PROJECT"),
         SizedBox(height: 10),
         TitleRow(project.displayName),
         SizedBox(height: 10),
@@ -115,6 +116,8 @@ class ProjectInfoWidget extends StatelessWidget {
         SizedBox(height: 10),
         TimestampRow("created", project.createTime),
         TimestampRow("updated", project.updateTime),
+        DetailRow(""),
+        DetailRow("$project"),
       ],
     );
   }

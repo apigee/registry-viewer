@@ -43,7 +43,13 @@ class ApiDetailPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            ApiNameCard(),
+            Expanded(
+              child: Row(children: [
+                Expanded(
+                  child: SizedBox.expand(child: ApiDetailCard()),
+                ),
+              ]),
+            ),
             Expanded(
               child: Row(children: [
                 Expanded(
@@ -51,25 +57,6 @@ class ApiDetailPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: SizedBox.expand(child: VersionDetailCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(child: SpecListCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(child: SpecDetailCard()),
-                ),
-              ]),
-            ),
-            Expanded(
-              child: Row(children: [
-                Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard()),
                 ),
               ]),
             ),

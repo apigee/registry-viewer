@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../authorizations.dart';
 import '../service/service.dart';
-import '../components/spec_picker.dart';
+import '../components/home.dart';
 import '../application.dart';
 
 GoogleSignInAccount currentUser;
@@ -133,7 +133,7 @@ class SignInPageState extends State<SignInPage> {
                 Container(height: 10),
               ],
             ),
-          if (currentUserIsAuthorized) Expanded(child: SpecPicker()),
+          if (currentUserIsAuthorized) Expanded(child: Home()),
         ],
       );
     } else {

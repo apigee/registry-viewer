@@ -17,6 +17,8 @@ import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/version_name.dart';
 import '../components/version_detail.dart';
+import '../components/spec_list.dart';
+import '../components/spec_detail.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -37,9 +39,18 @@ class VersionDetailPage extends StatelessWidget {
           ),
         ),
         body: Column(children: [
-          VersionNameCard(),
           Expanded(
             child: VersionDetailCard(),
+          ),
+          Expanded(
+            child: Row(children: [
+              Expanded(
+                child: SizedBox.expand(child: SpecListCard()),
+              ),
+              Expanded(
+                child: SizedBox.expand(child: SpecDetailCard()),
+              ),
+            ]),
           ),
         ]),
       ),

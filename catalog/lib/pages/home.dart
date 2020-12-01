@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import '../application.dart';
-import '../components/spec_picker.dart';
+import '../components/home.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(applicationName),
       ),
-      body: SpecPicker(),
+      body: Home(),
     );
   }
 }
