@@ -88,6 +88,8 @@ class _LabelsCardState extends State<LabelsCard> {
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
+          if (labels.length == 0)
+            Text("none", style: TextStyle(fontStyle: FontStyle.italic)),
           Table(
               columnWidths: {
                 0: IntrinsicColumnWidth(),

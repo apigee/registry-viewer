@@ -75,6 +75,8 @@ class _PropertiesCardState extends State<PropertiesCard> {
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
+          if (properties.length == 0)
+            Text("none", style: TextStyle(fontStyle: FontStyle.italic)),
           Table(
               columnWidths: {
                 0: IntrinsicColumnWidth(),
