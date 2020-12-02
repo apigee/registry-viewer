@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
+import '../components/labels_list.dart';
+import '../components/properties_list.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -35,7 +36,7 @@ class ProjectDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            title(name),
+            "Project Details",
           ),
         ),
         body: Column(
@@ -44,10 +45,9 @@ class ProjectDetailPage extends StatelessWidget {
               flex: 3,
               child: Row(
                 children: [
-                  Expanded(
-                    child: SizedBox.expand(
-                        child: ProjectDetailCard(editable: true)),
-                  ),
+                  Expanded(child: ProjectDetailCard(editable: true)),
+                  Expanded(child: LabelsCard(SelectionProvider.project)),
+                  Expanded(child: PropertiesCard(SelectionProvider.project)),
                 ],
               ),
             ),

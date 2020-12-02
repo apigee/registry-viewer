@@ -60,4 +60,20 @@ class SelectionProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(SelectionProvider oldWidget) =>
       selection != oldWidget.selection;
+
+  static ObservableString project(BuildContext context) {
+    return SelectionProvider.of(context).projectName;
+  }
+
+  static ObservableString api(BuildContext context) {
+    return SelectionProvider.of(context).apiName;
+  }
+
+  static ObservableString version(BuildContext context) {
+    return SelectionProvider.of(context).versionName;
+  }
+
+  static ObservableString spec(BuildContext context) {
+    return SelectionProvider.of(context).specName;
+  }
 }

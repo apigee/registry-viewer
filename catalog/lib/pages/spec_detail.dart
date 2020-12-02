@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/spec_complexity.dart';
 import '../components/spec_detail.dart';
-import '../components/spec_properties.dart';
+import '../components/properties_list.dart';
 import '../components/spec_file.dart';
-import '../components/spec_labels.dart';
+import '../components/labels_list.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String name;
@@ -36,7 +35,7 @@ class SpecDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            title(name),
+            "Spec Details",
           ),
         ),
         body: Column(children: [
@@ -45,8 +44,8 @@ class SpecDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard(editable: true)),
-                Expanded(child: SpecLabelsCard()),
-                Expanded(child: SpecPropertiesCard()),
+                Expanded(child: LabelsCard(SelectionProvider.spec)),
+                Expanded(child: PropertiesCard(SelectionProvider.spec)),
                 Expanded(child: SpecComplexityCard()),
               ],
             ),

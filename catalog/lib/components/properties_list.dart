@@ -15,33 +15,34 @@
 import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../models/selection.dart';
+import '../models/observable.dart';
 
-String projectNameForSpecName(String specName) {
-  print("spec name $specName");
-  final projectName = specName.split("/").sublist(0, 2).join("/");
-  print("project name $projectName");
-  return projectName;
-}
+// PropertiesCard
+typedef ObservableStringProvider = ObservableString Function(
+    BuildContext context);
 
-// SpecPropertiesCard
+class PropertiesCard extends StatefulWidget {
+  final ObservableStringProvider getObservableResourceName;
+  PropertiesCard(this.getObservableResourceName);
 
-class SpecPropertiesCard extends StatefulWidget {
   @override
-  _SpecPropertiesCardState createState() => _SpecPropertiesCardState();
+  _PropertiesCardState createState() => _PropertiesCardState();
 }
 
-class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
-  String specName;
+class _PropertiesCardState extends State<PropertiesCard> {
+  String subjectName;
   List<Property> properties;
-  _SpecPropertiesCardState();
+
+  String projectName() {
+    return subjectName.split("/").sublist(0, 2).join("/");
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(() => setState(() {
-          specName = SelectionProvider.of(context).specName.value;
-          if (specName == null) {
-            specName = "";
+    widget.getObservableResourceName(context).addListener(() => setState(() {
+          subjectName = widget.getObservableResourceName(context).value;
+          if (subjectName == null) {
+            subjectName = "";
           }
           this.properties = null;
         }));
@@ -50,20 +51,18 @@ class _SpecPropertiesCardState extends State<SpecPropertiesCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (specName == null) {
-      return Card();
+    if (subjectName == null) {
+      return Card(child: Center(child: Text("no subject")));
     }
     if (properties == null) {
       // we need to fetch the properties from the API
-      final propertiesFuture = PropertiesService.listProperties(
-          projectNameForSpecName(specName),
-          subject: specName);
-      propertiesFuture.then((properties) {
+      PropertiesService.listProperties(projectName(), subject: subjectName)
+          .then((properties) {
         setState(() {
           this.properties = properties.properties;
         });
       });
-      return Card();
+      return Card(child: Center(child: Text("loading")));
     }
     return Card(
       child: Column(

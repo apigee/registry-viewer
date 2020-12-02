@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/version_detail.dart';
 import '../components/spec_list.dart';
 import '../components/spec_detail.dart';
+import '../components/labels_list.dart';
+import '../components/properties_list.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -34,13 +35,19 @@ class VersionDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            title(name),
+            "Version Details",
           ),
         ),
         body: Column(children: [
           Expanded(
             flex: 3,
-            child: VersionDetailCard(editable: true),
+            child: Row(
+              children: [
+                Expanded(child: VersionDetailCard(editable: true)),
+                Expanded(child: LabelsCard(SelectionProvider.version)),
+                Expanded(child: PropertiesCard(SelectionProvider.version)),
+              ],
+            ),
           ),
           Expanded(
             flex: 5,

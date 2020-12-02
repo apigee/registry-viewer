@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/title.dart';
 import '../models/selection.dart';
 import '../components/api_detail.dart';
 import '../components/version_detail.dart';
 import '../components/version_list.dart';
+import '../components/labels_list.dart';
+import '../components/properties_list.dart';
 
 class ApiDetailPage extends StatelessWidget {
   final String name;
@@ -26,6 +27,7 @@ class ApiDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
+
     Future.delayed(const Duration(), () {
       selection.updateApiName(name.substring(1));
     });
@@ -35,7 +37,7 @@ class ApiDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            title(name),
+            "API Details",
           ),
         ),
         body: Column(
@@ -43,9 +45,9 @@ class ApiDetailPage extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Row(children: [
-                Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard(editable: true)),
-                ),
+                Expanded(child: ApiDetailCard(editable: true)),
+                Expanded(child: LabelsCard(SelectionProvider.api)),
+                Expanded(child: PropertiesCard(SelectionProvider.api)),
               ]),
             ),
             Expanded(
