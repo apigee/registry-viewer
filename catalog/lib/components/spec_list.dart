@@ -17,7 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/spec.dart';
-import '../models/observable.dart';
+import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -131,5 +131,5 @@ class _SpecListViewState extends State<SpecListView> {
 
 // SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends CustomSearchBox {
-  SpecSearchBox() : super("Filter API specs", "spec_id.contains('TEXT')");
+  SpecSearchBox() : super("Filter Specs", "spec_id.contains('TEXT')");
 }

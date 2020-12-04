@@ -101,39 +101,41 @@ class ComplexityCard extends StatelessWidget {
     Complexity complexity =
         new Complexity.fromBuffer(property.messageValue.value);
     return Card(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Complexity",
-                style: Theme.of(context).textTheme.headline4,
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Complexity",
+                  style: Theme.of(context).textTheme.headline4,
+                ),
               ),
-            ),
-            Table(
-              border: TableBorder.symmetric(
-                  inside: BorderSide.none, outside: BorderSide.none),
-              columnWidths: {
-                0: IntrinsicColumnWidth(),
-                1: IntrinsicColumnWidth(),
-              },
-              children: [
-                row(context, "Paths", "${complexity.pathCount}"),
-                row(context, "Operations",
-                    "${complexity.getCount + complexity.postCount + complexity.putCount + complexity.deleteCount}"),
-                row(context, "Gets", "${complexity.getCount}"),
-                row(context, "Posts", "${complexity.postCount}"),
-                row(context, "Puts", "${complexity.putCount}"),
-                row(context, "Deletes", "${complexity.deleteCount}"),
-                row(context, "Schemas", "${complexity.schemaCount}"),
-                row(context, "Schema Properties",
-                    "${complexity.schemaPropertyCount}"),
-              ],
-            ),
-          ],
+              Table(
+                border: TableBorder.symmetric(
+                    inside: BorderSide.none, outside: BorderSide.none),
+                columnWidths: {
+                  0: IntrinsicColumnWidth(),
+                  1: IntrinsicColumnWidth(),
+                },
+                children: [
+                  row(context, "Paths", "${complexity.pathCount}"),
+                  row(context, "Operations",
+                      "${complexity.getCount + complexity.postCount + complexity.putCount + complexity.deleteCount}"),
+                  row(context, "Gets", "${complexity.getCount}"),
+                  row(context, "Posts", "${complexity.postCount}"),
+                  row(context, "Puts", "${complexity.putCount}"),
+                  row(context, "Deletes", "${complexity.deleteCount}"),
+                  row(context, "Schemas", "${complexity.schemaCount}"),
+                  row(context, "Schema Properties",
+                      "${complexity.schemaPropertyCount}"),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

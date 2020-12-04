@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../components/logout_button.dart';
 import '../components/spec_list.dart';
-import '../models/observable.dart';
+import '../models/string.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
 

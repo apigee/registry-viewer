@@ -18,7 +18,8 @@ import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
 import '../components/labels_list.dart';
-import '../components/properties_list.dart';
+import '../components/property_list.dart';
+import '../components/property_detail.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -27,6 +28,7 @@ class ProjectDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
+
     Future.delayed(const Duration(), () {
       selection.updateProjectName(name.substring(1));
     });
@@ -46,8 +48,9 @@ class ProjectDetailPage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: ProjectDetailCard(editable: true)),
-                  Expanded(child: LabelsCard(SelectionProvider.project)),
-                  Expanded(child: PropertiesCard(SelectionProvider.project)),
+                  Expanded(child: LabelListCard(SelectionProvider.project)),
+                  Expanded(child: PropertyListCard(SelectionProvider.project)),
+                  Expanded(child: PropertyDetailCard(editable: true)),
                 ],
               ),
             ),

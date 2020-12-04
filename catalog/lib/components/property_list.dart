@@ -1,6 +1,6 @@
 // Copyright 2020 Google LLC. All Rights Reserved.
 //
-// Licensed under the Apache License, Label 2.0 (the "License");
+// Licensed under the Apache License, Property 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
@@ -16,26 +16,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../models/label.dart';
+import '../models/property.dart';
 import '../models/string.dart';
+import '../models/selection.dart';
 import 'custom_search_box.dart';
 
 const int pageSize = 50;
 
 typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
-typedef LabelSelectionHandler = Function(BuildContext context, Label label);
+typedef PropertySelectionHandler = Function(
+    BuildContext context, Property property);
 
-// LabelListCard is a card that displays a list of labels.
-class LabelListCard extends StatefulWidget {
+// PropertyListCard is a card that displays a list of properties.
+class PropertyListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
-  LabelListCard(this.getObservableResourceName);
+  PropertyListCard(this.getObservableResourceName);
 
   @override
-  _LabelListCardState createState() => _LabelListCardState();
+  _PropertyListCardState createState() => _PropertyListCardState();
 }
 
-class _LabelListCardState extends State<LabelListCard> {
+class _PropertyListCardState extends State<PropertyListCard> {
   ObservableString subjectNameManager;
   String subjectName;
 
@@ -66,9 +68,9 @@ class _LabelListCardState extends State<LabelListCard> {
       child: Card(
         child: Column(
           children: [
-            LabelSearchBox(),
+            PropertySearchBox(),
             Expanded(
-              child: LabelListView(widget.getObservableResourceName, null),
+              child: PropertyListView(widget.getObservableResourceName, null),
             ),
           ],
         ),
@@ -77,26 +79,27 @@ class _LabelListCardState extends State<LabelListCard> {
   }
 }
 
-// LabelListView is a scrollable ListView of labels.
-class LabelListView extends StatefulWidget {
+// PropertyListView is a scrollable ListView of properties.
+class PropertyListView extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
-  final LabelSelectionHandler selectionHandler;
-  LabelListView(this.getObservableResourceName, this.selectionHandler);
+  final PropertySelectionHandler selectionHandler;
+  PropertyListView(this.getObservableResourceName, this.selectionHandler);
   @override
-  _LabelListViewState createState() => _LabelListViewState();
+  _PropertyListViewState createState() => _PropertyListViewState();
 }
 
-class _LabelListViewState extends State<LabelListView> {
+class _PropertyListViewState extends State<PropertyListView> {
   String parentName;
-  PagewiseLoadController<Label> pageLoadController;
-  LabelService labelService;
+  PagewiseLoadController<Property> pageLoadController;
+  PropertyService propertyService;
   int selectedIndex = -1;
 
-  _LabelListViewState() {
-    labelService = LabelService();
-    pageLoadController = PagewiseLoadController<Label>(
+  _PropertyListViewState() {
+    propertyService = PropertyService();
+    pageLoadController = PagewiseLoadController<Property>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => labelService.getLabelsPage(pageIndex));
+        pageFuture: (pageIndex) =>
+            propertyService.getPropertiesPage(pageIndex));
   }
 
   @override
@@ -104,7 +107,7 @@ class _LabelListViewState extends State<LabelListView> {
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            labelService.filter = filter.value;
+            propertyService.filter = filter.value;
             pageLoadController.reset();
             selectedIndex = -1;
           }
@@ -114,36 +117,40 @@ class _LabelListViewState extends State<LabelListView> {
 
   @override
   Widget build(BuildContext context) {
-    labelService.context = context;
+    propertyService.context = context;
     String subjectName = widget.getObservableResourceName(context).value;
-    if (labelService.parentName != subjectName) {
-      labelService.parentName = subjectName;
+    if (propertyService.parentName != subjectName) {
+      propertyService.parentName = subjectName;
       pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
-      child: PagewiseListView<Label>(
+      child: PagewiseListView<Property>(
         itemBuilder: this._itemBuilder,
         pageLoadController: pageLoadController,
       ),
     );
   }
 
-  Widget _itemBuilder(context, Label label, index) {
+  Widget _itemBuilder(context, Property property, index) {
     return ListTile(
-      title: Text(label.nameForDisplay()),
+      title: Text(property.nameForDisplay()),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {
         setState(() {
           selectedIndex = index;
         });
+        Selection selection = SelectionProvider.of(context);
+        selection?.updatePropertyName(property.name);
+        widget.selectionHandler?.call(context, property);
       },
     );
   }
 }
 
-// LabelSearchBox provides a search box for labels.
-class LabelSearchBox extends CustomSearchBox {
-  LabelSearchBox() : super("Filter Labels", "label_id.contains('TEXT')");
+// PropertySearchBox provides a search box for properties.
+class PropertySearchBox extends CustomSearchBox {
+  PropertySearchBox()
+      : super("Filter Properties", "property_id.contains('TEXT')");
 }

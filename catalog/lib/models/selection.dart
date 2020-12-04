@@ -13,34 +13,52 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'observable.dart';
+import 'string.dart';
 
 class Selection extends ChangeNotifier {
   ObservableString projectName = ObservableString();
   ObservableString apiName = ObservableString();
   ObservableString versionName = ObservableString();
   ObservableString specName = ObservableString();
+  ObservableString labelName = ObservableString();
+  ObservableString propertyName = ObservableString();
 
   void updateProjectName(String project) {
     this.projectName.update(project);
     this.apiName.update("");
     this.versionName.update("");
     this.specName.update("");
+    this.labelName.update("");
+    this.propertyName.update("");
   }
 
   void updateApiName(String api) {
     this.apiName.update(api);
     this.versionName.update("");
     this.specName.update("");
+    this.labelName.update("");
+    this.propertyName.update("");
   }
 
   void updateVersionName(String version) {
     this.versionName.update(version);
     this.specName.update("");
+    this.labelName.update("");
+    this.propertyName.update("");
   }
 
   void updateSpecName(String spec) {
     this.specName.update(spec);
+    this.labelName.update("");
+    this.propertyName.update("");
+  }
+
+  void updateLabelName(String label) {
+    this.labelName.update(label);
+  }
+
+  void updatePropertyName(String property) {
+    this.propertyName.update(property);
   }
 }
 
@@ -75,5 +93,13 @@ class SelectionProvider extends InheritedWidget {
 
   static ObservableString spec(BuildContext context) {
     return SelectionProvider.of(context).specName;
+  }
+
+  static ObservableString label(BuildContext context) {
+    return SelectionProvider.of(context).labelName;
+  }
+
+  static ObservableString property(BuildContext context) {
+    return SelectionProvider.of(context).propertyName;
   }
 }

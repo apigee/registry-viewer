@@ -286,37 +286,89 @@ class SpecService {
   }
 }
 
-class PropertiesService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+class PropertyService {
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static Future<ListPropertiesResponse> listProperties(String parent,
-      {subject: String}) {
+  BuildContext context;
+  String filter;
+  Map<int, String> tokens;
+  String parentName;
+
+  Future<List<Property>> getPropertiesPage(int pageIndex) {
+    return _getProperties(
+        parent: parentName, offset: pageIndex * pageSize, limit: pageSize);
+  }
+
+  Future<List<Property>> _getProperties(
+      {parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
+    if (offset == 0) {
+      tokens = Map();
+    }
     final client = getClient();
     final request = ListPropertiesRequest();
-    request.parent = subject;
-    request.view = View.FULL;
+    request.parent = parent;
+    request.pageSize = limit;
+    if (filter != null) {
+      request.filter = filter;
+    }
+    final token = tokens[offset];
+    if (token != null) {
+      request.pageToken = token;
+    }
     try {
-      return client.listProperties(request, options: callOptions());
+      final response =
+          await client.listProperties(request, options: callOptions());
+      tokens[offset + limit] = response.nextPageToken;
+      return response.properties;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 }
 
-class LabelsService {
-  static RegistryClient getClient() => RegistryClient(createClientChannel());
+class LabelService {
+  RegistryClient getClient() => RegistryClient(createClientChannel());
 
-  static Future<ListLabelsResponse> listLabels(String parent,
-      {subject: String}) {
+  BuildContext context;
+  String filter;
+  Map<int, String> tokens;
+  String parentName;
+
+  Future<List<Label>> getLabelsPage(int pageIndex) {
+    return _getLabels(
+        parent: parentName, offset: pageIndex * pageSize, limit: pageSize);
+  }
+
+  Future<List<Label>> _getLabels(
+      {parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
+    if (offset == 0) {
+      tokens = Map();
+    }
     final client = getClient();
     final request = ListLabelsRequest();
-    request.parent = subject;
+    request.parent = parent;
+    request.pageSize = limit;
+    if (filter != null) {
+      request.filter = filter;
+    }
+    final token = tokens[offset];
+    if (token != null) {
+      request.pageToken = token;
+    }
     try {
-      return client.listLabels(request, options: callOptions());
+      final response = await client.listLabels(request, options: callOptions());
+      tokens[offset + limit] = response.nextPageToken;
+      return response.labels;
     } catch (err) {
-      print('Caught error: $err');
-      return null;
+      reportError(context, err);
+      throw err;
     }
   }
 }

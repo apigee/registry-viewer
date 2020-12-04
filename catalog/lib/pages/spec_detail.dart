@@ -16,9 +16,10 @@ import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../components/spec_complexity.dart';
 import '../components/spec_detail.dart';
-import '../components/properties_list.dart';
+import '../components/property_list.dart';
 import '../components/spec_file.dart';
 import '../components/labels_list.dart';
+import '../components/property_detail.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String name;
@@ -27,9 +28,11 @@ class SpecDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
+
     Future.delayed(const Duration(), () {
       selection.updateSpecName(name.substring(1));
     });
+
     return SelectionProvider(
       selection: selection,
       child: Scaffold(
@@ -44,8 +47,9 @@ class SpecDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard(editable: true)),
-                Expanded(child: LabelsCard(SelectionProvider.spec)),
-                Expanded(child: PropertiesCard(SelectionProvider.spec)),
+                Expanded(child: LabelListCard(SelectionProvider.spec)),
+                Expanded(child: PropertyListCard(SelectionProvider.spec)),
+                Expanded(child: PropertyDetailCard(editable: true)),
                 Expanded(child: SpecComplexityCard()),
               ],
             ),

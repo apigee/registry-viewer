@@ -44,6 +44,7 @@ class Registry {
   Map<String, VersionManager> versionManagers = Map();
   Map<String, SpecManager> specManagers = Map();
   Map<String, PropertyManager> propertyManagers = Map();
+  Map<String, LabelManager> labelManagers = Map();
 
   ProjectManager getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -83,6 +84,14 @@ class Registry {
       propertyManagers[name] = PropertyManager(name);
     }
     return propertyManagers[name];
+  }
+
+  LabelManager getLabelManager(String name) {
+    Manager.removeUnused(labelManagers);
+    if (labelManagers[name] == null) {
+      labelManagers[name] = LabelManager(name);
+    }
+    return labelManagers[name];
   }
 }
 
@@ -259,7 +268,7 @@ class PropertyManager extends ResourceManager<Property> {
     return client.getProperty(request, options: callOptions());
   }
 
-  void update(Property newValue, List<String> paths) {
+  void update(Property newValue) {
     final client = getClient();
     final request = UpdatePropertyRequest();
     request.property = newValue;
@@ -271,5 +280,14 @@ class PropertyManager extends ResourceManager<Property> {
     } catch (err) {
       print('Caught error: $err');
     }
+  }
+}
+
+class LabelManager extends ResourceManager<Label> {
+  LabelManager(String name) : super(name);
+  Future<Label> fetchFuture(RegistryClient client) {
+    final request = GetLabelRequest();
+    request.name = name;
+    return client.getLabel(request, options: callOptions());
   }
 }

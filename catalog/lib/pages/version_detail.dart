@@ -18,7 +18,8 @@ import '../components/version_detail.dart';
 import '../components/spec_list.dart';
 import '../components/spec_detail.dart';
 import '../components/labels_list.dart';
-import '../components/properties_list.dart';
+import '../components/property_list.dart';
+import '../components/property_detail.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -27,9 +28,11 @@ class VersionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
+
     Future.delayed(const Duration(), () {
       selection.updateVersionName(name.substring(1));
     });
+
     return SelectionProvider(
       selection: selection,
       child: Scaffold(
@@ -44,8 +47,9 @@ class VersionDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: VersionDetailCard(editable: true)),
-                Expanded(child: LabelsCard(SelectionProvider.version)),
-                Expanded(child: PropertiesCard(SelectionProvider.version)),
+                Expanded(child: LabelListCard(SelectionProvider.version)),
+                Expanded(child: PropertyListCard(SelectionProvider.version)),
+                Expanded(child: PropertyDetailCard(editable: true)),
               ],
             ),
           ),

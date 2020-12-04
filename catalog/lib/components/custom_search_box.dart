@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../models/observable.dart';
+import '../models/string.dart';
 
 // CustomSearchBox provides a search box for projects.
 class CustomSearchBox extends StatelessWidget {

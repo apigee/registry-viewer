@@ -17,7 +17,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
 import '../models/version.dart';
-import '../models/observable.dart';
+import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 
@@ -129,6 +129,5 @@ class _VersionListViewState extends State<VersionListView> {
 
 // VersionSearchBox provides a search box for versions.
 class VersionSearchBox extends CustomSearchBox {
-  VersionSearchBox()
-      : super("Filter API versions", "version_id.contains('TEXT')");
+  VersionSearchBox() : super("Filter Versions", "version_id.contains('TEXT')");
 }

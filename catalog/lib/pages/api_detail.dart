@@ -18,7 +18,8 @@ import '../components/api_detail.dart';
 import '../components/version_detail.dart';
 import '../components/version_list.dart';
 import '../components/labels_list.dart';
-import '../components/properties_list.dart';
+import '../components/property_list.dart';
+import '../components/property_detail.dart';
 
 class ApiDetailPage extends StatelessWidget {
   final String name;
@@ -46,8 +47,9 @@ class ApiDetailPage extends StatelessWidget {
               flex: 3,
               child: Row(children: [
                 Expanded(child: ApiDetailCard(editable: true)),
-                Expanded(child: LabelsCard(SelectionProvider.api)),
-                Expanded(child: PropertiesCard(SelectionProvider.api)),
+                Expanded(child: LabelListCard(SelectionProvider.api)),
+                Expanded(child: PropertyListCard(SelectionProvider.api)),
+                Expanded(child: PropertyDetailCard(editable: true)),
               ]),
             ),
             Expanded(
