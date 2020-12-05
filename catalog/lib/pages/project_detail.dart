@@ -48,7 +48,6 @@ class ProjectDetailPage extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: ProjectDetailCard(editable: true)),
-                  Expanded(child: LabelListCard(SelectionProvider.project)),
                   Expanded(child: PropertyListCard(SelectionProvider.project)),
                   Expanded(child: PropertyDetailCard(editable: true)),
                 ],

@@ -68,7 +68,7 @@ class EditPropertyFormState extends State<EditPropertyForm> {
 
   @override
   void dispose() {
-    selection?.apiName?.removeListener(nameChangeListener);
+    selection?.propertyName?.removeListener(nameChangeListener);
     propertyManager?.removeListener(listener);
     stringValueController.dispose();
     super.dispose();
@@ -94,7 +94,7 @@ class EditPropertyFormState extends State<EditPropertyForm> {
               title: TextFormField(
                 controller: stringValueController,
               ),
-              subtitle: Text("Display Name"),
+              subtitle: Text("value (string)"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(

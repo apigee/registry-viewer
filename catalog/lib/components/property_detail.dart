@@ -16,10 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/property.dart';
-import 'detail_rows.dart';
+import '../components/detail_rows.dart';
 import '../service/registry.dart';
 import '../components/property_edit.dart';
 import '../helpers/extensions.dart';
+import 'package:catalog/generated/metrics/complexity.pb.dart';
 
 // PropertyDetailCard is a card that displays details about a property.
 class PropertyDetailCard extends StatefulWidget {
@@ -87,6 +88,22 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       return Card(child: Center(child: Text("select a property")));
     } else {
       Property property = propertyManager.value;
+
+      if (property.hasMessageValue()) {
+        final messageValue = property.messageValue;
+
+        switch (messageValue.typeUrl) {
+          case "gnostic.metrics.Complexity":
+            return complexityCard(property);
+        }
+
+        property.messageValue.value = List();
+      }
+
+      if (property.hasStringValue()) {
+        return stringCard(property);
+      }
+
       return Card(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -116,5 +133,100 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
         ),
       );
     }
+  }
+
+  Widget stringCard(Property property) {
+    Function editable = onlyIf(widget.editable, () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: EditPropertyForm(),
+              ),
+            );
+          });
+    });
+
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        child: Column(
+          children: [
+            ResourceNameButtonRow(
+                name: property.name.last(1), show: null, edit: editable),
+            SizedBox(height: 40),
+            BodyRow(property.stringValue),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget complexityCard(Property property) {
+    Complexity complexity =
+        new Complexity.fromBuffer(property.messageValue.value);
+    return Card(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Complexity",
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ),
+            Table(
+              border: TableBorder.symmetric(
+                  inside: BorderSide.none, outside: BorderSide.none),
+              columnWidths: {
+                0: IntrinsicColumnWidth(),
+                1: IntrinsicColumnWidth(),
+              },
+              children: [
+                row(context, "Paths", "${complexity.pathCount}"),
+                row(context, "Operations",
+                    "${complexity.getCount + complexity.postCount + complexity.putCount + complexity.deleteCount}"),
+                row(context, "Gets", "${complexity.getCount}"),
+                row(context, "Posts", "${complexity.postCount}"),
+                row(context, "Puts", "${complexity.putCount}"),
+                row(context, "Deletes", "${complexity.deleteCount}"),
+                row(context, "Schemas", "${complexity.schemaCount}"),
+                row(context, "Schema Properties",
+                    "${complexity.schemaPropertyCount}"),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TableRow row(BuildContext context, String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text(
+            label,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text(
+            value,
+            textAlign: TextAlign.left,
+          ),
+        ),
+      ],
+    );
   }
 }

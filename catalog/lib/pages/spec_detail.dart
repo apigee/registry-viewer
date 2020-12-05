@@ -14,7 +14,6 @@
 
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
-import '../components/spec_complexity.dart';
 import '../components/spec_detail.dart';
 import '../components/property_list.dart';
 import '../components/spec_file.dart';
@@ -50,7 +49,6 @@ class SpecDetailPage extends StatelessWidget {
                 Expanded(child: LabelListCard(SelectionProvider.spec)),
                 Expanded(child: PropertyListCard(SelectionProvider.spec)),
                 Expanded(child: PropertyDetailCard(editable: true)),
-                Expanded(child: SpecComplexityCard()),
               ],
             ),
           ),

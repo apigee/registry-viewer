@@ -20,6 +20,8 @@ import '../models/property.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 
 const int pageSize = 50;
 
@@ -132,9 +134,38 @@ class _PropertyListViewState extends State<PropertyListView> {
     );
   }
 
+  Widget widgetForPropertyValue(Property property) {
+    if (property.hasStringValue()) {
+      final value = property.stringValue;
+
+      return Linkify(
+        onOpen: (link) async {
+          if (await canLaunch(link.url)) {
+            await launch(link.url);
+          } else {
+            throw 'Could not launch $link';
+          }
+        },
+        text: value,
+        textAlign: TextAlign.right,
+        style: Theme.of(context).textTheme.bodyText1,
+        linkStyle:
+            Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.blue),
+      );
+    }
+    if (property.hasMessageValue()) {
+      return Text(
+        property.messageValue.typeUrl,
+        textAlign: TextAlign.right,
+      );
+    }
+    return Text("");
+  }
+
   Widget _itemBuilder(context, Property property, index) {
     return ListTile(
       title: Text(property.nameForDisplay()),
+      subtitle: widgetForPropertyValue(property),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

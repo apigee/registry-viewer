@@ -69,7 +69,7 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   @override
   void dispose() {
-    selection?.apiName?.removeListener(nameChangeListener);
+    selection?.projectName?.removeListener(nameChangeListener);
     projectManager?.removeListener(listener);
     displayNameController.dispose();
     descriptionController.dispose();
