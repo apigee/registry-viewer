@@ -4,7 +4,6 @@ ios
 linux
 macos
 test
-web
 
 # Generated Protocol Buffer support code.
 registry/lib/generated

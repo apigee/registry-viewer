@@ -1,7 +1,3 @@
-
-auth:
-	./third_party/registry/auth/CLOUDRUN.sh
-
 linux:
 	cd registry; flutter run -d linux
 
@@ -13,7 +9,7 @@ protos:
 	./tools/COMPILE-PROTOS.sh
 
 create:
-	flutter create registry
+	flutter create --no-overwrite registry
 	# we're not using this (yet)
 	rm -rf registry/test
 
