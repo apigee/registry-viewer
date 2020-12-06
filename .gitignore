@@ -7,5 +7,7 @@ test
 web
 
 # Generated Protocol Buffer support code.
-lib/generated
+registry/lib/generated
 
+# Copied assets staged for web deployment.
+site/public

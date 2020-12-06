@@ -28,7 +28,8 @@ RUN apk add --no-cache ca-certificates
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/web-server /web-server
 
-# Copy site assets to the production image from the builder stage.
+# Copy site assets to the production image from the local directory.
+# (if this fails, be sure that "public" isn't in .gitignore)
 COPY ./public /public
 
 # Run the web service on container startup.
