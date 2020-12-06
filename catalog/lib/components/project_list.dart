@@ -20,6 +20,7 @@ import '../models/project.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
+import 'filter.dart';
 
 const int pageSize = 50;
 
@@ -35,7 +36,7 @@ class ProjectListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            ProjectSearchBox(),
+            filterBar(context, ProjectSearchBox()),
             Expanded(child: ProjectListView(null)),
           ],
         ),

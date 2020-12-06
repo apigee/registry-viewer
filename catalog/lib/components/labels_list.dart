@@ -18,7 +18,10 @@ import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry
 import '../service/service.dart';
 import '../models/label.dart';
 import '../models/string.dart';
+import '../models/selection.dart';
 import 'custom_search_box.dart';
+import 'filter.dart';
+import 'label_add.dart';
 
 const int pageSize = 50;
 
@@ -61,12 +64,26 @@ class _LabelListCardState extends State<LabelListCard> {
 
   @override
   Widget build(BuildContext context) {
+    Function add = () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: AddLabelForm(),
+              ),
+            );
+          });
+    };
+
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
         child: Column(
           children: [
-            LabelSearchBox(),
+            filterBar(context, LabelSearchBox(), type: "label", add: add),
             Expanded(
               child: LabelListView(widget.getObservableResourceName, null),
             ),

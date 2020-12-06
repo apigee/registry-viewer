@@ -20,6 +20,7 @@ import '../models/api.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
+import 'filter.dart';
 
 const int pageSize = 50;
 
@@ -34,7 +35,7 @@ class ApiListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            ApiSearchBox(),
+            filterBar(context, ApiSearchBox()),
             Expanded(child: ApiListView(null)),
           ],
         ),

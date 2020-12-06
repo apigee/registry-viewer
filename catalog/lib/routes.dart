@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -60,7 +61,7 @@ class RegistryRouter {
   MaterialPageRoute generateRoute(RouteSettings settings) {
     print("routing " + settings.name);
 
-    if (kIsWeb) {
+    if (kIsWeb || Platform.isAndroid) {
       if ((settings.name == "/") ||
           (currentUser == null) ||
           (currentUserIsAuthorized == false)) {

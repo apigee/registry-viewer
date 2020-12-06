@@ -22,6 +22,7 @@ import '../models/selection.dart';
 import 'custom_search_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'filter.dart';
 
 const int pageSize = 50;
 
@@ -70,7 +71,7 @@ class _PropertyListCardState extends State<PropertyListCard> {
       child: Card(
         child: Column(
           children: [
-            PropertySearchBox(),
+            filterBar(context, PropertySearchBox()),
             Expanded(
               child: PropertyListView(widget.getObservableResourceName, null),
             ),
