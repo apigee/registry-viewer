@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:intl/intl.dart';
+import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
 
-extension Display on Label {
-  String nameForDisplay() {
-    return this.name.split("/").last;
-  }
+String format(Timestamp t) {
+  final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm a');
+  return formatter.format(DateTime.fromMillisecondsSinceEpoch(
+      t.seconds.toInt() * 1000,
+      isUtc: false));
 }

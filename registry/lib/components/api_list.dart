@@ -14,9 +14,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../service/service.dart';
-import '../models/spec.dart';
+import '../models/api.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
@@ -24,10 +24,10 @@ import 'filter.dart';
 
 const int pageSize = 50;
 
-typedef SpecSelectionHandler = Function(BuildContext context, Spec spec);
+typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 
-// SpecListCard is a card that displays a list of specs.
-class SpecListCard extends StatelessWidget {
+// ApiListCard is a card that displays a list of projects.
+class ApiListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -35,8 +35,8 @@ class SpecListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, SpecSearchBox()),
-            Expanded(child: SpecListView(null)),
+            filterBar(context, ApiSearchBox()),
+            Expanded(child: ApiListView(null)),
           ],
         ),
       ),
@@ -44,36 +44,37 @@ class SpecListCard extends StatelessWidget {
   }
 }
 
-// SpecListView is a scrollable ListView of specs.
-class SpecListView extends StatefulWidget {
-  final SpecSelectionHandler selectionHandler;
-  SpecListView(this.selectionHandler);
+// ApiListView is a scrollable ListView of apis.
+class ApiListView extends StatefulWidget {
+  final ApiSelectionHandler selectionHandler;
+  ApiListView(this.selectionHandler);
+
   @override
-  _SpecListViewState createState() => _SpecListViewState();
+  _ApiListViewState createState() => _ApiListViewState();
 }
 
-class _SpecListViewState extends State<SpecListView> {
-  String versionName;
-  PagewiseLoadController<Spec> pageLoadController;
-  SpecService specService;
+class _ApiListViewState extends State<ApiListView> {
+  String projectName;
+  PagewiseLoadController<Api> pageLoadController;
+  ApiService apiService;
   int selectedIndex = -1;
 
-  _SpecListViewState() {
-    specService = SpecService();
-    pageLoadController = PagewiseLoadController<Spec>(
+  _ApiListViewState() {
+    apiService = ApiService();
+    pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
   }
 
   @override
   void didChangeDependencies() {
     SelectionProvider.of(context)
-        .versionName
+        .projectName
         .addListener(() => setState(() {}));
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            specService.filter = filter.value;
+            apiService.filter = filter.value;
             pageLoadController.reset();
             selectedIndex = -1;
           }
@@ -83,29 +84,29 @@ class _SpecListViewState extends State<SpecListView> {
 
   @override
   Widget build(BuildContext context) {
-    specService.context = context;
-    if (specService.versionName !=
-        SelectionProvider.of(context).versionName.value) {
-      specService.versionName = SelectionProvider.of(context).versionName.value;
+    apiService.context = context;
+    if (apiService.projectName !=
+        SelectionProvider.of(context).projectName.value) {
+      apiService.projectName = SelectionProvider.of(context).projectName.value;
       pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
-      child: PagewiseListView<Spec>(
+      child: PagewiseListView<Api>(
         itemBuilder: this._itemBuilder,
         pageLoadController: pageLoadController,
       ),
     );
   }
 
-  Widget _itemBuilder(context, Spec spec, index) {
+  Widget _itemBuilder(context, Api api, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
         if ((selection != null) &&
-            ((selection.specName.value == null) ||
-                (selection.specName.value == ""))) {
-          selection.updateSpecName(spec.name);
+            ((selection.apiName.value == null) ||
+                (selection.apiName.value == ""))) {
+          selection.updateApiName(api.name);
           setState(() {
             selectedIndex = 0;
           });
@@ -114,8 +115,8 @@ class _SpecListViewState extends State<SpecListView> {
     }
 
     return ListTile(
-      title: Text(spec.nameForDisplay()),
-      subtitle: Text(spec.style),
+      title: Text(api.nameForDisplay()),
+      subtitle: Text(api.owner),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {
@@ -123,14 +124,14 @@ class _SpecListViewState extends State<SpecListView> {
           selectedIndex = index;
         });
         Selection selection = SelectionProvider.of(context);
-        selection?.updateSpecName(spec.name);
-        widget.selectionHandler?.call(context, spec);
+        selection?.updateApiName(api.name);
+        widget.selectionHandler?.call(context, api);
       },
     );
   }
 }
 
-// SpecSearchBox provides a search box for specs.
-class SpecSearchBox extends CustomSearchBox {
-  SpecSearchBox() : super("Filter Specs", "spec_id.contains('TEXT')");
+// ApiSearchBox provides a search box for apis.
+class ApiSearchBox extends CustomSearchBox {
+  ApiSearchBox() : super("Filter APIs", "api_id.contains('TEXT')");
 }

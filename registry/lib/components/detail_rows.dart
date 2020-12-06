@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import '../helpers/timestamp.dart';
-import 'package:catalog/generated/google/protobuf/timestamp.pb.dart';
+import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
 
 Function onlyIf(bool condition, Function action) {
   if (condition == null || !condition) {

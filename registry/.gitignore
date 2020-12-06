@@ -43,11 +43,14 @@ app.*.map.json
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+# Platform-specific files that can be regenerated with "flutter create".
 android
 ios
 linux
 macos
 test
 web
+
+# Generated Protocol Buffer support code.
 lib/generated
 

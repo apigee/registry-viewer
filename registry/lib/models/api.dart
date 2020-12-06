@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:catalog/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 
-extension Display on Version {
+extension Display on Api {
   String nameForDisplay() {
     if (this.displayName != "") {
       return this.displayName;
@@ -27,7 +27,8 @@ extension Display on Version {
     return "/" + this.name;
   }
 
-  String routeNameForSpecs() {
-    return "/" + this.name + "/specs";
+  String routeNameForVersions() {
+    final name = "/" + this.name + "/versions";
+    return name;
   }
 }

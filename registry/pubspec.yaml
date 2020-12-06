@@ -1,5 +1,5 @@
-name: catalog
-description: A new Flutter project.
+name: registry
+description: A graphical browser for the API Registry.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -24,16 +24,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_pagewise: ^1.2.3
-  http: ^0.12.1
+  archive: ^2.0.13
   async: '>=1.13.3 <3.0.0'
+  flutter_linkify: ^4.0.2
+  flutter_pagewise: ^1.2.3
+  google_sign_in: ^4.1.0
   grpc: ^2.8.0
+  http: ^0.12.1
+  intl: ^0.16.1
   protobuf: ^1.0.1
   url_launcher: ^5.4.5
-  google_sign_in: ^4.1.0
-  archive: ^2.0.13
-  intl: ^0.16.1
-  flutter_linkify: ^4.0.2
   
 dev_dependencies:
   flutter_test:

@@ -12,12 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:intl/intl.dart';
-import 'package:catalog/generated/google/protobuf/timestamp.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 
-String format(Timestamp t) {
-  final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm a');
-  return formatter.format(DateTime.fromMillisecondsSinceEpoch(
-      t.seconds.toInt() * 1000,
-      isUtc: false));
+extension Display on Version {
+  String nameForDisplay() {
+    if (this.displayName != "") {
+      return this.displayName;
+    } else {
+      return this.name.split("/").last;
+    }
+  }
+
+  String routeNameForDetail() {
+    return "/" + this.name;
+  }
+
+  String routeNameForSpecs() {
+    return "/" + this.name + "/specs";
+  }
 }
