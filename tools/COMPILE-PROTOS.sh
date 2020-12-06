@@ -12,7 +12,7 @@ export REGISTRY="third_party/registry"
 # This is a third_party directory containing message protos used to store API metrics.
 export GNOSTIC="third_party/gnostic"
 
-mkdir -p lib/generated 
+mkdir -p registry/lib/generated 
 
 echo "Generating Dart support code."
 protoc \
@@ -27,4 +27,4 @@ protoc \
 	${REGISTRY}/google/cloud/apigee/registry/v1alpha1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1alpha1/registry_service.proto \
 	${GNOSTIC}/metrics/complexity.proto \
-	--dart_out=grpc:lib/generated
+	--dart_out=grpc:registry/lib/generated
