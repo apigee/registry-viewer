@@ -27,6 +27,8 @@ const int pageSize = 50;
 typedef VersionSelectionHandler = Function(
     BuildContext context, Version version);
 
+PagewiseLoadController<Version> pageLoadController;
+
 // VersionListCard is a card that displays a list of versions.
 class VersionListCard extends StatelessWidget {
   @override
@@ -36,7 +38,8 @@ class VersionListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, VersionSearchBox()),
+            filterBar(context, VersionSearchBox(),
+                refresh: () => pageLoadController.reset()),
             Expanded(child: VersionListView(null)),
           ],
         ),
@@ -55,7 +58,7 @@ class VersionListView extends StatefulWidget {
 
 class _VersionListViewState extends State<VersionListView> {
   String apiName;
-  PagewiseLoadController<Version> pageLoadController;
+  // PagewiseLoadController<Version> pageLoadController;
   VersionService versionService;
   int selectedIndex = -1;
 

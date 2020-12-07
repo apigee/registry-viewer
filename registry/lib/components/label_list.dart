@@ -29,7 +29,7 @@ typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
 typedef LabelSelectionHandler = Function(BuildContext context, Label label);
 
-PagewiseLoadController<Label> pageLoadController;
+PagewiseLoadController<Label> pageLoadController; // hack
 
 // LabelListCard is a card that displays a list of labels.
 class LabelListCard extends StatefulWidget {
@@ -49,7 +49,6 @@ class _LabelListCardState extends State<LabelListCard> {
   }
 
   void listener() {
-    print("updating subject name for label list");
     pageLoadController?.reset();
     setState(() {
       subjectName = subjectNameManager.value;
@@ -88,7 +87,10 @@ class _LabelListCardState extends State<LabelListCard> {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, LabelSearchBox(), type: "label", add: add),
+            filterBar(context, LabelSearchBox(),
+                type: "label",
+                add: add,
+                refresh: () => pageLoadController.reset()),
             Expanded(
               child: LabelListView(widget.getObservableResourceName, null),
             ),

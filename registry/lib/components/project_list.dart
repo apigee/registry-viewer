@@ -27,6 +27,8 @@ const int pageSize = 50;
 typedef ProjectSelectionHandler = Function(
     BuildContext context, Project project);
 
+PagewiseLoadController<Project> pageLoadController;
+
 // ProjectListCard is a card that displays a list of projects.
 class ProjectListCard extends StatelessWidget {
   @override
@@ -36,7 +38,8 @@ class ProjectListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ProjectSearchBox()),
+            filterBar(context, ProjectSearchBox(),
+                refresh: () => pageLoadController.reset()),
             Expanded(child: ProjectListView(null)),
           ],
         ),
@@ -54,7 +57,7 @@ class ProjectListView extends StatefulWidget {
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
-  PagewiseLoadController<Project> pageLoadController;
+  // PagewiseLoadController<Project> pageLoadController;
   ProjectService projectService;
   int selectedIndex = -1;
 

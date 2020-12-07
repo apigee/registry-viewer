@@ -26,6 +26,8 @@ const int pageSize = 50;
 
 typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 
+PagewiseLoadController<Api> pageLoadController;
+
 // ApiListCard is a card that displays a list of projects.
 class ApiListCard extends StatelessWidget {
   @override
@@ -35,7 +37,8 @@ class ApiListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ApiSearchBox()),
+            filterBar(context, ApiSearchBox(),
+                refresh: () => pageLoadController.reset()),
             Expanded(child: ApiListView(null)),
           ],
         ),
@@ -55,7 +58,7 @@ class ApiListView extends StatefulWidget {
 
 class _ApiListViewState extends State<ApiListView> {
   String projectName;
-  PagewiseLoadController<Api> pageLoadController;
+  // PagewiseLoadController<Api> pageLoadController;
   ApiService apiService;
   int selectedIndex = -1;
 

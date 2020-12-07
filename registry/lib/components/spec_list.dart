@@ -26,6 +26,8 @@ const int pageSize = 50;
 
 typedef SpecSelectionHandler = Function(BuildContext context, Spec spec);
 
+PagewiseLoadController<Spec> pageLoadController;
+
 // SpecListCard is a card that displays a list of specs.
 class SpecListCard extends StatelessWidget {
   @override
@@ -35,7 +37,8 @@ class SpecListCard extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, SpecSearchBox()),
+            filterBar(context, SpecSearchBox(),
+                refresh: () => pageLoadController.reset()),
             Expanded(child: SpecListView(null)),
           ],
         ),
@@ -54,7 +57,7 @@ class SpecListView extends StatefulWidget {
 
 class _SpecListViewState extends State<SpecListView> {
   String versionName;
-  PagewiseLoadController<Spec> pageLoadController;
+  // PagewiseLoadController<Spec> pageLoadController;
   SpecService specService;
   int selectedIndex = -1;
 

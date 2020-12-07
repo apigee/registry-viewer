@@ -85,7 +85,7 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
     });
 
     if (propertyManager?.value == null) {
-      return Card(child: Center(child: Text("select a property")));
+      return Card(child: Center(child: Text("no property selected")));
     } else {
       Property property = propertyManager.value;
 

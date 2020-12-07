@@ -89,7 +89,9 @@ class _PropertyListCardState extends State<PropertyListCard> {
         child: Column(
           children: [
             filterBar(context, PropertySearchBox(),
-                type: "properties", add: add),
+                type: "properties",
+                add: add,
+                refresh: () => pageLoadController.reset()),
             Expanded(
               child: PropertyListView(widget.getObservableResourceName, null),
             ),
