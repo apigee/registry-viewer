@@ -17,16 +17,16 @@ import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registr
 import '../service/service.dart';
 import '../models/selection.dart';
 
-class AddLabelForm extends StatefulWidget {
+class AddPropertyForm extends StatefulWidget {
   final subjectName;
-  AddLabelForm(this.subjectName);
+  AddPropertyForm(this.subjectName);
   @override
-  AddLabelFormState createState() => AddLabelFormState();
+  AddPropertyFormState createState() => AddPropertyFormState();
 }
 
 // Define a corresponding State class.
 // This class holds data related to the form.
-class AddLabelFormState extends State<AddLabelForm> {
+class AddPropertyFormState extends State<AddPropertyForm> {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -51,12 +51,12 @@ class AddLabelFormState extends State<AddLabelForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Add a Label"),
+          Text("Add a Property"),
           ListTile(
             title: TextFormField(
               controller: stringValueController,
             ),
-            subtitle: Text("label name"),
+            subtitle: Text("property name"),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
@@ -87,12 +87,12 @@ class AddLabelFormState extends State<AddLabelForm> {
   void save(BuildContext context) {
     Selection selection = SelectionProvider.of(context);
     if (_formKey.currentState.validate()) {
-      Label label = Label();
-      label.subject = widget.subjectName;
-      label.label = stringValueController.text;
-      if (label.label != "") {
-        LabelService().create(label).then((Label label) {
-          selection.notifySubscribersOf(label.subject);
+      Property property = Property();
+      property.subject = widget.subjectName;
+      property.relation = stringValueController.text;
+      if (property.relation != "") {
+        PropertyService().create(property).then((Property property) {
+          selection.notifySubscribersOf(property.subject);
         });
       }
     }

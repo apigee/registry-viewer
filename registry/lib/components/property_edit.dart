@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 
@@ -93,6 +95,15 @@ class EditPropertyFormState extends State<EditPropertyForm> {
             ListTile(
               title: TextFormField(
                 controller: stringValueController,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(".*")),
+                ],
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
               subtitle: Text("value (string)"),
             ),
@@ -124,12 +135,21 @@ class EditPropertyFormState extends State<EditPropertyForm> {
   }
 
   void save(BuildContext context) {
+    Selection selection = SelectionProvider.of(context);
     if (propertyManager?.value != null && _formKey.currentState.validate()) {
       final property = propertyManager.value.clone();
       if (property.stringValue != stringValueController.text) {
         property.stringValue = stringValueController.text;
       }
-      propertyManager?.update(property);
+      propertyManager?.update(property)?.then((Property property) {
+        print("notifying ${property}");
+        String subject = property.subject;
+        if (subject == "") {
+          final parts = property.name.split("/");
+          subject = parts.sublist(0, parts.length - 2).join("/");
+        }
+        selection.notifySubscribersOf(subject);
+      });
     }
   }
 }

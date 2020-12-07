@@ -328,6 +328,20 @@ class PropertyService {
       throw err;
     }
   }
+
+  Future<Property> create(Property property) {
+    final client = getClient();
+    final request = CreatePropertyRequest();
+    request.property = property;
+    request.propertyId = property.relation;
+    request.parent = property.subject;
+    try {
+      return client.createProperty(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
+    }
+  }
 }
 
 class LabelService {
@@ -369,6 +383,20 @@ class LabelService {
     } catch (err) {
       reportError(context, err);
       throw err;
+    }
+  }
+
+  Future<Label> create(Label label) {
+    final client = getClient();
+    final request = CreateLabelRequest();
+    request.label = label;
+    request.labelId = label.label;
+    request.parent = label.subject;
+    try {
+      return client.createLabel(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
     }
   }
 }

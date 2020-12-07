@@ -23,6 +23,7 @@ import 'custom_search_box.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'filter.dart';
+import 'property_add.dart';
 
 const int pageSize = 50;
 
@@ -30,6 +31,8 @@ typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
 typedef PropertySelectionHandler = Function(
     BuildContext context, Property property);
+
+PagewiseLoadController<Property> pageLoadController; // hack
 
 // PropertyListCard is a card that displays a list of properties.
 class PropertyListCard extends StatefulWidget {
@@ -49,6 +52,7 @@ class _PropertyListCardState extends State<PropertyListCard> {
   }
 
   void listener() {
+    pageLoadController?.reset();
     setState(() {
       subjectName = subjectNameManager.value;
       if (subjectName == null) {
@@ -66,12 +70,26 @@ class _PropertyListCardState extends State<PropertyListCard> {
 
   @override
   Widget build(BuildContext context) {
+    Function add = () {
+      final selection = SelectionProvider.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return SelectionProvider(
+              selection: selection,
+              child: AlertDialog(
+                content: AddPropertyForm(subjectName),
+              ),
+            );
+          });
+    };
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
         child: Column(
           children: [
-            filterBar(context, PropertySearchBox()),
+            filterBar(context, PropertySearchBox(),
+                type: "properties", add: add),
             Expanded(
               child: PropertyListView(widget.getObservableResourceName, null),
             ),
@@ -93,7 +111,7 @@ class PropertyListView extends StatefulWidget {
 
 class _PropertyListViewState extends State<PropertyListView> {
   String parentName;
-  PagewiseLoadController<Property> pageLoadController;
+  //PagewiseLoadController<Property> pageLoadController;
   PropertyService propertyService;
   int selectedIndex = -1;
 

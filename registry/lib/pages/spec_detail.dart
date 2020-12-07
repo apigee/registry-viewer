@@ -17,7 +17,7 @@ import '../models/selection.dart';
 import '../components/spec_detail.dart';
 import '../components/property_list.dart';
 import '../components/spec_file.dart';
-import '../components/labels_list.dart';
+import '../components/label_list.dart';
 import '../components/property_detail.dart';
 
 class SpecDetailPage extends StatelessWidget {

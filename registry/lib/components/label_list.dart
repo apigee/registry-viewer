@@ -29,6 +29,8 @@ typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
 typedef LabelSelectionHandler = Function(BuildContext context, Label label);
 
+PagewiseLoadController<Label> pageLoadController;
+
 // LabelListCard is a card that displays a list of labels.
 class LabelListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
@@ -47,6 +49,8 @@ class _LabelListCardState extends State<LabelListCard> {
   }
 
   void listener() {
+    print("updating subject name for label list");
+    pageLoadController?.reset();
     setState(() {
       subjectName = subjectNameManager.value;
       if (subjectName == null) {
@@ -64,6 +68,7 @@ class _LabelListCardState extends State<LabelListCard> {
 
   @override
   Widget build(BuildContext context) {
+    print("rebuilding");
     Function add = () {
       final selection = SelectionProvider.of(context);
       showDialog(
@@ -72,7 +77,7 @@ class _LabelListCardState extends State<LabelListCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: AddLabelForm(),
+                content: AddLabelForm(subjectName),
               ),
             );
           });
@@ -105,7 +110,7 @@ class LabelListView extends StatefulWidget {
 
 class _LabelListViewState extends State<LabelListView> {
   String parentName;
-  PagewiseLoadController<Label> pageLoadController;
+  //PagewiseLoadController<Label> pageLoadController;
   LabelService labelService;
   int selectedIndex = -1;
 

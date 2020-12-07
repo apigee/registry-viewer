@@ -17,7 +17,7 @@ import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
-import '../components/labels_list.dart';
+import '../components/label_list.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
 

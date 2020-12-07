@@ -268,14 +268,17 @@ class PropertyManager extends ResourceManager<Property> {
     return client.getProperty(request, options: callOptions());
   }
 
-  void update(Property newValue) {
+  Future<Property> update(Property newValue) {
     final client = getClient();
     final request = UpdatePropertyRequest();
     request.property = newValue;
     try {
-      client.updateProperty(request, options: callOptions()).then((value) {
+      return client
+          .updateProperty(request, options: callOptions())
+          .then((value) {
         _value = value;
         notifyListeners();
+        return value;
       });
     } catch (err) {
       print('Caught error: $err');

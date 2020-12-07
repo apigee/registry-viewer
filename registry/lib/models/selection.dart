@@ -60,6 +60,22 @@ class Selection extends ChangeNotifier {
   void updatePropertyName(String property) {
     this.propertyName.update(property);
   }
+
+  void notifySubscribersOf(String subject) {
+    List<ObservableString> strings = [
+      this.projectName,
+      this.apiName,
+      this.versionName,
+      this.specName,
+      this.propertyName,
+      this.labelName,
+    ];
+    strings.forEach((v) {
+      if (v.value == subject) {
+        v.notifyListeners();
+      }
+    });
+  }
 }
 
 class SelectionProvider extends InheritedWidget {
