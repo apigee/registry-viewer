@@ -294,11 +294,12 @@ class Entry {
 // If the entry has children then it's displayed with an ExpansionTile.
 class EntryItem extends StatelessWidget {
   final Entry entry;
-
   const EntryItem(this.entry);
-
   Widget _buildTiles(Entry root) {
-    if (root.children.isEmpty) return ListTile(title: entryRow(root));
+    if (root.children.isEmpty)
+      return ListTile(
+        title: entryRow(root),
+      );
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
@@ -310,21 +311,21 @@ class EntryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return _buildTiles(entry);
   }
-}
 
-Row entryRow(Entry e) {
-  return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Expanded(
-      child: Container(
-        child: Text(
-          e.label,
-          style: TextStyle(
-            fontFamily: "Inconsolata",
-            fontWeight: FontWeight.bold,
+  Row entryRow(Entry e) {
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Expanded(
+        child: Container(
+          child: Text(
+            e.label,
+            style: TextStyle(
+              fontFamily: "Inconsolata",
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-    ),
-    Expanded(child: Container(child: Text(e.value))),
-  ]);
+      Expanded(child: Container(child: Text(e.value))),
+    ]);
+  }
 }
