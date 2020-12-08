@@ -142,13 +142,7 @@ class EditPropertyFormState extends State<EditPropertyForm> {
         property.stringValue = stringValueController.text;
       }
       propertyManager?.update(property)?.then((Property property) {
-        print("notifying ${property}");
-        String subject = property.subject;
-        if (subject == "") {
-          final parts = property.name.split("/");
-          subject = parts.sublist(0, parts.length - 2).join("/");
-        }
-        selection.notifySubscribersOf(subject);
+        selection.notifySubscribersOf(property.subject);
       });
     }
   }
