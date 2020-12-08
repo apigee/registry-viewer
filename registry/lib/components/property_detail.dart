@@ -21,6 +21,7 @@ import '../service/registry.dart';
 import '../components/property_edit.dart';
 import '../helpers/extensions.dart';
 import 'package:registry/generated/metrics/complexity.pb.dart';
+import 'package:registry/generated/metrics/vocabulary.pb.dart';
 
 // PropertyDetailCard is a card that displays details about a property.
 class PropertyDetailCard extends StatefulWidget {
@@ -70,19 +71,7 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       );
     });
 
-    Function editable = onlyIf(widget.editable, () {
-      final selection = SelectionProvider.of(context);
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return SelectionProvider(
-              selection: selection,
-              child: AlertDialog(
-                content: EditPropertyForm(),
-              ),
-            );
-          });
-    });
+    Function editable;
 
     if (propertyManager?.value == null) {
       return Card(child: Center(child: Text("no property selected")));
@@ -90,20 +79,22 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       Property property = propertyManager.value;
 
       if (property.hasMessageValue()) {
-        final messageValue = property.messageValue;
-
-        switch (messageValue.typeUrl) {
+        switch (property.messageValue.typeUrl) {
           case "gnostic.metrics.Complexity":
-            return complexityCard(property);
+            return ComplexityPropertyCard(property);
+          case "gnostic.metrics.Vocabulary":
+            return VocabularyPropertyCard(property);
         }
 
+        // if we don't recognize this message, clear it out to not overflow the display
         property.messageValue.value = List();
       }
 
       if (property.hasStringValue()) {
-        return stringCard(property);
+        return StringPropertyCard(property, editable: widget.editable);
       }
 
+      // otherwise return a default display of the property
       return Card(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -134,9 +125,15 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       );
     }
   }
+}
 
-  Widget stringCard(Property property) {
-    Function editable = onlyIf(widget.editable, () {
+class StringPropertyCard extends StatelessWidget {
+  final Property property;
+  final bool editable;
+  StringPropertyCard(this.property, {this.editable});
+
+  Widget build(BuildContext context) {
+    Function editableFn = onlyIf(editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
@@ -156,7 +153,7 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
         child: Column(
           children: [
             ResourceNameButtonRow(
-                name: property.name.last(1), show: null, edit: editable),
+                name: property.name.last(1), show: null, edit: editableFn),
             SizedBox(height: 40),
             BodyRow(property.stringValue),
           ],
@@ -164,8 +161,13 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       ),
     );
   }
+}
 
-  Widget complexityCard(Property property) {
+class ComplexityPropertyCard extends StatelessWidget {
+  final Property property;
+  ComplexityPropertyCard(this.property);
+
+  Widget build(BuildContext context) {
     Complexity complexity =
         new Complexity.fromBuffer(property.messageValue.value);
     return Card(
@@ -229,4 +231,100 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       ],
     );
   }
+}
+
+class VocabularyPropertyCard extends StatelessWidget {
+  final Property property;
+  VocabularyPropertyCard(this.property);
+
+  Widget build(BuildContext context) {
+    Vocabulary vocabulary =
+        new Vocabulary.fromBuffer(property.messageValue.value);
+    List<Entry> data = List();
+    data.add(entryForWordCounts("schemas", vocabulary.schemas));
+    data.add(entryForWordCounts("properties", vocabulary.properties));
+    data.add(entryForWordCounts("operations", vocabulary.operations));
+    data.add(entryForWordCounts("parameters", vocabulary.parameters));
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Vocabulary",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+          Expanded(
+            child: Scrollbar(
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) =>
+                    EntryItem(data[index]),
+                itemCount: data.length,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Entry entryForWordCounts(String name, List<WordCount> wordCounts) {
+    List<Entry> children = List();
+    wordCounts.forEach((WordCount wc) {
+      children.add(Entry(wc.word, "${wc.count}"));
+    });
+    String length = wordCounts.length > 0 ? "${wordCounts.length}" : "";
+    return Entry(name, length, children);
+  }
+}
+
+// One entry in the multilevel list displayed by this app.
+class Entry {
+  Entry(this.label, this.value, [this.children = const <Entry>[]]);
+  final String label;
+  final String value;
+  final List<Entry> children;
+}
+
+// Displays one Entry.
+// If the entry has children then it's displayed with an ExpansionTile.
+class EntryItem extends StatelessWidget {
+  final Entry entry;
+
+  const EntryItem(this.entry);
+
+  Widget _buildTiles(Entry root) {
+    if (root.children.isEmpty) return ListTile(title: entryRow(root));
+    return ExpansionTile(
+      key: PageStorageKey<Entry>(root),
+      title: entryRow(root),
+      children: root.children.map(_buildTiles).toList(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildTiles(entry);
+  }
+}
+
+Row entryRow(Entry e) {
+  return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Expanded(
+      child: Container(
+        child: Text(
+          e.label,
+          style: TextStyle(
+            fontFamily: "Inconsolata",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ),
+    Expanded(child: Container(child: Text(e.value))),
+  ]);
 }
