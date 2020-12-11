@@ -15,12 +15,15 @@
 import 'package:grpc/grpc_web.dart' show GrpcWebClientChannel;
 import 'package:grpc/grpc.dart' as grpc;
 import '../pages/signin.dart';
+import 'dart:html' as html;
 
-// web app needs an openly-available test server
-String url = "https://registry-backend-bsrnqp6kxq-uk.a.run.app";
+GrpcWebClientChannel createClientChannel() {
+  String url = html
+      .querySelector('meta[name=registry-service]')
+      ?.getAttribute('content');
 
-GrpcWebClientChannel createClientChannel() =>
-    GrpcWebClientChannel.xhr(Uri.parse(url));
+  return GrpcWebClientChannel.xhr(Uri.parse(url));
+}
 
 grpc.CallOptions callOptions() {
   String token = currentUserToken;
