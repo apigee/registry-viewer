@@ -22,6 +22,7 @@ import '../models/selection.dart';
 import 'custom_search_box.dart';
 import 'filter.dart';
 import 'label_add.dart';
+import 'label_delete.dart';
 
 const int pageSize = 50;
 
@@ -157,6 +158,25 @@ class _LabelListViewState extends State<LabelListView> {
     return ListTile(
       title: Text(label.nameForDisplay()),
       selected: index == selectedIndex,
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.delete),
+        tooltip: "delete",
+        onPressed: () {
+          final selection = SelectionProvider.of(context);
+          selection.updateLabelName(label.name);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SelectionProvider(
+                  selection: selection,
+                  child: AlertDialog(
+                    content: DeleteLabelForm(),
+                  ),
+                );
+              });
+        },
+      ),
       dense: false,
       onTap: () async {
         setState(() {

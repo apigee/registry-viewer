@@ -293,4 +293,12 @@ class LabelManager extends ResourceManager<Label> {
     request.name = name;
     return client.getLabel(request, options: callOptions());
   }
+
+  Future delete(String name) {
+    final request = DeleteLabelRequest();
+    request.name = name;
+    return getClient()
+        .deleteLabel(request, options: callOptions())
+        .then((empty) => Future);
+  }
 }
