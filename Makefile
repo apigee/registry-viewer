@@ -1,6 +1,9 @@
 linux:
 	cd registry; flutter run -d linux
 
+macos:
+	cd registry; flutter run -d macos
+
 web:
 	cd registry; flutter run -d web --web-hostname localhost --web-port 8888
 
