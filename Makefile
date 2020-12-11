@@ -21,7 +21,7 @@ clean:
 	rm -rf registry/lib/generated
 
 clobber: clean
-	rm -rf registry/ios registry/android registry/ios registry/linux registry/web 
+	rm -rf registry/ios registry/android registry/ios registry/linux 
 	rm -rf registry/registry.iml
 	rm -rf third_party/api-common-protos third_party/gnostic third_party/registry
 	rm -rf site/public
