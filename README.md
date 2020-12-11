@@ -3,8 +3,8 @@
 This repository contains a graphical viewer for the
 [Registry API](https://github.com/apigee/registry). The viewer is written with
 [Flutter](https://flutter.dev), which allows it to be run on many platforms. It
-is developed on Linux, MacOS, and web, and this repository includes support for
-web deployments on Google Cloud Run.
+is developed on the Linux, MacOS, and web platforms, and this repository
+includes support for web deployments on Google Cloud Run.
 
 ## The Registry Viewer
 
@@ -110,6 +110,36 @@ questions, including this one:
 `Allow unauthenticated invocations to [registry-backend] (y/N)?`
 
 You will need to answer "y" to be able to access your application.
+
+## Configuring web builds
+
+Web builds of the Registry Viewer require two configuration strings that are
+specified as meta tags in [registry/web/index.html](registry/web/index.html):
+
+- `google-signin-client_id` is the OAuth Client ID used by the
+  [Google Signin](https://pub.dev/packages/google_sign_in) package to identify
+  your client application. Helpful instructions for creating your application
+  ID are [here](https://dev.to/happyharis/flutter-web-google-sign-in-42bb) and
+  web-specific package documentation is
+  [here](https://pub.dev/packages/google_sign_in_web). Application ID creation
+  includes setting authorized JavaScript origins to enable your implementation
+  to call the
+  [Google Signin API](https://developers.google.com/identity/sign-in/web).
+
+- `registry-server` is the URL of your Registry API server (backend). Note that
+  because web deployments run in browsers, a
+  [grpc-web](https://github.com/grpc/grpc-web) interface to the Registry API is
+  required. To support this, the [registry](https://github.com/apigee/registry)
+  distribution includes
+  [Envoy configuration](https://github.com/apigee/registry/tree/main/deployments/envoy)
+  that allows Envoy to proxy grpc-web connections and the Cloud Run deployments
+  supported by the
+  [registry Makefile](https://github.com/apigee/registry/blob/main/Makefile)
+  include this configured proxy.
+
+The Google Signin component provides ids of authenticated users. To authorize
+these users, adjust the variables in
+[registry/lib/authorizations.dart](registry/lib/authorizations.dart).
 
 ## License
 
