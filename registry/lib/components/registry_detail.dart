@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'detail_rows.dart';
 
 class RegistryDetailCard extends StatelessWidget {
@@ -37,6 +39,24 @@ class RegistryDetailCard extends StatelessWidget {
                     SizedBox(height: 10),
                     BodyRow(
                         "Each project below contains a sample API collection that might be built by an API Registry user."),
+                    SizedBox(height: 10),
+                    Linkify(
+                      onOpen: (link) async {
+                        if (await canLaunch(link.url)) {
+                          await launch(link.url);
+                        } else {
+                          throw 'Could not launch $link';
+                        }
+                      },
+                      text:
+                          "See https://apigee.github.io/registry to learn more about the API behind the API Registry.",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      linkStyle: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(color: Colors.blue),
+                    ),
                   ],
                 ),
               ),
