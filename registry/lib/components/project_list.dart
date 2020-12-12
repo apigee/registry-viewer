@@ -108,18 +108,30 @@ class _ProjectListViewState extends State<ProjectListView> {
     }
 
     return ListTile(
-        title: Text(project.nameForDisplay()),
-        subtitle: Text(project.description),
-        selected: index == selectedIndex,
-        dense: false,
-        onTap: () async {
-          setState(() {
-            selectedIndex = index;
-          });
-          Selection selection = SelectionProvider.of(context);
-          selection?.updateProjectName(project.name);
-          widget.selectionHandler?.call(context, project);
+      title: Text(project.nameForDisplay()),
+      subtitle: Text(project.description),
+      selected: index == selectedIndex,
+      dense: false,
+      onTap: () async {
+        setState(() {
+          selectedIndex = index;
         });
+        Selection selection = SelectionProvider.of(context);
+        selection?.updateProjectName(project.name);
+        widget.selectionHandler?.call(context, project);
+      },
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.open_in_new),
+        tooltip: "open",
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            project.routeNameForDetail(),
+          );
+        },
+      ),
+    );
   }
 }
 

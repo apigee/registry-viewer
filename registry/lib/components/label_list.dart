@@ -30,8 +30,6 @@ typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
 typedef LabelSelectionHandler = Function(BuildContext context, Label label);
 
-PagewiseLoadController<Label> pageLoadController; // hack
-
 // LabelListCard is a card that displays a list of labels.
 class LabelListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
@@ -44,6 +42,15 @@ class LabelListCard extends StatefulWidget {
 class _LabelListCardState extends State<LabelListCard> {
   ObservableString subjectNameManager;
   String subjectName;
+  LabelService labelService;
+  PagewiseLoadController<Label> pageLoadController;
+
+  _LabelListCardState() {
+    labelService = LabelService();
+    pageLoadController = PagewiseLoadController<Label>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => labelService.getLabelsPage(pageIndex));
+  }
 
   String projectName() {
     return subjectName.split("/").sublist(0, 2).join("/");
@@ -93,7 +100,12 @@ class _LabelListCardState extends State<LabelListCard> {
                 add: add,
                 refresh: () => pageLoadController.reset()),
             Expanded(
-              child: LabelListView(widget.getObservableResourceName, null),
+              child: LabelListView(
+                widget.getObservableResourceName,
+                null,
+                labelService,
+                pageLoadController,
+              ),
             ),
           ],
         ),
@@ -106,31 +118,29 @@ class _LabelListCardState extends State<LabelListCard> {
 class LabelListView extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
   final LabelSelectionHandler selectionHandler;
-  LabelListView(this.getObservableResourceName, this.selectionHandler);
+  final LabelService labelService;
+  final PagewiseLoadController<Label> pageLoadController;
+  LabelListView(
+    this.getObservableResourceName,
+    this.selectionHandler,
+    this.labelService,
+    this.pageLoadController,
+  );
   @override
   _LabelListViewState createState() => _LabelListViewState();
 }
 
 class _LabelListViewState extends State<LabelListView> {
   String parentName;
-  //PagewiseLoadController<Label> pageLoadController;
-  LabelService labelService;
   int selectedIndex = -1;
-
-  _LabelListViewState() {
-    labelService = LabelService();
-    pageLoadController = PagewiseLoadController<Label>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => labelService.getLabelsPage(pageIndex));
-  }
 
   @override
   void didChangeDependencies() {
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            labelService.filter = filter.value;
-            pageLoadController.reset();
+            widget.labelService.filter = filter.value;
+            widget.pageLoadController.reset();
             selectedIndex = -1;
           }
         }));
@@ -139,17 +149,17 @@ class _LabelListViewState extends State<LabelListView> {
 
   @override
   Widget build(BuildContext context) {
-    labelService.context = context;
+    widget.labelService.context = context;
     String subjectName = widget.getObservableResourceName(context).value;
-    if (labelService.parentName != subjectName) {
-      labelService.parentName = subjectName;
-      pageLoadController.reset();
+    if (widget.labelService.parentName != subjectName) {
+      widget.labelService.parentName = subjectName;
+      widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
       child: PagewiseListView<Label>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }

@@ -284,6 +284,14 @@ class PropertyManager extends ResourceManager<Property> {
       print('Caught error: $err');
     }
   }
+
+  Future delete(String name) {
+    final request = DeletePropertyRequest();
+    request.name = name;
+    return getClient()
+        .deleteProperty(request, options: callOptions())
+        .then((empty) => Future);
+  }
 }
 
 class LabelManager extends ResourceManager<Label> {

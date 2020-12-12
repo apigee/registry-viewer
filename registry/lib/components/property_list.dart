@@ -24,6 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'filter.dart';
 import 'property_add.dart';
+import 'property_delete.dart';
 
 const int pageSize = 50;
 
@@ -31,8 +32,6 @@ typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
 typedef PropertySelectionHandler = Function(
     BuildContext context, Property property);
-
-PagewiseLoadController<Property> pageLoadController; // hack
 
 // PropertyListCard is a card that displays a list of properties.
 class PropertyListCard extends StatefulWidget {
@@ -46,6 +45,17 @@ class PropertyListCard extends StatefulWidget {
 class _PropertyListCardState extends State<PropertyListCard> {
   ObservableString subjectNameManager;
   String subjectName;
+
+  PropertyService propertyService;
+  PagewiseLoadController<Property> pageLoadController;
+
+  _PropertyListCardState() {
+    propertyService = PropertyService();
+    pageLoadController = PagewiseLoadController<Property>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) =>
+            propertyService.getPropertiesPage(pageIndex));
+  }
 
   String projectName() {
     return subjectName.split("/").sublist(0, 2).join("/");
@@ -93,7 +103,12 @@ class _PropertyListCardState extends State<PropertyListCard> {
                 add: add,
                 refresh: () => pageLoadController.reset()),
             Expanded(
-              child: PropertyListView(widget.getObservableResourceName, null),
+              child: PropertyListView(
+                widget.getObservableResourceName,
+                null,
+                propertyService,
+                pageLoadController,
+              ),
             ),
           ],
         ),
@@ -106,32 +121,29 @@ class _PropertyListCardState extends State<PropertyListCard> {
 class PropertyListView extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
   final PropertySelectionHandler selectionHandler;
-  PropertyListView(this.getObservableResourceName, this.selectionHandler);
+  final PropertyService propertyService;
+  final PagewiseLoadController<Property> pageLoadController;
+  PropertyListView(
+    this.getObservableResourceName,
+    this.selectionHandler,
+    this.propertyService,
+    this.pageLoadController,
+  );
   @override
   _PropertyListViewState createState() => _PropertyListViewState();
 }
 
 class _PropertyListViewState extends State<PropertyListView> {
   String parentName;
-  //PagewiseLoadController<Property> pageLoadController;
-  PropertyService propertyService;
   int selectedIndex = -1;
-
-  _PropertyListViewState() {
-    propertyService = PropertyService();
-    pageLoadController = PagewiseLoadController<Property>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            propertyService.getPropertiesPage(pageIndex));
-  }
 
   @override
   void didChangeDependencies() {
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            propertyService.filter = filter.value;
-            pageLoadController.reset();
+            widget.propertyService.filter = filter.value;
+            widget.pageLoadController.reset();
             selectedIndex = -1;
           }
         }));
@@ -140,17 +152,17 @@ class _PropertyListViewState extends State<PropertyListView> {
 
   @override
   Widget build(BuildContext context) {
-    propertyService.context = context;
+    widget.propertyService.context = context;
     String subjectName = widget.getObservableResourceName(context).value;
-    if (propertyService.parentName != subjectName) {
-      propertyService.parentName = subjectName;
-      pageLoadController.reset();
+    if (widget.propertyService.parentName != subjectName) {
+      widget.propertyService.parentName = subjectName;
+      widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
       child: PagewiseListView<Property>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }
@@ -168,7 +180,7 @@ class _PropertyListViewState extends State<PropertyListView> {
           }
         },
         text: value,
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.bodyText1,
         linkStyle:
             Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.blue),
@@ -177,7 +189,7 @@ class _PropertyListViewState extends State<PropertyListView> {
     if (property.hasMessageValue()) {
       return Text(
         property.messageValue.typeUrl,
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.left,
       );
     }
     return Text("");
@@ -188,6 +200,25 @@ class _PropertyListViewState extends State<PropertyListView> {
       title: Text(property.nameForDisplay()),
       subtitle: widgetForPropertyValue(property),
       selected: index == selectedIndex,
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.delete),
+        tooltip: "delete",
+        onPressed: () {
+          final selection = SelectionProvider.of(context);
+          selection.updatePropertyName(property.name);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SelectionProvider(
+                  selection: selection,
+                  child: AlertDialog(
+                    content: DeletePropertyForm(),
+                  ),
+                );
+              });
+        },
+      ),
       dense: false,
       onTap: () async {
         setState(() {

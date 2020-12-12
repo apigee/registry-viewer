@@ -127,6 +127,17 @@ class _VersionListViewState extends State<VersionListView> {
         selection?.updateVersionName(version.name);
         widget.selectionHandler?.call(context, version);
       },
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.open_in_new),
+        tooltip: "open",
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            version.routeNameForDetail(),
+          );
+        },
+      ),
     );
   }
 }

@@ -16,7 +16,7 @@
 #
 
 #
-# Compile .proto files into the files needed to build the registry browser.
+# Compile .proto files into the files needed to build the registry viewer.
 #
 
 # This points to the .proto files distributed with protoc.

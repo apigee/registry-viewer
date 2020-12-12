@@ -130,6 +130,17 @@ class _ApiListViewState extends State<ApiListView> {
         selection?.updateApiName(api.name);
         widget.selectionHandler?.call(context, api);
       },
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.open_in_new),
+        tooltip: "open",
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            api.routeNameForDetail(),
+          );
+        },
+      ),
     );
   }
 }
