@@ -19,6 +19,7 @@ import '../models/spec.dart';
 import 'detail_rows.dart';
 import '../service/registry.dart';
 import '../components/spec_edit.dart';
+import '../helpers/extensions.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -86,21 +87,21 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     } else {
       Spec spec = specManager.value;
       return Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ResourceNameButtonRow(
+              name: spec.name.last(2),
+              show: selflink,
+              edit: editable,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResourceNameButtonRow(
-                        name: spec.name.split("/").sublist(6).join("/"),
-                        show: selflink,
-                        edit: editable,
-                      ),
                       SizedBox(height: 10),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
@@ -117,8 +118,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }

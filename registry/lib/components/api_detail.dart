@@ -92,20 +92,20 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     } else {
       final api = apiManager.value;
       return Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ResourceNameButtonRow(
+                name: api.name.split("/").sublist(2).join("/"),
+                show: selflink,
+                edit: editable),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResourceNameButtonRow(
-                          name: api.name.split("/").sublist(2).join("/"),
-                          show: selflink,
-                          edit: editable),
                       SizedBox(height: 10),
                       TitleRow(api.displayName, action: selflink),
                       SizedBox(height: 10),
@@ -119,8 +119,8 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }

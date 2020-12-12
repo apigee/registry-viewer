@@ -30,35 +30,43 @@ class ResourceNameButtonRow extends StatelessWidget {
   ResourceNameButtonRow({this.name, this.show, this.edit});
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        if (show == null) Text(name),
-        if (show != null)
-          GestureDetector(
-            child: Text(
+    return Container(
+      color: Theme.of(context).secondaryHeaderColor,
+      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          if (show == null)
+            Text(
               name,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: Colors.blue),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-            onTap: show,
-          ),
-        if (edit != null)
-          GestureDetector(
-            child: Text(
-              "EDIT",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: Colors.blue),
-              textAlign: TextAlign.right,
+          if (show != null)
+            GestureDetector(
+              child: Text(
+                name,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Colors.blue),
+              ),
+              onTap: show,
             ),
-            onTap: edit != null ? edit : () {},
-          ),
-      ],
+          if (edit != null)
+            GestureDetector(
+              child: Text(
+                "EDIT",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Colors.blue),
+                textAlign: TextAlign.right,
+              ),
+              onTap: edit != null ? edit : () {},
+            ),
+        ],
+      ),
     );
   }
 }

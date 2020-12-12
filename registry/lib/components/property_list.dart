@@ -45,7 +45,6 @@ class PropertyListCard extends StatefulWidget {
 class _PropertyListCardState extends State<PropertyListCard> {
   ObservableString subjectNameManager;
   String subjectName;
-
   PropertyService propertyService;
   PagewiseLoadController<Property> pageLoadController;
 
@@ -200,25 +199,6 @@ class _PropertyListViewState extends State<PropertyListView> {
       title: Text(property.nameForDisplay()),
       subtitle: widgetForPropertyValue(property),
       selected: index == selectedIndex,
-      trailing: IconButton(
-        color: Colors.black,
-        icon: Icon(Icons.delete),
-        tooltip: "delete",
-        onPressed: () {
-          final selection = SelectionProvider.of(context);
-          selection.updatePropertyName(property.name);
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SelectionProvider(
-                  selection: selection,
-                  child: AlertDialog(
-                    content: DeletePropertyForm(),
-                  ),
-                );
-              });
-        },
-      ),
       dense: false,
       onTap: () async {
         setState(() {

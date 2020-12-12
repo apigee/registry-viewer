@@ -118,8 +118,10 @@ class _ApiListViewState extends State<ApiListView> {
     }
 
     return ListTile(
-      title: Text(api.nameForDisplay()),
-      subtitle: Text(api.owner),
+      title: Text(api.name.split("/").sublist(2).join("/"),
+          style: Theme.of(context).textTheme.bodyText2),
+      subtitle: Text(api.nameForDisplay(),
+          style: Theme.of(context).textTheme.headline6),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

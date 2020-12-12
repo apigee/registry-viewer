@@ -87,18 +87,18 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     } else {
       Project project = projectManager.value;
       return Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ResourceNameButtonRow(
+                name: project.name, show: selflink, edit: editable),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResourceNameButtonRow(
-                          name: project.name, show: selflink, edit: editable),
                       SizedBox(height: 10),
                       TitleRow(project.displayName, action: selflink),
                       SizedBox(height: 10),
@@ -112,8 +112,8 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }

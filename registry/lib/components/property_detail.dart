@@ -148,16 +148,20 @@ class StringPropertyCard extends StatelessWidget {
     });
 
     return Card(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: Column(
-          children: [
-            ResourceNameButtonRow(
-                name: property.name.last(1), show: null, edit: editableFn),
-            SizedBox(height: 40),
-            BodyRow(property.stringValue),
-          ],
-        ),
+      child: Column(
+        children: [
+          ResourceNameButtonRow(
+              name: property.name.last(1), show: null, edit: editableFn),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                BodyRow(property.stringValue),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -171,41 +175,48 @@ class ComplexityPropertyCard extends StatelessWidget {
     Complexity complexity =
         new Complexity.fromBuffer(property.messageValue.value);
     return Card(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Complexity",
-                style: Theme.of(context).textTheme.headline4,
+      child: Column(
+        children: [
+          ResourceNameButtonRow(
+            name: property.name.last(1),
+            show: null,
+            edit: null,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Table(
+                      border: TableBorder.symmetric(
+                          inside: BorderSide.none, outside: BorderSide.none),
+                      columnWidths: {
+                        0: IntrinsicColumnWidth(),
+                        1: FlexColumnWidth(),
+                      },
+                      children: [
+                        row(context, "Paths", "${complexity.pathCount}"),
+                        row(context, "Operations",
+                            "${complexity.getCount + complexity.postCount + complexity.putCount + complexity.deleteCount}"),
+                        row(context, "Gets", "${complexity.getCount}"),
+                        row(context, "Posts", "${complexity.postCount}"),
+                        row(context, "Puts", "${complexity.putCount}"),
+                        row(context, "Deletes", "${complexity.deleteCount}"),
+                        row(context, "Schemas", "${complexity.schemaCount}"),
+                        row(context, "Schema Properties",
+                            "${complexity.schemaPropertyCount}"),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            Table(
-              border: TableBorder.symmetric(
-                  inside: BorderSide.none, outside: BorderSide.none),
-              columnWidths: {
-                0: IntrinsicColumnWidth(),
-                1: IntrinsicColumnWidth(),
-              },
-              children: [
-                row(context, "Paths", "${complexity.pathCount}"),
-                row(context, "Operations",
-                    "${complexity.getCount + complexity.postCount + complexity.putCount + complexity.deleteCount}"),
-                row(context, "Gets", "${complexity.getCount}"),
-                row(context, "Posts", "${complexity.postCount}"),
-                row(context, "Puts", "${complexity.putCount}"),
-                row(context, "Deletes", "${complexity.deleteCount}"),
-                row(context, "Schemas", "${complexity.schemaCount}"),
-                row(context, "Schema Properties",
-                    "${complexity.schemaPropertyCount}"),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -251,12 +262,10 @@ class VocabularyPropertyCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Vocabulary",
-              style: Theme.of(context).textTheme.headline4,
-            ),
+          ResourceNameButtonRow(
+            name: property.name.last(1),
+            show: null,
+            edit: null,
           ),
           Expanded(
             child: Scrollbar(
@@ -299,10 +308,12 @@ class EntryItem extends StatelessWidget {
     if (root.children.isEmpty)
       return ListTile(
         title: entryRow(root),
+        visualDensity: VisualDensity.compact,
       );
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
+      visualDensity: VisualDensity.compact,
       children: root.children.map(_buildTiles).toList(),
     );
   }

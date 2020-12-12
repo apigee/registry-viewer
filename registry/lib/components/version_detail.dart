@@ -86,21 +86,21 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     } else {
       Version version = versionManager.value;
       return Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ResourceNameButtonRow(
+              name: version.name.split("/").sublist(4).join("/"),
+              show: selflink,
+              edit: editable,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResourceNameButtonRow(
-                        name: version.name.split("/").sublist(4).join("/"),
-                        show: selflink,
-                        edit: editable,
-                      ),
                       SizedBox(height: 10),
                       TitleRow(version.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
@@ -115,8 +115,8 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
