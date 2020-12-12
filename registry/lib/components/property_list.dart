@@ -208,6 +208,25 @@ class _PropertyListViewState extends State<PropertyListView> {
         selection?.updatePropertyName(property.name);
         widget.selectionHandler?.call(context, property);
       },
+      trailing: IconButton(
+        color: Colors.black,
+        icon: Icon(Icons.delete),
+        tooltip: "delete",
+        onPressed: () {
+          final selection = SelectionProvider.of(context);
+          selection.updatePropertyName(property.name);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SelectionProvider(
+                  selection: selection,
+                  child: AlertDialog(
+                    content: DeletePropertyForm(),
+                  ),
+                );
+              });
+        },
+      ),
     );
   }
 }

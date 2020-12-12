@@ -313,7 +313,6 @@ class EntryItem extends StatelessWidget {
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
-      visualDensity: VisualDensity.compact,
       children: root.children.map(_buildTiles).toList(),
     );
   }
