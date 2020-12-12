@@ -57,7 +57,9 @@ class SpecDetailPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(child: SpecFileCard()),
+                Expanded(
+                  child: SpecFileCard(),
+                ),
               ],
             ),
           ),

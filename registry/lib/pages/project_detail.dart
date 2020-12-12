@@ -17,7 +17,6 @@ import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
-import '../components/label_list.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
 
@@ -60,7 +59,12 @@ class ProjectDetailPage extends StatelessWidget {
                   child: SizedBox.expand(child: ApiListCard()),
                 ),
                 Expanded(
-                  child: SizedBox.expand(child: ApiDetailCard(selflink: true)),
+                  child: SizedBox.expand(
+                    child: ApiDetailCard(
+                      selflink: true,
+                      editable: true,
+                    ),
+                  ),
                 ),
               ]),
             ),

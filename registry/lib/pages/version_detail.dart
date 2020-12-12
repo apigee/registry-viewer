@@ -60,7 +60,9 @@ class VersionDetailPage extends StatelessWidget {
                 child: SizedBox.expand(child: SpecListCard()),
               ),
               Expanded(
-                child: SizedBox.expand(child: SpecDetailCard(selflink: true)),
+                child: SizedBox.expand(
+                  child: SpecDetailCard(selflink: true, editable: true),
+                ),
               ),
             ]),
           ),

@@ -60,7 +60,11 @@ class ApiDetailPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: SizedBox.expand(
-                      child: VersionDetailCard(selflink: true, editable: true)),
+                    child: VersionDetailCard(
+                      selflink: true,
+                      editable: true,
+                    ),
+                  ),
                 ),
               ]),
             ),

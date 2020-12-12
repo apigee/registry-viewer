@@ -283,6 +283,7 @@ class PropertyManager extends ResourceManager<Property> {
     } catch (err) {
       print('Caught error: $err');
     }
+    return null;
   }
 
   Future delete(String name) {

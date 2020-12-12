@@ -21,6 +21,7 @@ import '../models/string.dart';
 import '../models/selection.dart';
 import 'custom_search_box.dart';
 import 'filter.dart';
+import '../helpers/extensions.dart';
 
 const int pageSize = 50;
 
@@ -117,11 +118,15 @@ class _ApiListViewState extends State<ApiListView> {
       });
     }
 
+    Color color = (index == selectedIndex)
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).textTheme.bodyText1.color;
+
     return ListTile(
-      title: Text(api.name.split("/").sublist(2).join("/"),
-          style: Theme.of(context).textTheme.bodyText2),
+      title: Text(api.name.last(1),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(color: color)),
       subtitle: Text(api.nameForDisplay(),
-          style: Theme.of(context).textTheme.headline6),
+          style: Theme.of(context).textTheme.headline6.copyWith(color: color)),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {
