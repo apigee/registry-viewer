@@ -13,4 +13,4 @@
 // limitations under the License.
 
 // The application name for display in the user interface.
-const applicationName = "Registry Viewer";
+const applicationName = "API Registry";

@@ -116,7 +116,7 @@ class _VersionListViewState extends State<VersionListView> {
 
     return ListTile(
       title: Text(version.nameForDisplay()),
-      subtitle: Text(version.state),
+      subtitle: Text(version.stateForDisplay()),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

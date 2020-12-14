@@ -66,6 +66,7 @@ class EditVersionFormState extends State<EditVersionForm> {
   final _formKey = GlobalKey<FormState>();
   final displayNameController = TextEditingController();
   final descriptionController = TextEditingController();
+  final stateController = TextEditingController();
 
   @override
   void dispose() {
@@ -73,6 +74,7 @@ class EditVersionFormState extends State<EditVersionForm> {
     versionManager?.removeListener(listener);
     displayNameController.dispose();
     descriptionController.dispose();
+    stateController.dispose();
     super.dispose();
   }
 
@@ -86,6 +88,7 @@ class EditVersionFormState extends State<EditVersionForm> {
       final version = versionManager.value;
       displayNameController.text = version.displayName;
       descriptionController.text = version.description;
+      stateController.text = version.state;
 
       return Form(
         key: _formKey,
@@ -104,6 +107,12 @@ class EditVersionFormState extends State<EditVersionForm> {
                 controller: descriptionController,
               ),
               subtitle: Text("Description"),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: stateController,
+              ),
+              subtitle: Text("State"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
@@ -143,6 +152,10 @@ class EditVersionFormState extends State<EditVersionForm> {
       if (version.description != descriptionController.text) {
         version.description = descriptionController.text;
         paths.add("description");
+      }
+      if (version.state != stateController.text) {
+        version.state = stateController.text;
+        paths.add("state");
       }
       versionManager?.update(version, paths);
     }

@@ -49,7 +49,12 @@ class ApiDetailPage extends StatelessWidget {
                 Expanded(child: ApiDetailCard(editable: true)),
                 Expanded(child: LabelListCard(SelectionProvider.api)),
                 Expanded(child: PropertyListCard(SelectionProvider.api)),
-                Expanded(child: PropertyDetailCard(editable: true)),
+                Expanded(
+                  child: PropertyDetailCard(
+                    selflink: true,
+                    editable: true,
+                  ),
+                ),
               ]),
             ),
             Expanded(

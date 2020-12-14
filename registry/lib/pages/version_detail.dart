@@ -49,7 +49,12 @@ class VersionDetailPage extends StatelessWidget {
                 Expanded(child: VersionDetailCard(editable: true)),
                 Expanded(child: LabelListCard(SelectionProvider.version)),
                 Expanded(child: PropertyListCard(SelectionProvider.version)),
-                Expanded(child: PropertyDetailCard(editable: true)),
+                Expanded(
+                  child: PropertyDetailCard(
+                    selflink: true,
+                    editable: true,
+                  ),
+                ),
               ],
             ),
           ),

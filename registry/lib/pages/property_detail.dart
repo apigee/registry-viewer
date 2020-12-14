@@ -14,22 +14,18 @@
 
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
-import '../components/project_detail.dart';
-import '../components/api_list.dart';
-import '../components/api_detail.dart';
-import '../components/property_list.dart';
 import '../components/property_detail.dart';
 
-class ProjectDetailPage extends StatelessWidget {
+class PropertyDetailPage extends StatelessWidget {
   final String name;
-  ProjectDetailPage({this.name});
+  PropertyDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateProjectName(name.substring(1));
+      selection.updatePropertyName(name.substring(1));
     });
 
     return SelectionProvider(
@@ -37,41 +33,17 @@ class ProjectDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Project Details",
+            "Property Details",
           ),
         ),
         body: Column(
           children: [
             Expanded(
-              flex: 3,
               child: Row(
                 children: [
-                  Expanded(child: ProjectDetailCard(editable: true)),
-                  Expanded(child: PropertyListCard(SelectionProvider.project)),
-                  Expanded(
-                    child: PropertyDetailCard(
-                      selflink: true,
-                      editable: true,
-                    ),
-                  ),
+                  Expanded(child: PropertyDetailCard(editable: true)),
                 ],
               ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Row(children: [
-                Expanded(
-                  child: SizedBox.expand(child: ApiListCard()),
-                ),
-                Expanded(
-                  child: SizedBox.expand(
-                    child: ApiDetailCard(
-                      selflink: true,
-                      editable: true,
-                    ),
-                  ),
-                ),
-              ]),
             ),
           ],
         ),

@@ -48,7 +48,12 @@ class SpecDetailPage extends StatelessWidget {
                 Expanded(child: SpecDetailCard(editable: true)),
                 Expanded(child: LabelListCard(SelectionProvider.spec)),
                 Expanded(child: PropertyListCard(SelectionProvider.spec)),
-                Expanded(child: PropertyDetailCard(editable: true)),
+                Expanded(
+                  child: PropertyDetailCard(
+                    selflink: true,
+                    editable: true,
+                  ),
+                ),
               ],
             ),
           ),

@@ -18,6 +18,7 @@ import '../service/service.dart';
 import '../models/selection.dart';
 import 'dart:convert';
 import 'package:archive/archive.dart';
+import 'detail_rows.dart';
 
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
@@ -45,6 +46,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController listScrollController = ScrollController();
+    final ScrollController fileScrollController = ScrollController();
+
     if (spec == null) {
       if (specName != "") {
         // we need to fetch the spec from the API
@@ -84,33 +88,63 @@ class _SpecFileCardState extends State<SpecFileCard> {
     } else {
       if (this.items == null) {
         return Card(
-          child: SingleChildScrollView(
-            child: Text(body),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PanelNameRow(name: spec.filename),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  child: Scrollbar(
+                    controller: fileScrollController,
+                    child: SingleChildScrollView(
+                      controller: fileScrollController,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Text(body),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       } else {
-        final ScrollController controller = ScrollController();
-        return Card(
-          child: Row(children: [
+        return Row(
+          children: [
             Expanded(
               flex: 5,
-              child: Scrollbar(
-                controller: controller,
-                isAlwaysShown: true,
-                child: ListView.builder(
-                  itemCount: this.items.length,
-                  controller: controller,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      selected: index == selectedItemIndex,
-                      title: Text(this.items[index].headerValue),
-                      onTap: () async {
-                        setState(() {
-                          selectedItemIndex = index;
-                        });
-                      },
-                    );
-                  },
+              child: Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PanelNameRow(name: spec.filename + " contents"),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        child: Scrollbar(
+                          controller: listScrollController,
+                          isAlwaysShown: true,
+                          child: ListView.builder(
+                            itemCount: this.items.length,
+                            controller: listScrollController,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                selected: index == selectedItemIndex,
+                                title: Text(this.items[index].headerValue),
+                                onTap: () async {
+                                  setState(() {
+                                    selectedItemIndex = index;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -120,17 +154,26 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    PanelNameRow(
+                        name: this.items[selectedItemIndex].headerValue),
                     Expanded(
-                      child: SingleChildScrollView(
-                        child:
-                            Text(this.items[selectedItemIndex].expandedValue),
+                      child: Container(
+                        width: double.infinity,
+                        child: Scrollbar(
+                          controller: fileScrollController,
+                          child: SingleChildScrollView(
+                            controller: fileScrollController,
+                            child: Text(
+                                this.items[selectedItemIndex].expandedValue),
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-          ]),
+          ],
         );
       }
     }

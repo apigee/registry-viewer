@@ -24,6 +24,7 @@ import 'pages/version_list.dart';
 import 'pages/version_detail.dart';
 import 'pages/spec_list.dart';
 import 'pages/spec_detail.dart';
+import 'pages/property_detail.dart';
 import 'pages/signin.dart';
 import 'pages/home.dart';
 
@@ -34,7 +35,9 @@ class RegistryRouter {
       versionsRegExp,
       versionRegExp,
       specsRegExp,
-      specRegExp;
+      specRegExp,
+      propertiesRegExp,
+      propertyRegExp;
 
   RegistryRouter() {
     // build patterns
@@ -47,6 +50,16 @@ class RegistryRouter {
     const versionPattern = versionsPattern + r"/" + namePattern;
     const specsPattern = versionPattern + r"/specs";
     const specPattern = specsPattern + r"/" + namePattern;
+    const propertiesPattern = r"((" +
+        projectPattern +
+        ")|(" +
+        apiPattern +
+        ")|(" +
+        versionPattern +
+        ")|(" +
+        specPattern +
+        "))/properties";
+    const propertyPattern = propertiesPattern + r"/" + namePattern;
     const endPattern = r"$";
     // use patterns to build regular expressions
     projectRegExp = RegExp(projectPattern + endPattern);
@@ -56,6 +69,8 @@ class RegistryRouter {
     versionRegExp = RegExp(versionPattern + endPattern);
     specsRegExp = RegExp(specsPattern + endPattern);
     specRegExp = RegExp(specPattern + endPattern);
+    propertiesRegExp = RegExp(propertiesPattern + endPattern);
+    propertyRegExp = RegExp(propertyPattern + endPattern);
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
@@ -81,7 +96,9 @@ class RegistryRouter {
       return errorPage(settings);
     }
     // handle regex patterns next, watch for possible ordering sensitivities
-    if (specRegExp.hasMatch(settings.name)) {
+    if (propertyRegExp.hasMatch(settings.name)) {
+      return propertyPage(settings);
+    } else if (specRegExp.hasMatch(settings.name)) {
       return specPage(settings);
     } else if (specsRegExp.hasMatch(settings.name)) {
       return specsPage(settings);
@@ -198,6 +215,16 @@ MaterialPageRoute specPage(RouteSettings settings) {
       settings: settings,
       builder: (context) {
         return SpecDetailPage(
+          name: settings.name,
+        );
+      });
+}
+
+MaterialPageRoute propertyPage(RouteSettings settings) {
+  return MaterialPageRoute(
+      settings: settings,
+      builder: (context) {
+        return PropertyDetailPage(
           name: settings.name,
         );
       });

@@ -123,10 +123,15 @@ class _ApiListViewState extends State<ApiListView> {
         : Theme.of(context).textTheme.bodyText1.color;
 
     return ListTile(
-      title: Text(api.name.last(1),
+      /*
+title: Text(api.name.last(1),
           style: Theme.of(context).textTheme.bodyText2.copyWith(color: color)),
       subtitle: Text(api.nameForDisplay(),
           style: Theme.of(context).textTheme.headline6.copyWith(color: color)),
+*/
+
+      title: Text(api.nameForDisplay()),
+      subtitle: Text(api.owner),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

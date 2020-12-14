@@ -71,6 +71,28 @@ class ResourceNameButtonRow extends StatelessWidget {
   }
 }
 
+class PanelNameRow extends StatelessWidget {
+  final String name;
+  PanelNameRow({this.name});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).secondaryHeaderColor,
+      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            name,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class TitleRow extends StatelessWidget {
   final String text;
   final Function action;

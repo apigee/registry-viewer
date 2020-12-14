@@ -5,7 +5,7 @@ macos:
 	cd registry; flutter run -d macos
 
 web:
-	cd registry; flutter run -d web --web-hostname localhost --web-port 8888
+	cd registry; flutter run -d chrome --web-hostname localhost --web-port 8888
 
 protos:
 	cd third_party; ./SETUP.sh

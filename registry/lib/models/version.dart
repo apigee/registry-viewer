@@ -23,6 +23,13 @@ extension Display on Version {
     }
   }
 
+  String stateForDisplay() {
+    if (this.state != "") {
+      return this.state;
+    }
+    return "available";
+  }
+
   String routeNameForDetail() {
     return "/" + this.name;
   }

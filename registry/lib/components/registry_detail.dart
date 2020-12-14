@@ -32,8 +32,6 @@ class RegistryDetailCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 10),
-                    TitleRow("API Registry"),
-                    SizedBox(height: 10),
                     BodyRow(
                         "The API Registry is an online catalog and storehouse of information about APIs."),
                     SizedBox(height: 10),

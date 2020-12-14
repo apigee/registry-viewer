@@ -74,16 +74,20 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
     Function editable;
 
     if (propertyManager?.value == null) {
-      return Card(child: Center(child: Text("no property selected")));
+      return Card(
+        child: Container(
+          color: Colors.grey[200],
+        ),
+      );
     } else {
       Property property = propertyManager.value;
 
       if (property.hasMessageValue()) {
         switch (property.messageValue.typeUrl) {
           case "gnostic.metrics.Complexity":
-            return ComplexityPropertyCard(property);
+            return ComplexityPropertyCard(property, selflink: selflink);
           case "gnostic.metrics.Vocabulary":
-            return VocabularyPropertyCard(property);
+            return VocabularyPropertyCard(property, selflink: selflink);
         }
 
         // if we don't recognize this message, clear it out to not overflow the display
@@ -91,7 +95,11 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       }
 
       if (property.hasStringValue()) {
-        return StringPropertyCard(property, editable: widget.editable);
+        return StringPropertyCard(
+          property,
+          selflink: selflink,
+          editable: widget.editable,
+        );
       }
 
       // otherwise return a default display of the property
@@ -129,8 +137,9 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
 
 class StringPropertyCard extends StatelessWidget {
   final Property property;
+  final Function selflink;
   final bool editable;
-  StringPropertyCard(this.property, {this.editable});
+  StringPropertyCard(this.property, {this.selflink, this.editable});
 
   Widget build(BuildContext context) {
     Function editableFn = onlyIf(editable, () {
@@ -151,7 +160,7 @@ class StringPropertyCard extends StatelessWidget {
       child: Column(
         children: [
           ResourceNameButtonRow(
-              name: property.name.last(1), show: null, edit: editableFn),
+              name: property.name.last(1), show: selflink, edit: editableFn),
           Padding(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(
@@ -169,7 +178,8 @@ class StringPropertyCard extends StatelessWidget {
 
 class ComplexityPropertyCard extends StatelessWidget {
   final Property property;
-  ComplexityPropertyCard(this.property);
+  final Function selflink;
+  ComplexityPropertyCard(this.property, {this.selflink});
 
   Widget build(BuildContext context) {
     Complexity complexity =
@@ -179,7 +189,7 @@ class ComplexityPropertyCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: property.name.last(1),
-            show: null,
+            show: selflink,
             edit: null,
           ),
           Expanded(
@@ -244,18 +254,76 @@ class ComplexityPropertyCard extends StatelessWidget {
   }
 }
 
+class WordCountListCard extends StatefulWidget {
+  final String name;
+  final List<WordCount> wordCountList;
+  WordCountListCard(this.name, this.wordCountList);
+
+  @override
+  WordCountListCardState createState() => WordCountListCardState();
+}
+
+class WordCountListCardState extends State<WordCountListCard> {
+  final ScrollController controller = ScrollController();
+
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          width: double.infinity,
+          color: Theme.of(context).splashColor,
+          child: Text(
+            "${widget.name} (${widget.wordCountList.length})",
+            style: Theme.of(context).textTheme.headline6,
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Expanded(
+          child: Scrollbar(
+            controller: controller,
+            child: ListView.builder(
+              controller: controller,
+              itemCount: widget.wordCountList.length,
+              itemBuilder: (BuildContext context, int index) {
+                final wordCount = widget.wordCountList[index];
+                return Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      child: Text(
+                        "${wordCount.count}",
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        wordCount.word,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class VocabularyPropertyCard extends StatelessWidget {
   final Property property;
-  VocabularyPropertyCard(this.property);
+  final Function selflink;
+  VocabularyPropertyCard(this.property, {this.selflink});
 
   Widget build(BuildContext context) {
     Vocabulary vocabulary =
         new Vocabulary.fromBuffer(property.messageValue.value);
-    List<Entry> data = List();
-    data.add(entryForWordCounts("schemas", vocabulary.schemas));
-    data.add(entryForWordCounts("properties", vocabulary.properties));
-    data.add(entryForWordCounts("operations", vocabulary.operations));
-    data.add(entryForWordCounts("parameters", vocabulary.parameters));
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -264,78 +332,35 @@ class VocabularyPropertyCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: property.name.last(1),
-            show: null,
+            show: selflink,
             edit: null,
           ),
           Expanded(
-            child: Scrollbar(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) =>
-                    EntryItem(data[index]),
-                itemCount: data.length,
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: WordCountListCard("schemas", vocabulary.schemas),
+                ),
+                Expanded(
+                  child: WordCountListCard("properties", vocabulary.properties),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: WordCountListCard("operations", vocabulary.operations),
+                ),
+                Expanded(
+                  child: WordCountListCard("parameters", vocabulary.parameters),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Entry entryForWordCounts(String name, List<WordCount> wordCounts) {
-    List<Entry> children = List();
-    wordCounts.forEach((WordCount wc) {
-      children.add(Entry(wc.word, "${wc.count}"));
-    });
-    String length = wordCounts.length > 0 ? "${wordCounts.length}" : "";
-    return Entry(name, length, children);
-  }
-}
-
-// One entry in the multilevel list displayed by this app.
-class Entry {
-  Entry(this.label, this.value, [this.children = const <Entry>[]]);
-  final String label;
-  final String value;
-  final List<Entry> children;
-}
-
-// Displays one Entry.
-// If the entry has children then it's displayed with an ExpansionTile.
-class EntryItem extends StatelessWidget {
-  final Entry entry;
-  const EntryItem(this.entry);
-  Widget _buildTiles(Entry root) {
-    if (root.children.isEmpty)
-      return ListTile(
-        title: entryRow(root),
-        visualDensity: VisualDensity.compact,
-      );
-    return ExpansionTile(
-      key: PageStorageKey<Entry>(root),
-      title: entryRow(root),
-      children: root.children.map(_buildTiles).toList(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildTiles(entry);
-  }
-
-  Row entryRow(Entry e) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Expanded(
-        child: Container(
-          child: Text(
-            e.label,
-            style: TextStyle(
-              fontFamily: "Inconsolata",
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-      Expanded(child: Container(child: Text(e.value))),
-    ]);
   }
 }
