@@ -43,7 +43,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                 name,
                 style: Theme.of(context).textTheme.bodyText1,
                 softWrap: false,
-                overflow: TextOverflow.fade,
+                overflow: TextOverflow.clip,
               ),
             ),
           if (show != null)
@@ -56,7 +56,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                       .bodyText1
                       .copyWith(color: Colors.blue),
                   softWrap: false,
-                  overflow: TextOverflow.fade,
+                  overflow: TextOverflow.clip,
                 ),
                 onTap: show,
               ),
