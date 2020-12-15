@@ -18,13 +18,26 @@ import '../components/logout_button.dart';
 import '../components/project_list.dart';
 import '../models/string.dart';
 import '../models/project.dart';
+import '../service/service.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+
+ProjectService projectService;
+PagewiseLoadController<Project> pageLoadController;
+final pageSize = 50;
 
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatelessWidget {
   final String name;
+
   ProjectListPage(String name, {Key key})
       : name = name,
-        super(key: key);
+        super(key: key) {
+    projectService = ProjectService();
+    pageLoadController = PagewiseLoadController<Project>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +60,8 @@ class ProjectListPage extends StatelessWidget {
                 arguments: project,
               );
             },
+            projectService,
+            pageLoadController,
           ),
         ),
       ),

@@ -17,12 +17,35 @@ import 'dart:io' show Platform;
 
 String token; // auth token
 
+class ConnectionError extends Error {
+  final String description;
+  ConnectionError(this.description);
+
+  @override
+  String toString() {
+    return "Error: " + description;
+  }
+}
+
+bool unset(String s) {
+  return (s == null) || (s == "");
+}
+
 grpc.ClientChannel createClientChannel() {
   Map<String, String> env = Platform.environment;
   token = env['APG_REGISTRY_TOKEN'];
+  if (unset(token)) {
+    throw ConnectionError("APG_REGISTRY_TOKEN not set");
+  }
   final insecure = env['APG_REGISTRY_INSECURE'];
   final address = env['APG_REGISTRY_ADDRESS'];
+  if (unset(address)) {
+    throw ConnectionError("APG_REGISTRY_ADDRESS not set");
+  }
   final parts = address.split(":");
+  if (parts.length != 2) {
+    throw ConnectionError("APG_REGISTRY_ADDRESS must have the form host:port");
+  }
   final host = parts[0];
   final port = int.parse(parts[1]);
   final channelOptions = (insecure == "1")

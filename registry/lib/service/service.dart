@@ -24,9 +24,9 @@ import 'package:flutter/material.dart';
 
 const int pageSize = 50;
 
-class StatusService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
+RegistryClient getClient() => RegistryClient(createClientChannel());
 
+class StatusService {
   Future<Status> getStatus() {
     try {
       final client = getClient();
@@ -40,11 +40,9 @@ class StatusService {
 }
 
 class ProjectService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
-  BuildContext context;
   String filter;
   Map<int, String> tokens;
+  Function onError;
 
   Future<List<Project>> getProjectsPage(int pageIndex) {
     return _getProjects(offset: pageIndex * pageSize, limit: pageSize);
@@ -71,7 +69,7 @@ class ProjectService {
       tokens[offset + limit] = response.nextPageToken;
       return response.projects;
     } catch (err) {
-      reportError(context, err);
+      onError();
       throw err;
     }
   }
@@ -90,8 +88,6 @@ class ProjectService {
 }
 
 class ApiService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
   BuildContext context;
   String filter;
   Map<int, String> tokens;
@@ -160,8 +156,6 @@ class ApiService {
 }
 
 class VersionService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
   BuildContext context;
   String filter;
   Map<int, String> tokens;
@@ -230,8 +224,6 @@ class VersionService {
 }
 
 class SpecService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
   BuildContext context;
   String filter;
   Map<int, String> tokens;
@@ -287,8 +279,6 @@ class SpecService {
 }
 
 class PropertyService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
   BuildContext context;
   String filter;
   Map<int, String> tokens;
@@ -345,8 +335,6 @@ class PropertyService {
 }
 
 class LabelService {
-  RegistryClient getClient() => RegistryClient(createClientChannel());
-
   BuildContext context;
   String filter;
   Map<int, String> tokens;

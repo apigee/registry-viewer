@@ -27,11 +27,23 @@ const int pageSize = 50;
 typedef ProjectSelectionHandler = Function(
     BuildContext context, Project project);
 
-PagewiseLoadController<Project> pageLoadController;
-
 // ProjectListCard is a card that displays a list of projects.
-class ProjectListCard extends StatelessWidget {
+class ProjectListCard extends StatefulWidget {
   @override
+  _ProjectListCardState createState() => _ProjectListCardState();
+}
+
+class _ProjectListCardState extends State<ProjectListCard> {
+  ProjectService projectService;
+  PagewiseLoadController<Project> pageLoadController;
+
+  _ProjectListCardState() {
+    projectService = ProjectService();
+    pageLoadController = PagewiseLoadController<Project>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
+  }
+
   Widget build(BuildContext context) {
     return ObservableStringProvider(
       observable: ObservableString(),
@@ -40,7 +52,13 @@ class ProjectListCard extends StatelessWidget {
           children: [
             filterBar(context, ProjectSearchBox(),
                 refresh: () => pageLoadController.reset()),
-            Expanded(child: ProjectListView(null)),
+            Expanded(
+              child: ProjectListView(
+                null,
+                projectService,
+                pageLoadController,
+              ),
+            ),
           ],
         ),
       ),
@@ -51,30 +69,28 @@ class ProjectListCard extends StatelessWidget {
 // ProjectListView is a scrollable ListView of projects.
 class ProjectListView extends StatefulWidget {
   final ProjectSelectionHandler selectionHandler;
-  ProjectListView(this.selectionHandler);
+  final ProjectService projectService;
+  final PagewiseLoadController<Project> pageLoadController;
+
+  ProjectListView(
+    this.selectionHandler,
+    this.projectService,
+    this.pageLoadController,
+  );
   @override
   _ProjectListViewState createState() => _ProjectListViewState();
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
-  // PagewiseLoadController<Project> pageLoadController;
-  ProjectService projectService;
   int selectedIndex = -1;
-
-  _ProjectListViewState() {
-    projectService = ProjectService();
-    pageLoadController = PagewiseLoadController<Project>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
-  }
 
   @override
   void didChangeDependencies() {
     ObservableStringProvider.of(context).addListener(() => setState(() {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            projectService.filter = filter.value;
-            pageLoadController.reset();
+            widget.projectService.filter = filter.value;
+            widget.pageLoadController.reset();
             selectedIndex = -1;
           }
         }));
@@ -83,11 +99,15 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   @override
   Widget build(BuildContext context) {
-    projectService.context = context;
+    widget.projectService.onError = () => setState(() {});
+
+    if (widget.pageLoadController?.error != null) {
+      return Text("${widget.pageLoadController.error}");
+    }
     return Scrollbar(
       child: PagewiseListView<Project>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }

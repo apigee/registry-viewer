@@ -103,7 +103,7 @@ class Manager extends ChangeNotifier {
   }
 
   static void removeUnused(Map<String, Manager> managers) {
-    List<String> names = List();
+    List<String> names = [];
     managers.forEach((name, m) {
       if (m.isUnused) {
         names.add(name);
@@ -135,16 +135,12 @@ abstract class ResourceManager<T> extends Manager {
   void _fetch() {
     if (name == "") return;
     final client = getClient();
-    try {
-      _future = fetchFuture(client);
-      _future.then((T value) {
-        _value = value;
-        _future = null;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
+    _future = fetchFuture(client);
+    _future.then((T value) {
+      _value = value;
+      _future = null;
+      notifyListeners();
+    });
   }
 
   // fetchFuture must be overridden to return a future for the fetched resource.
@@ -167,14 +163,10 @@ class ProjectManager extends ResourceManager<Project> {
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    try {
-      client.updateProject(request, options: callOptions()).then((value) {
-        _value = value;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
+    client.updateProject(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+    });
   }
 }
 
@@ -194,14 +186,10 @@ class ApiManager extends ResourceManager<Api> {
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    try {
-      client.updateApi(request, options: callOptions()).then((value) {
-        _value = value;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
+    client.updateApi(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+    });
   }
 }
 
@@ -221,14 +209,10 @@ class VersionManager extends ResourceManager<Version> {
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    try {
-      client.updateVersion(request, options: callOptions()).then((value) {
-        _value = value;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
+    client.updateVersion(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+    });
   }
 }
 
@@ -248,14 +232,10 @@ class SpecManager extends ResourceManager<Spec> {
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    try {
-      client.updateSpec(request, options: callOptions()).then((value) {
-        _value = value;
-        notifyListeners();
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
+    client.updateSpec(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+    });
   }
 }
 
@@ -272,18 +252,11 @@ class PropertyManager extends ResourceManager<Property> {
     final client = getClient();
     final request = UpdatePropertyRequest();
     request.property = newValue;
-    try {
-      return client
-          .updateProperty(request, options: callOptions())
-          .then((value) {
-        _value = value;
-        notifyListeners();
-        return value;
-      });
-    } catch (err) {
-      print('Caught error: $err');
-    }
-    return null;
+    return client.updateProperty(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+      return value;
+    });
   }
 
   Future delete(String name) {
