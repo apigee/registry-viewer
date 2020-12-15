@@ -38,20 +38,28 @@ class ResourceNameButtonRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           if (show == null)
-            Text(
-              name,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          if (show != null)
-            GestureDetector(
+            Flexible(
               child: Text(
                 name,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    .copyWith(color: Colors.blue),
+                style: Theme.of(context).textTheme.bodyText1,
+                softWrap: false,
+                overflow: TextOverflow.fade,
               ),
-              onTap: show,
+            ),
+          if (show != null)
+            Flexible(
+              child: GestureDetector(
+                child: Text(
+                  name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Colors.blue),
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                ),
+                onTap: show,
+              ),
             ),
           if (edit != null)
             GestureDetector(
