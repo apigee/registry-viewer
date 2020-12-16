@@ -21,7 +21,13 @@ void reportError(BuildContext context, Object err) {
       builder: (BuildContext context) {
         // TODO: interpret error to provide actionable guidance.
         return AlertDialog(
-          content: Text("$err"),
+          content: Text(
+            "$err",
+            style: TextStyle(
+              fontFamily: "Mono",
+              fontSize: 14,
+            ),
+          ),
           actions: [
             FlatButton(
               child: Text("OK"),

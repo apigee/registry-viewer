@@ -14,8 +14,13 @@
 
 import 'package:flutter/material.dart';
 
-Widget filterBar(BuildContext context, Widget filterField,
-    {String type, Function add, Function refresh}) {
+Widget filterBar(
+  BuildContext context,
+  Widget filterField, {
+  String type,
+  Function add,
+  Function refresh,
+}) {
   String tooltip = "Add";
   if (type != null) {
     tooltip += " " + type;

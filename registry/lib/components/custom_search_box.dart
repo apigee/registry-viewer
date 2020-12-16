@@ -40,8 +40,10 @@ class CustomSearchBox extends StatelessWidget {
         onSubmitted: (s) {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            if (s == "") {
+            if ((s == null) | (s == "")) {
               filter.update("");
+            } else if (s[0] == "=") {
+              filter.update(s.substring(1));
             } else {
               filter.update(filterText.replaceAll("TEXT", "$s"));
             }
