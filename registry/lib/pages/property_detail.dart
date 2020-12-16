@@ -41,7 +41,14 @@ class PropertyDetailPage extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Expanded(child: PropertyDetailCard(editable: true)),
+                  Expanded(
+                    flex: 1,
+                    child: DefaultPropertyDetailCard(),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: PropertyDetailCard(editable: true),
+                  ),
                 ],
               ),
             ),

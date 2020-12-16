@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../models/selection.dart';
 import '../models/property.dart';
@@ -71,8 +72,6 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       );
     });
 
-    Function editable;
-
     if (propertyManager?.value == null) {
       return Card(
         child: Container(
@@ -89,7 +88,6 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
           case "gnostic.metrics.Vocabulary":
             return VocabularyPropertyCard(property, selflink: selflink);
         }
-
         // if we don't recognize this message, clear it out to not overflow the display
         property.messageValue.value = List();
       }
@@ -103,21 +101,68 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       }
 
       // otherwise return a default display of the property
-      return Card(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
+      return DefaultPropertyDetailCard();
+    }
+  }
+}
+
+// DefaultPropertyDetailCard is a card that displays details about a property.
+class DefaultPropertyDetailCard extends StatefulWidget {
+  DefaultPropertyDetailCard();
+  _DefaultPropertyDetailCardState createState() =>
+      _DefaultPropertyDetailCardState();
+}
+
+class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
+  PropertyManager propertyManager;
+  void listener() {
+    setState(() {});
+  }
+
+  void setProjectName(String name) {
+    if (propertyManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    propertyManager?.removeListener(listener);
+    // get the new manager
+    propertyManager = RegistryProvider.of(context).getPropertyManager(name);
+    propertyManager.addListener(listener);
+    // get the value from the manager
+    listener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).propertyName.addListener(() {
+      setState(() {
+        setProjectName(SelectionProvider.of(context).propertyName.value);
+      });
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Property property = propertyManager?.value;
+    if (property == null) {
+      return Card();
+    }
+
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+              name: property.name.last(1), show: null, edit: null),
+          Expanded(
+            child: Scrollbar(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ResourceNameButtonRow(
-                          name: property.name.last(1),
-                          show: selflink,
-                          edit: editable),
                       SizedBox(height: 10),
                       TimestampRow("created", property.createTime),
                       TimestampRow("updated", property.updateTime),
@@ -127,11 +172,11 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      );
-    }
+        ],
+      ),
+    );
   }
 }
 
@@ -140,7 +185,7 @@ class StringPropertyCard extends StatelessWidget {
   final Function selflink;
   final bool editable;
   StringPropertyCard(this.property, {this.selflink, this.editable});
-
+  @override
   Widget build(BuildContext context) {
     Function editableFn = onlyIf(editable, () {
       final selection = SelectionProvider.of(context);
