@@ -42,11 +42,10 @@ class SpecDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard(editable: true)),
-                Expanded(child: LabelListCard(SelectionProvider.spec)),
                 Expanded(child: PropertyListCard(SelectionProvider.spec)),
                 Expanded(
                   child: PropertyDetailCard(
@@ -58,11 +57,16 @@ class SpecDetailPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 4,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
+                  flex: 1,
+                  child: LabelListCard(SelectionProvider.spec),
+                ),
+                Expanded(
+                  flex: 3,
                   child: SpecFileCard(),
                 ),
               ],

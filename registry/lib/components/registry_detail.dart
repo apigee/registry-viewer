@@ -49,10 +49,10 @@ class RegistryDetailCard extends StatelessWidget {
                       text:
                           "See https://apigee.github.io/registry to learn more about the API behind the API Registry.",
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyText1,
                       linkStyle: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText1
                           .copyWith(color: Colors.blue),
                     ),
                   ],

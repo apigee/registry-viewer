@@ -169,7 +169,6 @@ class _PropertyListViewState extends State<PropertyListView> {
   Widget widgetForPropertyValue(Property property) {
     if (property.hasStringValue()) {
       final value = property.stringValue;
-
       return Linkify(
         onOpen: (link) async {
           if (await canLaunch(link.url)) {
@@ -195,6 +194,18 @@ class _PropertyListViewState extends State<PropertyListView> {
   }
 
   Widget _itemBuilder(context, Property property, index) {
+    String propertyInfoLink;
+    switch (property.messageValue.typeUrl) {
+      case "gnostic.metrics.Vocabulary":
+        propertyInfoLink =
+            "https://github.com/google/gnostic/blob/master/metrics/vocabulary.proto#L27";
+        break;
+      case "gnostic.metrics.Complexity":
+        propertyInfoLink =
+            "https://github.com/google/gnostic/blob/master/metrics/complexity.proto#L23";
+        break;
+    }
+    bool canDelete = property.hasStringValue();
     return ListTile(
       title: Text(property.nameForDisplay()),
       subtitle: widgetForPropertyValue(property),
@@ -208,24 +219,42 @@ class _PropertyListViewState extends State<PropertyListView> {
         selection?.updatePropertyName(property.name);
         widget.selectionHandler?.call(context, property);
       },
-      trailing: IconButton(
-        color: Colors.black,
-        icon: Icon(Icons.delete),
-        tooltip: "delete",
-        onPressed: () {
-          final selection = SelectionProvider.of(context);
-          selection.updatePropertyName(property.name);
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SelectionProvider(
-                  selection: selection,
-                  child: AlertDialog(
-                    content: DeletePropertyForm(),
-                  ),
-                );
-              });
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (propertyInfoLink != null)
+            IconButton(
+                color: Colors.black,
+                icon: Icon(Icons.info),
+                tooltip: "info",
+                onPressed: () async {
+                  if (await canLaunch(propertyInfoLink)) {
+                    await launch(propertyInfoLink);
+                  } else {
+                    throw 'Could not launch $propertyInfoLink';
+                  }
+                }),
+          if (canDelete)
+            IconButton(
+              color: Colors.black,
+              icon: Icon(Icons.delete),
+              tooltip: "delete",
+              onPressed: () {
+                final selection = SelectionProvider.of(context);
+                selection.updatePropertyName(property.name);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SelectionProvider(
+                        selection: selection,
+                        child: AlertDialog(
+                          content: DeletePropertyForm(),
+                        ),
+                      );
+                    });
+              },
+            ),
+        ],
       ),
     );
   }

@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Row(
                 children: [
                   Expanded(
@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Row(
                 children: [
                   Expanded(

@@ -114,7 +114,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
         return Row(
           children: [
             Expanded(
-              flex: 5,
+              flex: 1,
               child: Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +149,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 2,
               child: Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

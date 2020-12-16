@@ -44,10 +44,9 @@ class ApiDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Row(children: [
                 Expanded(child: ApiDetailCard(editable: true)),
-                Expanded(child: LabelListCard(SelectionProvider.api)),
                 Expanded(child: PropertyListCard(SelectionProvider.api)),
                 Expanded(
                   child: PropertyDetailCard(
@@ -58,12 +57,18 @@ class ApiDetailPage extends StatelessWidget {
               ]),
             ),
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Row(children: [
                 Expanded(
+                  flex: 1,
+                  child: LabelListCard(SelectionProvider.api),
+                ),
+                Expanded(
+                  flex: 1,
                   child: SizedBox.expand(child: VersionListCard()),
                 ),
                 Expanded(
+                  flex: 2,
                   child: SizedBox.expand(
                     child: VersionDetailCard(
                       selflink: true,

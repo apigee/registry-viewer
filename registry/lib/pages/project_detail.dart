@@ -19,6 +19,7 @@ import '../components/api_list.dart';
 import '../components/api_detail.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
+import '../components/label_list.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -43,11 +44,13 @@ class ProjectDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Row(
                 children: [
                   Expanded(child: ProjectDetailCard(editable: true)),
-                  Expanded(child: PropertyListCard(SelectionProvider.project)),
+                  Expanded(
+                    child: PropertyListCard(SelectionProvider.project),
+                  ),
                   Expanded(
                     child: PropertyDetailCard(
                       selflink: true,
@@ -58,12 +61,14 @@ class ProjectDetailPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Row(children: [
                 Expanded(
+                  flex: 1,
                   child: SizedBox.expand(child: ApiListCard()),
                 ),
                 Expanded(
+                  flex: 2,
                   child: SizedBox.expand(
                     child: ApiDetailCard(
                       selflink: true,
