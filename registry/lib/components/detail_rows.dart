@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/timestamp.dart';
@@ -221,22 +222,17 @@ class StringValueRow extends StatelessWidget {
 }
 
 class TimestampRow extends StatelessWidget {
-  final String label;
-  final Timestamp time;
-  TimestampRow(this.label, this.time);
+  final Timestamp created;
+  final Timestamp updated;
+  TimestampRow(this.created, this.updated);
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          child: Text(
-            label + " " + format(time),
-            textAlign: TextAlign.left,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(color: Colors.grey[500]),
-          ),
+        Text(
+          "created " + format(created) + " | last updated " + format(updated),
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ],
     );
@@ -250,14 +246,19 @@ class DetailRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Expanded(
-          child: Text(
-        text,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: Colors.grey[500]),
-        textAlign: TextAlign.left,
-      )),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10),
+            Divider(thickness: 2),
+            Text(
+              text.trim(),
+              style: GoogleFonts.robotoMono(color: Colors.grey[500]),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+      ),
     ]);
   }
 }

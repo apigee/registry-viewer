@@ -8,5 +8,8 @@ test
 # Generated Protocol Buffer support code.
 registry/lib/generated
 
+# Generated build timestamp.
+registry/lib/build.dart
+
 # Copied assets staged for web deployment.
 site/public

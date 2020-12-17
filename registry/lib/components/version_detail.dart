@@ -107,9 +107,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                       if (version.description != "")
                         BodyRow(version.description),
                       SizedBox(height: 10),
-                      TimestampRow("created", version.createTime),
-                      TimestampRow("updated", version.updateTime),
-                      DetailRow(""),
+                      TimestampRow(version.createTime, version.updateTime),
                       DetailRow("$version"),
                     ],
                   ),

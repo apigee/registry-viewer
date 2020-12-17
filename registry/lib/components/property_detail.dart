@@ -164,9 +164,7 @@ class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
-                      TimestampRow("created", property.createTime),
-                      TimestampRow("updated", property.updateTime),
-                      DetailRow(""),
+                      TimestampRow(property.createTime, property.updateTime),
                       DetailRow("$property"),
                     ],
                   ),
