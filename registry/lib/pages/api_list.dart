@@ -15,7 +15,7 @@
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
-import '../components/logout_button.dart';
+import '../components/home_button.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
@@ -45,7 +45,7 @@ class ApiListPage extends StatelessWidget {
             title: Text(title(name)),
             actions: <Widget>[
               Container(width: 400, child: ApiSearchBox()),
-              logoutButton(context),
+              homeButton(context),
             ],
           ),
           body: Center(child: ApiListView((context, api) {

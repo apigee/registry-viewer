@@ -20,6 +20,7 @@ import '../components/spec_file.dart';
 import '../components/label_list.dart';
 import '../components/property_detail.dart';
 import '../components/bottom_bar.dart';
+import '../components/home_button.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String name;
@@ -40,6 +41,9 @@ class SpecDetailPage extends StatelessWidget {
           title: Text(
             "Spec Details",
           ),
+          actions: <Widget>[
+            homeButton(context),
+          ],
         ),
         body: Column(children: [
           Expanded(

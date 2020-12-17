@@ -14,10 +14,10 @@
 
 import 'package:flutter/material.dart';
 
-Widget logoutButton(BuildContext context) {
+Widget homeButton(BuildContext context) {
   return IconButton(
-    icon: const Icon(Icons.power_settings_new),
-    tooltip: 'Log out',
+    icon: const Icon(Icons.home),
+    tooltip: 'return to top',
     onPressed: () {
       Navigator.popUntil(context, ModalRoute.withName('/'));
     },

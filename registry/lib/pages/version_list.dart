@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
-import '../components/logout_button.dart';
+import '../components/home_button.dart';
 import '../components/version_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
@@ -46,7 +46,7 @@ class VersionListPage extends StatelessWidget {
             title: Text(title(name)),
             actions: <Widget>[
               Container(width: 400, child: VersionSearchBox()),
-              logoutButton(context),
+              homeButton(context),
             ],
           ),
           body: Center(

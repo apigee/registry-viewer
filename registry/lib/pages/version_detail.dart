@@ -21,6 +21,7 @@ import '../components/label_list.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
 import '../components/bottom_bar.dart';
+import '../components/home_button.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -41,6 +42,9 @@ class VersionDetailPage extends StatelessWidget {
           title: Text(
             "Version Details",
           ),
+          actions: <Widget>[
+            homeButton(context),
+          ],
         ),
         body: Column(children: [
           Expanded(

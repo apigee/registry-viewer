@@ -20,6 +20,7 @@ import '../components/api_detail.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
 import '../components/bottom_bar.dart';
+import '../components/home_button.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -40,6 +41,9 @@ class ProjectDetailPage extends StatelessWidget {
           title: Text(
             "Project Details",
           ),
+          actions: <Widget>[
+            homeButton(context),
+          ],
         ),
         body: Column(
           children: [

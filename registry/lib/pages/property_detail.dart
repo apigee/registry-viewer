@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../components/property_detail.dart';
 import '../components/bottom_bar.dart';
+import '../components/home_button.dart';
 
 class PropertyDetailPage extends StatelessWidget {
   final String name;
@@ -36,6 +37,9 @@ class PropertyDetailPage extends StatelessWidget {
           title: Text(
             "Property Details",
           ),
+          actions: <Widget>[
+            homeButton(context),
+          ],
         ),
         body: Column(
           children: [

@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import '../helpers/title.dart';
-import '../components/logout_button.dart';
+import '../components/home_button.dart';
 import '../components/spec_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
@@ -46,7 +46,7 @@ class SpecListPage extends StatelessWidget {
             title: Text(title(name)),
             actions: <Widget>[
               Container(width: 400, child: SpecSearchBox()),
-              logoutButton(context),
+              homeButton(context),
             ],
           ),
           body: Center(child: SpecListView((context, spec) {
