@@ -27,6 +27,7 @@ clobber: clean
 	rm -rf site/public
 
 staging:
+	tools/BUILDSTAMP.sh
 	cd registry; flutter build web
 	rm -rf site/public
 	cp -r registry/build/web site/public

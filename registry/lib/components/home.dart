@@ -17,6 +17,7 @@ import '../components/project_list.dart';
 import '../components/project_detail.dart';
 import '../components/registry_detail.dart';
 import '../models/selection.dart';
+import '../components/bottom_bar.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -51,6 +52,7 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
+            BottomBar(),
           ],
         ),
       ),

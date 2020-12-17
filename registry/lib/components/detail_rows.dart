@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../helpers/timestamp.dart';
 import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../helpers/timestamp.dart';
 
 Function onlyIf(bool condition, Function action) {
   if (condition == null || !condition) {
@@ -166,6 +167,38 @@ class BodyRow extends StatelessWidget {
         textAlign: TextAlign.left,
       )),
     ]);
+  }
+}
+
+class LinkRow extends StatelessWidget {
+  final String text;
+  final String url;
+  LinkRow(this.text, this.url);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+            child: Text(
+              text,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.blue),
+              textAlign: TextAlign.left,
+            ),
+            onTap: () async {
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
 

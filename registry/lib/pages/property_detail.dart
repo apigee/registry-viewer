@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../components/property_detail.dart';
+import '../components/bottom_bar.dart';
 
 class PropertyDetailPage extends StatelessWidget {
   final String name;
@@ -52,6 +53,7 @@ class PropertyDetailPage extends StatelessWidget {
                 ],
               ),
             ),
+            BottomBar(),
           ],
         ),
       ),

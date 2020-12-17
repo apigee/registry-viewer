@@ -386,6 +386,7 @@ class VocabularyPropertyCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("schemas", vocabulary.schemas),
                 ),
+                VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("properties", vocabulary.properties),
                 ),
@@ -398,6 +399,7 @@ class VocabularyPropertyCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("operations", vocabulary.operations),
                 ),
+                VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("parameters", vocabulary.parameters),
                 ),

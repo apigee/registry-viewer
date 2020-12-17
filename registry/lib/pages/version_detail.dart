@@ -20,6 +20,7 @@ import '../components/spec_detail.dart';
 import '../components/label_list.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
+import '../components/bottom_bar.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -76,6 +77,7 @@ class VersionDetailPage extends StatelessWidget {
               ),
             ]),
           ),
+          BottomBar(),
         ]),
       ),
     );

@@ -19,7 +19,7 @@ import '../components/api_list.dart';
 import '../components/api_detail.dart';
 import '../components/property_list.dart';
 import '../components/property_detail.dart';
-import '../components/label_list.dart';
+import '../components/bottom_bar.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -78,6 +78,7 @@ class ProjectDetailPage extends StatelessWidget {
                 ),
               ]),
             ),
+            BottomBar(),
           ],
         ),
       ),
