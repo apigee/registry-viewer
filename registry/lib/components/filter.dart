@@ -35,7 +35,7 @@ Widget filterBar(
       IconButton(
         color: Colors.black,
         icon: Icon(Icons.refresh),
-        tooltip: tooltip,
+        tooltip: "refresh",
         onPressed: refresh,
       ),
       if (type != null)

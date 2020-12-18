@@ -199,5 +199,9 @@ class _LabelListViewState extends State<LabelListView> {
 
 // LabelSearchBox provides a search box for labels.
 class LabelSearchBox extends CustomSearchBox {
-  LabelSearchBox() : super("Filter Labels", "label_id.contains('TEXT')");
+  LabelSearchBox()
+      : super(
+          "Filter Labels",
+          "label_id.contains('TEXT')",
+        );
 }

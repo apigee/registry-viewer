@@ -157,5 +157,9 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 // ProjectSearchBox provides a search box for projects.
 class ProjectSearchBox extends CustomSearchBox {
-  ProjectSearchBox() : super("Filter Projects", "project_id.contains('TEXT')");
+  ProjectSearchBox()
+      : super(
+          "Filter Projects",
+          "project_id.contains('TEXT')",
+        );
 }

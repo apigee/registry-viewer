@@ -159,5 +159,9 @@ title: Text(api.name.last(1),
 
 // ApiSearchBox provides a search box for apis.
 class ApiSearchBox extends CustomSearchBox {
-  ApiSearchBox() : super("Filter APIs", "api_id.contains('TEXT')");
+  ApiSearchBox()
+      : super(
+          "Filter APIs",
+          "api_id.contains('TEXT')",
+        );
 }

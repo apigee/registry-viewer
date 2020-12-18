@@ -263,5 +263,8 @@ class _PropertyListViewState extends State<PropertyListView> {
 // PropertySearchBox provides a search box for properties.
 class PropertySearchBox extends CustomSearchBox {
   PropertySearchBox()
-      : super("Filter Properties", "property_id.contains('TEXT')");
+      : super(
+          "Filter Properties",
+          "property_id.contains('TEXT')",
+        );
 }

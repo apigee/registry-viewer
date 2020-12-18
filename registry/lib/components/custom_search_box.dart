@@ -16,11 +16,18 @@ import 'package:flutter/material.dart';
 import '../models/string.dart';
 
 // CustomSearchBox provides a search box for projects.
-class CustomSearchBox extends StatelessWidget {
+class CustomSearchBox extends StatefulWidget {
   final String hintText;
   final String filterText;
-
   CustomSearchBox(this.hintText, this.filterText);
+
+  @override
+  CustomSearchBoxState createState() => CustomSearchBoxState();
+}
+
+class CustomSearchBoxState extends State<CustomSearchBox> {
+  final searchTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,19 +40,30 @@ class CustomSearchBox extends StatelessWidget {
       alignment: Alignment.centerLeft,
       color: Theme.of(context).secondaryHeaderColor,
       child: TextField(
+        controller: searchTextController,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.search, color: Colors.black),
+            suffixIcon: IconButton(
+              color: Colors.black,
+              icon: Icon(Icons.clear),
+              tooltip: "Clear",
+              onPressed: () {
+                searchTextController.clear();
+                ObservableStringProvider.of(context).update("");
+              },
+            ),
             border: InputBorder.none,
-            hintText: hintText),
+            hintText: widget.hintText),
         onSubmitted: (s) {
           ObservableString filter = ObservableStringProvider.of(context);
           if (filter != null) {
             if ((s == null) | (s == "")) {
-              filter.update("");
+              filter.update(""); // no filter specified
             } else if (s[0] == "=") {
-              filter.update(s.substring(1));
+              filter.update(s.substring(1)); // filter is a CEL expression
             } else {
-              filter.update(filterText.replaceAll("TEXT", "$s"));
+              // use configured string with user-provided text
+              filter.update(widget.filterText.replaceAll("TEXT", s));
             }
           }
         },

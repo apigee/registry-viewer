@@ -146,5 +146,9 @@ class _SpecListViewState extends State<SpecListView> {
 
 // SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends CustomSearchBox {
-  SpecSearchBox() : super("Filter Specs", "spec_id.contains('TEXT')");
+  SpecSearchBox()
+      : super(
+          "Filter Specs",
+          "spec_id.contains('TEXT')",
+        );
 }
