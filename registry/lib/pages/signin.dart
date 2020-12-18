@@ -63,8 +63,6 @@ class SignInPage extends StatefulWidget {
   State createState() => SignInPageState();
 }
 
-SignInPageState signInPageState;
-
 class SignInPageState extends State<SignInPage> {
   @override
   void initState() {
@@ -72,7 +70,6 @@ class SignInPageState extends State<SignInPage> {
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {});
     });
-    signInPageState = this;
   }
 
   Future<void> _handleSignIn() async {
