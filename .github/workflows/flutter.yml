@@ -32,9 +32,11 @@ jobs:
     - run: flutter config --enable-web
     - name: info
       run: |
-        find .
+        find $HOME
         echo $HOME
         echo $PATH
+        ls -l $HOME/.pub-cache/bin
+        which protoc-gen-dart
     - run: make create
     - run: make protos
     - run: make staging
