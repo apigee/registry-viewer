@@ -31,6 +31,8 @@ class SpecDetailCard extends StatefulWidget {
 }
 
 class _SpecDetailCardState extends State<SpecDetailCard> {
+  ApiManager apiManager;
+  VersionManager versionManager;
   SpecManager specManager;
 
   void managerListener() {
@@ -39,8 +41,36 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   void selectionListener() {
     setState(() {
+      setApiName(SelectionProvider.of(context).apiName.value);
+      setVersionName(SelectionProvider.of(context).versionName.value);
       setSpecName(SelectionProvider.of(context).specName.value);
     });
+  }
+
+  void setApiName(String name) {
+    if (apiManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    apiManager?.removeListener(managerListener);
+    // get the new manager
+    apiManager = RegistryProvider.of(context).getApiManager(name);
+    apiManager.addListener(managerListener);
+    // get the value from the manager
+    managerListener();
+  }
+
+  void setVersionName(String name) {
+    if (versionManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    versionManager?.removeListener(managerListener);
+    // get the new manager
+    versionManager = RegistryProvider.of(context).getVersionManager(name);
+    versionManager.addListener(managerListener);
+    // get the value from the manager
+    managerListener();
   }
 
   void setSpecName(String name) {
@@ -64,6 +94,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   void dispose() {
+    apiManager?.removeListener(managerListener);
+    versionManager?.removeListener(managerListener);
     specManager?.removeListener(managerListener);
     SelectionProvider.of(context).specName.removeListener(selectionListener);
     super.dispose();
@@ -95,6 +127,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     if (specManager?.value == null) {
       return Card();
     } else {
+      Api api = apiManager.value;
+      Version version = versionManager.value;
       Spec spec = specManager.value;
       return Card(
         child: Column(
@@ -113,6 +147,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
+                      BodyRow(api?.displayName +
+                          " v. " +
+                          version?.name?.split("/")?.last),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
                       BodyRow("revision " + spec.revisionId),

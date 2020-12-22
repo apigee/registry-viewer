@@ -29,6 +29,7 @@ class VersionDetailCard extends StatefulWidget {
 }
 
 class _VersionDetailCardState extends State<VersionDetailCard> {
+  ApiManager apiManager;
   VersionManager versionManager;
 
   void managerListener() {
@@ -37,8 +38,22 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   void selectionListener() {
     setState(() {
+      setApiName(SelectionProvider.of(context).apiName.value);
       setVersionName(SelectionProvider.of(context).versionName.value);
     });
+  }
+
+  void setApiName(String name) {
+    if (apiManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    apiManager?.removeListener(managerListener);
+    // get a manager for the new name
+    apiManager = RegistryProvider.of(context).getApiManager(name);
+    apiManager.addListener(managerListener);
+    // get the value from the manager
+    managerListener();
   }
 
   void setVersionName(String name) {
@@ -62,6 +77,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   void dispose() {
+    apiManager?.removeListener(managerListener);
     versionManager?.removeListener(managerListener);
     SelectionProvider.of(context).versionName.removeListener(selectionListener);
     super.dispose();
@@ -93,6 +109,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     if (versionManager?.value == null) {
       return Card();
     } else {
+      Api api = apiManager.value;
       Version version = versionManager.value;
       return Card(
         child: Column(
@@ -111,7 +128,9 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
-                      TitleRow(version.name.split("/").last, action: selflink),
+                      BodyRow(api?.displayName),
+                      TitleRow("v. " + version.name.split("/").last,
+                          action: selflink),
                       SizedBox(height: 10),
                       if (version.description != "")
                         BodyRow(version.description),
