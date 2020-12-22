@@ -34,6 +34,7 @@ jobs:
         echo $PATH
         flutter pub global activate protoc_plugin
     - run: flutter config --enable-web
+    - run: flutter config --enable-linux-desktop
     - name: Generate flutter project scaffolding
       run: make create
     - name: Generate protobuf support code
