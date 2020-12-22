@@ -1,11 +1,14 @@
-linux:
+linux:	buildstamp
 	cd registry; flutter run -d linux
 
-macos:
+macos:	buildstamp
 	cd registry; flutter run -d macos
 
-web:
+web:	buildstamp
 	cd registry; flutter run -d chrome --web-hostname localhost --web-port 8888
+
+buildstamp:
+	tools/BUILDSTAMP.sh
 
 protos:
 	cd third_party; ./SETUP.sh
@@ -20,19 +23,18 @@ clean:
 	cd registry; flutter clean
 	rm -rf registry/lib/generated
 
-clobber: clean
+clobber:	clean
 	rm -rf registry/ios registry/android registry/ios registry/linux 
 	rm -rf registry/registry.iml
 	rm -rf third_party/api-common-protos third_party/gnostic third_party/registry
 	rm -rf site/public
 
-staging:
-	tools/BUILDSTAMP.sh
+staging:	buildstamp
 	cd registry; flutter build web
 	rm -rf site/public
 	cp -r registry/build/web site/public
 
-build:  staging
+build: 	staging
 ifndef REGISTRY_PROJECT_IDENTIFIER
 	@echo "Error! REGISTRY_PROJECT_IDENTIFIER must be set."; exit 1
 endif
