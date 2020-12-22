@@ -136,17 +136,27 @@ class _PropertyListViewState extends State<PropertyListView> {
   String parentName;
   int selectedIndex = -1;
 
+  void filterListener() {
+    setState(() {
+      ObservableString filter = ObservableStringProvider.of(context);
+      if (filter != null) {
+        widget.propertyService.filter = filter.value;
+        widget.pageLoadController.reset();
+        selectedIndex = -1;
+      }
+    });
+  }
+
   @override
   void didChangeDependencies() {
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            widget.propertyService.filter = filter.value;
-            widget.pageLoadController.reset();
-            selectedIndex = -1;
-          }
-        }));
+    ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    ObservableStringProvider.of(context).removeListener(filterListener);
+    super.dispose();
   }
 
   @override

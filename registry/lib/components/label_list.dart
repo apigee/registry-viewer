@@ -132,17 +132,27 @@ class _LabelListViewState extends State<LabelListView> {
   String parentName;
   int selectedIndex = -1;
 
+  void filterListener() {
+    setState(() {
+      ObservableString filter = ObservableStringProvider.of(context);
+      if (filter != null) {
+        widget.labelService.filter = filter.value;
+        widget.pageLoadController.reset();
+        selectedIndex = -1;
+      }
+    });
+  }
+
   @override
   void didChangeDependencies() {
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            widget.labelService.filter = filter.value;
-            widget.pageLoadController.reset();
-            selectedIndex = -1;
-          }
-        }));
+    ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    ObservableStringProvider.of(context).removeListener(filterListener);
+    super.dispose();
   }
 
   @override
