@@ -21,7 +21,6 @@ jobs:
         sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip > /tmp/protoc.zip
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
-        ln -s /usr/local $HOME/local
     - name: Install Flutter tools
       uses: subosito/flutter-action@v1
       with:
@@ -34,12 +33,9 @@ jobs:
         echo $PATH
         flutter pub global activate protoc_plugin
     - run: flutter config --enable-web
-    - name: Review installation
-      run: |
-        echo $HOME
-        find $HOME/local
-        echo $PATH
-        which protoc-gen-dart
-    - run: make create
-    - run: make protos
-    - run: make staging
+    - name: Generate flutter project scaffolding
+      run: make create
+    - name: Generate protobuf support code
+      run: make protos
+    - name: Build the web target
+      run: make staging
