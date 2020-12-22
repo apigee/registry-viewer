@@ -21,6 +21,10 @@ jobs:
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
         ln -s /usr/local $HOME/local
+    - name: Get Dart protoc plugin
+      run: |
+        pub global activate protoc_plugin
+        echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:
