@@ -24,25 +24,16 @@ class EditSpecForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditSpecFormState extends State<EditSpecForm> {
-  Selection selection;
   SpecManager specManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
       setSpecName(SelectionProvider.of(context).specName.value);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).specName.addListener(nameChangeListener);
-    super.didChangeDependencies();
-    setSpecName(SelectionProvider.of(context)?.specName?.value);
   }
 
   void setSpecName(String name) {
@@ -50,12 +41,19 @@ class EditSpecFormState extends State<EditSpecForm> {
       return;
     }
     // forget the old manager
-    specManager?.removeListener(listener);
+    specManager?.removeListener(managerListener);
     // get the new manager
     specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(listener);
+    specManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).specName.addListener(selectionListener);
+    super.didChangeDependencies();
+    selectionListener();
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -64,12 +62,14 @@ class EditSpecFormState extends State<EditSpecForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final descriptionController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.apiName?.removeListener(nameChangeListener);
-    specManager?.removeListener(listener);
+    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    specManager?.removeListener(managerListener);
     descriptionController.dispose();
     super.dispose();
   }
@@ -77,7 +77,6 @@ class EditSpecFormState extends State<EditSpecForm> {
   @override
   Widget build(BuildContext context) {
     if (specManager?.value == null) {
-      print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
@@ -126,7 +125,7 @@ class EditSpecFormState extends State<EditSpecForm> {
   void save(BuildContext context) {
     if (specManager?.value != null && _formKey.currentState.validate()) {
       final spec = specManager.value.clone();
-      List<String> paths = List();
+      List<String> paths = [];
       if (spec.description != descriptionController.text) {
         spec.description = descriptionController.text;
         paths.add("description");

@@ -15,14 +15,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
 import '../models/project.dart';
-import '../models/string.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'filter.dart';
-
-const int pageSize = 50;
+import '../models/string.dart';
+import '../service/service.dart';
 
 typedef ProjectSelectionHandler = Function(
     BuildContext context, Project project);
@@ -44,6 +42,7 @@ class _ProjectListCardState extends State<ProjectListCard> {
         pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
   }
 
+  @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
       observable: ObservableString(),
@@ -77,6 +76,7 @@ class ProjectListView extends StatefulWidget {
     this.projectService,
     this.pageLoadController,
   );
+
   @override
   _ProjectListViewState createState() => _ProjectListViewState();
 }

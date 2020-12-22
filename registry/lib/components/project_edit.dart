@@ -24,25 +24,16 @@ class EditProjectForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditProjectFormState extends State<EditProjectForm> {
-  Selection selection;
   ProjectManager projectManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
       setProjectName(SelectionProvider.of(context).projectName.value);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).projectName.addListener(nameChangeListener);
-    super.didChangeDependencies();
-    setProjectName(SelectionProvider.of(context)?.projectName?.value);
   }
 
   void setProjectName(String name) {
@@ -50,12 +41,19 @@ class EditProjectFormState extends State<EditProjectForm> {
       return;
     }
     // forget the old manager
-    projectManager?.removeListener(listener);
+    projectManager?.removeListener(managerListener);
     // get the new manager
     projectManager = RegistryProvider.of(context).getProjectManager(name);
-    projectManager.addListener(listener);
+    projectManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).projectName.addListener(selectionListener);
+    super.didChangeDependencies();
+    selectionListener();
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -64,13 +62,17 @@ class EditProjectFormState extends State<EditProjectForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final displayNameController = TextEditingController();
   final descriptionController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.projectName?.removeListener(nameChangeListener);
-    projectManager?.removeListener(listener);
+    SelectionProvider.of(context)
+        .projectName
+        ?.removeListener(selectionListener);
+    projectManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -79,7 +81,6 @@ class EditProjectFormState extends State<EditProjectForm> {
   @override
   Widget build(BuildContext context) {
     if (projectManager?.value == null) {
-      print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
@@ -135,7 +136,7 @@ class EditProjectFormState extends State<EditProjectForm> {
   void save(BuildContext context) {
     if (projectManager?.value != null && _formKey.currentState.validate()) {
       final project = projectManager.value.clone();
-      List<String> paths = List();
+      List<String> paths = [];
       if (project.displayName != displayNameController.text) {
         project.displayName = displayNameController.text;
         paths.add("display_name");

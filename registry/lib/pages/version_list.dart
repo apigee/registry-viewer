@@ -13,24 +13,42 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/home_button.dart';
 import '../components/version_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
+import '../service/service.dart';
 
 // VersionListPage is a full-page display of a list of versions.
-class VersionListPage extends StatelessWidget {
+class VersionListPage extends StatefulWidget {
   final String name;
+
   VersionListPage(String name, {Key key})
       : name = name,
         super(key: key);
+  @override
+  _VersionListPageState createState() => _VersionListPageState();
+}
+
+class _VersionListPageState extends State<VersionListPage> {
+  VersionService versionService;
+  PagewiseLoadController<Version> pageLoadController;
+
+  _VersionListPageState() {
+    versionService = VersionService();
+    pageLoadController = PagewiseLoadController<Version>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+  }
 
   // convert /projects/{project}/apis/{api}/versions
   // to projects/{project}/apis/{api}
   String parentName() {
-    return name.split('/').sublist(1, 5).join('/');
+    return widget.name.split('/').sublist(1, 5).join('/');
   }
 
   @override
@@ -43,7 +61,7 @@ class VersionListPage extends StatelessWidget {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(name)),
+            title: Text(title(widget.name)),
             actions: <Widget>[
               Container(width: 400, child: VersionSearchBox()),
               homeButton(context),
@@ -58,6 +76,8 @@ class VersionListPage extends StatelessWidget {
                   arguments: version,
                 );
               },
+              versionService,
+              pageLoadController,
             ),
           ),
         ),

@@ -13,24 +13,42 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/home_button.dart';
 import '../components/spec_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
+import '../service/service.dart';
 
 // SpecListPage is a full-page display of a list of specs.
-class SpecListPage extends StatelessWidget {
+class SpecListPage extends StatefulWidget {
   final String name;
+
   SpecListPage(String name, {Key key})
       : name = name,
         super(key: key);
+  @override
+  _SpecListPageState createState() => _SpecListPageState();
+}
+
+class _SpecListPageState extends State<SpecListPage> {
+  SpecService specService;
+  PagewiseLoadController<Spec> pageLoadController;
+
+  _SpecListPageState() {
+    specService = SpecService();
+    pageLoadController = PagewiseLoadController<Spec>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => this.specService.getSpecsPage(pageIndex));
+  }
 
   // convert /projects/{project}/apis/{api}/versions/{version}/specs
   // to projects/{project}/apis/{api}/versions/{version}
   String parentName() {
-    return name.split('/').sublist(1, 7).join('/');
+    return widget.name.split('/').sublist(1, 7).join('/');
   }
 
   @override
@@ -43,19 +61,25 @@ class SpecListPage extends StatelessWidget {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(name)),
+            title: Text(title(widget.name)),
             actions: <Widget>[
               Container(width: 400, child: SpecSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(child: SpecListView((context, spec) {
-            Navigator.pushNamed(
-              context,
-              spec.routeNameForDetail(),
-              arguments: spec,
-            );
-          })),
+          body: Center(
+            child: SpecListView(
+              (context, spec) {
+                Navigator.pushNamed(
+                  context,
+                  spec.routeNameForDetail(),
+                  arguments: spec,
+                );
+              },
+              specService,
+              pageLoadController,
+            ),
+          ),
         ),
       ),
     );

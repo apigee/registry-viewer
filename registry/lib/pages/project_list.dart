@@ -13,26 +13,32 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/home_button.dart';
 import '../components/project_list.dart';
 import '../models/string.dart';
 import '../models/project.dart';
 import '../service/service.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-
-ProjectService projectService;
-PagewiseLoadController<Project> pageLoadController;
-final pageSize = 50;
 
 // ProjectListPage is a full-page display of a list of projects.
-class ProjectListPage extends StatelessWidget {
+class ProjectListPage extends StatefulWidget {
   final String name;
 
   ProjectListPage(String name, {Key key})
       : name = name,
-        super(key: key) {
+        super(key: key);
+
+  @override
+  _ProjectListPageState createState() => _ProjectListPageState();
+}
+
+class _ProjectListPageState extends State<ProjectListPage> {
+  ProjectService projectService;
+  PagewiseLoadController<Project> pageLoadController;
+
+  _ProjectListPageState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
@@ -45,7 +51,7 @@ class ProjectListPage extends StatelessWidget {
       observable: ObservableString(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title(name)),
+          title: Text(title(widget.name)),
           actions: <Widget>[
             Container(width: 400, child: ProjectSearchBox()),
             homeButton(context),

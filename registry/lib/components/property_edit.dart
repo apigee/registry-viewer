@@ -29,22 +29,14 @@ class EditPropertyFormState extends State<EditPropertyForm> {
   Selection selection;
   PropertyManager propertyManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
       setPropertyName(SelectionProvider.of(context).propertyName.value);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).propertyName.addListener(nameChangeListener);
-    super.didChangeDependencies();
-    setPropertyName(SelectionProvider.of(context)?.propertyName?.value);
   }
 
   void setPropertyName(String name) {
@@ -52,12 +44,19 @@ class EditPropertyFormState extends State<EditPropertyForm> {
       return;
     }
     // forget the old manager
-    propertyManager?.removeListener(listener);
+    propertyManager?.removeListener(managerListener);
     // get the new manager
     propertyManager = RegistryProvider.of(context).getPropertyManager(name);
-    propertyManager.addListener(listener);
+    propertyManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).propertyName.addListener(selectionListener);
+    super.didChangeDependencies();
+    setPropertyName(SelectionProvider.of(context)?.propertyName?.value);
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -66,12 +65,16 @@ class EditPropertyFormState extends State<EditPropertyForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final stringValueController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.propertyName?.removeListener(nameChangeListener);
-    propertyManager?.removeListener(listener);
+    SelectionProvider.of(context)
+        .propertyName
+        ?.removeListener(selectionListener);
+    propertyManager?.removeListener(managerListener);
     stringValueController.dispose();
     super.dispose();
   }
@@ -79,7 +82,6 @@ class EditPropertyFormState extends State<EditPropertyForm> {
   @override
   Widget build(BuildContext context) {
     if (propertyManager?.value == null) {
-      print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.

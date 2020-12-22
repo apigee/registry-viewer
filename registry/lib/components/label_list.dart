@@ -15,16 +15,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
+import '../components/label_add.dart';
+import '../components/label_delete.dart';
 import '../models/label.dart';
-import '../models/string.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'filter.dart';
-import 'label_add.dart';
-import 'label_delete.dart';
-
-const int pageSize = 50;
+import '../service/service.dart';
+import '../models/string.dart';
 
 typedef ObservableStringFn = ObservableString Function(BuildContext context);
 

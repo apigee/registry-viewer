@@ -14,11 +14,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../models/selection.dart';
-import '../models/project.dart';
-import 'detail_rows.dart';
-import '../service/registry.dart';
+import '../components/detail_rows.dart';
 import '../components/project_edit.dart';
+import '../models/project.dart';
+import '../models/selection.dart';
+import '../service/registry.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
@@ -30,8 +30,15 @@ class ProjectDetailCard extends StatefulWidget {
 
 class _ProjectDetailCardState extends State<ProjectDetailCard> {
   ProjectManager projectManager;
-  void listener() {
+
+  void managerListener() {
     setState(() {});
+  }
+
+  void selectionListener() {
+    setState(() {
+      setProjectName(SelectionProvider.of(context).projectName.value);
+    });
   }
 
   void setProjectName(String name) {
@@ -39,22 +46,25 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
       return;
     }
     // forget the old manager
-    projectManager?.removeListener(listener);
+    projectManager?.removeListener(managerListener);
     // get the new manager
     projectManager = RegistryProvider.of(context).getProjectManager(name);
-    projectManager.addListener(listener);
+    projectManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).projectName.addListener(() {
-      setState(() {
-        setProjectName(SelectionProvider.of(context).projectName.value);
-      });
-    });
+    SelectionProvider.of(context).projectName.addListener(selectionListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    projectManager?.removeListener(managerListener);
+    SelectionProvider.of(context).projectName.removeListener(selectionListener);
+    super.dispose();
   }
 
   @override
@@ -64,7 +74,6 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
       Navigator.pushNamed(
         context,
         project.routeNameForDetail(),
-        arguments: project,
       );
     });
 
@@ -91,7 +100,10 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
-                name: project.name, show: selflink, edit: editable),
+              name: project.name,
+              show: selflink,
+              edit: editable,
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

@@ -16,8 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/api_edit.dart';
 import '../components/detail_rows.dart';
-import '../models/selection.dart';
 import '../models/api.dart';
+import '../models/selection.dart';
 import '../service/registry.dart';
 
 // ApiDetailCard is a card that displays details about a api.
@@ -31,8 +31,14 @@ class ApiDetailCard extends StatefulWidget {
 class _ApiDetailCardState extends State<ApiDetailCard> {
   ApiManager apiManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
+  }
+
+  void selectionListener() {
+    setState(() {
+      setApiName(SelectionProvider.of(context).apiName.value);
+    });
   }
 
   void setApiName(String name) {
@@ -40,27 +46,24 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
       return;
     }
     // forget the old manager
-    apiManager?.removeListener(listener);
+    apiManager?.removeListener(managerListener);
     // get the new manager
     apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(listener);
+    apiManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).apiName.addListener(() {
-      setState(() {
-        setApiName(SelectionProvider.of(context).apiName.value);
-      });
-    });
+    SelectionProvider.of(context).apiName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    apiManager?.removeListener(listener);
+    apiManager?.removeListener(managerListener);
+    SelectionProvider.of(context).apiName.removeListener(selectionListener);
     super.dispose();
   }
 
@@ -96,9 +99,10 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
-                name: api.name.split("/").sublist(2).join("/"),
-                show: selflink,
-                edit: editable),
+              name: api.name.split("/").sublist(2).join("/"),
+              show: selflink,
+              edit: editable,
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 0),

@@ -14,11 +14,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import '../components/detail_rows.dart';
+import '../components/version_edit.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
-import 'detail_rows.dart';
 import '../service/registry.dart';
-import '../components/version_edit.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
@@ -31,8 +31,14 @@ class VersionDetailCard extends StatefulWidget {
 class _VersionDetailCardState extends State<VersionDetailCard> {
   VersionManager versionManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
+  }
+
+  void selectionListener() {
+    setState(() {
+      setVersionName(SelectionProvider.of(context).versionName.value);
+    });
   }
 
   void setVersionName(String name) {
@@ -40,22 +46,25 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
       return;
     }
     // forget the old manager
-    versionManager?.removeListener(listener);
+    versionManager?.removeListener(managerListener);
     // get a manager for the new name
     versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(listener);
+    versionManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).versionName.addListener(() {
-      setState(() {
-        setVersionName(SelectionProvider.of(context).versionName.value);
-      });
-    });
+    SelectionProvider.of(context).versionName.addListener(selectionListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    versionManager?.removeListener(managerListener);
+    SelectionProvider.of(context).versionName.removeListener(selectionListener);
+    super.dispose();
   }
 
   @override

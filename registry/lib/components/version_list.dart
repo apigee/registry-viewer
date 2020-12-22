@@ -15,22 +15,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
-import '../models/version.dart';
-import '../models/string.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'filter.dart';
-
-const int pageSize = 50;
+import '../models/string.dart';
+import '../models/version.dart';
+import '../service/service.dart';
 
 typedef VersionSelectionHandler = Function(
     BuildContext context, Version version);
 
-PagewiseLoadController<Version> pageLoadController;
-
 // VersionListCard is a card that displays a list of versions.
-class VersionListCard extends StatelessWidget {
+class VersionListCard extends StatefulWidget {
+  @override
+  _VersionListCardState createState() => _VersionListCardState();
+}
+
+class _VersionListCardState extends State<VersionListCard> {
+  VersionService versionService;
+  PagewiseLoadController<Version> pageLoadController;
+
+  _VersionListCardState() {
+    versionService = VersionService();
+    pageLoadController = PagewiseLoadController<Version>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -40,7 +51,13 @@ class VersionListCard extends StatelessWidget {
           children: [
             filterBar(context, VersionSearchBox(),
                 refresh: () => pageLoadController.reset()),
-            Expanded(child: VersionListView(null)),
+            Expanded(
+              child: VersionListView(
+                null,
+                versionService,
+                pageLoadController,
+              ),
+            ),
           ],
         ),
       ),
@@ -51,50 +68,66 @@ class VersionListCard extends StatelessWidget {
 // VersionListView is a scrollable ListView of versions.
 class VersionListView extends StatefulWidget {
   final VersionSelectionHandler selectionHandler;
-  VersionListView(this.selectionHandler);
+  final VersionService versionService;
+  final PagewiseLoadController<Version> pageLoadController;
+
+  VersionListView(
+    this.selectionHandler,
+    this.versionService,
+    this.pageLoadController,
+  );
+
   @override
   _VersionListViewState createState() => _VersionListViewState();
 }
 
 class _VersionListViewState extends State<VersionListView> {
   String apiName;
-  // PagewiseLoadController<Version> pageLoadController;
-  VersionService versionService;
   int selectedIndex = -1;
 
-  _VersionListViewState() {
-    versionService = VersionService();
-    pageLoadController = PagewiseLoadController<Version>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+  void selectionListener() {
+    setState(() {});
+  }
+
+  void filterListener() {
+    setState(() {
+      ObservableString filter = ObservableStringProvider.of(context);
+      if (filter != null) {
+        widget.versionService.filter = filter.value;
+        widget.pageLoadController.reset();
+        selectedIndex = -1;
+      }
+    });
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).apiName.addListener(() => setState(() {}));
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            versionService.filter = filter.value;
-            pageLoadController.reset();
-            selectedIndex = -1;
-          }
-        }));
+    SelectionProvider.of(context).apiName.addListener(selectionListener);
+    ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
+  void dispose() {
+    SelectionProvider.of(context).apiName.removeListener(selectionListener);
+    ObservableStringProvider.of(context).removeListener(filterListener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    versionService.context = context;
-    if (versionService.apiName != SelectionProvider.of(context).apiName.value) {
-      versionService.apiName = SelectionProvider.of(context).apiName.value;
-      pageLoadController.reset();
+    widget.versionService.context = context;
+    if (widget.versionService.apiName !=
+        SelectionProvider.of(context).apiName.value) {
+      widget.versionService.apiName =
+          SelectionProvider.of(context).apiName.value;
+      widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
       child: PagewiseListView<Version>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }

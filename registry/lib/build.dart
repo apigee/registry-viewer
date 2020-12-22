@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Time of most recent deployed build.
-const buildTime = "Wed 16 Dec 2020 08:32:30 PM PST";
+const buildTime = "Mon 21 Dec 2020 06:00:25 PM PST";
 
 // Commit of most recent deployed build.
-const commitHash = "05e5431061eb354520f41a4f55a6cbf12c6d7e4c";
+const commitHash = "0d30d658ca00746ac9aade0c92ed03a0a6c9a88b";

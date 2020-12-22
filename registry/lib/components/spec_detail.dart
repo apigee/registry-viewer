@@ -14,12 +14,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../models/selection.dart';
-import '../models/spec.dart';
-import 'detail_rows.dart';
-import '../service/registry.dart';
+import '../components/detail_rows.dart';
 import '../components/spec_edit.dart';
 import '../helpers/extensions.dart';
+import '../models/selection.dart';
+import '../models/spec.dart';
+import '../service/registry.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
@@ -32,8 +32,15 @@ class SpecDetailCard extends StatefulWidget {
 
 class _SpecDetailCardState extends State<SpecDetailCard> {
   SpecManager specManager;
-  void listener() {
+
+  void managerListener() {
     setState(() {});
+  }
+
+  void selectionListener() {
+    setState(() {
+      setSpecName(SelectionProvider.of(context).specName.value);
+    });
   }
 
   void setSpecName(String name) {
@@ -41,22 +48,25 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       return;
     }
     // forget the old manager
-    specManager?.removeListener(listener);
+    specManager?.removeListener(managerListener);
     // get the new manager
     specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(listener);
+    specManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(() {
-      setState(() {
-        setSpecName(SelectionProvider.of(context).specName.value);
-      });
-    });
+    SelectionProvider.of(context).specName.addListener(selectionListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    specManager?.removeListener(managerListener);
+    SelectionProvider.of(context).specName.removeListener(selectionListener);
+    super.dispose();
   }
 
   @override
@@ -91,7 +101,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
-              name: spec.name.last(2),
+              name: spec.name.last(1),
               show: selflink,
               edit: editable,
             ),

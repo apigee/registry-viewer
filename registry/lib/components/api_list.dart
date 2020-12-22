@@ -15,22 +15,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
 import '../models/api.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'filter.dart';
-import '../helpers/extensions.dart';
-
-const int pageSize = 50;
+import '../service/service.dart';
 
 typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 
-PagewiseLoadController<Api> pageLoadController;
+// ApiListCard is a card that displays a list of apis.
+class ApiListCard extends StatefulWidget {
+  @override
+  _ApiListCardState createState() => _ApiListCardState();
+}
 
-// ApiListCard is a card that displays a list of projects.
-class ApiListCard extends StatelessWidget {
+class _ApiListCardState extends State<ApiListCard> {
+  ApiService apiService;
+  PagewiseLoadController<Api> pageLoadController;
+
+  _ApiListCardState() {
+    apiService = ApiService();
+    pageLoadController = PagewiseLoadController<Api>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -40,7 +50,13 @@ class ApiListCard extends StatelessWidget {
           children: [
             filterBar(context, ApiSearchBox(),
                 refresh: () => pageLoadController.reset()),
-            Expanded(child: ApiListView(null)),
+            Expanded(
+              child: ApiListView(
+                null,
+                apiService,
+                pageLoadController,
+              ),
+            ),
           ],
         ),
       ),
@@ -51,7 +67,14 @@ class ApiListCard extends StatelessWidget {
 // ApiListView is a scrollable ListView of apis.
 class ApiListView extends StatefulWidget {
   final ApiSelectionHandler selectionHandler;
-  ApiListView(this.selectionHandler);
+  final ApiService apiService;
+  final PagewiseLoadController<Api> pageLoadController;
+
+  ApiListView(
+    this.selectionHandler,
+    this.apiService,
+    this.pageLoadController,
+  );
 
   @override
   _ApiListViewState createState() => _ApiListViewState();
@@ -59,46 +82,51 @@ class ApiListView extends StatefulWidget {
 
 class _ApiListViewState extends State<ApiListView> {
   String projectName;
-  // PagewiseLoadController<Api> pageLoadController;
-  ApiService apiService;
   int selectedIndex = -1;
 
-  _ApiListViewState() {
-    apiService = ApiService();
-    pageLoadController = PagewiseLoadController<Api>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+  void selectionListener() {
+    setState(() {});
+  }
+
+  void filterListener() {
+    setState(() {
+      ObservableString filter = ObservableStringProvider.of(context);
+      if (filter != null) {
+        widget.apiService.filter = filter.value;
+        widget.pageLoadController.reset();
+        selectedIndex = -1;
+      }
+    });
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context)
-        .projectName
-        .addListener(() => setState(() {}));
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            apiService.filter = filter.value;
-            pageLoadController.reset();
-            selectedIndex = -1;
-          }
-        }));
+    SelectionProvider.of(context).projectName.addListener(selectionListener);
+    ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
+  void dispose() {
+    SelectionProvider.of(context).projectName.removeListener(selectionListener);
+    ObservableStringProvider.of(context).removeListener(filterListener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    apiService.context = context;
-    if (apiService.projectName !=
+    widget.apiService.context = context;
+    if (widget.apiService.projectName !=
         SelectionProvider.of(context).projectName.value) {
-      apiService.projectName = SelectionProvider.of(context).projectName.value;
-      pageLoadController.reset();
+      widget.apiService.projectName =
+          SelectionProvider.of(context).projectName.value;
+      widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
       child: PagewiseListView<Api>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }
@@ -118,18 +146,7 @@ class _ApiListViewState extends State<ApiListView> {
       });
     }
 
-    Color color = (index == selectedIndex)
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).textTheme.bodyText1.color;
-
     return ListTile(
-      /*
-title: Text(api.name.last(1),
-          style: Theme.of(context).textTheme.bodyText2.copyWith(color: color)),
-      subtitle: Text(api.nameForDisplay(),
-          style: Theme.of(context).textTheme.headline6.copyWith(color: color)),
-*/
-
       title: Text(api.nameForDisplay()),
       subtitle: Text(api.owner),
       selected: index == selectedIndex,

@@ -15,21 +15,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
 import '../models/spec.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'filter.dart';
-
-const int pageSize = 50;
+import '../service/service.dart';
 
 typedef SpecSelectionHandler = Function(BuildContext context, Spec spec);
 
-PagewiseLoadController<Spec> pageLoadController;
-
 // SpecListCard is a card that displays a list of specs.
-class SpecListCard extends StatelessWidget {
+class SpecListCard extends StatefulWidget {
+  @override
+  _SpecListCardState createState() => _SpecListCardState();
+}
+
+class _SpecListCardState extends State<SpecListCard> {
+  SpecService specService;
+  PagewiseLoadController<Spec> pageLoadController;
+
+  _SpecListCardState() {
+    specService = SpecService();
+    pageLoadController = PagewiseLoadController<Spec>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -39,7 +50,13 @@ class SpecListCard extends StatelessWidget {
           children: [
             filterBar(context, SpecSearchBox(),
                 refresh: () => pageLoadController.reset()),
-            Expanded(child: SpecListView(null)),
+            Expanded(
+              child: SpecListView(
+                null,
+                specService,
+                pageLoadController,
+              ),
+            ),
           ],
         ),
       ),
@@ -50,53 +67,66 @@ class SpecListCard extends StatelessWidget {
 // SpecListView is a scrollable ListView of specs.
 class SpecListView extends StatefulWidget {
   final SpecSelectionHandler selectionHandler;
-  SpecListView(this.selectionHandler);
+  final SpecService specService;
+  final PagewiseLoadController<Spec> pageLoadController;
+
+  SpecListView(
+    this.selectionHandler,
+    this.specService,
+    this.pageLoadController,
+  );
+
   @override
   _SpecListViewState createState() => _SpecListViewState();
 }
 
 class _SpecListViewState extends State<SpecListView> {
   String versionName;
-  // PagewiseLoadController<Spec> pageLoadController;
-  SpecService specService;
   int selectedIndex = -1;
 
-  _SpecListViewState() {
-    specService = SpecService();
-    pageLoadController = PagewiseLoadController<Spec>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+  void selectionListener() {
+    setState(() {});
+  }
+
+  void filterListener() {
+    setState(() {
+      ObservableString filter = ObservableStringProvider.of(context);
+      if (filter != null) {
+        widget.specService.filter = filter.value;
+        widget.pageLoadController.reset();
+        selectedIndex = -1;
+      }
+    });
   }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context)
-        .versionName
-        .addListener(() => setState(() {}));
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
-          if (filter != null) {
-            specService.filter = filter.value;
-            pageLoadController.reset();
-            selectedIndex = -1;
-          }
-        }));
+    SelectionProvider.of(context).versionName.addListener(selectionListener);
+    ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
+  void dispose() {
+    SelectionProvider.of(context).versionName.removeListener(selectionListener);
+    ObservableStringProvider.of(context).removeListener(filterListener);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    specService.context = context;
-    if (specService.versionName !=
+    widget.specService.context = context;
+    if (widget.specService.versionName !=
         SelectionProvider.of(context).versionName.value) {
-      specService.versionName = SelectionProvider.of(context).versionName.value;
-      pageLoadController.reset();
+      widget.specService.versionName =
+          SelectionProvider.of(context).versionName.value;
+      widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
       child: PagewiseListView<Spec>(
         itemBuilder: this._itemBuilder,
-        pageLoadController: pageLoadController,
+        pageLoadController: widget.pageLoadController,
       ),
     );
   }

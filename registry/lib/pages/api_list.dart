@@ -13,23 +13,41 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
 import '../components/home_button.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import '../models/api.dart';
+import '../service/service.dart';
 
 // ApiListPage is a full-page display of a list of apis.
-class ApiListPage extends StatelessWidget {
+class ApiListPage extends StatefulWidget {
   final String name;
+
   ApiListPage(String name, {Key key})
       : name = name,
         super(key: key);
+  @override
+  _ApiListPageState createState() => _ApiListPageState();
+}
+
+class _ApiListPageState extends State<ApiListPage> {
+  ApiService apiService;
+  PagewiseLoadController<Api> pageLoadController;
+
+  _ApiListPageState() {
+    apiService = ApiService();
+    pageLoadController = PagewiseLoadController<Api>(
+        pageSize: pageSize,
+        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+  }
 
   // convert /projects/{project}/apis to projects/{project}
   String parentName() {
-    return name.split('/').sublist(1, 3).join('/');
+    return widget.name.split('/').sublist(1, 3).join('/');
   }
 
   @override
@@ -42,19 +60,25 @@ class ApiListPage extends StatelessWidget {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(name)),
+            title: Text(title(widget.name)),
             actions: <Widget>[
               Container(width: 400, child: ApiSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(child: ApiListView((context, api) {
-            Navigator.pushNamed(
-              context,
-              api.routeNameForDetail(),
-              arguments: api,
-            );
-          })),
+          body: Center(
+            child: ApiListView(
+              (context, api) {
+                Navigator.pushNamed(
+                  context,
+                  api.routeNameForDetail(),
+                  arguments: api,
+                );
+              },
+              apiService,
+              pageLoadController,
+            ),
+          ),
         ),
       ),
     );

@@ -24,25 +24,16 @@ class EditVersionForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditVersionFormState extends State<EditVersionForm> {
-  Selection selection;
   VersionManager versionManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
       setVersionName(SelectionProvider.of(context).versionName.value);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).versionName.addListener(nameChangeListener);
-    super.didChangeDependencies();
-    setVersionName(SelectionProvider.of(context)?.versionName?.value);
   }
 
   void setVersionName(String name) {
@@ -50,12 +41,19 @@ class EditVersionFormState extends State<EditVersionForm> {
       return;
     }
     // forget the old manager
-    versionManager?.removeListener(listener);
+    versionManager?.removeListener(managerListener);
     // get the new manager
     versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(listener);
+    versionManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).versionName.addListener(selectionListener);
+    super.didChangeDependencies();
+    selectionListener();
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -64,14 +62,16 @@ class EditVersionFormState extends State<EditVersionForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final displayNameController = TextEditingController();
   final descriptionController = TextEditingController();
   final stateController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.apiName?.removeListener(nameChangeListener);
-    versionManager?.removeListener(listener);
+    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    versionManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
     stateController.dispose();
@@ -81,7 +81,6 @@ class EditVersionFormState extends State<EditVersionForm> {
   @override
   Widget build(BuildContext context) {
     if (versionManager?.value == null) {
-      print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
@@ -144,7 +143,7 @@ class EditVersionFormState extends State<EditVersionForm> {
   void save(BuildContext context) {
     if (versionManager?.value != null && _formKey.currentState.validate()) {
       final version = versionManager.value.clone();
-      List<String> paths = List();
+      List<String> paths = [];
       if (version.displayName != displayNameController.text) {
         version.displayName = displayNameController.text;
         paths.add("display_name");

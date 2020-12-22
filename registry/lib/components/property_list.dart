@@ -13,20 +13,18 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../components/custom_search_box.dart';
+import '../components/filter.dart';
+import '../components/property_add.dart';
+import '../components/property_delete.dart';
 import '../models/property.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import 'custom_search_box.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'filter.dart';
-import 'property_add.dart';
-import 'property_delete.dart';
-
-const int pageSize = 50;
+import '../service/service.dart';
 
 typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
@@ -43,7 +41,7 @@ class PropertyListCard extends StatefulWidget {
 }
 
 class _PropertyListCardState extends State<PropertyListCard> {
-  ObservableString subjectNameManager;
+  ObservableString observableSubjectName;
   String subjectName;
   PropertyService propertyService;
   PagewiseLoadController<Property> pageLoadController;
@@ -56,14 +54,10 @@ class _PropertyListCardState extends State<PropertyListCard> {
             propertyService.getPropertiesPage(pageIndex));
   }
 
-  String projectName() {
-    return subjectName.split("/").sublist(0, 2).join("/");
-  }
-
-  void listener() {
+  void selectionListener() {
     pageLoadController?.reset();
     setState(() {
-      subjectName = subjectNameManager.value;
+      subjectName = observableSubjectName.value;
       if (subjectName == null) {
         subjectName = "";
       }
@@ -72,9 +66,15 @@ class _PropertyListCardState extends State<PropertyListCard> {
 
   @override
   void didChangeDependencies() {
-    subjectNameManager = widget.getObservableResourceName(context);
-    subjectNameManager.addListener(listener);
+    observableSubjectName = widget.getObservableResourceName(context);
+    observableSubjectName.addListener(selectionListener);
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    observableSubjectName.removeListener(selectionListener);
+    super.dispose();
   }
 
   @override

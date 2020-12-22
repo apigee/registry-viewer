@@ -24,25 +24,16 @@ class EditAPIForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditAPIFormState extends State<EditAPIForm> {
-  Selection selection;
   ApiManager apiManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
       setApiName(SelectionProvider.of(context).apiName.value);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).apiName.addListener(nameChangeListener);
-    super.didChangeDependencies();
-    setApiName(SelectionProvider.of(context)?.apiName?.value);
   }
 
   void setApiName(String name) {
@@ -50,12 +41,19 @@ class EditAPIFormState extends State<EditAPIForm> {
       return;
     }
     // forget the old manager
-    apiManager?.removeListener(listener);
+    apiManager?.removeListener(managerListener);
     // get the new manager
     apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(listener);
+    apiManager.addListener(managerListener);
     // get the value from the manager
-    listener();
+    managerListener();
+  }
+
+  @override
+  void didChangeDependencies() {
+    SelectionProvider.of(context).apiName.addListener(selectionListener);
+    super.didChangeDependencies();
+    selectionListener();
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -64,14 +62,16 @@ class EditAPIFormState extends State<EditAPIForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final displayNameController = TextEditingController();
   final descriptionController = TextEditingController();
   final ownerController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.apiName?.removeListener(nameChangeListener);
-    apiManager?.removeListener(listener);
+    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    apiManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
     ownerController.dispose();
@@ -81,7 +81,6 @@ class EditAPIFormState extends State<EditAPIForm> {
   @override
   Widget build(BuildContext context) {
     if (apiManager?.value == null) {
-      print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
@@ -144,7 +143,7 @@ class EditAPIFormState extends State<EditAPIForm> {
   void save(BuildContext context) {
     if (apiManager?.value != null && _formKey.currentState.validate()) {
       final api = apiManager.value.clone();
-      List<String> paths = List();
+      List<String> paths = [];
       if (api.displayName != displayNameController.text) {
         api.displayName = displayNameController.text;
         paths.add("display_name");
