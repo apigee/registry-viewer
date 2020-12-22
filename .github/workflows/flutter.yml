@@ -30,6 +30,11 @@ jobs:
         flutter pub global activate protoc_plugin
         echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
     - run: flutter config --enable-web
+    - name: info
+      run: |
+        find .
+        echo $HOME
+        echo $PATH
     - run: make create
     - run: make protos
     - run: make staging
