@@ -15,28 +15,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Get protoc
+    - uses: actions/checkout@v2
+    - name: Install protoc
       run: |
         sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip > /tmp/protoc.zip
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
         ln -s /usr/local $HOME/local
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1
+    - name: Install Flutter tools
+      uses: subosito/flutter-action@v1
       with:
         channel: beta
-    - name: Add .pub-cache to PATH
+    - name: Add Flutter .pub-cache to PATH
       run: |
         echo "$FLUTTER_HOME/.pub-cache/bin" >> $GITHUB_PATH
-    - name: Get Dart protoc plugin
+    - name: Install Dart protoc plugin
       run: |
         echo $PATH
         flutter pub global activate protoc_plugin
     - run: flutter config --enable-web
-    - name: info
+    - name: Review installation
       run: |
-        find .
         echo $HOME
+        find $HOME/local
         echo $PATH
         which protoc-gen-dart
     - run: make create
