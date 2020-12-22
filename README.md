@@ -1,3 +1,5 @@
+[![Go Actions Status](https://github.com/apigee/registry-viewer/workflows/Flutter/badge.svg)](https://github.com/apigee/registry-viewer/actions)
+
 # Registry Viewer
 
 This repository contains a graphical viewer for the
