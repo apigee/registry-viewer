@@ -40,3 +40,5 @@ jobs:
       run: make protos
     - name: Build the web target
       run: make staging
+    - name: Build the linux target
+      run: cd registry; flutter build linux
