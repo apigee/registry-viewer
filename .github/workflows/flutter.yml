@@ -25,17 +25,19 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: beta
+    - name: Add .pub-cache to PATH
+      run: |
+        echo "$FLUTTER_HOME/.pub-cache/bin" >> $GITHUB_PATH
     - name: Get Dart protoc plugin
       run: |
+        echo $PATH
         flutter pub global activate protoc_plugin
-        echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
     - run: flutter config --enable-web
     - name: info
       run: |
-        find $HOME
+        find .
         echo $HOME
         echo $PATH
-        ls -l $HOME/.pub-cache/bin
         which protoc-gen-dart
     - run: make create
     - run: make protos
