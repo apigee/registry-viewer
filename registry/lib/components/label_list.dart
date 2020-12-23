@@ -131,6 +131,7 @@ class LabelListView extends StatefulWidget {
 class _LabelListViewState extends State<LabelListView> {
   String parentName;
   int selectedIndex = -1;
+  ObservableString filter;
 
   void filterListener() {
     setState(() {
@@ -145,13 +146,14 @@ class _LabelListViewState extends State<LabelListView> {
 
   @override
   void didChangeDependencies() {
-    ObservableStringProvider.of(context).addListener(filterListener);
+    filter = ObservableStringProvider.of(context);
+    filter.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    ObservableStringProvider.of(context).removeListener(filterListener);
+    filter.removeListener(filterListener);
     super.dispose();
   }
 

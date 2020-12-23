@@ -83,6 +83,8 @@ class ApiListView extends StatefulWidget {
 class _ApiListViewState extends State<ApiListView> {
   String projectName;
   int selectedIndex = -1;
+  Selection selection;
+  ObservableString filter;
 
   void selectionListener() {
     setState(() {});
@@ -101,15 +103,17 @@ class _ApiListViewState extends State<ApiListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).projectName.addListener(selectionListener);
-    ObservableStringProvider.of(context).addListener(filterListener);
+    selection = SelectionProvider.of(context);
+    selection.projectName.addListener(selectionListener);
+    filter = ObservableStringProvider.of(context);
+    filter.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    SelectionProvider.of(context).projectName.removeListener(selectionListener);
-    ObservableStringProvider.of(context).removeListener(filterListener);
+    selection.projectName.removeListener(selectionListener);
+    filter.removeListener(filterListener);
     super.dispose();
   }
 

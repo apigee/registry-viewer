@@ -34,6 +34,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
   ApiManager apiManager;
   VersionManager versionManager;
   SpecManager specManager;
+  Selection selection;
 
   void managerListener() {
     setState(() {});
@@ -88,7 +89,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.specName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
@@ -97,7 +99,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     apiManager?.removeListener(managerListener);
     versionManager?.removeListener(managerListener);
     specManager?.removeListener(managerListener);
-    SelectionProvider.of(context).specName.removeListener(selectionListener);
+    selection.specName.removeListener(selectionListener);
     super.dispose();
   }
 

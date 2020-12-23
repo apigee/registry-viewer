@@ -24,6 +24,7 @@ class EditProjectForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditProjectFormState extends State<EditProjectForm> {
+  Selection selection;
   ProjectManager projectManager;
 
   void managerListener() {
@@ -51,7 +52,8 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).projectName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.projectName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -69,9 +71,7 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   @override
   void dispose() {
-    SelectionProvider.of(context)
-        .projectName
-        ?.removeListener(selectionListener);
+    selection.projectName?.removeListener(selectionListener);
     projectManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();

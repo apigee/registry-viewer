@@ -54,7 +54,8 @@ class EditPropertyFormState extends State<EditPropertyForm> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).propertyName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.propertyName.addListener(selectionListener);
     super.didChangeDependencies();
     setPropertyName(SelectionProvider.of(context)?.propertyName?.value);
   }
@@ -71,9 +72,7 @@ class EditPropertyFormState extends State<EditPropertyForm> {
 
   @override
   void dispose() {
-    SelectionProvider.of(context)
-        .propertyName
-        ?.removeListener(selectionListener);
+    selection.propertyName?.removeListener(selectionListener);
     propertyManager?.removeListener(managerListener);
     stringValueController.dispose();
     super.dispose();

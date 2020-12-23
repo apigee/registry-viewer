@@ -31,6 +31,7 @@ class VersionDetailCard extends StatefulWidget {
 class _VersionDetailCardState extends State<VersionDetailCard> {
   ApiManager apiManager;
   VersionManager versionManager;
+  Selection selection;
 
   void managerListener() {
     setState(() {});
@@ -71,7 +72,8 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).versionName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.versionName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
@@ -79,7 +81,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
   void dispose() {
     apiManager?.removeListener(managerListener);
     versionManager?.removeListener(managerListener);
-    SelectionProvider.of(context).versionName.removeListener(selectionListener);
+    selection.versionName.removeListener(selectionListener);
     super.dispose();
   }
 

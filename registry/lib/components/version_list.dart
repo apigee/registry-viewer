@@ -84,6 +84,7 @@ class VersionListView extends StatefulWidget {
 class _VersionListViewState extends State<VersionListView> {
   String apiName;
   int selectedIndex = -1;
+  Selection selection;
 
   void selectionListener() {
     setState(() {});
@@ -102,14 +103,15 @@ class _VersionListViewState extends State<VersionListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).apiName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.apiName.addListener(selectionListener);
     ObservableStringProvider.of(context).addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    SelectionProvider.of(context).apiName.removeListener(selectionListener);
+    selection.apiName.removeListener(selectionListener);
     ObservableStringProvider.of(context).removeListener(filterListener);
     super.dispose();
   }
