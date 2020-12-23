@@ -24,6 +24,7 @@ class EditVersionForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditVersionFormState extends State<EditVersionForm> {
+  Selection selection;
   VersionManager versionManager;
 
   void managerListener() {
@@ -51,7 +52,8 @@ class EditVersionFormState extends State<EditVersionForm> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).versionName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.versionName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -70,7 +72,7 @@ class EditVersionFormState extends State<EditVersionForm> {
 
   @override
   void dispose() {
-    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    selection.apiName?.removeListener(selectionListener);
     versionManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();

@@ -24,6 +24,7 @@ class EditSpecForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditSpecFormState extends State<EditSpecForm> {
+  Selection selection;
   SpecManager specManager;
 
   void managerListener() {
@@ -51,7 +52,8 @@ class EditSpecFormState extends State<EditSpecForm> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.specName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }

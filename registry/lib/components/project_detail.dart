@@ -30,6 +30,7 @@ class ProjectDetailCard extends StatefulWidget {
 
 class _ProjectDetailCardState extends State<ProjectDetailCard> {
   ProjectManager projectManager;
+  Selection selection;
 
   void managerListener() {
     setState(() {});
@@ -56,14 +57,15 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).projectName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.projectName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     projectManager?.removeListener(managerListener);
-    SelectionProvider.of(context).projectName.removeListener(selectionListener);
+    selection.projectName.removeListener(selectionListener);
     super.dispose();
   }
 

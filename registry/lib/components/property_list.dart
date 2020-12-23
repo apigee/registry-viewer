@@ -135,6 +135,7 @@ class PropertyListView extends StatefulWidget {
 class _PropertyListViewState extends State<PropertyListView> {
   String parentName;
   int selectedIndex = -1;
+  ObservableString filter;
 
   void filterListener() {
     setState(() {
@@ -149,13 +150,14 @@ class _PropertyListViewState extends State<PropertyListView> {
 
   @override
   void didChangeDependencies() {
-    ObservableStringProvider.of(context).addListener(filterListener);
+    filter = ObservableStringProvider.of(context);
+    filter.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    ObservableStringProvider.of(context).removeListener(filterListener);
+    filter.removeListener(filterListener);
     super.dispose();
   }
 

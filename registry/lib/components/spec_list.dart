@@ -83,6 +83,8 @@ class SpecListView extends StatefulWidget {
 class _SpecListViewState extends State<SpecListView> {
   String versionName;
   int selectedIndex = -1;
+  Selection selection;
+  ObservableString filter;
 
   void selectionListener() {
     setState(() {});
@@ -101,15 +103,17 @@ class _SpecListViewState extends State<SpecListView> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).versionName.addListener(selectionListener);
-    ObservableStringProvider.of(context).addListener(filterListener);
+    selection = SelectionProvider.of(context);
+    selection.versionName.addListener(selectionListener);
+    filter = ObservableStringProvider.of(context);
+    filter.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    SelectionProvider.of(context).versionName.removeListener(selectionListener);
-    ObservableStringProvider.of(context).removeListener(filterListener);
+    selection.versionName.removeListener(selectionListener);
+    filter.removeListener(filterListener);
     super.dispose();
   }
 

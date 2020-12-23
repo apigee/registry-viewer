@@ -34,6 +34,7 @@ class PropertyDetailCard extends StatefulWidget {
 
 class _PropertyDetailCardState extends State<PropertyDetailCard> {
   PropertyManager propertyManager;
+  Selection selection;
 
   void managerListener() {
     setState(() {});
@@ -60,16 +61,15 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).propertyName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.propertyName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     propertyManager?.removeListener(managerListener);
-    SelectionProvider.of(context)
-        .propertyName
-        .removeListener(selectionListener);
+    selection.propertyName.removeListener(selectionListener);
     super.dispose();
   }
 

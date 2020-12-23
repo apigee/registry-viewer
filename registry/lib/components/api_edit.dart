@@ -24,6 +24,7 @@ class EditAPIForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditAPIFormState extends State<EditAPIForm> {
+  Selection selection;
   ApiManager apiManager;
 
   void managerListener() {
@@ -51,7 +52,8 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).apiName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.apiName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -70,7 +72,7 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   @override
   void dispose() {
-    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    selection.apiName?.removeListener(selectionListener);
     apiManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();

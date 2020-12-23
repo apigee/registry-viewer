@@ -47,7 +47,7 @@ class Home extends StatelessWidget {
                     child: ProjectListCard(),
                   ),
                   Expanded(
-                    child: ProjectDetailCard(selflink: true, editable: false),
+                    child: ProjectDetailCard(selflink: true, editable: true),
                   ),
                 ],
               ),

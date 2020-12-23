@@ -30,6 +30,7 @@ class ApiDetailCard extends StatefulWidget {
 
 class _ApiDetailCardState extends State<ApiDetailCard> {
   ApiManager apiManager;
+  Selection selection;
 
   void managerListener() {
     setState(() {});
@@ -56,14 +57,15 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).apiName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.apiName.addListener(selectionListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     apiManager?.removeListener(managerListener);
-    SelectionProvider.of(context).apiName.removeListener(selectionListener);
+    selection.apiName.removeListener(selectionListener);
     super.dispose();
   }
 
