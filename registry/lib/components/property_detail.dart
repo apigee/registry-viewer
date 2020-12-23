@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
 import '../components/property_detail_complexity.dart';
+import '../components/property_detail_lint.dart';
 import '../components/property_detail_string.dart';
 import '../components/property_detail_vocabulary.dart';
 import '../helpers/extensions.dart';
@@ -97,6 +98,8 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
             return ComplexityPropertyCard(property, selflink: selflink);
           case "gnostic.metrics.Vocabulary":
             return VocabularyPropertyCard(property, selflink: selflink);
+          case "google.cloud.apigee.registry.v1alpha1.Lint":
+            return LintPropertyCard(property, selflink: selflink);
         }
         // if we don't recognize this message, clear it out to not overflow the display
         property.messageValue.value = List();
@@ -111,31 +114,34 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
       }
 
       // otherwise return a default display of the property
-      return DefaultPropertyDetailCard();
+      return DefaultPropertyDetailCard(selflink: selflink);
     }
   }
 }
 
 // DefaultPropertyDetailCard is a card that displays details about a property.
 class DefaultPropertyDetailCard extends StatefulWidget {
-  DefaultPropertyDetailCard();
+  final Function selflink;
+  DefaultPropertyDetailCard({this.selflink});
   _DefaultPropertyDetailCardState createState() =>
       _DefaultPropertyDetailCardState();
 }
 
 class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
   PropertyManager propertyManager;
+  Selection selection;
+
   void managerListener() {
     setState(() {});
   }
 
   void selectionListener() {
     setState(() {
-      setProjectName(SelectionProvider.of(context).propertyName.value);
+      setPropertyName(SelectionProvider.of(context).propertyName.value);
     });
   }
 
-  void setProjectName(String name) {
+  void setPropertyName(String name) {
     if (propertyManager?.name == name) {
       return;
     }
@@ -150,13 +156,16 @@ class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).propertyName.addListener(selectionListener);
+    selection = SelectionProvider.of(context);
+    selection.propertyName.addListener(selectionListener);
+    selectionListener();
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     propertyManager?.removeListener(managerListener);
+    selection.propertyName.removeListener(selectionListener);
     super.dispose();
   }
 
@@ -164,7 +173,7 @@ class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
   Widget build(BuildContext context) {
     Property property = propertyManager?.value;
     if (property == null) {
-      return Card();
+      return Card(child: Text("$propertyManager"));
     }
 
     return Card(
@@ -172,7 +181,7 @@ class _DefaultPropertyDetailCardState extends State<DefaultPropertyDetailCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResourceNameButtonRow(
-              name: property.name.last(1), show: null, edit: null),
+              name: property.name.last(1), show: widget.selflink, edit: null),
           Expanded(
             child: Scrollbar(
               child: Padding(
