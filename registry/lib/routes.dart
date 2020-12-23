@@ -24,6 +24,7 @@ import 'pages/version_list.dart';
 import 'pages/version_detail.dart';
 import 'pages/spec_list.dart';
 import 'pages/spec_detail.dart';
+import 'pages/property_list.dart';
 import 'pages/property_detail.dart';
 import 'pages/signin.dart';
 import 'pages/home.dart';
@@ -98,6 +99,8 @@ class RegistryRouter {
     // handle regex patterns next, watch for possible ordering sensitivities
     if (propertyRegExp.hasMatch(settings.name)) {
       return propertyPage(settings);
+    } else if (propertiesRegExp.hasMatch(settings.name)) {
+      return propertiesPage(settings);
     } else if (specRegExp.hasMatch(settings.name)) {
       return specPage(settings);
     } else if (specsRegExp.hasMatch(settings.name)) {
@@ -218,6 +221,17 @@ MaterialPageRoute specPage(RouteSettings settings) {
           name: settings.name,
         );
       });
+}
+
+MaterialPageRoute propertiesPage(RouteSettings settings) {
+  return MaterialPageRoute(
+    settings: settings,
+    builder: (context) {
+      return PropertyListPage(
+        settings.name,
+      );
+    },
+  );
 }
 
 MaterialPageRoute propertyPage(RouteSettings settings) {
