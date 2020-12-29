@@ -54,6 +54,7 @@ class VersionDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: VersionDetailCard(editable: true)),
+                Expanded(child: LabelListCard(SelectionProvider.version)),
                 Expanded(child: PropertyListCard(SelectionProvider.version)),
                 Expanded(
                   child: PropertyDetailCard(
@@ -67,10 +68,6 @@ class VersionDetailPage extends StatelessWidget {
           Expanded(
             flex: 4,
             child: Row(children: [
-              Expanded(
-                flex: 1,
-                child: LabelListCard(SelectionProvider.version),
-              ),
               Expanded(
                 flex: 1,
                 child: SizedBox.expand(child: SpecListCard()),

@@ -93,9 +93,13 @@ class PanelNameRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(
-            name,
-            style: Theme.of(context).textTheme.bodyText1,
+          Flexible(
+            child: Text(
+              name,
+              style: Theme.of(context).textTheme.bodyText1,
+              softWrap: false,
+              overflow: TextOverflow.clip,
+            ),
           ),
         ],
       ),
@@ -171,6 +175,24 @@ class BodyRow extends StatelessWidget {
   }
 }
 
+class SmallBodyRow extends StatelessWidget {
+  final String text;
+  SmallBodyRow(this.text);
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      Expanded(
+          child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyText2,
+        textAlign: TextAlign.left,
+        softWrap: false,
+        overflow: TextOverflow.clip,
+      )),
+    ]);
+  }
+}
+
 class LinkRow extends StatelessWidget {
   final String text;
   final String url;
@@ -229,10 +251,14 @@ class TimestampRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          "created " + format(created) + " | last updated " + format(updated),
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.bodyText2,
+        Flexible(
+          child: Text(
+            "created " + format(created) + " | last updated " + format(updated),
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.bodyText2,
+            softWrap: false,
+            overflow: TextOverflow.clip,
+          ),
         ),
       ],
     );
