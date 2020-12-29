@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
+import '../components/dialog_builder.dart';
 import '../components/project_edit.dart';
 import '../models/project.dart';
 import '../models/selection.dart';
@@ -87,7 +88,9 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: EditProjectForm(),
+                content: DialogBuilder(
+                  child: EditProjectForm(),
+                ),
               ),
             );
           });

@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
+import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
@@ -120,7 +121,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: EditSpecForm(),
+                content: DialogBuilder(
+                  child: EditSpecForm(),
+                ),
               ),
             );
           });
@@ -157,14 +160,16 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                           version.name.split("/")?.last),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
-                      BodyRow("revision " + spec.revisionId),
                       BodyRow(spec.style),
-                      BodyRow("${spec.sizeBytes} bytes"),
-                      SmallBodyRow("SHA1 ${spec.hash}"),
+                      BodyRow("revision " + spec.revisionId),
+                      if (spec.hasSourceUri()) SizedBox(height: 10),
                       if (spec.hasSourceUri())
-                        LinkRow("(original source)", spec.sourceUri),
+                        LinkRow("original source", spec.sourceUri),
+                      if (spec.description != "") SizedBox(height: 10),
                       if (spec.description != "") BodyRow(spec.description),
                       SizedBox(height: 10),
+                      SmallBodyRow("${spec.sizeBytes} bytes"),
+                      SmallBodyRow("SHA1 ${spec.hash}"),
                       TimestampRow(spec.createTime, spec.updateTime),
                     ],
                   ),
