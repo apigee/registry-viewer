@@ -22,10 +22,10 @@ import '../models/selection.dart';
 import '../models/highlight.dart';
 
 String stringForLocation(LintLocation location) {
-  return "${location.startPosition.lineNumber}:" +
-      "${location.startPosition.columnNumber} - " +
+  return "[${location.startPosition.lineNumber}:" +
+      "${location.startPosition.columnNumber}-" +
       "${location.endPosition.lineNumber}:" +
-      "${location.endPosition.columnNumber}";
+      "${location.endPosition.columnNumber}]";
 }
 
 class LintPropertyCard extends StatefulWidget {
@@ -124,24 +124,21 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  problem.file.filePath,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2
-                                      .copyWith(color: Colors.blue),
-                                ),
-                                Text(stringForLocation(
-                                    problem.problem.location)),
-                              ],
+                            Text(
+                              problem.file.filePath +
+                                  " " +
+                                  stringForLocation(problem.problem.location),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .copyWith(fontWeight: FontWeight.bold),
+                              softWrap: false,
+                              overflow: TextOverflow.clip,
                             ),
                             SizedBox(height: 10),
                             Text(
                               "${problem.problem.message}",
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
                             SizedBox(height: 10),
                             Row(

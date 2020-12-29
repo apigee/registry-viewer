@@ -26,8 +26,22 @@ class BottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Built $buildTime", style: white),
-          Text("Commit $commitHash", style: white),
+          Flexible(
+            child: Text(
+              "Built $buildTime",
+              style: white,
+              softWrap: false,
+              overflow: TextOverflow.clip,
+            ),
+          ),
+          Flexible(
+            child: Text(
+              "Commit $commitHash",
+              style: white,
+              softWrap: false,
+              overflow: TextOverflow.clip,
+            ),
+          ),
         ],
       ),
     );

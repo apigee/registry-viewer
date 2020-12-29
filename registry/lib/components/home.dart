@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Row(
                 children: [
                   Expanded(
@@ -40,13 +40,15 @@ class Home extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 6,
+              flex: 3,
               child: Row(
                 children: [
                   Expanded(
+                    flex: 1,
                     child: ProjectListCard(),
                   ),
                   Expanded(
+                    flex: 2,
                     child: ProjectDetailCard(selflink: true, editable: true),
                   ),
                 ],

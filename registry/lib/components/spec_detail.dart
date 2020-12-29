@@ -160,12 +160,12 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                       BodyRow("revision " + spec.revisionId),
                       BodyRow(spec.style),
                       BodyRow("${spec.sizeBytes} bytes"),
+                      SmallBodyRow("SHA1 ${spec.hash}"),
                       if (spec.hasSourceUri())
                         LinkRow("(original source)", spec.sourceUri),
                       if (spec.description != "") BodyRow(spec.description),
                       SizedBox(height: 10),
                       TimestampRow(spec.createTime, spec.updateTime),
-                      DetailRow("$spec"),
                     ],
                   ),
                 ),

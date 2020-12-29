@@ -16,8 +16,8 @@ protos:
 
 create:
 	flutter create --no-overwrite registry
-	# we're not using this (yet)
-	rm -rf registry/test
+	# we're not using these (yet)
+	rm -rf registry/test registry/integration_test
 
 clean:
 	cd registry; flutter clean
