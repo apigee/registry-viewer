@@ -70,7 +70,7 @@ class EditSpecFormState extends State<EditSpecForm> {
 
   @override
   void dispose() {
-    SelectionProvider.of(context).apiName?.removeListener(selectionListener);
+    selection.apiName?.removeListener(selectionListener);
     specManager?.removeListener(managerListener);
     descriptionController.dispose();
     super.dispose();

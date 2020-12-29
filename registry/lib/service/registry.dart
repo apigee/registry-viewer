@@ -221,6 +221,7 @@ class SpecManager extends ResourceManager<Spec> {
   Future<Spec> fetchFuture(RegistryClient client) {
     final request = GetSpecRequest();
     request.name = name;
+    request.view = View.FULL;
     return client.getSpec(request, options: callOptions());
   }
 

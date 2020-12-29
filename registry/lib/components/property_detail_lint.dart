@@ -18,6 +18,8 @@ import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registr
 import 'package:url_launcher/url_launcher.dart';
 import '../components/detail_rows.dart';
 import '../helpers/extensions.dart';
+import '../models/selection.dart';
+import '../models/highlight.dart';
 
 String stringForLocation(LintLocation location) {
   return "${location.startPosition.lineNumber}:" +
@@ -44,6 +46,30 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
   Lint lint;
   List<FileProblem> problems = [];
   final ScrollController controller = ScrollController();
+  int selectedIndex = -1;
+  Selection selection;
+
+  void highlightListener() {
+    Highlight highlight = SelectionProvider.of(context).highlight.value;
+    if (highlight == null) {
+      setState(() {
+        selectedIndex = -1;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    selection = SelectionProvider.of(context);
+    selection.highlight.addListener(highlightListener);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    selection.highlight.removeListener(highlightListener);
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
     if (lint == null) {
@@ -73,52 +99,73 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
                     return Container();
                   }
                   final problem = problems[index];
-                  return Card(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                problem.file.filePath,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    .copyWith(color: Colors.blue),
-                              ),
-                              Text(stringForLocation(problem.problem.location)),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "${problem.problem.message}",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                child: Text(problem.problem.ruleId,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2
-                                        .copyWith(color: Colors.blue)),
-                                onTap: () async {
-                                  if (await canLaunch(
-                                      problem.problem.ruleDocUri)) {
-                                    await launch(problem.problem.ruleDocUri);
-                                  } else {
-                                    throw 'Could not launch ${problem.problem.ruleDocUri}';
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
+                  return GestureDetector(
+                    onTap: () {
+                      selectedIndex = index;
+                      SelectionProvider.of(context)
+                          .fileName
+                          .update(problem.file.filePath);
+                      final location = problem.problem.location;
+                      Highlight highlight = Highlight(
+                        location.startPosition.lineNumber - 1,
+                        location.startPosition.columnNumber - 1,
+                        location.endPosition.lineNumber - 1,
+                        location.endPosition.columnNumber - 1,
+                      );
+                      SelectionProvider.of(context).highlight.update(highlight);
+                      setState(() {});
+                    },
+                    child: Card(
+                      child: Container(
+                        color: (selectedIndex == index)
+                            ? Theme.of(context).primaryColor.withAlpha(64)
+                            : Theme.of(context).canvasColor,
+                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  problem.file.filePath,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2
+                                      .copyWith(color: Colors.blue),
+                                ),
+                                Text(stringForLocation(
+                                    problem.problem.location)),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "${problem.problem.message}",
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  child: Text(problem.problem.ruleId,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2
+                                          .copyWith(color: Colors.blue)),
+                                  onTap: () async {
+                                    if (await canLaunch(
+                                        problem.problem.ruleDocUri)) {
+                                      await launch(problem.problem.ruleDocUri);
+                                    } else {
+                                      throw 'Could not launch ${problem.problem.ruleDocUri}';
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
