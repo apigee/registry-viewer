@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
+import '../components/dialog_builder.dart';
 import '../components/version_edit.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
@@ -102,7 +103,9 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: EditVersionForm(),
+                content: DialogBuilder(
+                  child: EditVersionForm(),
+                ),
               ),
             );
           });

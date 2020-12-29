@@ -85,6 +85,7 @@ class _VersionListViewState extends State<VersionListView> {
   String apiName;
   int selectedIndex = -1;
   Selection selection;
+  ObservableString filter;
 
   void selectionListener() {
     setState(() {});
@@ -105,14 +106,15 @@ class _VersionListViewState extends State<VersionListView> {
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
     selection.apiName.addListener(selectionListener);
-    ObservableStringProvider.of(context).addListener(filterListener);
+    filter = ObservableStringProvider.of(context);
+    filter.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     selection.apiName.removeListener(selectionListener);
-    ObservableStringProvider.of(context).removeListener(filterListener);
+    filter.removeListener(filterListener);
     super.dispose();
   }
 

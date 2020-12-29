@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
 import '../components/api_edit.dart';
 import '../components/detail_rows.dart';
+import '../components/dialog_builder.dart';
 import '../models/api.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
@@ -86,7 +87,9 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: EditAPIForm(),
+                content: DialogBuilder(
+                  child: EditAPIForm(),
+                ),
               ),
             );
           });
