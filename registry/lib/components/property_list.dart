@@ -218,7 +218,7 @@ class _PropertyListViewState extends State<PropertyListView> {
         break;
       case "google.cloud.apigee.registry.v1alpha1.Lint":
         propertyInfoLink =
-            "https://github.com/apigee/registry/blob/master/google/cloud/apigee/registry/v1alpha1/registry_lint.proto#L38";
+            "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1alpha1/registry_lint.proto#L38";
         break;
     }
     bool canDelete = property.hasStringValue();

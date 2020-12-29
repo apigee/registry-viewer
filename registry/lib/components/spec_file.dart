@@ -116,8 +116,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
     if (firstIndex > index) {
       return false;
     }
-    final lastIndex = (listOffset + listHeight) / rowHeight;
-    if (lastIndex < index) {
+    final lastIndex = (listOffset + listHeight) / rowHeight - 1;
+    if (index > lastIndex) {
       return false;
     }
     return true;
