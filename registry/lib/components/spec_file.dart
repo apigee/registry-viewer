@@ -12,13 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../service/service.dart';
-import '../models/selection.dart';
 import 'dart:convert';
 import 'package:archive/archive.dart';
-import 'detail_rows.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import '../components/detail_rows.dart';
+import '../helpers/measure_size.dart';
+import '../models/highlight.dart';
+import '../models/selection.dart';
+import '../service/registry.dart';
+
+final scrollDuration = Duration(milliseconds: 300);
+final scrollCurve = Curves.easeInOut;
+
+// An item in a spec file (a file in a zip archive).
+class Item {
+  Item({
+    this.expandedValue,
+    this.headerValue,
+  });
+
+  String expandedValue;
+  String headerValue;
+}
 
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
@@ -27,90 +45,143 @@ class SpecFileCard extends StatefulWidget {
 
 class _SpecFileCardState extends State<SpecFileCard> {
   String specName = "";
-  Spec spec;
-  String body;
+  SpecManager specManager;
+  String body = "";
   List<Item> items;
   int selectedItemIndex = 0;
+  Selection selection;
+  final ScrollController listScrollController = ScrollController();
+  final ScrollController fileScrollController = ScrollController();
+  final rowHeight = 40.0;
+  double listHeight;
+
+  void managerListener() {
+    setState(() {
+      Spec spec = specManager?.value;
+      if ((spec.contents != null) && (spec.contents.length > 0)) {
+        if (spec.style.endsWith("+gzip")) {
+          final data = GZipDecoder().decodeBytes(spec.contents);
+          this.body = Utf8Codec().decoder.convert(data);
+        } else if (spec.style.endsWith("+zip")) {
+          this.items = [];
+          final archive = ZipDecoder().decodeBytes(spec.contents);
+          for (final file in archive) {
+            final filename = file.name;
+            if (file.isFile) {
+              String body;
+              try {
+                body = Utf8Codec().decoder.convert(file.content);
+              } catch (e) {
+                body = "unavailable";
+              }
+              Item item = Item(headerValue: filename, expandedValue: body);
+              items.add(item);
+            }
+          }
+        } else {
+          this.body = "";
+        }
+      }
+    });
+  }
+
+  void specNameListener() {
+    setState(() {
+      setSpecName(SelectionProvider.of(context).specName.value);
+    });
+  }
+
+  void setSpecName(String name) {
+    if (specManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    specManager?.removeListener(managerListener);
+    // get the new manager
+    specManager = RegistryProvider.of(context).getSpecManager(name);
+    specManager.addListener(managerListener);
+    // get the value from the manager
+    managerListener();
+  }
+
+  void fileNameListener() {
+    setState(() {
+      setFileName(SelectionProvider.of(context).fileName.value);
+    });
+  }
+
+  bool isVisible(int index) {
+    final listOffset = listScrollController.offset;
+    final firstIndex = listOffset / rowHeight;
+    if (firstIndex > index) {
+      return false;
+    }
+    final lastIndex = (listOffset + listHeight) / rowHeight;
+    if (lastIndex < index) {
+      return false;
+    }
+    return true;
+  }
+
+  void setFileName(String name) {
+    if (this.items != null) {
+      for (int i = 0; i < this.items.length; i++) {
+        if (this.items[i].headerValue == name) {
+          selectedItemIndex = i;
+          // if the item is off screen, animate it into position
+          if (!isVisible(selectedItemIndex)) {
+            listScrollController.animateTo(
+              rowHeight * (selectedItemIndex - 2.5),
+              duration: scrollDuration,
+              curve: scrollCurve,
+            );
+          }
+          return;
+        }
+      }
+    }
+    selectedItemIndex = -1;
+  }
 
   @override
   void didChangeDependencies() {
-    SelectionProvider.of(context).specName.addListener(() => setState(() {
-          specName = SelectionProvider.of(context).specName.value;
-          if (specName == null) {
-            specName = "";
-          }
-          this.spec = null;
-        }));
+    selection = SelectionProvider.of(context);
+    selection.specName.addListener(specNameListener);
+    selection.fileName.addListener(fileNameListener);
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final ScrollController listScrollController = ScrollController();
-    final ScrollController fileScrollController = ScrollController();
+  void dispose() {
+    selection.fileName.removeListener(fileNameListener);
+    selection.specName.removeListener(specNameListener);
+    specManager?.removeListener(managerListener);
+    super.dispose();
+  }
 
-    if (spec == null) {
-      if (specName != "") {
-        // we need to fetch the spec from the API
-        SpecService().getSpec(specName).then((spec) {
-          setState(() {
-            if ((spec.contents != null) && (spec.contents.length > 0)) {
-              if (spec.style.endsWith("+gzip")) {
-                final data = GZipDecoder().decodeBytes(spec.contents);
-                this.body = Utf8Codec().decoder.convert(data);
-              } else if (spec.style.endsWith("+zip")) {
-                this.items = List();
-                final archive = ZipDecoder().decodeBytes(spec.contents);
-                for (final file in archive) {
-                  final filename = file.name;
-                  if (file.isFile) {
-                    String body;
-                    try {
-                      // body = String.fromCharCodes(file.content);
-                      body = Utf8Codec().decoder.convert(file.content);
-                    } catch (e) {
-                      body = "unavailable";
-                    }
-                    Item item =
-                        Item(headerValue: filename, expandedValue: body);
-                    items.add(item);
-                  }
-                }
-              } else {
-                this.body = "";
-              }
-            }
-            this.spec = spec;
-          });
-        });
-      }
+  @override
+  Widget build(BuildContext context) {
+    if (specManager?.value == null) {
       return Card();
     } else {
       if (this.items == null) {
+        // single-file view
         return Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PanelNameRow(name: spec.filename),
+              PanelNameRow(name: specManager.value.filename),
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  child: Scrollbar(
-                    controller: fileScrollController,
-                    child: SingleChildScrollView(
-                      controller: fileScrollController,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text(body),
-                      ),
-                    ),
-                  ),
+                  child: CodeView(body),
                 ),
               ),
             ],
           ),
         );
       } else {
+        // multi-file view
         return Row(
           children: [
             Expanded(
@@ -119,27 +190,62 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PanelNameRow(name: spec.filename + " contents"),
+                    PanelNameRow(
+                        name: specManager.value.filename + " contents"),
                     Expanded(
                       child: Container(
                         width: double.infinity,
                         child: Scrollbar(
                           controller: listScrollController,
                           isAlwaysShown: true,
-                          child: ListView.builder(
-                            itemCount: this.items.length,
-                            controller: listScrollController,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                selected: index == selectedItemIndex,
-                                title: Text(this.items[index].headerValue),
-                                onTap: () async {
-                                  setState(() {
-                                    selectedItemIndex = index;
-                                  });
-                                },
-                              );
+                          child: MeasureSize(
+                            onChange: (size) {
+                              listHeight = size.height;
                             },
+                            child: ListView.builder(
+                              itemCount: this.items.length,
+                              controller: listScrollController,
+                              itemBuilder: (BuildContext context, int index) {
+                                String fileName = this.items[index].headerValue;
+
+                                Color color = (index != selectedItemIndex)
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color
+                                    : Theme.of(context).primaryColor;
+
+                                return GestureDetector(
+                                  child: Container(
+                                    color: (index == selectedItemIndex)
+                                        ? color.withAlpha(64)
+                                        : Theme.of(context).canvasColor,
+                                    height: rowHeight,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          fileName,
+                                          softWrap: false,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .copyWith(color: color),
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    selection.fileName.update(fileName);
+                                    selection.highlight.update(null);
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -159,14 +265,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
                     Expanded(
                       child: Container(
                         width: double.infinity,
-                        child: Scrollbar(
-                          controller: fileScrollController,
-                          child: SingleChildScrollView(
-                            controller: fileScrollController,
-                            child: Text(
-                                this.items[selectedItemIndex].expandedValue),
-                          ),
-                        ),
+                        child: CodeView(
+                            this.items[selectedItemIndex].expandedValue),
                       ),
                     ),
                   ],
@@ -180,13 +280,128 @@ class _SpecFileCardState extends State<SpecFileCard> {
   }
 }
 
-// stores ExpansionPanel state information
-class Item {
-  Item({
-    this.expandedValue,
-    this.headerValue,
-  });
+class CodeView extends StatefulWidget {
+  final String text;
+  CodeView(this.text);
+  @override
+  _CodeViewState createState() => _CodeViewState();
+}
 
-  String expandedValue;
-  String headerValue;
+class _CodeViewState extends State<CodeView> {
+  List<String> lines;
+  ScrollController scrollController = ScrollController();
+  Highlight highlight = Highlight(-1, -1, -1, -1);
+  Selection selection;
+  final rowHeight = 18.0;
+
+  void highlightListener() {
+    setState(() {
+      highlight = SelectionProvider.of(context).highlight.value;
+      if (highlight == null) {
+        highlight = Highlight(-1, -1, -1, -1);
+      } else {
+        scrollController.animateTo(
+          (highlight.startRow - 4) * rowHeight,
+          duration: scrollDuration,
+          curve: scrollCurve,
+        );
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    selection = SelectionProvider.of(context);
+    selection.highlight.addListener(highlightListener);
+    super.didChangeDependencies();
+    highlightListener();
+  }
+
+  @override
+  void dispose() {
+    selection.highlight.removeListener(highlightListener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    lines = splitLines(widget.text);
+    return Scrollbar(
+      controller: scrollController,
+      isAlwaysShown: true,
+      child: ListView.builder(
+        itemBuilder: (context, i) {
+          return rowForText(i, lines[i]);
+        },
+        itemCount: lines.length,
+        controller: scrollController,
+      ),
+    );
+  }
+
+  Widget rowForText(int i, String line) {
+    List<Widget> children = [];
+    children.add(Container(
+        width: 30,
+        child: Text(
+          "${i + 1}",
+          textAlign: TextAlign.right,
+          style: GoogleFonts.robotoMono(color: Colors.grey[500]),
+        )));
+    children.add(SizedBox(width: 10));
+    String before = "";
+    String middle = "";
+    String after = "";
+    if (i < highlight.startRow) {
+      before = line;
+    } else if (i == highlight.startRow) {
+      before = line.substring(0, highlight.startCol);
+      if (i == highlight.endRow) {
+        middle = line.substring(highlight.startCol, highlight.endCol + 1);
+        after = line.substring(highlight.endCol + 1);
+      } else {
+        middle = line.substring(highlight.startCol);
+      }
+    } else if (i < highlight.endRow) {
+      middle = line;
+    } else if (i == highlight.endRow) {
+      middle = line.substring(0, highlight.endCol + 1);
+      after = line.substring(highlight.endCol + 1);
+    } else {
+      after = line;
+    }
+    Paint backgroundColor = Paint();
+    backgroundColor.color = Theme.of(context).primaryColor.withAlpha(64);
+    children.add(
+      Flexible(
+        child: RichText(
+          overflow: TextOverflow.clip,
+          text: TextSpan(
+            text: before,
+            style: GoogleFonts.robotoMono(color: Colors.black),
+            children: <TextSpan>[
+              TextSpan(
+                text: middle,
+                style: GoogleFonts.robotoMono(
+                  color: Theme.of(context).primaryColor,
+                  background: backgroundColor,
+                ),
+              ),
+              TextSpan(text: after),
+            ],
+          ),
+        ),
+      ),
+    );
+    return Container(
+      height: rowHeight,
+      child: Row(
+        children: children,
+      ),
+    );
+  }
+
+  List<String> splitLines(String text) {
+    return text.split("\n");
+  }
 }

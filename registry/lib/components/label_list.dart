@@ -73,7 +73,6 @@ class _LabelListCardState extends State<LabelListCard> {
 
   @override
   Widget build(BuildContext context) {
-    print("rebuilding");
     Function add = () {
       final selection = SelectionProvider.of(context);
       showDialog(

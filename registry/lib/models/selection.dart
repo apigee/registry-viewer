@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'string.dart';
+import 'highlight.dart';
 
 class Selection extends ChangeNotifier {
   ObservableString projectName = ObservableString();
@@ -22,6 +23,8 @@ class Selection extends ChangeNotifier {
   ObservableString specName = ObservableString();
   ObservableString labelName = ObservableString();
   ObservableString propertyName = ObservableString();
+  ObservableString fileName = ObservableString();
+  ObservableHighlight highlight = ObservableHighlight();
 
   void updateProjectName(String project) {
     this.projectName.update(project);
@@ -30,6 +33,8 @@ class Selection extends ChangeNotifier {
     this.specName.update("");
     this.labelName.update("");
     this.propertyName.update("");
+    this.fileName.update("");
+    this.highlight.update(null);
   }
 
   void updateApiName(String api) {
@@ -38,6 +43,8 @@ class Selection extends ChangeNotifier {
     this.specName.update("");
     this.labelName.update("");
     this.propertyName.update("");
+    this.fileName.update("");
+    this.highlight.update(null);
   }
 
   void updateVersionName(String version) {
@@ -45,12 +52,16 @@ class Selection extends ChangeNotifier {
     this.specName.update("");
     this.labelName.update("");
     this.propertyName.update("");
+    this.fileName.update("");
+    this.highlight.update(null);
   }
 
   void updateSpecName(String spec) {
     this.specName.update(spec);
     this.labelName.update("");
     this.propertyName.update("");
+    this.fileName.update("");
+    this.highlight.update(null);
   }
 
   void updateLabelName(String label) {
@@ -61,6 +72,14 @@ class Selection extends ChangeNotifier {
     this.propertyName.update(property);
   }
 
+  void updateFilename(String file) {
+    this.fileName.update(file);
+  }
+
+  void updateHighight(Highlight highlight) {
+    this.highlight.update(highlight);
+  }
+
   void notifySubscribersOf(String subject) {
     List<ObservableString> strings = [
       this.projectName,
@@ -69,6 +88,7 @@ class Selection extends ChangeNotifier {
       this.specName,
       this.propertyName,
       this.labelName,
+      this.fileName,
     ];
     strings.forEach((v) {
       if (v.value == subject) {
@@ -117,5 +137,13 @@ class SelectionProvider extends InheritedWidget {
 
   static ObservableString property(BuildContext context) {
     return SelectionProvider.of(context).propertyName;
+  }
+
+  static ObservableString file(BuildContext context) {
+    return SelectionProvider.of(context).fileName;
+  }
+
+  static ObservableHighlight highlight(BuildContext context) {
+    return SelectionProvider.of(context).highlight;
   }
 }

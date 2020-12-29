@@ -132,6 +132,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       Api api = apiManager.value;
       Version version = versionManager.value;
       Spec spec = specManager.value;
+      if ((api == null) || (version == null) || (spec == null)) {
+        return Card();
+      }
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,9 +152,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
-                      BodyRow(api?.displayName +
+                      BodyRow(api.displayName +
                           " v. " +
-                          version?.name?.split("/")?.last),
+                          version.name.split("/")?.last),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
                       BodyRow("revision " + spec.revisionId),
