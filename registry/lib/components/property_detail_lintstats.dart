@@ -1,0 +1,147 @@
+// Copyright 2020 Google LLC. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import 'package:flutter/material.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_lint.pb.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../components/detail_rows.dart';
+import '../helpers/extensions.dart';
+import '../models/selection.dart';
+import '../models/highlight.dart';
+
+String stringForLocation(LintLocation location) {
+  return "[${location.startPosition.lineNumber}:" +
+      "${location.startPosition.columnNumber}-" +
+      "${location.endPosition.lineNumber}:" +
+      "${location.endPosition.columnNumber}]";
+}
+
+class LintStatsPropertyCard extends StatefulWidget {
+  final Property property;
+  final Function selflink;
+  LintStatsPropertyCard(this.property, {this.selflink});
+
+  _LintStatsPropertyCardState createState() => _LintStatsPropertyCardState();
+}
+
+class _LintStatsPropertyCardState extends State<LintStatsPropertyCard> {
+  LintStats lintstats;
+  final ScrollController controller = ScrollController();
+  int selectedIndex = -1;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Widget build(BuildContext context) {
+    if (lintstats == null) {
+      lintstats = new LintStats.fromBuffer(widget.property.messageValue.value);
+    }
+    return Card(
+      child: Column(
+        children: [
+          ResourceNameButtonRow(
+            name: widget.property.name.last(1),
+            show: widget.selflink,
+            edit: null,
+          ),
+          Expanded(
+            child: Scrollbar(
+              controller: controller,
+              child: ListView.builder(
+                controller: controller,
+                itemCount: lintstats?.problemCounts?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (lintstats == null) {
+                    return Container();
+                  }
+                  final problemCount = lintstats.problemCounts[index];
+                  return GestureDetector(
+                    onTap: () {
+                      selectedIndex = index;
+                      setState(() {});
+                    },
+                    child: Card(
+                      child: Container(
+                        color: (selectedIndex == index)
+                            ? Theme.of(context).primaryColor.withAlpha(64)
+                            : Theme.of(context).canvasColor,
+                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  child: Text(problemCount.ruleId,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2
+                                          .copyWith(color: Colors.blue)),
+                                  onTap: () async {
+                                    if (await canLaunch(
+                                        problemCount.ruleDocUri)) {
+                                      await launch(problemCount.ruleDocUri);
+                                    } else {
+                                      throw 'Could not launch ${problemCount.ruleDocUri}';
+                                    }
+                                  },
+                                ),
+                                Text("${problemCount.count}")
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  TableRow unused(BuildContext context, String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text(
+            label,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text(
+            value,
+            textAlign: TextAlign.left,
+          ),
+        ),
+      ],
+    );
+  }
+}

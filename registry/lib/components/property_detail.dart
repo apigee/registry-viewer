@@ -17,6 +17,7 @@ import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registr
 import '../components/detail_rows.dart';
 import '../components/property_detail_complexity.dart';
 import '../components/property_detail_lint.dart';
+import '../components/property_detail_lintstats.dart';
 import '../components/property_detail_string.dart';
 import '../components/property_detail_vocabulary.dart';
 import '../helpers/extensions.dart';
@@ -100,9 +101,11 @@ class _PropertyDetailCardState extends State<PropertyDetailCard> {
             return VocabularyPropertyCard(property, selflink: selflink);
           case "google.cloud.apigee.registry.v1alpha1.Lint":
             return LintPropertyCard(property, selflink: selflink);
+          case "google.cloud.apigee.registry.v1alpha1.LintStats":
+            return LintStatsPropertyCard(property, selflink: selflink);
         }
         // if we don't recognize this message, clear it out to not overflow the display
-        property.messageValue.value = List();
+        property.messageValue.value = [];
       }
 
       if (property.hasStringValue()) {
