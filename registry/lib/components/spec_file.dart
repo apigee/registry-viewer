@@ -342,7 +342,7 @@ class _CodeViewState extends State<CodeView> {
   Widget rowForText(int i, String line) {
     List<Widget> children = [];
     children.add(Container(
-        width: 30,
+        width: 50,
         child: Text(
           "${i + 1}",
           textAlign: TextAlign.right,
