@@ -140,6 +140,11 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
                               "${problem.problem.message}",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
+                            if (problem.problem.suggestion != "")
+                              Text(
+                                "${problem.problem.suggestion}",
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
                             SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
