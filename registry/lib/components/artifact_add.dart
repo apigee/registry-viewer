@@ -52,7 +52,7 @@ class AddArtifactFormState extends State<AddArtifactForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Add a Artifact"),
+          Text("Add an Artifact"),
           ListTile(
             title: TextFormField(
               controller: stringValueController,
@@ -88,10 +88,13 @@ class AddArtifactFormState extends State<AddArtifactForm> {
   void save(BuildContext context) {
     Selection selection = SelectionProvider.of(context);
     if (_formKey.currentState.validate()) {
+      String relation = stringValueController.text;
+      print("saving relation $relation");
       Artifact artifact = Artifact();
-      artifact.name =
-          widget.subjectName + "/artifacts/" + stringValueController.text;
-      if (artifact.relation != "") {
+      artifact.name = widget.subjectName + "/artifacts/" + relation;
+      artifact.mimeType = "text/plain";
+      print("artifact ${artifact.name}");
+      if (relation != "") {
         ArtifactService().create(artifact).then((Artifact artifact) {
           selection.notifySubscribersOf(artifact.subject);
         });

@@ -25,7 +25,7 @@ import '../models/artifact.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 
-// ArtifactDetailCard is a card that displays details about a artifact.
+// ArtifactDetailCard is a card that displays details about an artifact.
 class ArtifactDetailCard extends StatefulWidget {
   final bool selflink;
   final bool editable;
@@ -116,7 +116,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
   }
 }
 
-// DefaultArtifactDetailCard is a card that displays details about a artifact.
+// DefaultArtifactDetailCard is a card that displays details about an artifact.
 class DefaultArtifactDetailCard extends StatefulWidget {
   final Function selflink;
   DefaultArtifactDetailCard({this.selflink});

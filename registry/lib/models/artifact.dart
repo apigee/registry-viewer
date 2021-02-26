@@ -31,7 +31,7 @@ extension Display on Artifact {
 
   String get relation {
     final parts = this.name.split("/");
-    return parts[parts.length - 2];
+    return parts[parts.length - 1];
   }
 
   String get stringValue {
