@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/custom_search_box.dart';
 import '../components/filter.dart';
 import '../models/selection.dart';
@@ -23,7 +23,7 @@ import '../models/version.dart';
 import '../service/service.dart';
 
 typedef VersionSelectionHandler = Function(
-    BuildContext context, Version version);
+    BuildContext context, ApiVersion version);
 
 // VersionListCard is a card that displays a list of versions.
 class VersionListCard extends StatefulWidget {
@@ -33,11 +33,11 @@ class VersionListCard extends StatefulWidget {
 
 class _VersionListCardState extends State<VersionListCard> {
   VersionService versionService;
-  PagewiseLoadController<Version> pageLoadController;
+  PagewiseLoadController<ApiVersion> pageLoadController;
 
   _VersionListCardState() {
     versionService = VersionService();
-    pageLoadController = PagewiseLoadController<Version>(
+    pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
         pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
   }
@@ -69,7 +69,7 @@ class _VersionListCardState extends State<VersionListCard> {
 class VersionListView extends StatefulWidget {
   final VersionSelectionHandler selectionHandler;
   final VersionService versionService;
-  final PagewiseLoadController<Version> pageLoadController;
+  final PagewiseLoadController<ApiVersion> pageLoadController;
 
   VersionListView(
     this.selectionHandler,
@@ -129,14 +129,14 @@ class _VersionListViewState extends State<VersionListView> {
       selectedIndex = -1;
     }
     return Scrollbar(
-      child: PagewiseListView<Version>(
+      child: PagewiseListView<ApiVersion>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
       ),
     );
   }
 
-  Widget _itemBuilder(context, Version version, index) {
+  Widget _itemBuilder(context, ApiVersion version, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);

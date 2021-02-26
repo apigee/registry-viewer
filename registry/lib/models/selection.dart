@@ -22,7 +22,7 @@ class Selection extends ChangeNotifier {
   ObservableString versionName = ObservableString();
   ObservableString specName = ObservableString();
   ObservableString labelName = ObservableString();
-  ObservableString propertyName = ObservableString();
+  ObservableString artifactName = ObservableString();
   ObservableString fileName = ObservableString();
   ObservableHighlight highlight = ObservableHighlight();
 
@@ -32,7 +32,7 @@ class Selection extends ChangeNotifier {
     this.versionName.update("");
     this.specName.update("");
     this.labelName.update("");
-    this.propertyName.update("");
+    this.artifactName.update("");
     this.fileName.update("");
     this.highlight.update(null);
   }
@@ -42,7 +42,7 @@ class Selection extends ChangeNotifier {
     this.versionName.update("");
     this.specName.update("");
     this.labelName.update("");
-    this.propertyName.update("");
+    this.artifactName.update("");
     this.fileName.update("");
     this.highlight.update(null);
   }
@@ -51,7 +51,7 @@ class Selection extends ChangeNotifier {
     this.versionName.update(version);
     this.specName.update("");
     this.labelName.update("");
-    this.propertyName.update("");
+    this.artifactName.update("");
     this.fileName.update("");
     this.highlight.update(null);
   }
@@ -59,7 +59,7 @@ class Selection extends ChangeNotifier {
   void updateSpecName(String spec) {
     this.specName.update(spec);
     this.labelName.update("");
-    this.propertyName.update("");
+    this.artifactName.update("");
     this.fileName.update("");
     this.highlight.update(null);
   }
@@ -68,8 +68,8 @@ class Selection extends ChangeNotifier {
     this.labelName.update(label);
   }
 
-  void updatePropertyName(String property) {
-    this.propertyName.update(property);
+  void updateArtifactName(String artifact) {
+    this.artifactName.update(artifact);
   }
 
   void updateFilename(String file) {
@@ -86,7 +86,7 @@ class Selection extends ChangeNotifier {
       this.apiName,
       this.versionName,
       this.specName,
-      this.propertyName,
+      this.artifactName,
       this.labelName,
       this.fileName,
     ];
@@ -135,8 +135,8 @@ class SelectionProvider extends InheritedWidget {
     return SelectionProvider.of(context).labelName;
   }
 
-  static ObservableString property(BuildContext context) {
-    return SelectionProvider.of(context).propertyName;
+  static ObservableString artifact(BuildContext context) {
+    return SelectionProvider.of(context).artifactName;
   }
 
   static ObservableString file(BuildContext context) {

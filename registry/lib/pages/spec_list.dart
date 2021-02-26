@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/home_button.dart';
 import '../components/spec_list.dart';
@@ -36,11 +36,11 @@ class SpecListPage extends StatefulWidget {
 
 class _SpecListPageState extends State<SpecListPage> {
   SpecService specService;
-  PagewiseLoadController<Spec> pageLoadController;
+  PagewiseLoadController<ApiSpec> pageLoadController;
 
   _SpecListPageState() {
     specService = SpecService();
-    pageLoadController = PagewiseLoadController<Spec>(
+    pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
         pageFuture: (pageIndex) => this.specService.getSpecsPage(pageIndex));
   }

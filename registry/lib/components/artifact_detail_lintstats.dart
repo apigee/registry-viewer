@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_lint.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_lint.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/detail_rows.dart';
+import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/highlight.dart';
@@ -28,63 +28,38 @@ String stringForLocation(LintLocation location) {
       "${location.endPosition.columnNumber}]";
 }
 
-class LintPropertyCard extends StatefulWidget {
-  final Property property;
+class LintStatsArtifactCard extends StatefulWidget {
+  final Artifact artifact;
   final Function selflink;
-  LintPropertyCard(this.property, {this.selflink});
+  LintStatsArtifactCard(this.artifact, {this.selflink});
 
-  _LintPropertyCardState createState() => _LintPropertyCardState();
+  _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
 }
 
-class FileProblem {
-  final LintFile file;
-  final LintProblem problem;
-  FileProblem(this.file, this.problem);
-}
-
-class _LintPropertyCardState extends State<LintPropertyCard> {
-  Lint lint;
-  List<FileProblem> problems = [];
+class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
+  LintStats lintstats;
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;
-  Selection selection;
-
-  void highlightListener() {
-    Highlight highlight = SelectionProvider.of(context).highlight.value;
-    if (highlight == null) {
-      setState(() {
-        selectedIndex = -1;
-      });
-    }
-  }
 
   @override
   void didChangeDependencies() {
-    selection = SelectionProvider.of(context);
-    selection.highlight.addListener(highlightListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    selection.highlight.removeListener(highlightListener);
     super.dispose();
   }
 
   Widget build(BuildContext context) {
-    if (lint == null) {
-      lint = new Lint.fromBuffer(widget.property.messageValue.value);
-      lint.files.forEach((file) {
-        file.problems.forEach((problem) {
-          problems.add(FileProblem(file, problem));
-        });
-      });
+    if (lintstats == null) {
+      lintstats = new LintStats.fromBuffer(widget.artifact.contents);
     }
     return Card(
       child: Column(
         children: [
           ResourceNameButtonRow(
-            name: widget.property.name.last(1),
+            name: widget.artifact.name.last(1),
             show: widget.selflink,
             edit: null,
           ),
@@ -93,26 +68,15 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
               controller: controller,
               child: ListView.builder(
                 controller: controller,
-                itemCount: problems?.length,
+                itemCount: lintstats?.problemCounts?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (problems == null) {
+                  if (lintstats == null) {
                     return Container();
                   }
-                  final problem = problems[index];
+                  final problemCount = lintstats.problemCounts[index];
                   return GestureDetector(
                     onTap: () {
                       selectedIndex = index;
-                      SelectionProvider.of(context)
-                          .fileName
-                          .update(problem.file.filePath);
-                      final location = problem.problem.location;
-                      Highlight highlight = Highlight(
-                        location.startPosition.lineNumber - 1,
-                        location.startPosition.columnNumber - 1,
-                        location.endPosition.lineNumber - 1,
-                        location.endPosition.columnNumber - 1,
-                      );
-                      SelectionProvider.of(context).highlight.update(highlight);
                       setState(() {});
                     },
                     child: Card(
@@ -124,46 +88,25 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              problem.file.filePath +
-                                  " " +
-                                  stringForLocation(problem.problem.location),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  .copyWith(fontWeight: FontWeight.bold),
-                              softWrap: false,
-                              overflow: TextOverflow.clip,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "${problem.problem.message}",
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            if (problem.problem.suggestion != "")
-                              Text(
-                                "${problem.problem.suggestion}",
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                            SizedBox(height: 10),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                  child: Text(problem.problem.ruleId,
+                                  child: Text(problemCount.ruleId,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2
                                           .copyWith(color: Colors.blue)),
                                   onTap: () async {
                                     if (await canLaunch(
-                                        problem.problem.ruleDocUri)) {
-                                      await launch(problem.problem.ruleDocUri);
+                                        problemCount.ruleDocUri)) {
+                                      await launch(problemCount.ruleDocUri);
                                     } else {
-                                      throw 'Could not launch ${problem.problem.ruleDocUri}';
+                                      throw 'Could not launch ${problemCount.ruleDocUri}';
                                     }
                                   },
                                 ),
+                                Text("${problemCount.count}")
                               ],
                             ),
                           ],
@@ -180,7 +123,7 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
     );
   }
 
-  TableRow row(BuildContext context, String label, String value) {
+  TableRow unused(BuildContext context, String label, String value) {
     return TableRow(
       children: [
         Padding(

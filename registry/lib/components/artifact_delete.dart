@@ -13,19 +13,20 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import '../models/artifact.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 
-class DeletePropertyForm extends StatefulWidget {
+class DeleteArtifactForm extends StatefulWidget {
   @override
-  DeletePropertyFormState createState() => DeletePropertyFormState();
+  DeleteArtifactFormState createState() => DeleteArtifactFormState();
 }
 
 // Define a corresponding State class.
 // This class holds data related to the form.
-class DeletePropertyFormState extends State<DeletePropertyForm> {
+class DeleteArtifactFormState extends State<DeleteArtifactForm> {
   Selection selection;
-  PropertyManager propertyManager;
+  ArtifactManager artifactManager;
 
   void listener() {
     setState(() {});
@@ -33,27 +34,27 @@ class DeletePropertyFormState extends State<DeletePropertyForm> {
 
   void nameChangeListener() {
     setState(() {
-      setPropertyName(SelectionProvider.of(context).propertyName.value);
+      setArtifactName(SelectionProvider.of(context).artifactName.value);
     });
   }
 
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).propertyName.addListener(nameChangeListener);
+    SelectionProvider.of(context).artifactName.addListener(nameChangeListener);
     super.didChangeDependencies();
-    setPropertyName(SelectionProvider.of(context)?.propertyName?.value);
+    setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
   }
 
-  void setPropertyName(String name) {
-    if (propertyManager?.name == name) {
+  void setArtifactName(String name) {
+    if (artifactManager?.name == name) {
       return;
     }
     // forget the old manager
-    propertyManager?.removeListener(listener);
+    artifactManager?.removeListener(listener);
     // get the new manager
-    propertyManager = RegistryProvider.of(context).getPropertyManager(name);
-    propertyManager.addListener(listener);
+    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
+    artifactManager.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -68,29 +69,29 @@ class DeletePropertyFormState extends State<DeletePropertyForm> {
 
   @override
   void dispose() {
-    selection?.propertyName?.removeListener(nameChangeListener);
-    propertyManager?.removeListener(listener);
+    selection?.artifactName?.removeListener(nameChangeListener);
+    artifactManager?.removeListener(listener);
     stringValueController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (propertyManager?.value == null) {
+    if (artifactManager?.value == null) {
       print("building while empty");
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final property = propertyManager.value;
-      stringValueController.text = property.relation;
+      final artifact = artifactManager.value;
+      stringValueController.text = artifact.relation;
 
       return Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Delete this property?"),
-            Text(property.name),
+            Text("Delete this artifact?"),
+            Text(artifact.name),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -120,11 +121,11 @@ class DeletePropertyFormState extends State<DeletePropertyForm> {
 
   void delete(BuildContext context) {
     Selection selection = SelectionProvider.of(context);
-    if (propertyManager?.value != null && _formKey.currentState.validate()) {
-      final property = propertyManager.value.clone();
-      print("deleting $property");
-      String subject = property.subject;
-      propertyManager?.delete(property.name)?.then((x) {
+    if (artifactManager?.value != null && _formKey.currentState.validate()) {
+      final artifact = artifactManager.value.clone();
+      print("deleting $artifact");
+      String subject = artifact.subject;
+      artifactManager?.delete(artifact.name)?.then((x) {
         selection.notifySubscribersOf(subject);
       });
     }

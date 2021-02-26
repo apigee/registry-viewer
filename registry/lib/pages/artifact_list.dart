@@ -14,39 +14,38 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../helpers/title.dart';
-import '../components/property_list.dart';
+import '../components/artifact_list.dart';
 import '../components/home_button.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import '../models/property.dart';
+import '../models/artifact.dart';
 import '../service/service.dart';
 
-// PropertyListPage is a full-page display of a list of properties.
-class PropertyListPage extends StatefulWidget {
+// ArtifactListPage is a full-page display of a list of artifacts.
+class ArtifactListPage extends StatefulWidget {
   final String name;
 
-  PropertyListPage(String name, {Key key})
+  ArtifactListPage(String name, {Key key})
       : name = name,
         super(key: key);
   @override
-  _PropertyListPageState createState() => _PropertyListPageState();
+  _ArtifactListPageState createState() => _ArtifactListPageState();
 }
 
-class _PropertyListPageState extends State<PropertyListPage> {
-  PropertyService propertyService;
-  PagewiseLoadController<Property> pageLoadController;
+class _ArtifactListPageState extends State<ArtifactListPage> {
+  ArtifactService artifactService;
+  PagewiseLoadController<Artifact> pageLoadController;
 
-  _PropertyListPageState() {
-    propertyService = PropertyService();
-    pageLoadController = PagewiseLoadController<Property>(
+  _ArtifactListPageState() {
+    artifactService = ArtifactService();
+    pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            propertyService.getPropertiesPage(pageIndex));
+        pageFuture: (pageIndex) => artifactService.getArtifactsPage(pageIndex));
   }
 
-  // convert /projects/{project}/properties to projects/{project}
+  // convert /projects/{project}/artifacts to projects/{project}
   String parentName() {
     return widget.name.split('/').sublist(1, 3).join('/');
   }
@@ -63,21 +62,21 @@ class _PropertyListPageState extends State<PropertyListPage> {
           appBar: AppBar(
             title: Text(title(widget.name)),
             actions: <Widget>[
-              Container(width: 400, child: PropertySearchBox()),
+              Container(width: 400, child: ArtifactSearchBox()),
               homeButton(context),
             ],
           ),
           body: Center(
-            child: PropertyListView(
+            child: ArtifactListView(
               null,
-              (context, property) {
+              (context, artifact) {
                 Navigator.pushNamed(
                   context,
-                  property.routeNameForDetail(),
-                  arguments: property,
+                  artifact.routeNameForDetail(),
+                  arguments: artifact,
                 );
               },
-              propertyService,
+              artifactService,
               pageLoadController,
             ),
           ),

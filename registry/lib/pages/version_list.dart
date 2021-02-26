@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../helpers/title.dart';
 import '../components/home_button.dart';
 import '../components/version_list.dart';
@@ -36,11 +36,11 @@ class VersionListPage extends StatefulWidget {
 
 class _VersionListPageState extends State<VersionListPage> {
   VersionService versionService;
-  PagewiseLoadController<Version> pageLoadController;
+  PagewiseLoadController<ApiVersion> pageLoadController;
 
   _VersionListPageState() {
     versionService = VersionService();
-    pageLoadController = PagewiseLoadController<Version>(
+    pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
         pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
   }

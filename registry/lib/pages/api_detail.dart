@@ -17,9 +17,8 @@ import '../models/selection.dart';
 import '../components/api_detail.dart';
 import '../components/version_detail.dart';
 import '../components/version_list.dart';
-import '../components/label_list.dart';
-import '../components/property_list.dart';
-import '../components/property_detail.dart';
+import '../components/artifact_list.dart';
+import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 
@@ -52,10 +51,9 @@ class ApiDetailPage extends StatelessWidget {
               flex: 4,
               child: Row(children: [
                 Expanded(child: ApiDetailCard(editable: true)),
-                Expanded(child: LabelListCard(SelectionProvider.api)),
-                Expanded(child: PropertyListCard(SelectionProvider.api)),
+                Expanded(child: ArtifactListCard(SelectionProvider.api)),
                 Expanded(
-                  child: PropertyDetailCard(
+                  child: ArtifactDetailCard(
                     selflink: true,
                     editable: true,
                   ),

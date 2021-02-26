@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/version_edit.dart';
@@ -89,7 +89,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
   @override
   Widget build(BuildContext context) {
     Function selflink = onlyIf(widget.selflink, () {
-      Version version = versionManager?.value;
+      ApiVersion version = versionManager?.value;
       Navigator.pushNamed(
         context,
         version.routeNameForDetail(),
@@ -115,7 +115,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
       return Card();
     } else {
       Api api = apiManager.value;
-      Version version = versionManager.value;
+      ApiVersion version = versionManager.value;
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

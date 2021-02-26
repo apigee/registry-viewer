@@ -17,9 +17,8 @@ import '../models/selection.dart';
 import '../components/version_detail.dart';
 import '../components/spec_list.dart';
 import '../components/spec_detail.dart';
-import '../components/label_list.dart';
-import '../components/property_list.dart';
-import '../components/property_detail.dart';
+import '../components/artifact_list.dart';
+import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 
@@ -54,10 +53,9 @@ class VersionDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: VersionDetailCard(editable: true)),
-                Expanded(child: LabelListCard(SelectionProvider.version)),
-                Expanded(child: PropertyListCard(SelectionProvider.version)),
+                Expanded(child: ArtifactListCard(SelectionProvider.version)),
                 Expanded(
-                  child: PropertyDetailCard(
+                  child: ArtifactDetailCard(
                     selflink: true,
                     editable: true,
                   ),

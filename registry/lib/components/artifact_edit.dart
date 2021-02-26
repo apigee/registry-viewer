@@ -14,50 +14,51 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../models/selection.dart';
+import '../models/artifact.dart';
 import '../service/registry.dart';
 
-class DeleteLabelForm extends StatefulWidget {
+class EditArtifactForm extends StatefulWidget {
   @override
-  DeleteLabelFormState createState() => DeleteLabelFormState();
+  EditArtifactFormState createState() => EditArtifactFormState();
 }
 
 // Define a corresponding State class.
 // This class holds data related to the form.
-class DeleteLabelFormState extends State<DeleteLabelForm> {
+class EditArtifactFormState extends State<EditArtifactForm> {
   Selection selection;
-  LabelManager labelManager;
+  ArtifactManager artifactManager;
 
-  void listener() {
+  void managerListener() {
     setState(() {});
   }
 
-  void nameChangeListener() {
+  void selectionListener() {
     setState(() {
-      setLabelName(SelectionProvider.of(context).labelName.value);
+      setArtifactName(SelectionProvider.of(context).artifactName.value);
     });
+  }
+
+  void setArtifactName(String name) {
+    if (artifactManager?.name == name) {
+      return;
+    }
+    // forget the old manager
+    artifactManager?.removeListener(managerListener);
+    // get the new manager
+    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
+    artifactManager.addListener(managerListener);
+    // get the value from the manager
+    managerListener();
   }
 
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).labelName.addListener(nameChangeListener);
+    selection.artifactName.addListener(selectionListener);
     super.didChangeDependencies();
-    setLabelName(SelectionProvider.of(context)?.labelName?.value);
-  }
-
-  void setLabelName(String name) {
-    if (labelManager?.name == name) {
-      return;
-    }
-    // forget the old manager
-    labelManager?.removeListener(listener);
-    // get the new manager
-    labelManager = RegistryProvider.of(context).getLabelManager(name);
-    labelManager.addListener(listener);
-    // get the value from the manager
-    listener();
+    setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -66,38 +67,53 @@ class DeleteLabelFormState extends State<DeleteLabelForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+
+  // Create controllers for form fields.
   final stringValueController = TextEditingController();
 
   @override
   void dispose() {
-    selection?.propertyName?.removeListener(nameChangeListener);
-    labelManager?.removeListener(listener);
+    selection.artifactName?.removeListener(selectionListener);
+    artifactManager?.removeListener(managerListener);
     stringValueController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (labelManager?.value == null) {
-      print("building while empty");
+    if (artifactManager?.value == null) {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final label = labelManager.value;
-      stringValueController.text = label.label;
+      final artifact = artifactManager.value;
+      stringValueController.text = artifact.stringValue;
 
       return Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Delete this label?"),
-            Text(label.name),
+            Text(artifact.name),
+            ListTile(
+              title: TextFormField(
+                controller: stringValueController,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(".*")),
+                ],
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
+              subtitle: Text("value (string)"),
+            ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("No, Cancel"),
+                  child: Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -106,9 +122,9 @@ class DeleteLabelFormState extends State<DeleteLabelForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Yes, Delete it"),
+                  child: Text("Save"),
                   onPressed: () {
-                    delete(context);
+                    save(context);
                     Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
@@ -120,14 +136,15 @@ class DeleteLabelFormState extends State<DeleteLabelForm> {
     }
   }
 
-  void delete(BuildContext context) {
+  void save(BuildContext context) {
     Selection selection = SelectionProvider.of(context);
-    if (labelManager?.value != null && _formKey.currentState.validate()) {
-      final label = labelManager.value.clone();
-      print("deleting $label");
-      String subject = label.subject;
-      labelManager?.delete(label.name)?.then((x) {
-        selection.notifySubscribersOf(subject);
+    if (artifactManager?.value != null && _formKey.currentState.validate()) {
+      final artifact = artifactManager.value.clone();
+      if (artifact.stringValue != stringValueController.text) {
+        artifact.stringValue = stringValueController.text;
+      }
+      artifactManager?.update(artifact)?.then((Artifact artifact) {
+        selection.notifySubscribersOf(artifact.subject);
       });
     }
   }

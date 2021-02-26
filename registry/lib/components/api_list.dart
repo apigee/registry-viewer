@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/custom_search_box.dart';
 import '../components/filter.dart';
 import '../models/api.dart';
@@ -152,7 +152,7 @@ class _ApiListViewState extends State<ApiListView> {
 
     return ListTile(
       title: Text(api.nameForDisplay()),
-      subtitle: Text(api.owner),
+      subtitle: Text(api.description),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

@@ -15,10 +15,9 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../components/spec_detail.dart';
-import '../components/property_list.dart';
+import '../components/artifact_list.dart';
 import '../components/spec_file.dart';
-import '../components/label_list.dart';
-import '../components/property_detail.dart';
+import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 
@@ -55,13 +54,9 @@ class SpecDetailPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard(editable: true)),
+                Expanded(child: ArtifactListCard(SelectionProvider.spec)),
                 Expanded(
-                  flex: 1,
-                  child: LabelListCard(SelectionProvider.spec),
-                ),
-                Expanded(child: PropertyListCard(SelectionProvider.spec)),
-                Expanded(
-                  child: PropertyDetailCard(
+                  child: ArtifactDetailCard(
                     selflink: true,
                     editable: true,
                   ),

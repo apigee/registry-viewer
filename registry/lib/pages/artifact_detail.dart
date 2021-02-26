@@ -14,20 +14,20 @@
 
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
-import '../components/property_detail.dart';
+import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 
-class PropertyDetailPage extends StatelessWidget {
+class ArtifactDetailPage extends StatelessWidget {
   final String name;
-  PropertyDetailPage({this.name});
+  ArtifactDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updatePropertyName(name.substring(1));
+      selection.updateArtifactName(name.substring(1));
     });
 
     return SelectionProvider(
@@ -35,7 +35,7 @@ class PropertyDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Property Details",
+            "Artifact Details",
           ),
           actions: <Widget>[
             homeButton(context),
@@ -48,11 +48,11 @@ class PropertyDetailPage extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: DefaultPropertyDetailCard(),
+                    child: DefaultArtifactDetailCard(),
                   ),
                   Expanded(
                     flex: 2,
-                    child: PropertyDetailCard(editable: true),
+                    child: ArtifactDetailCard(editable: true),
                   ),
                 ],
               ),
