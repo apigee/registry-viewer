@@ -169,7 +169,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                       if (spec.description != "") BodyRow(spec.description),
                       SizedBox(height: 10),
                       SmallBodyRow("${spec.sizeBytes} bytes"),
-                      SmallBodyRow("SHA1 ${spec.hash}"),
+                      SmallBodyRow("SHA-256 ${spec.hash}"),
                       TimestampRow(spec.createTime, spec.revisionUpdateTime),
                     ],
                   ),
