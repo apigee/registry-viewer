@@ -34,10 +34,10 @@ bool unset(String s) {
 grpc.ClientChannel createClientChannel() {
   Map<String, String> env = Platform.environment;
   token = env['APG_REGISTRY_TOKEN'];
-  if (unset(token)) {
+  final insecure = env['APG_REGISTRY_INSECURE'] == "1";
+  if (!insecure && unset(token)) {
     throw ConnectionError("APG_REGISTRY_TOKEN not set");
   }
-  final insecure = env['APG_REGISTRY_INSECURE'];
   final address = env['APG_REGISTRY_ADDRESS'];
   if (unset(address)) {
     throw ConnectionError("APG_REGISTRY_ADDRESS not set");
@@ -48,7 +48,7 @@ grpc.ClientChannel createClientChannel() {
   }
   final host = parts[0];
   final port = int.parse(parts[1]);
-  final channelOptions = (insecure == "1")
+  final channelOptions = insecure
       ? const grpc.ChannelOptions(
           credentials: const grpc.ChannelCredentials.insecure())
       : const grpc.ChannelOptions(
