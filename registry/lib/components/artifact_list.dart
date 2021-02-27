@@ -179,7 +179,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
 
   Widget widgetForArtifactValue(Artifact artifact) {
     if (artifact.mimeType == "text/plain") {
-      final value = artifact.stringValue;
+      final value = "text/plain: " + artifact.stringValue;
       return Linkify(
         onOpen: (link) async {
           if (await canLaunch(link.url)) {
@@ -190,33 +190,34 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         },
         text: value,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyText2,
         linkStyle:
-            Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.blue),
+            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.blue),
       );
     }
     return Text(
       artifact.mimeType,
       textAlign: TextAlign.left,
+      style: Theme.of(context).textTheme.bodyText2,
     );
   }
 
   Widget _itemBuilder(context, Artifact artifact, index) {
     String artifactInfoLink;
     switch (artifact.mimeType) {
-      case "gnostic.metrics.Vocabulary":
+      case "application/octet-stream; type=gnostic.metrics.Vocabulary":
         artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/vocabulary.proto#L27";
         break;
-      case "gnostic.metrics.Complexity":
+      case "application/octet-stream; type=gnostic.metrics.Complexity":
         artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/complexity.proto#L23";
         break;
-      case "google.cloud.apigee.registry.v1.Lint":
+      case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
         artifactInfoLink =
             "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L38";
         break;
-      case "google.cloud.apigee.registry.v1.LintStats":
+      case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
         artifactInfoLink =
             "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L91";
         break;

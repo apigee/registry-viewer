@@ -303,6 +303,7 @@ class ArtifactService {
     final request = ListArtifactsRequest();
     request.parent = parent;
     request.pageSize = limit;
+    request.view = View.FULL;
     if (filter != null) {
       request.filter = filter;
     }
