@@ -19,7 +19,7 @@ fi
 
 if [ ! -d "registry" ]
 then
-  git clone https://github.com/apigee/registry -b v1
+  git clone https://github.com/apigee/registry
 else
   echo "Using previous download of apigee/registry."
 fi
