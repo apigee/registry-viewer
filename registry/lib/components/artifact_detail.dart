@@ -100,13 +100,13 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
             selflink: selflink,
             editable: widget.editable,
           );
-        case "application/octet-stream; type=gnostic.metrics.Complexity":
+        case "application/octet-stream;type=gnostic.metrics.Complexity":
           return ComplexityArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream; type=gnostic.metrics.Vocabulary":
+        case "application/octet-stream;type=gnostic.metrics.Vocabulary":
           return VocabularyArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
+        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
           return LintArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
+        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
           return LintStatsArtifactCard(artifact, selflink: selflink);
       }
 

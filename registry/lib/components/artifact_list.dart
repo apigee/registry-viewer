@@ -205,19 +205,19 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   Widget _itemBuilder(context, Artifact artifact, index) {
     String artifactInfoLink;
     switch (artifact.mimeType) {
-      case "application/octet-stream; type=gnostic.metrics.Vocabulary":
+      case "application/octet-stream;type=gnostic.metrics.Vocabulary":
         artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/vocabulary.proto#L27";
         break;
-      case "application/octet-stream; type=gnostic.metrics.Complexity":
+      case "application/octet-stream;type=gnostic.metrics.Complexity":
         artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/complexity.proto#L23";
         break;
-      case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
+      case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
         artifactInfoLink =
             "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L38";
         break;
-      case "application/octet-stream; type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
+      case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
         artifactInfoLink =
             "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L91";
         break;
