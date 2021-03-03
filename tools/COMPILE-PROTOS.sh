@@ -43,9 +43,9 @@ protoc \
 	${PROTOC}/google/protobuf/timestamp.proto \
 	${PROTOC}/google/protobuf/field_mask.proto \
 	${PROTOC}/google/protobuf/empty.proto \
-	${REGISTRY}/google/cloud/apigee/registry/v1alpha1/registry_models.proto \
-	${REGISTRY}/google/cloud/apigee/registry/v1alpha1/registry_service.proto \
-	${REGISTRY}/google/cloud/apigee/registry/v1alpha1/registry_lint.proto \
+	${REGISTRY}/google/cloud/apigee/registry/v1/registry_models.proto \
+	${REGISTRY}/google/cloud/apigee/registry/v1/registry_service.proto \
+	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.proto \
 	${GNOSTIC}/metrics/complexity.proto \
 	${GNOSTIC}/metrics/vocabulary.proto \
 	--dart_out=grpc:registry/lib/generated

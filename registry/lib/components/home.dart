@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import '../components/project_list.dart';
+import 'project_list.dart';
 import '../components/project_detail.dart';
 import '../components/registry_detail.dart';
 import '../models/selection.dart';

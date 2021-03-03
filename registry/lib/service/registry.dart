@@ -14,9 +14,9 @@
 
 import 'grpc_client.dart';
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
 import '../generated/google/protobuf/field_mask.pb.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
@@ -43,8 +43,7 @@ class Registry {
   Map<String, ApiManager> apiManagers = Map();
   Map<String, VersionManager> versionManagers = Map();
   Map<String, SpecManager> specManagers = Map();
-  Map<String, PropertyManager> propertyManagers = Map();
-  Map<String, LabelManager> labelManagers = Map();
+  Map<String, ArtifactManager> artifactManagers = Map();
 
   ProjectManager getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -78,20 +77,12 @@ class Registry {
     return specManagers[name];
   }
 
-  PropertyManager getPropertyManager(String name) {
-    Manager.removeUnused(propertyManagers);
-    if (propertyManagers[name] == null) {
-      propertyManagers[name] = PropertyManager(name);
+  ArtifactManager getArtifactManager(String name) {
+    Manager.removeUnused(artifactManagers);
+    if (artifactManagers[name] == null) {
+      artifactManagers[name] = ArtifactManager(name);
     }
-    return propertyManagers[name];
-  }
-
-  LabelManager getLabelManager(String name) {
-    Manager.removeUnused(labelManagers);
-    if (labelManagers[name] == null) {
-      labelManagers[name] = LabelManager(name);
-    }
-    return labelManagers[name];
+    return artifactManagers[name];
   }
 }
 
@@ -193,67 +184,69 @@ class ApiManager extends ResourceManager<Api> {
   }
 }
 
-class VersionManager extends ResourceManager<Version> {
+class VersionManager extends ResourceManager<ApiVersion> {
   VersionManager(String name) : super(name);
-  Future<Version> fetchFuture(RegistryClient client) {
-    final request = GetVersionRequest();
+  Future<ApiVersion> fetchFuture(RegistryClient client) {
+    final request = GetApiVersionRequest();
     request.name = name;
-    return client.getVersion(request, options: callOptions());
+    return client.getApiVersion(request, options: callOptions());
   }
 
-  void update(Version newValue, List<String> paths) {
+  void update(ApiVersion newValue, List<String> paths) {
     final client = getClient();
-    final request = UpdateVersionRequest();
-    request.version = newValue;
+    final request = UpdateApiVersionRequest();
+    request.apiVersion = newValue;
     request.updateMask = FieldMask();
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    client.updateVersion(request, options: callOptions()).then((value) {
+    client.updateApiVersion(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
     });
   }
 }
 
-class SpecManager extends ResourceManager<Spec> {
+class SpecManager extends ResourceManager<ApiSpec> {
   SpecManager(String name) : super(name);
-  Future<Spec> fetchFuture(RegistryClient client) {
-    final request = GetSpecRequest();
+  Future<ApiSpec> fetchFuture(RegistryClient client) {
+    final request = GetApiSpecRequest();
     request.name = name;
     request.view = View.FULL;
-    return client.getSpec(request, options: callOptions());
+    return client.getApiSpec(request, options: callOptions());
   }
 
-  void update(Spec newValue, List<String> paths) {
+  void update(ApiSpec newValue, List<String> paths) {
     final client = getClient();
-    final request = UpdateSpecRequest();
-    request.spec = newValue;
+    final request = UpdateApiSpecRequest();
+    request.apiSpec = newValue;
     request.updateMask = FieldMask();
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
-    client.updateSpec(request, options: callOptions()).then((value) {
+    client.updateApiSpec(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
     });
   }
 }
 
-class PropertyManager extends ResourceManager<Property> {
-  PropertyManager(String name) : super(name);
-  Future<Property> fetchFuture(RegistryClient client) {
-    final request = GetPropertyRequest();
+class ArtifactManager extends ResourceManager<Artifact> {
+  ArtifactManager(String name) : super(name);
+  Future<Artifact> fetchFuture(RegistryClient client) {
+    final request = GetArtifactRequest();
     request.name = name;
     request.view = View.FULL;
-    return client.getProperty(request, options: callOptions());
+    return client.getArtifact(request, options: callOptions());
   }
 
-  Future<Property> update(Property newValue) {
+  Future<Artifact> update(Artifact newValue) {
     final client = getClient();
-    final request = UpdatePropertyRequest();
-    request.property = newValue;
-    return client.updateProperty(request, options: callOptions()).then((value) {
+    final request = ReplaceArtifactRequest();
+    request.artifact = newValue;
+    return client
+        .replaceArtifact(request, options: callOptions())
+        .then((value) {
       _value = value;
       notifyListeners();
       return value;
@@ -261,27 +254,10 @@ class PropertyManager extends ResourceManager<Property> {
   }
 
   Future delete(String name) {
-    final request = DeletePropertyRequest();
+    final request = DeleteArtifactRequest();
     request.name = name;
     return getClient()
-        .deleteProperty(request, options: callOptions())
-        .then((empty) => Future);
-  }
-}
-
-class LabelManager extends ResourceManager<Label> {
-  LabelManager(String name) : super(name);
-  Future<Label> fetchFuture(RegistryClient client) {
-    final request = GetLabelRequest();
-    request.name = name;
-    return client.getLabel(request, options: callOptions());
-  }
-
-  Future delete(String name) {
-    final request = DeleteLabelRequest();
-    request.name = name;
-    return getClient()
-        .deleteLabel(request, options: callOptions())
+        .deleteArtifact(request, options: callOptions())
         .then((empty) => Future);
   }
 }

@@ -13,19 +13,18 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import 'package:registry/generated/metrics/vocabulary.pb.dart';
-import '../components/detail_rows.dart';
+import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 
-class VocabularyPropertyCard extends StatelessWidget {
-  final Property property;
+class VocabularyArtifactCard extends StatelessWidget {
+  final Artifact artifact;
   final Function selflink;
-  VocabularyPropertyCard(this.property, {this.selflink});
+  VocabularyArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    Vocabulary vocabulary =
-        new Vocabulary.fromBuffer(property.messageValue.value);
+    Vocabulary vocabulary = new Vocabulary.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -33,7 +32,7 @@ class VocabularyPropertyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResourceNameButtonRow(
-            name: property.name.last(1),
+            name: artifact.name.last(1),
             show: selflink,
             edit: null,
           ),

@@ -17,7 +17,7 @@ import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
 import '../helpers/measure_size.dart';
 import '../models/highlight.dart';
@@ -57,12 +57,12 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
   void managerListener() {
     setState(() {
-      Spec spec = specManager?.value;
+      ApiSpec spec = specManager?.value;
       if ((spec.contents != null) && (spec.contents.length > 0)) {
-        if (spec.style.endsWith("+gzip")) {
+        if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
           this.body = Utf8Codec().decoder.convert(data);
-        } else if (spec.style.endsWith("+zip")) {
+        } else if (spec.mimeType.endsWith("+zip")) {
           this.items = [];
           final archive = ZipDecoder().decodeBytes(spec.contents);
           for (final file in archive) {

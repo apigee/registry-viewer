@@ -13,17 +13,18 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import '../components/detail_rows.dart';
-import '../components/property_edit.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'detail_rows.dart';
+import 'artifact_edit.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
+import '../models/artifact.dart';
 
-class StringPropertyCard extends StatelessWidget {
-  final Property property;
+class StringArtifactCard extends StatelessWidget {
+  final Artifact artifact;
   final Function selflink;
   final bool editable;
-  StringPropertyCard(this.property, {this.selflink, this.editable});
+  StringArtifactCard(this.artifact, {this.selflink, this.editable});
   @override
   Widget build(BuildContext context) {
     Function editableFn = onlyIf(editable, () {
@@ -34,7 +35,7 @@ class StringPropertyCard extends StatelessWidget {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: EditPropertyForm(),
+                content: EditArtifactForm(),
               ),
             );
           });
@@ -44,13 +45,13 @@ class StringPropertyCard extends StatelessWidget {
       child: Column(
         children: [
           ResourceNameButtonRow(
-              name: property.name.last(1), show: selflink, edit: editableFn),
+              name: artifact.name.last(1), show: selflink, edit: editableFn),
           Padding(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(
               children: [
                 SizedBox(height: 30),
-                BodyRow(property.stringValue),
+                BodyRow(artifact.stringValue),
               ],
             ),
           ),

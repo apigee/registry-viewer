@@ -12,14 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'dart:convert';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 
-extension Display on Property {
+extension Display on Artifact {
   String nameForDisplay() {
     return this.name.split("/").last;
   }
 
   String routeNameForDetail() {
     return "/" + this.name;
+  }
+
+  String get subject {
+    final parts = this.name.split("/");
+    return parts.sublist(0, parts.length - 2).join("/");
+  }
+
+  String get relation {
+    final parts = this.name.split("/");
+    return parts[parts.length - 1];
+  }
+
+  String get stringValue {
+    if (this.mimeType == "text/plain") {
+      final codec = Utf8Codec();
+      return codec.decode(this.contents);
+    }
+    return "";
+  }
+
+  set stringValue(String value) {
+    this.mimeType = "text/plain";
+    final codec = Utf8Codec();
+    this.contents = codec.encode(value);
   }
 }

@@ -1,6 +1,6 @@
 // Copyright 2020 Google LLC. All Rights Reserved.
 //
-// Licensed under the Apache License, Property 2.0 (the "License");
+// Licensed under the Apache License, Artifact 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
@@ -15,43 +15,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/custom_search_box.dart';
-import '../components/filter.dart';
-import '../components/property_add.dart';
-import '../components/property_delete.dart';
-import '../models/property.dart';
+import 'custom_search_box.dart';
+import 'filter.dart';
+import 'artifact_add.dart';
+import 'artifact_delete.dart';
+import '../models/artifact.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
 import '../service/service.dart';
 
 typedef ObservableStringFn = ObservableString Function(BuildContext context);
 
-typedef PropertySelectionHandler = Function(
-    BuildContext context, Property property);
+typedef ArtifactSelectionHandler = Function(
+    BuildContext context, Artifact artifact);
 
-// PropertyListCard is a card that displays a list of properties.
-class PropertyListCard extends StatefulWidget {
+// ArtifactListCard is a card that displays a list of artifacts.
+class ArtifactListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
-  PropertyListCard(this.getObservableResourceName);
+  ArtifactListCard(this.getObservableResourceName);
 
   @override
-  _PropertyListCardState createState() => _PropertyListCardState();
+  _ArtifactListCardState createState() => _ArtifactListCardState();
 }
 
-class _PropertyListCardState extends State<PropertyListCard> {
+class _ArtifactListCardState extends State<ArtifactListCard> {
   ObservableString observableSubjectName;
   String subjectName;
-  PropertyService propertyService;
-  PagewiseLoadController<Property> pageLoadController;
+  ArtifactService artifactService;
+  PagewiseLoadController<Artifact> pageLoadController;
 
-  _PropertyListCardState() {
-    propertyService = PropertyService();
-    pageLoadController = PagewiseLoadController<Property>(
+  _ArtifactListCardState() {
+    artifactService = ArtifactService();
+    pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) =>
-            propertyService.getPropertiesPage(pageIndex));
+        pageFuture: (pageIndex) => artifactService.getArtifactsPage(pageIndex));
   }
 
   void selectionListener() {
@@ -87,7 +86,7 @@ class _PropertyListCardState extends State<PropertyListCard> {
             return SelectionProvider(
               selection: selection,
               child: AlertDialog(
-                content: AddPropertyForm(subjectName),
+                content: AddArtifactForm(subjectName),
               ),
             );
           });
@@ -97,15 +96,15 @@ class _PropertyListCardState extends State<PropertyListCard> {
       child: Card(
         child: Column(
           children: [
-            filterBar(context, PropertySearchBox(),
-                type: "properties",
+            filterBar(context, ArtifactSearchBox(),
+                type: "artifacts",
                 add: add,
                 refresh: () => pageLoadController.reset()),
             Expanded(
-              child: PropertyListView(
+              child: ArtifactListView(
                 widget.getObservableResourceName,
                 null,
-                propertyService,
+                artifactService,
                 pageLoadController,
               ),
             ),
@@ -116,23 +115,23 @@ class _PropertyListCardState extends State<PropertyListCard> {
   }
 }
 
-// PropertyListView is a scrollable ListView of properties.
-class PropertyListView extends StatefulWidget {
+// ArtifactListView is a scrollable ListView of artifacts.
+class ArtifactListView extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
-  final PropertySelectionHandler selectionHandler;
-  final PropertyService propertyService;
-  final PagewiseLoadController<Property> pageLoadController;
-  PropertyListView(
+  final ArtifactSelectionHandler selectionHandler;
+  final ArtifactService artifactService;
+  final PagewiseLoadController<Artifact> pageLoadController;
+  ArtifactListView(
     this.getObservableResourceName,
     this.selectionHandler,
-    this.propertyService,
+    this.artifactService,
     this.pageLoadController,
   );
   @override
-  _PropertyListViewState createState() => _PropertyListViewState();
+  _ArtifactListViewState createState() => _ArtifactListViewState();
 }
 
-class _PropertyListViewState extends State<PropertyListView> {
+class _ArtifactListViewState extends State<ArtifactListView> {
   String parentName;
   int selectedIndex = -1;
   ObservableString filter;
@@ -141,7 +140,7 @@ class _PropertyListViewState extends State<PropertyListView> {
     setState(() {
       ObservableString filter = ObservableStringProvider.of(context);
       if (filter != null) {
-        widget.propertyService.filter = filter.value;
+        widget.artifactService.filter = filter.value;
         widget.pageLoadController.reset();
         selectedIndex = -1;
       }
@@ -163,24 +162,24 @@ class _PropertyListViewState extends State<PropertyListView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.propertyService.context = context;
+    widget.artifactService.context = context;
     String subjectName = widget.getObservableResourceName(context).value;
-    if (widget.propertyService.parentName != subjectName) {
-      widget.propertyService.parentName = subjectName;
+    if (widget.artifactService.parentName != subjectName) {
+      widget.artifactService.parentName = subjectName;
       widget.pageLoadController.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
-      child: PagewiseListView<Property>(
+      child: PagewiseListView<Artifact>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
       ),
     );
   }
 
-  Widget widgetForPropertyValue(Property property) {
-    if (property.hasStringValue()) {
-      final value = property.stringValue;
+  Widget widgetForArtifactValue(Artifact artifact) {
+    if (artifact.mimeType == "text/plain") {
+      final value = "text/plain: " + artifact.stringValue;
       return Linkify(
         onOpen: (link) async {
           if (await canLaunch(link.url)) {
@@ -191,44 +190,42 @@ class _PropertyListViewState extends State<PropertyListView> {
         },
         text: value,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyText2,
         linkStyle:
-            Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.blue),
+            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.blue),
       );
     }
-    if (property.hasMessageValue()) {
-      return Text(
-        property.messageValue.typeUrl,
-        textAlign: TextAlign.left,
-      );
-    }
-    return Text("");
+    return Text(
+      artifact.mimeType,
+      textAlign: TextAlign.left,
+      style: Theme.of(context).textTheme.bodyText2,
+    );
   }
 
-  Widget _itemBuilder(context, Property property, index) {
-    String propertyInfoLink;
-    switch (property.messageValue.typeUrl) {
-      case "gnostic.metrics.Vocabulary":
-        propertyInfoLink =
+  Widget _itemBuilder(context, Artifact artifact, index) {
+    String artifactInfoLink;
+    switch (artifact.mimeType) {
+      case "application/octet-stream;type=gnostic.metrics.Vocabulary":
+        artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/vocabulary.proto#L27";
         break;
-      case "gnostic.metrics.Complexity":
-        propertyInfoLink =
+      case "application/octet-stream;type=gnostic.metrics.Complexity":
+        artifactInfoLink =
             "https://github.com/google/gnostic/blob/master/metrics/complexity.proto#L23";
         break;
-      case "google.cloud.apigee.registry.v1alpha1.Lint":
-        propertyInfoLink =
-            "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1alpha1/registry_lint.proto#L38";
+      case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
+        artifactInfoLink =
+            "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L38";
         break;
-      case "google.cloud.apigee.registry.v1alpha1.LintStats":
-        propertyInfoLink =
-            "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1alpha1/registry_lint.proto#L91";
+      case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
+        artifactInfoLink =
+            "https://github.com/apigee/registry/blob/main/google/cloud/apigee/registry/v1/registry_lint.proto#L91";
         break;
     }
-    bool canDelete = property.hasStringValue();
+    bool canDelete = artifact.mimeType == "text/plain";
     return ListTile(
-      title: Text(property.nameForDisplay()),
-      subtitle: widgetForPropertyValue(property),
+      title: Text(artifact.nameForDisplay()),
+      subtitle: widgetForArtifactValue(artifact),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {
@@ -236,22 +233,22 @@ class _PropertyListViewState extends State<PropertyListView> {
           selectedIndex = index;
         });
         Selection selection = SelectionProvider.of(context);
-        selection?.updatePropertyName(property.name);
-        widget.selectionHandler?.call(context, property);
+        selection?.updateArtifactName(artifact.name);
+        widget.selectionHandler?.call(context, artifact);
       },
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (propertyInfoLink != null)
+          if (artifactInfoLink != null)
             IconButton(
                 color: Colors.black,
                 icon: Icon(Icons.info),
                 tooltip: "info",
                 onPressed: () async {
-                  if (await canLaunch(propertyInfoLink)) {
-                    await launch(propertyInfoLink);
+                  if (await canLaunch(artifactInfoLink)) {
+                    await launch(artifactInfoLink);
                   } else {
-                    throw 'Could not launch $propertyInfoLink';
+                    throw 'Could not launch $artifactInfoLink';
                   }
                 }),
           if (canDelete)
@@ -261,14 +258,14 @@ class _PropertyListViewState extends State<PropertyListView> {
               tooltip: "delete",
               onPressed: () {
                 final selection = SelectionProvider.of(context);
-                selection.updatePropertyName(property.name);
+                selection.updateArtifactName(artifact.name);
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return SelectionProvider(
                         selection: selection,
                         child: AlertDialog(
-                          content: DeletePropertyForm(),
+                          content: DeleteArtifactForm(),
                         ),
                       );
                     });
@@ -280,11 +277,11 @@ class _PropertyListViewState extends State<PropertyListView> {
   }
 }
 
-// PropertySearchBox provides a search box for properties.
-class PropertySearchBox extends CustomSearchBox {
-  PropertySearchBox()
+// ArtifactSearchBox provides a search box for artifacts.
+class ArtifactSearchBox extends CustomSearchBox {
+  ArtifactSearchBox()
       : super(
-          "Filter Properties",
-          "property_id.contains('TEXT')",
+          "Filter Artifacts",
+          "artifact_id.contains('TEXT')",
         );
 }

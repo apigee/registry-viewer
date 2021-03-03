@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
@@ -107,7 +107,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
   @override
   Widget build(BuildContext context) {
     Function selflink = onlyIf(widget.selflink, () {
-      Spec spec = specManager?.value;
+      ApiSpec spec = specManager?.value;
       Navigator.pushNamed(
         context,
         spec.routeNameForDetail(),
@@ -133,8 +133,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       return Card();
     } else {
       Api api = apiManager.value;
-      Version version = versionManager.value;
-      Spec spec = specManager.value;
+      ApiVersion version = versionManager.value;
+      ApiSpec spec = specManager.value;
       if ((api == null) || (version == null) || (spec == null)) {
         return Card();
       }
@@ -160,7 +160,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                           version.name.split("/")?.last),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
-                      BodyRow(spec.style),
+                      BodyRow(spec.mimeType),
                       BodyRow("revision " + spec.revisionId),
                       if (spec.hasSourceUri()) SizedBox(height: 10),
                       if (spec.hasSourceUri())
@@ -169,8 +169,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                       if (spec.description != "") BodyRow(spec.description),
                       SizedBox(height: 10),
                       SmallBodyRow("${spec.sizeBytes} bytes"),
-                      SmallBodyRow("SHA1 ${spec.hash}"),
-                      TimestampRow(spec.createTime, spec.updateTime),
+                      SmallBodyRow("SHA-256 ${spec.hash}"),
+                      TimestampRow(spec.createTime, spec.revisionUpdateTime),
                     ],
                   ),
                 ),

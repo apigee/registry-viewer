@@ -13,20 +13,21 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../service/service.dart';
+import '../models/artifact.dart';
 import '../models/selection.dart';
 
-class AddLabelForm extends StatefulWidget {
+class AddArtifactForm extends StatefulWidget {
   final subjectName;
-  AddLabelForm(this.subjectName);
+  AddArtifactForm(this.subjectName);
   @override
-  AddLabelFormState createState() => AddLabelFormState();
+  AddArtifactFormState createState() => AddArtifactFormState();
 }
 
 // Define a corresponding State class.
 // This class holds data related to the form.
-class AddLabelFormState extends State<AddLabelForm> {
+class AddArtifactFormState extends State<AddArtifactForm> {
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -51,12 +52,12 @@ class AddLabelFormState extends State<AddLabelForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Add a Label"),
+          Text("Add an Artifact"),
           ListTile(
             title: TextFormField(
               controller: stringValueController,
             ),
-            subtitle: Text("label name"),
+            subtitle: Text("artifact name"),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
@@ -87,12 +88,15 @@ class AddLabelFormState extends State<AddLabelForm> {
   void save(BuildContext context) {
     Selection selection = SelectionProvider.of(context);
     if (_formKey.currentState.validate()) {
-      Label label = Label();
-      label.subject = widget.subjectName;
-      label.label = stringValueController.text;
-      if (label.label != "") {
-        LabelService().create(label).then((Label label) {
-          selection.notifySubscribersOf(label.subject);
+      String relation = stringValueController.text;
+      print("saving relation $relation");
+      Artifact artifact = Artifact();
+      artifact.name = widget.subjectName + "/artifacts/" + relation;
+      artifact.mimeType = "text/plain";
+      print("artifact ${artifact.name}");
+      if (relation != "") {
+        ArtifactService().create(artifact).then((Artifact artifact) {
+          selection.notifySubscribersOf(artifact.subject);
         });
       }
     }

@@ -14,13 +14,14 @@
 
 import 'dart:async';
 import 'grpc_client.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_service.pbgrpc.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
 import '../generated/google/protobuf/empty.pb.dart';
 import '../generated/google/protobuf/field_mask.pb.dart';
 import '../helpers/errors.dart';
 import 'package:flutter/material.dart';
+import '../models/artifact.dart';
 
 const int pageSize = 50;
 
@@ -161,12 +162,12 @@ class VersionService {
   Map<int, String> tokens;
   String apiName;
 
-  Future<List<Version>> getVersionsPage(int pageIndex) {
+  Future<List<ApiVersion>> getVersionsPage(int pageIndex) {
     return _getVersions(
         parent: apiName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Version>> _getVersions(
+  Future<List<ApiVersion>> _getVersions(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -175,7 +176,7 @@ class VersionService {
       tokens = Map();
     }
     final client = getClient();
-    final request = ListVersionsRequest();
+    final request = ListApiVersionsRequest();
     request.parent = parent;
     request.pageSize = limit;
     if (filter != null) {
@@ -187,36 +188,36 @@ class VersionService {
     }
     try {
       final response =
-          await client.listVersions(request, options: callOptions());
+          await client.listApiVersions(request, options: callOptions());
       tokens[offset + limit] = response.nextPageToken;
-      return response.versions;
+      return response.apiVersions;
     } catch (err) {
       reportError(context, err);
       throw err;
     }
   }
 
-  Future<Version> getVersion(String name) {
+  Future<ApiVersion> getVersion(String name) {
     final client = getClient();
-    final request = GetVersionRequest();
+    final request = GetApiVersionRequest();
     request.name = name;
     try {
-      return client.getVersion(request, options: callOptions());
+      return client.getApiVersion(request, options: callOptions());
     } catch (err) {
       print('Caught error: $err');
       return null;
     }
   }
 
-  Future<List<Version>> getVersions(String parent) async {
+  Future<List<ApiVersion>> getVersions(String parent) async {
     final client = getClient();
-    final request = ListVersionsRequest();
+    final request = ListApiVersionsRequest();
     request.parent = parent;
     request.pageSize = 20;
     try {
       final response =
-          await client.listVersions(request, options: callOptions());
-      return response.versions;
+          await client.listApiVersions(request, options: callOptions());
+      return response.apiVersions;
     } catch (err) {
       return null;
     }
@@ -230,12 +231,12 @@ class SpecService {
   String versionName;
   SpecService();
 
-  Future<List<Spec>> getSpecsPage(int pageIndex) {
+  Future<List<ApiSpec>> getSpecsPage(int pageIndex) {
     return _getSpecs(
         parent: versionName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Spec>> _getSpecs(
+  Future<List<ApiSpec>> _getSpecs(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -244,61 +245,7 @@ class SpecService {
       tokens = Map();
     }
     final client = getClient();
-    final request = ListSpecsRequest();
-    request.parent = parent;
-    request.pageSize = limit;
-    if (filter != null) {
-      request.filter = filter;
-    }
-    final token = tokens[offset];
-    if (token != null) {
-      request.pageToken = token;
-    }
-    try {
-      final response = await client.listSpecs(request, options: callOptions());
-      tokens[offset + limit] = response.nextPageToken;
-      return response.specs;
-    } catch (err) {
-      reportError(context, err);
-      throw err;
-    }
-  }
-
-  Future<Spec> getSpec(String name) {
-    final client = getClient();
-    final request = GetSpecRequest();
-    request.name = name;
-    request.view = View.FULL;
-    try {
-      return client.getSpec(request, options: callOptions());
-    } catch (err) {
-      print('Caught error: $err');
-      return null;
-    }
-  }
-}
-
-class PropertyService {
-  BuildContext context;
-  String filter;
-  Map<int, String> tokens;
-  String parentName;
-
-  Future<List<Property>> getPropertiesPage(int pageIndex) {
-    return _getProperties(
-        parent: parentName, offset: pageIndex * pageSize, limit: pageSize);
-  }
-
-  Future<List<Property>> _getProperties(
-      {parent: String, offset: int, limit: int}) async {
-    if (parent == "") {
-      return null;
-    }
-    if (offset == 0) {
-      tokens = Map();
-    }
-    final client = getClient();
-    final request = ListPropertiesRequest();
+    final request = ListApiSpecsRequest();
     request.parent = parent;
     request.pageSize = limit;
     if (filter != null) {
@@ -310,23 +257,22 @@ class PropertyService {
     }
     try {
       final response =
-          await client.listProperties(request, options: callOptions());
+          await client.listApiSpecs(request, options: callOptions());
       tokens[offset + limit] = response.nextPageToken;
-      return response.properties;
+      return response.apiSpecs;
     } catch (err) {
       reportError(context, err);
       throw err;
     }
   }
 
-  Future<Property> create(Property property) {
+  Future<ApiSpec> getSpec(String name) {
     final client = getClient();
-    final request = CreatePropertyRequest();
-    request.property = property;
-    request.propertyId = property.relation;
-    request.parent = property.subject;
+    final request = GetApiSpecRequest();
+    request.name = name;
+    request.view = View.FULL;
     try {
-      return client.createProperty(request, options: callOptions());
+      return client.getApiSpec(request, options: callOptions());
     } catch (err) {
       print('Caught error: $err');
       return null;
@@ -334,18 +280,18 @@ class PropertyService {
   }
 }
 
-class LabelService {
+class ArtifactService {
   BuildContext context;
   String filter;
   Map<int, String> tokens;
   String parentName;
 
-  Future<List<Label>> getLabelsPage(int pageIndex) {
-    return _getLabels(
+  Future<List<Artifact>> getArtifactsPage(int pageIndex) {
+    return _getArtifacts(
         parent: parentName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Label>> _getLabels(
+  Future<List<Artifact>> _getArtifacts(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -354,9 +300,10 @@ class LabelService {
       tokens = Map();
     }
     final client = getClient();
-    final request = ListLabelsRequest();
+    final request = ListArtifactsRequest();
     request.parent = parent;
     request.pageSize = limit;
+    request.view = View.FULL;
     if (filter != null) {
       request.filter = filter;
     }
@@ -365,23 +312,24 @@ class LabelService {
       request.pageToken = token;
     }
     try {
-      final response = await client.listLabels(request, options: callOptions());
+      final response =
+          await client.listArtifacts(request, options: callOptions());
       tokens[offset + limit] = response.nextPageToken;
-      return response.labels;
+      return response.artifacts;
     } catch (err) {
       reportError(context, err);
       throw err;
     }
   }
 
-  Future<Label> create(Label label) {
+  Future<Artifact> create(Artifact artifact) {
     final client = getClient();
-    final request = CreateLabelRequest();
-    request.label = label;
-    request.labelId = label.label;
-    request.parent = label.subject;
+    final request = CreateArtifactRequest();
+    request.artifact = artifact;
+    request.artifactId = artifact.relation;
+    request.parent = artifact.subject;
     try {
-      return client.createLabel(request, options: callOptions());
+      return client.createArtifact(request, options: callOptions());
     } catch (err) {
       print('Caught error: $err');
       return null;

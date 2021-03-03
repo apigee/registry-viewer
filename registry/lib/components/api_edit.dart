@@ -68,7 +68,6 @@ class EditAPIFormState extends State<EditAPIForm> {
   // Create controllers for form fields.
   final displayNameController = TextEditingController();
   final descriptionController = TextEditingController();
-  final ownerController = TextEditingController();
 
   @override
   void dispose() {
@@ -76,7 +75,6 @@ class EditAPIFormState extends State<EditAPIForm> {
     apiManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
-    ownerController.dispose();
     super.dispose();
   }
 
@@ -89,7 +87,6 @@ class EditAPIFormState extends State<EditAPIForm> {
       final api = apiManager.value;
       displayNameController.text = api.displayName;
       descriptionController.text = api.description;
-      ownerController.text = api.owner;
 
       return Form(
         key: _formKey,
@@ -108,12 +105,6 @@ class EditAPIFormState extends State<EditAPIForm> {
                 controller: descriptionController,
               ),
               subtitle: Text("Description"),
-            ),
-            ListTile(
-              title: TextFormField(
-                controller: ownerController,
-              ),
-              subtitle: Text("Owner"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
@@ -153,10 +144,6 @@ class EditAPIFormState extends State<EditAPIForm> {
       if (api.description != descriptionController.text) {
         api.description = descriptionController.text;
         paths.add("description");
-      }
-      if (api.owner != ownerController.text) {
-        api.owner = ownerController.text;
-        paths.add("owner");
       }
       apiManager?.update(api, paths);
     }

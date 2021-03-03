@@ -17,8 +17,8 @@ import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
 import '../components/api_detail.dart';
-import '../components/property_list.dart';
-import '../components/property_detail.dart';
+import '../components/artifact_list.dart';
+import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 
@@ -53,10 +53,10 @@ class ProjectDetailPage extends StatelessWidget {
                 children: [
                   Expanded(child: ProjectDetailCard(editable: true)),
                   Expanded(
-                    child: PropertyListCard(SelectionProvider.project),
+                    child: ArtifactListCard(SelectionProvider.project),
                   ),
                   Expanded(
-                    child: PropertyDetailCard(
+                    child: ArtifactDetailCard(
                       selflink: true,
                       editable: true,
                     ),

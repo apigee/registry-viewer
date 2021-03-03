@@ -24,8 +24,8 @@ import 'pages/version_list.dart';
 import 'pages/version_detail.dart';
 import 'pages/spec_list.dart';
 import 'pages/spec_detail.dart';
-import 'pages/property_list.dart';
-import 'pages/property_detail.dart';
+import 'pages/artifact_list.dart';
+import 'pages/artifact_detail.dart';
 import 'pages/signin.dart';
 import 'pages/home.dart';
 
@@ -37,8 +37,8 @@ class RegistryRouter {
       versionRegExp,
       specsRegExp,
       specRegExp,
-      propertiesRegExp,
-      propertyRegExp;
+      artifactsRegExp,
+      artifactRegExp;
 
   RegistryRouter() {
     // build patterns
@@ -51,7 +51,7 @@ class RegistryRouter {
     const versionPattern = versionsPattern + r"/" + namePattern;
     const specsPattern = versionPattern + r"/specs";
     const specPattern = specsPattern + r"/" + namePattern;
-    const propertiesPattern = r"((" +
+    const artifactsPattern = r"((" +
         projectPattern +
         ")|(" +
         apiPattern +
@@ -59,8 +59,8 @@ class RegistryRouter {
         versionPattern +
         ")|(" +
         specPattern +
-        "))/properties";
-    const propertyPattern = propertiesPattern + r"/" + namePattern;
+        "))/artifacts";
+    const artifactPattern = artifactsPattern + r"/" + namePattern;
     const endPattern = r"$";
     // use patterns to build regular expressions
     projectRegExp = RegExp(projectPattern + endPattern);
@@ -70,8 +70,8 @@ class RegistryRouter {
     versionRegExp = RegExp(versionPattern + endPattern);
     specsRegExp = RegExp(specsPattern + endPattern);
     specRegExp = RegExp(specPattern + endPattern);
-    propertiesRegExp = RegExp(propertiesPattern + endPattern);
-    propertyRegExp = RegExp(propertyPattern + endPattern);
+    artifactsRegExp = RegExp(artifactsPattern + endPattern);
+    artifactRegExp = RegExp(artifactPattern + endPattern);
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
@@ -97,10 +97,10 @@ class RegistryRouter {
       return errorPage(settings);
     }
     // handle regex patterns next, watch for possible ordering sensitivities
-    if (propertyRegExp.hasMatch(settings.name)) {
-      return propertyPage(settings);
-    } else if (propertiesRegExp.hasMatch(settings.name)) {
-      return propertiesPage(settings);
+    if (artifactRegExp.hasMatch(settings.name)) {
+      return artifactPage(settings);
+    } else if (artifactsRegExp.hasMatch(settings.name)) {
+      return artifactsPage(settings);
     } else if (specRegExp.hasMatch(settings.name)) {
       return specPage(settings);
     } else if (specsRegExp.hasMatch(settings.name)) {
@@ -223,22 +223,22 @@ MaterialPageRoute specPage(RouteSettings settings) {
       });
 }
 
-MaterialPageRoute propertiesPage(RouteSettings settings) {
+MaterialPageRoute artifactsPage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      return PropertyListPage(
+      return ArtifactListPage(
         settings.name,
       );
     },
   );
 }
 
-MaterialPageRoute propertyPage(RouteSettings settings) {
+MaterialPageRoute artifactPage(RouteSettings settings) {
   return MaterialPageRoute(
       settings: settings,
       builder: (context) {
-        return PropertyDetailPage(
+        return ArtifactDetailPage(
           name: settings.name,
         );
       });

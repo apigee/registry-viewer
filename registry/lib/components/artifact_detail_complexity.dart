@@ -13,24 +13,23 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import 'package:registry/generated/metrics/complexity.pb.dart';
-import '../components/detail_rows.dart';
+import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 
-class ComplexityPropertyCard extends StatelessWidget {
-  final Property property;
+class ComplexityArtifactCard extends StatelessWidget {
+  final Artifact artifact;
   final Function selflink;
-  ComplexityPropertyCard(this.property, {this.selflink});
+  ComplexityArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    Complexity complexity =
-        new Complexity.fromBuffer(property.messageValue.value);
+    Complexity complexity = new Complexity.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         children: [
           ResourceNameButtonRow(
-            name: property.name.last(1),
+            name: artifact.name.last(1),
             show: selflink,
             edit: null,
           ),

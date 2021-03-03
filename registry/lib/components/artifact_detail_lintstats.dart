@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_lint.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/detail_rows.dart';
+import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/highlight.dart';
@@ -28,15 +28,15 @@ String stringForLocation(LintLocation location) {
       "${location.endPosition.columnNumber}]";
 }
 
-class LintStatsPropertyCard extends StatefulWidget {
-  final Property property;
+class LintStatsArtifactCard extends StatefulWidget {
+  final Artifact artifact;
   final Function selflink;
-  LintStatsPropertyCard(this.property, {this.selflink});
+  LintStatsArtifactCard(this.artifact, {this.selflink});
 
-  _LintStatsPropertyCardState createState() => _LintStatsPropertyCardState();
+  _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
 }
 
-class _LintStatsPropertyCardState extends State<LintStatsPropertyCard> {
+class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
   LintStats lintstats;
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;
@@ -53,13 +53,13 @@ class _LintStatsPropertyCardState extends State<LintStatsPropertyCard> {
 
   Widget build(BuildContext context) {
     if (lintstats == null) {
-      lintstats = new LintStats.fromBuffer(widget.property.messageValue.value);
+      lintstats = new LintStats.fromBuffer(widget.artifact.contents);
     }
     return Card(
       child: Column(
         children: [
           ResourceNameButtonRow(
-            name: widget.property.name.last(1),
+            name: widget.artifact.name.last(1),
             show: widget.selflink,
             edit: null,
           ),

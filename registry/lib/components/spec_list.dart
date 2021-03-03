@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 import '../components/custom_search_box.dart';
 import '../components/filter.dart';
 import '../models/spec.dart';
@@ -22,7 +22,7 @@ import '../models/string.dart';
 import '../models/selection.dart';
 import '../service/service.dart';
 
-typedef SpecSelectionHandler = Function(BuildContext context, Spec spec);
+typedef SpecSelectionHandler = Function(BuildContext context, ApiSpec spec);
 
 // SpecListCard is a card that displays a list of specs.
 class SpecListCard extends StatefulWidget {
@@ -32,11 +32,11 @@ class SpecListCard extends StatefulWidget {
 
 class _SpecListCardState extends State<SpecListCard> {
   SpecService specService;
-  PagewiseLoadController<Spec> pageLoadController;
+  PagewiseLoadController<ApiSpec> pageLoadController;
 
   _SpecListCardState() {
     specService = SpecService();
-    pageLoadController = PagewiseLoadController<Spec>(
+    pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
         pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
   }
@@ -68,7 +68,7 @@ class _SpecListCardState extends State<SpecListCard> {
 class SpecListView extends StatefulWidget {
   final SpecSelectionHandler selectionHandler;
   final SpecService specService;
-  final PagewiseLoadController<Spec> pageLoadController;
+  final PagewiseLoadController<ApiSpec> pageLoadController;
 
   SpecListView(
     this.selectionHandler,
@@ -128,14 +128,14 @@ class _SpecListViewState extends State<SpecListView> {
       selectedIndex = -1;
     }
     return Scrollbar(
-      child: PagewiseListView<Spec>(
+      child: PagewiseListView<ApiSpec>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
       ),
     );
   }
 
-  Widget _itemBuilder(context, Spec spec, index) {
+  Widget _itemBuilder(context, ApiSpec spec, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection selection = SelectionProvider.of(context);
@@ -152,7 +152,7 @@ class _SpecListViewState extends State<SpecListView> {
 
     return ListTile(
       title: Text(spec.nameForDisplay()),
-      subtitle: Text(spec.style),
+      subtitle: Text(spec.mimeType),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {

@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1alpha1/registry_lint.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/detail_rows.dart';
+import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/highlight.dart';
@@ -28,12 +28,12 @@ String stringForLocation(LintLocation location) {
       "${location.endPosition.columnNumber}]";
 }
 
-class LintPropertyCard extends StatefulWidget {
-  final Property property;
+class LintArtifactCard extends StatefulWidget {
+  final Artifact artifact;
   final Function selflink;
-  LintPropertyCard(this.property, {this.selflink});
+  LintArtifactCard(this.artifact, {this.selflink});
 
-  _LintPropertyCardState createState() => _LintPropertyCardState();
+  _LintArtifactCardState createState() => _LintArtifactCardState();
 }
 
 class FileProblem {
@@ -42,7 +42,7 @@ class FileProblem {
   FileProblem(this.file, this.problem);
 }
 
-class _LintPropertyCardState extends State<LintPropertyCard> {
+class _LintArtifactCardState extends State<LintArtifactCard> {
   Lint lint;
   List<FileProblem> problems = [];
   final ScrollController controller = ScrollController();
@@ -73,7 +73,7 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
 
   Widget build(BuildContext context) {
     if (lint == null) {
-      lint = new Lint.fromBuffer(widget.property.messageValue.value);
+      lint = new Lint.fromBuffer(widget.artifact.contents);
       lint.files.forEach((file) {
         file.problems.forEach((problem) {
           problems.add(FileProblem(file, problem));
@@ -84,7 +84,7 @@ class _LintPropertyCardState extends State<LintPropertyCard> {
       child: Column(
         children: [
           ResourceNameButtonRow(
-            name: widget.property.name.last(1),
+            name: widget.artifact.name.last(1),
             show: widget.selflink,
             edit: null,
           ),
