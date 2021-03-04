@@ -154,7 +154,9 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyText2
-                                          .copyWith(color: Colors.blue)),
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .accentColor)),
                                   onTap: () async {
                                     if (await canLaunch(
                                         problem.problem.ruleDocUri)) {

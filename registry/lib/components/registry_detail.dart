@@ -53,7 +53,7 @@ class RegistryDetailCard extends StatelessWidget {
                       linkStyle: Theme.of(context)
                           .textTheme
                           .bodyText1
-                          .copyWith(color: Colors.blue),
+                          .copyWith(color: Theme.of(context).accentColor),
                     ),
                   ],
                 ),

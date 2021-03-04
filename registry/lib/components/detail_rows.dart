@@ -56,7 +56,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
-                      .copyWith(color: Colors.blue),
+                      .copyWith(color: Theme.of(context).accentColor),
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
@@ -70,7 +70,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
-                    .copyWith(color: Colors.blue),
+                    .copyWith(color: Theme.of(context).accentColor),
                 textAlign: TextAlign.right,
               ),
               onTap: edit != null ? edit : () {},
@@ -123,7 +123,7 @@ class TitleRow extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headline3
-                          .copyWith(color: Colors.blue),
+                          .copyWith(color: Theme.of(context).accentColor),
                       textAlign: TextAlign.left,
                     ),
                     onTap: action),
@@ -208,7 +208,7 @@ class LinkRow extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
-                  .copyWith(color: Colors.blue),
+                  .copyWith(color: Theme.of(context).accentColor),
               textAlign: TextAlign.left,
             ),
             onTap: () async {

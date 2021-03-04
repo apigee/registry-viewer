@@ -191,8 +191,10 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         text: value,
         textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.bodyText2,
-        linkStyle:
-            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.blue),
+        linkStyle: Theme.of(context)
+            .textTheme
+            .bodyText2
+            .copyWith(color: Theme.of(context).accentColor),
       );
     }
     return Text(
