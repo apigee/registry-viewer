@@ -87,7 +87,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
     if (artifactManager?.value == null) {
       return Card(
         child: Container(
-          color: Colors.grey[200],
+          color: Theme.of(context).canvasColor,
         ),
       );
     } else {
