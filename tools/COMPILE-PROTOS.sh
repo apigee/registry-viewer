@@ -16,7 +16,7 @@
 #
 
 #
-# Compile .proto files into the files needed to build the registry viewer.
+# Compile .proto files into the files needed to build the viewer.
 #
 
 # This points to the .proto files distributed with protoc.
@@ -31,7 +31,7 @@ export REGISTRY="third_party/registry"
 # This is a third_party directory containing message protos used to store API metrics.
 export GNOSTIC="third_party/gnostic"
 
-mkdir -p registry/lib/generated 
+mkdir -p viewer/lib/generated 
 
 echo "Generating Dart support code."
 protoc \
@@ -48,4 +48,4 @@ protoc \
 	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.proto \
 	${GNOSTIC}/metrics/complexity.proto \
 	${GNOSTIC}/metrics/vocabulary.proto \
-	--dart_out=grpc:registry/lib/generated
+	--dart_out=grpc:viewer/lib/generated

@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-BUILD="registry/lib/build.dart"
+BUILD="viewer/lib/build.dart"
 
 echo "// Copyright 2020 Google LLC. All Rights Reserved." > $BUILD
 echo "//" >> $BUILD
