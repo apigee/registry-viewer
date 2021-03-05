@@ -1,11 +1,11 @@
 linux:	buildstamp
-	cd registry; flutter run -d linux
+	cd viewer; flutter run -d linux
 
 macos:	buildstamp
-	cd registry; flutter run -d macos
+	cd viewer; flutter run -d macos
 
 web:	buildstamp
-	cd registry; flutter run -d chrome --web-hostname localhost --web-port 8888
+	cd viewer; flutter run -d chrome --web-hostname localhost --web-port 8888
 
 buildstamp:
 	tools/BUILDSTAMP.sh
@@ -15,24 +15,24 @@ protos:
 	./tools/COMPILE-PROTOS.sh
 
 create:
-	flutter create --no-overwrite registry
+	flutter create --no-overwrite viewer
 	# we're not using these (yet)
-	rm -rf registry/test registry/integration_test
+	rm -rf viewer/test viewer/integration_test
 
 clean:
-	cd registry; flutter clean
-	rm -rf registry/lib/generated
+	cd viewer; flutter clean
+	rm -rf viewer/lib/generated
 
 clobber:	clean
-	rm -rf registry/ios registry/android registry/ios registry/linux 
-	rm -rf registry/registry.iml
+	rm -rf viewer/ios viewer/android viewer/ios viewer/linux 
+	rm -rf viewer/viewer.iml
 	rm -rf third_party/api-common-protos third_party/gnostic third_party/registry
 	rm -rf site/public
 
 staging:	buildstamp
-	cd registry; flutter build web
+	cd viewer; flutter build web
 	rm -rf site/public
-	cp -r registry/build/web site/public
+	cp -r viewer/build/web site/public
 
 build: 	staging
 ifndef REGISTRY_PROJECT_IDENTIFIER
