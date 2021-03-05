@@ -118,7 +118,11 @@ class ApiService {
       request.pageToken = token;
     }
     try {
-      final response = await client.listApis(request, options: callOptions());
+      var response = await client.listApis(request, options: callOptions());
+      while ((response.apis.length == 0) && (response.nextPageToken != "")) {
+        request.pageToken = response.nextPageToken;
+        response = await client.listApis(request, options: callOptions());
+      }
       tokens[offset + limit] = response.nextPageToken;
       return response.apis;
     } catch (err) {
