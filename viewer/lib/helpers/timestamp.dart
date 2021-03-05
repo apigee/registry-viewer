@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'package:intl/intl.dart';
-import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
+import 'package:registry/registry.dart';
 
 String format(Timestamp t) {
   final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm a');

@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/registry.dart';
 import '../models/selection.dart';
 import '../models/artifact.dart';
 import '../service/registry.dart';

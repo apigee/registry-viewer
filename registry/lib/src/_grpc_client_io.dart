@@ -17,6 +17,9 @@ import 'dart:io' show Platform;
 
 String token; // auth token
 
+// unused in non-web builds
+void setRegistryUserToken(String token) {}
+
 class ConnectionError extends Error {
   final String description;
   ConnectionError(this.description);

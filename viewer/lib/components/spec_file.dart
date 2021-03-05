@@ -17,7 +17,7 @@ import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/registry.dart';
 import '../components/detail_rows.dart';
 import '../helpers/measure_size.dart';
 import '../models/highlight.dart';

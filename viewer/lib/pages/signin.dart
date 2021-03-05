@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:registry/registry.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../authorizations.dart';
 import '../service/service.dart';
@@ -22,7 +23,6 @@ import '../application.dart';
 
 GoogleSignInAccount currentUser;
 bool currentUserIsAuthorized = false;
-String currentUserToken = "";
 
 GoogleSignIn googleSignIn = GoogleSignIn(
   scopes: <String>[
@@ -45,7 +45,7 @@ Future attemptToSignIn() async {
           authorized_domains.contains(account.email.split("@").last);
     }
     account.authentication.then((auth) {
-      currentUserToken = auth.idToken;
+      setRegistryUserToken(auth.idToken);
       StatusService().getStatus().then((status) {
         completer.complete();
       }).catchError((error) {

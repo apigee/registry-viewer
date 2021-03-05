@@ -14,8 +14,13 @@
 
 import 'package:grpc/grpc_web.dart' show GrpcWebClientChannel;
 import 'package:grpc/grpc.dart' as grpc;
-import '../pages/signin.dart';
 import 'dart:html' as html;
+
+String currentUserToken;
+
+void setRegistryUserToken(String token) {
+  currentUserToken = token;
+}
 
 GrpcWebClientChannel createClientChannel() {
   String url = html
