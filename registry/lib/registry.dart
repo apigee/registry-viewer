@@ -27,3 +27,4 @@ export 'src/generated/metrics/vocabulary.pb.dart';
 export 'src/generated/metrics/vocabulary.pbenum.dart';
 export 'src/generated/metrics/vocabulary.pbjson.dart';
 export 'src/grpc_client.dart';
+export 'src/list.dart';
