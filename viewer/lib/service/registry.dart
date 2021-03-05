@@ -12,12 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'grpc_client.dart';
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
-import '../generated/google/protobuf/field_mask.pb.dart';
+import 'package:registry/registry.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
 

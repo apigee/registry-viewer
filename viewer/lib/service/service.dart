@@ -13,12 +13,7 @@
 // limitations under the License.
 
 import 'dart:async';
-import 'grpc_client.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
-import '../generated/google/protobuf/empty.pb.dart';
-import '../generated/google/protobuf/field_mask.pb.dart';
+import 'package:registry/registry.dart';
 import '../helpers/errors.dart';
 import 'package:flutter/material.dart';
 import '../models/artifact.dart';

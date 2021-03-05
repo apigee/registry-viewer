@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/registry.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
 import '../components/home_button.dart';

@@ -21,7 +21,7 @@ create:
 
 clean:
 	cd viewer; flutter clean
-	rm -rf viewer/lib/generated
+	rm -rf registry/lib/src/generated
 
 clobber:	clean
 	rm -rf viewer/ios viewer/android viewer/ios viewer/linux 

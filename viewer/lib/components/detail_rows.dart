@@ -14,8 +14,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:registry/generated/google/protobuf/timestamp.pb.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:registry/registry.dart';
 import '../helpers/timestamp.dart';
 
 Function onlyIf(bool condition, Function action) {

@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/registry.dart';
 import '../components/custom_search_box.dart';
 import '../components/filter.dart';
 import '../models/spec.dart';

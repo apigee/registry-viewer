@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import 'dart:convert';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
+import 'package:registry/registry.dart';
 
 extension Display on Artifact {
   String nameForDisplay() {

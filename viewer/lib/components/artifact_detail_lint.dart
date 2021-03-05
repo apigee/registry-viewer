@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
-import 'package:registry/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pb.dart';
+import 'package:registry/registry.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'detail_rows.dart';
 import '../helpers/extensions.dart';
