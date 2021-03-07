@@ -15,9 +15,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:registry/registry.dart';
 import '../helpers/timestamp.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Function onlyIf(bool condition, Function action) {
   if (condition == null || !condition) {
@@ -162,35 +162,46 @@ class SuperTitleRow extends StatelessWidget {
 
 class BodyRow extends StatelessWidget {
   final String text;
-  BodyRow(this.text);
+  final TextStyle style;
+  BodyRow(this.text, {this.style});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       Expanded(
-          child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyText1,
-        textAlign: TextAlign.left,
-      )),
+        child: Text(
+          text,
+          style: style ?? Theme.of(context).textTheme.bodyText1,
+          textAlign: TextAlign.left,
+          softWrap: false,
+          overflow: TextOverflow.clip,
+        ),
+      ),
     ]);
   }
 }
 
-class SmallBodyRow extends StatelessWidget {
+class LinkifiedBodyRow extends StatelessWidget {
   final String text;
-  SmallBodyRow(this.text);
+  final TextStyle style;
+  LinkifiedBodyRow(this.text, {this.style});
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Expanded(
-          child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyText2,
-        textAlign: TextAlign.left,
-        softWrap: false,
-        overflow: TextOverflow.clip,
-      )),
-    ]);
+    final textStyle = style ?? Theme.of(context).textTheme.bodyText1;
+    return Linkify(
+      onOpen: (link) async {
+        if (await canLaunch(link.url)) {
+          await launch(link.url);
+        } else {
+          throw 'Could not launch $link';
+        }
+      },
+      text: text,
+      textAlign: TextAlign.left,
+      style: textStyle,
+      linkStyle: textStyle.copyWith(color: Theme.of(context).accentColor),
+      softWrap: false,
+      overflow: TextOverflow.clip,
+    );
   }
 }
 

@@ -23,22 +23,20 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
-
+    final showAbout = true;
     return SelectionProvider(
       selection: selection,
       child: Container(
         child: Column(
           children: [
-            Expanded(
-              flex: 1,
-              child: Row(
+            if (showAbout)
+              Row(
                 children: [
                   Expanded(
                     child: RegistryDetailCard(),
                   ),
                 ],
               ),
-            ),
             Expanded(
               flex: 3,
               child: Row(

@@ -40,7 +40,7 @@ dependencies:
 
   archive: ^2.0.13
   async: '>=1.13.3 <3.0.0'
-  flutter_linkify: ^4.0.2
+  flutter_linkify: ^5.0.0
   flutter_pagewise: ^1.2.3
   google_fonts: ^0.3.8
   google_sign_in: ^4.1.0

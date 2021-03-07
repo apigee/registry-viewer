@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'custom_search_box.dart';
@@ -182,8 +183,9 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   }
 
   Widget widgetForArtifactValue(Artifact artifact) {
+    final style = GoogleFonts.inconsolata();
     if (artifact.mimeType == "text/plain") {
-      final value = "text/plain: " + artifact.stringValue;
+      final value = "text/plain\r\n" + artifact.stringValue;
       return Linkify(
         onOpen: (link) async {
           if (await canLaunch(link.url)) {
@@ -194,17 +196,14 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         },
         text: value,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.bodyText2,
-        linkStyle: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: Theme.of(context).accentColor),
+        style: style,
+        linkStyle: style.copyWith(color: Theme.of(context).accentColor),
       );
     }
     return Text(
       artifact.mimeType,
       textAlign: TextAlign.left,
-      style: Theme.of(context).textTheme.bodyText2,
+      style: style,
     );
   }
 
