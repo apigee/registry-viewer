@@ -121,7 +121,6 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
                       BodyRow(api.description),
                       SizedBox(height: 10),
                       TimestampRow(api.createTime, api.updateTime),
-                      DetailRow("$api"),
                     ],
                   ),
                 ),

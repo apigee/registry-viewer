@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:registry/registry.dart';
 import '../helpers/timestamp.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Function onlyIf(bool condition, Function action) {
   if (condition == null || !condition) {
@@ -249,16 +250,33 @@ class TimestampRow extends StatelessWidget {
   TimestampRow(this.created, this.updated);
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Flexible(
-          child: Text(
-            "created " + format(created) + " | last updated " + format(updated),
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodyText2,
-            softWrap: false,
-            overflow: TextOverflow.clip,
-          ),
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                "created " + format(created),
+                textAlign: TextAlign.left,
+                style: GoogleFonts.inconsolata(),
+                softWrap: false,
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                "updated " + format(updated),
+                textAlign: TextAlign.left,
+                style: GoogleFonts.inconsolata(),
+                softWrap: false,
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          ],
         ),
       ],
     );
