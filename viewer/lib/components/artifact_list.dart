@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
@@ -184,22 +183,6 @@ class _ArtifactListViewState extends State<ArtifactListView> {
 
   Widget widgetForArtifactValue(Artifact artifact) {
     final style = GoogleFonts.inconsolata();
-    if (artifact.mimeType == "text/plain") {
-      final value = "text/plain\r\n" + artifact.stringValue;
-      return Linkify(
-        onOpen: (link) async {
-          if (await canLaunch(link.url)) {
-            await launch(link.url);
-          } else {
-            throw 'Could not launch $link';
-          }
-        },
-        text: value,
-        textAlign: TextAlign.left,
-        style: style,
-        linkStyle: style.copyWith(color: Theme.of(context).accentColor),
-      );
-    }
     return Text(
       artifact.mimeType,
       textAlign: TextAlign.left,

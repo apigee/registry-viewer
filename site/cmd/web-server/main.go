@@ -15,15 +15,29 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 )
 
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8888"
+		port = "8080"
+	}
+
+	service := os.Getenv("APG_REGISTRY_AUDIENCES")
+	if service != "" {
+		b, err := ioutil.ReadFile("public/index.html")
+		if err != nil {
+			panic(err)
+		}
+		r := regexp.MustCompile(`<meta name="registry-service" content=.*>`)
+		index := r.ReplaceAll(b,
+			[]byte(`<meta name="registry-service" content="`+service+`">`))
+		ioutil.WriteFile("public/index.html", index, 0644)
 	}
 
 	fs := http.FileServer(http.Dir("public"))

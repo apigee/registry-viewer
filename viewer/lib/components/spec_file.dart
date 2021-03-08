@@ -230,9 +230,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                                         Text(
                                           fileName,
                                           softWrap: false,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
+                                          style: GoogleFonts.inconsolata()
                                               .copyWith(color: color),
                                           overflow: TextOverflow.clip,
                                         ),

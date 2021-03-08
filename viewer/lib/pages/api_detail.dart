@@ -48,7 +48,7 @@ class ApiDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 2,
               child: Row(children: [
                 Expanded(child: ApiDetailCard(editable: true)),
                 Expanded(child: ArtifactListCard(SelectionProvider.api)),
