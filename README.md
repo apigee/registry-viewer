@@ -113,12 +113,18 @@ questions, including this one:
 
 You will need to answer "y" to be able to access your application.
 
+You will also need to set two environment variables in your Cloud Run
+environment (described below).
+
 ## Configuring web builds
 
 Web builds of the Registry Viewer require two configuration strings that are
-specified as meta tags in [registry/web/index.html](registry/web/index.html):
+specified as meta tags in [registry/web/index.html](registry/web/index.html).
+Both can be set using environment variables in the container running the web
+server:
 
-- `google-signin-client_id` is the OAuth Client ID used by the
+- `google-signin-client_id` (environment variable `GOOGLE_SIGNIN_CLIENTID`) is
+  the OAuth Client ID used by the
   [Google Signin](https://pub.dev/packages/google_sign_in) package to identify
   your client application. Helpful instructions for creating your application
   ID are [here](https://dev.to/happyharis/flutter-web-google-sign-in-42bb) and
@@ -128,11 +134,11 @@ specified as meta tags in [registry/web/index.html](registry/web/index.html):
   to call the
   [Google Signin API](https://developers.google.com/identity/sign-in/web).
 
-- `registry-server` is the URL of your Registry API server (backend). Note that
-  because web deployments run in browsers, a
-  [grpc-web](https://github.com/grpc/grpc-web) interface to the Registry API is
-  required. To support this, the [registry](https://github.com/apigee/registry)
-  distribution includes
+- `registry-server` (environment variable `REGISTRY_SERVER`) is the URL of your
+  Registry API server (backend). Note that because web deployments run in
+  browsers, a [grpc-web](https://github.com/grpc/grpc-web) interface to the
+  Registry API is required. To support this, the
+  [registry](https://github.com/apigee/registry) distribution includes
   [Envoy configuration](https://github.com/apigee/registry/tree/main/deployments/envoy)
   that allows Envoy to proxy grpc-web connections and the Cloud Run deployments
   supported by the

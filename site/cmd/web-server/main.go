@@ -28,7 +28,7 @@ func main() {
 		port = "8080"
 	}
 
-	service := os.Getenv("APG_REGISTRY_AUDIENCES")
+	service := os.Getenv("REGISTRY_SERVICE")
 	if service != "" {
 		b, err := ioutil.ReadFile("public/index.html")
 		if err != nil {
@@ -37,6 +37,18 @@ func main() {
 		r := regexp.MustCompile(`<meta name="registry-service" content=.*>`)
 		index := r.ReplaceAll(b,
 			[]byte(`<meta name="registry-service" content="`+service+`">`))
+		ioutil.WriteFile("public/index.html", index, 0644)
+	}
+
+	clientid := os.Getenv("GOOGLE_SIGNIN_CLIENTID")
+	if clientid != "" {
+		b, err := ioutil.ReadFile("public/index.html")
+		if err != nil {
+			panic(err)
+		}
+		r := regexp.MustCompile(`<meta name="google-signin-client_id" content=.*>`)
+		index := r.ReplaceAll(b,
+			[]byte(`<meta name="google-signin-client_id" content="`+clientid+`">`))
 		ioutil.WriteFile("public/index.html", index, 0644)
 	}
 
