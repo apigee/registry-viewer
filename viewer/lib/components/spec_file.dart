@@ -230,9 +230,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                                         Text(
                                           fileName,
                                           softWrap: false,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1
+                                          style: GoogleFonts.inconsolata()
                                               .copyWith(color: color),
                                           overflow: TextOverflow.clip,
                                         ),
@@ -346,7 +344,7 @@ class _CodeViewState extends State<CodeView> {
         child: Text(
           "${i + 1}",
           textAlign: TextAlign.right,
-          style: GoogleFonts.robotoMono(color: Colors.grey[500]),
+          style: GoogleFonts.inconsolata(color: Colors.grey[500]),
         )));
     children.add(SizedBox(width: 10));
     String before = "";
@@ -378,11 +376,11 @@ class _CodeViewState extends State<CodeView> {
           overflow: TextOverflow.clip,
           text: TextSpan(
             text: before,
-            style: GoogleFonts.robotoMono(color: Colors.black),
+            style: GoogleFonts.inconsolata(color: Colors.black),
             children: <TextSpan>[
               TextSpan(
                 text: middle,
-                style: GoogleFonts.robotoMono(
+                style: GoogleFonts.inconsolata(
                   color: Theme.of(context).primaryColor,
                   background: backgroundColor,
                 ),

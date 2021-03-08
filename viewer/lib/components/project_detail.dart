@@ -122,7 +122,6 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
                       BodyRow(project.description),
                       SizedBox(height: 10),
                       TimestampRow(project.createTime, project.updateTime),
-                      DetailRow("$project"),
                     ],
                   ),
                 ),

@@ -85,6 +85,7 @@ class _SpecListViewState extends State<SpecListView> {
   int selectedIndex = -1;
   Selection selection;
   ObservableString filter;
+  final ScrollController scrollController = ScrollController();
 
   void selectionListener() {
     setState(() {});
@@ -128,9 +129,11 @@ class _SpecListViewState extends State<SpecListView> {
       selectedIndex = -1;
     }
     return Scrollbar(
+      controller: scrollController,
       child: PagewiseListView<ApiSpec>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
+        controller: scrollController,
       ),
     );
   }

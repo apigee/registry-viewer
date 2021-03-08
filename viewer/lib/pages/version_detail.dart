@@ -49,7 +49,7 @@ class VersionDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            flex: 4,
+            flex: 2,
             child: Row(
               children: [
                 Expanded(child: VersionDetailCard(editable: true)),

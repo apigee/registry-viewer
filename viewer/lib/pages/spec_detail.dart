@@ -50,7 +50,7 @@ class SpecDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            flex: 4,
+            flex: 2,
             child: Row(
               children: [
                 Expanded(child: SpecDetailCard(editable: true)),

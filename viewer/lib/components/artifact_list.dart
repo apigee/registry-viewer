@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'custom_search_box.dart';
@@ -121,6 +121,7 @@ class ArtifactListView extends StatefulWidget {
   final ArtifactSelectionHandler selectionHandler;
   final ArtifactService artifactService;
   final PagewiseLoadController<Artifact> pageLoadController;
+
   ArtifactListView(
     this.getObservableResourceName,
     this.selectionHandler,
@@ -135,6 +136,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   String parentName;
   int selectedIndex = -1;
   ObservableString filter;
+  final ScrollController scrollController = ScrollController();
 
   void filterListener() {
     setState(() {
@@ -170,37 +172,21 @@ class _ArtifactListViewState extends State<ArtifactListView> {
       selectedIndex = -1;
     }
     return Scrollbar(
+      controller: scrollController,
       child: PagewiseListView<Artifact>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
+        controller: scrollController,
       ),
     );
   }
 
   Widget widgetForArtifactValue(Artifact artifact) {
-    if (artifact.mimeType == "text/plain") {
-      final value = "text/plain: " + artifact.stringValue;
-      return Linkify(
-        onOpen: (link) async {
-          if (await canLaunch(link.url)) {
-            await launch(link.url);
-          } else {
-            throw 'Could not launch $link';
-          }
-        },
-        text: value,
-        textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.bodyText2,
-        linkStyle: Theme.of(context)
-            .textTheme
-            .bodyText2
-            .copyWith(color: Theme.of(context).accentColor),
-      );
-    }
+    final style = GoogleFonts.inconsolata();
     return Text(
       artifact.mimeType,
       textAlign: TextAlign.left,
-      style: Theme.of(context).textTheme.bodyText2,
+      style: style,
     );
   }
 

@@ -83,6 +83,7 @@ class ProjectListView extends StatefulWidget {
 
 class _ProjectListViewState extends State<ProjectListView> {
   int selectedIndex = -1;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -105,9 +106,11 @@ class _ProjectListViewState extends State<ProjectListView> {
       return Text("${widget.pageLoadController.error}");
     }
     return Scrollbar(
+      controller: scrollController,
       child: PagewiseListView<Project>(
         itemBuilder: this._itemBuilder,
         pageLoadController: widget.pageLoadController,
+        controller: scrollController,
       ),
     );
   }

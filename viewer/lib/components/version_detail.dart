@@ -141,7 +141,6 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                         BodyRow(version.description),
                       SizedBox(height: 10),
                       TimestampRow(version.createTime, version.updateTime),
-                      DetailRow("$version"),
                     ],
                   ),
                 ),

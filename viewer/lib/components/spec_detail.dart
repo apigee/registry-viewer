@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
@@ -138,6 +139,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
       if ((api == null) || (version == null) || (spec == null)) {
         return Card();
       }
+      final codeStyle = GoogleFonts.inconsolata();
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,16 +162,16 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                           version.name.split("/")?.last),
                       TitleRow(spec.name.split("/").last, action: selflink),
                       SizedBox(height: 10),
-                      BodyRow(spec.mimeType),
-                      BodyRow("revision " + spec.revisionId),
+                      BodyRow(spec.mimeType, style: codeStyle),
+                      BodyRow("revision " + spec.revisionId, style: codeStyle),
                       if (spec.hasSourceUri()) SizedBox(height: 10),
                       if (spec.hasSourceUri())
                         LinkRow("original source", spec.sourceUri),
                       if (spec.description != "") SizedBox(height: 10),
                       if (spec.description != "") BodyRow(spec.description),
                       SizedBox(height: 10),
-                      SmallBodyRow("${spec.sizeBytes} bytes"),
-                      SmallBodyRow("SHA-256 ${spec.hash}"),
+                      BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
+                      BodyRow("${spec.hash}", style: codeStyle),
                       TimestampRow(spec.createTime, spec.revisionUpdateTime),
                     ],
                   ),

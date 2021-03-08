@@ -189,7 +189,6 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
                     children: [
                       SizedBox(height: 10),
                       TimestampRow(artifact.createTime, artifact.updateTime),
-                      DetailRow("$artifact"),
                     ],
                   ),
                 ),

@@ -48,7 +48,7 @@ class ProjectDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 2,
               child: Row(
                 children: [
                   Expanded(child: ProjectDetailCard(editable: true)),
