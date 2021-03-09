@@ -115,12 +115,30 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
-                      TitleRow(api.displayName, action: selflink),
-                      SizedBox(height: 10),
-                      BodyRow(api.description),
-                      SizedBox(height: 10),
-                      TimestampRow(api.createTime, api.updateTime),
+                      PageSection(children: [
+                        TitleRow(api.displayName, action: selflink),
+                      ]),
+                      PageSection(
+                        children: [
+                          BodyRow(
+                            api.description,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                        ],
+                      ),
+                      PageSection(
+                        children: [
+                          TimestampRow(api.createTime, api.updateTime),
+                        ],
+                      ),
+                      if (api.labels.length > 0)
+                        PageSection(children: [
+                          LabelsRow(api.labels),
+                        ]),
+                      if (api.annotations.length > 0)
+                        PageSection(children: [
+                          AnnotationsRow(api.annotations),
+                        ]),
                     ],
                   ),
                 ),

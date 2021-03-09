@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -172,8 +174,7 @@ class BodyRow extends StatelessWidget {
           text,
           style: style ?? Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.left,
-          softWrap: false,
-          overflow: TextOverflow.clip,
+          softWrap: true,
         ),
       ),
     ]);
@@ -217,9 +218,7 @@ class LinkRow extends StatelessWidget {
           child: GestureDetector(
             child: Text(
               text,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
+              style: GoogleFonts.inconsolata()
                   .copyWith(color: Theme.of(context).accentColor),
               textAlign: TextAlign.left,
             ),
@@ -315,5 +314,70 @@ class DetailRow extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+class LabelsRow extends StatelessWidget {
+  final Map<String, String> map;
+  final TextStyle style;
+  LabelsRow(this.map, {this.style});
+  @override
+  Widget build(BuildContext context) {
+    var keys = map.keys.toList();
+    keys.sort();
+    return Wrap(
+      spacing: 8.0, // gap between adjacent chips
+      runSpacing: 4.0, // gap between lines
+      children: <Widget>[
+        for (var key in keys)
+          Chip(
+            backgroundColor: Theme.of(context).accentColor,
+            label: Text(
+              key + ":" + map[key],
+              style: GoogleFonts.inconsolata()
+                  .copyWith(color: Theme.of(context).canvasColor),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class AnnotationsRow extends StatelessWidget {
+  final Map<String, String> map;
+  final TextStyle style;
+  AnnotationsRow(this.map, {this.style});
+  @override
+  Widget build(BuildContext context) {
+    var keys = map.keys.toList();
+    keys.sort();
+    return Wrap(
+      spacing: 8.0, // gap between adjacent chips
+      runSpacing: 4.0, // gap between lines
+      children: <Widget>[
+        for (var key in keys)
+          Chip(
+            backgroundColor: Theme.of(context).secondaryHeaderColor,
+            label: Text(
+              key + ":" + map[key],
+              style: GoogleFonts.inconsolata(),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class PageSection extends StatelessWidget {
+  final List<Widget> children;
+  PageSection({this.children});
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> rows = [];
+    rows.add(SizedBox(height: 10));
+    rows.addAll(children);
+    return Column(
+      children: rows,
+    );
   }
 }

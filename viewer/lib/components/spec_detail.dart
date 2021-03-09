@@ -156,23 +156,45 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
-                      BodyRow(api.displayName +
-                          " v. " +
-                          version.name.split("/")?.last),
-                      TitleRow(spec.name.split("/").last, action: selflink),
-                      SizedBox(height: 10),
-                      BodyRow(spec.mimeType, style: codeStyle),
-                      BodyRow("revision " + spec.revisionId, style: codeStyle),
-                      if (spec.hasSourceUri()) SizedBox(height: 10),
+                      PageSection(
+                        children: [
+                          BodyRow(api.displayName +
+                              "/" +
+                              version.name.split("/")?.last),
+                          TitleRow(spec.name.split("/").last, action: selflink),
+                        ],
+                      ),
                       if (spec.hasSourceUri())
-                        LinkRow("original source", spec.sourceUri),
-                      if (spec.description != "") SizedBox(height: 10),
-                      if (spec.description != "") BodyRow(spec.description),
-                      SizedBox(height: 10),
-                      BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
-                      BodyRow("${spec.hash}", style: codeStyle),
-                      TimestampRow(spec.createTime, spec.revisionUpdateTime),
+                        PageSection(
+                          children: [
+                            LinkRow("${spec.sourceUri}", spec.sourceUri),
+                          ],
+                        ),
+                      PageSection(
+                        children: [
+                          BodyRow(spec.mimeType, style: codeStyle),
+                          BodyRow("revision " + spec.revisionId,
+                              style: codeStyle),
+                          BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
+                          BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
+                          TimestampRow(
+                              spec.createTime, spec.revisionUpdateTime),
+                        ],
+                      ),
+                      if (spec.description != "")
+                        PageSection(
+                          children: [
+                            BodyRow(spec.description),
+                          ],
+                        ),
+                      if (spec.labels.length > 0)
+                        PageSection(children: [
+                          LabelsRow(spec.labels),
+                        ]),
+                      if (spec.annotations.length > 0)
+                        PageSection(children: [
+                          AnnotationsRow(spec.annotations),
+                        ]),
                     ],
                   ),
                 ),
