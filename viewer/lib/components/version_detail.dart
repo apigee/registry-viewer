@@ -132,15 +132,33 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
-                      BodyRow(api?.displayName),
-                      TitleRow("v. " + version.name.split("/").last,
-                          action: selflink),
-                      SizedBox(height: 10),
+                      PageSection(
+                        children: [
+                          SizedBox(height: 10),
+                          BodyRow(api?.displayName),
+                          TitleRow(version.name.split("/").last,
+                              action: selflink),
+                        ],
+                      ),
                       if (version.description != "")
-                        BodyRow(version.description),
-                      SizedBox(height: 10),
-                      TimestampRow(version.createTime, version.updateTime),
+                        PageSection(
+                          children: [
+                            BodyRow(version.description),
+                          ],
+                        ),
+                      PageSection(
+                        children: [
+                          TimestampRow(version.createTime, version.updateTime),
+                        ],
+                      ),
+                      if (version.labels.length > 0)
+                        PageSection(children: [
+                          LabelsRow(version.labels),
+                        ]),
+                      if (version.annotations.length > 0)
+                        PageSection(children: [
+                          AnnotationsRow(version.annotations),
+                        ]),
                     ],
                   ),
                 ),

@@ -114,12 +114,17 @@ class ApiService {
     }
     try {
       var response = await client.listApis(request, options: callOptions());
-      while ((response.apis.length == 0) && (response.nextPageToken != "")) {
+      var apis = response.apis;
+      while ((apis.length == 0) && (response.nextPageToken != "")) {
         request.pageToken = response.nextPageToken;
         response = await client.listApis(request, options: callOptions());
+        apis.addAll(response.apis);
+        if (response.nextPageToken == "") {
+          break;
+        }
       }
       tokens[offset + limit] = response.nextPageToken;
-      return response.apis;
+      return apis;
     } catch (err) {
       reportError(context, err);
       throw err;

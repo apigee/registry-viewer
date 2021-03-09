@@ -83,7 +83,7 @@ void main(List<String> arguments) async {
   } catch (error) {
     var project = rpc.Project()
       ..displayName = "Atlas"
-      ..description = "Atlas of World APIs";
+      ..description = "APIs from a variety of sources";
     var request = rpc.CreateProjectRequest()
       ..projectId = "atlas"
       ..project = project;
@@ -104,6 +104,7 @@ void main(List<String> arguments) async {
       await client.getApi(request, options: rpc.callOptions());
     } catch (error) {
       var api = rpc.Api()..displayName = title;
+      api.labels["created-from"] = "discovery";
       var request = rpc.CreateApiRequest()
         ..parent = "projects/atlas"
         ..apiId = id
@@ -117,6 +118,7 @@ void main(List<String> arguments) async {
       await client.getApiVersion(request, options: rpc.callOptions());
     } catch (error) {
       var apiVersion = rpc.ApiVersion()..displayName = version;
+      apiVersion.labels["created-from"] = "discovery";
       var request = rpc.CreateApiVersionRequest()
         ..parent = "projects/atlas/apis/" + id
         ..apiVersionId = version
@@ -133,13 +135,8 @@ void main(List<String> arguments) async {
             "/specs/discovery.json";
       await client.getApiSpec(request, options: rpc.callOptions());
     } catch (error) {
-      Map<String, String> labels = Map();
       var doc = await http.get(Uri.parse(discoveryUrl));
       Map<String, dynamic> discoveryDoc = jsonDecode(doc.body);
-      var revision = discoveryDoc["revision"] as String;
-      if (revision != null) {
-        labels["revision-date"] = revision;
-      }
 
       var contents = GZipEncoder().encode(doc.bodyBytes);
       var apiSpec = rpc.ApiSpec()
@@ -147,6 +144,12 @@ void main(List<String> arguments) async {
         ..contents = contents
         ..sourceUri = discoveryUrl
         ..mimeType = "application/x.discovery+gzip";
+      apiSpec.labels["created-from"] = "discovery";
+      var revision = discoveryDoc["revision"] as String;
+      if (revision != null) {
+        apiSpec.labels["revision-date"] = revision;
+      }
+
       var request = rpc.CreateApiSpecRequest()
         ..parent = "projects/atlas/apis/" + id + "/versions/" + version
         ..apiSpecId = "discovery.json"
@@ -154,15 +157,15 @@ void main(List<String> arguments) async {
       await client.createApiSpec(request, options: rpc.callOptions());
       // use the spec to update the API description
       var description = discoveryDoc["description"] as String;
-      if (description != null) {
-        var api = rpc.Api()
-          ..name = "projects/atlas/apis/" + id
-          ..description = description;
-        var request = rpc.UpdateApiRequest()
-          ..api = api
-          ..updateMask = rpc.FieldMask(paths: ["description"]);
-        await client.updateApi(request, options: rpc.callOptions());
-      }
+      var title = discoveryDoc["title"] as String;
+      var getRequest = rpc.GetApiRequest()..name = "projects/atlas/apis/" + id;
+      var api = await client.getApi(getRequest, options: rpc.callOptions());
+      api.description = description ?? "";
+      api.labels["google-title"] = title ?? "";
+      var updateRequest = rpc.UpdateApiRequest()
+        ..api = api
+        ..updateMask = rpc.FieldMask(paths: ["description", "labels"]);
+      await client.updateApi(updateRequest, options: rpc.callOptions());
     }
   }
 
