@@ -1,5 +1,5 @@
-name: import_discovery
-description: Import APIs from the Google API Discovery Service.
+name: import_googleapis
+description: Import APIs from the googleapis repository on GitHub.
 
 environment:
   sdk: '>=2.10.0 <3.0.0'

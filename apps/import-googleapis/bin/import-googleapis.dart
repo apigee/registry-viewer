@@ -66,14 +66,14 @@ void main(List<String> arguments) async {
 
   // does the project exist?
   try {
-    var request = rpc.GetProjectRequest()..name = "projects/atlas";
+    var request = rpc.GetProjectRequest()..name = "projects/motley";
     await client.getProject(request, options: rpc.callOptions());
   } catch (error) {
     var project = rpc.Project()
-      ..displayName = "Atlas"
+      ..displayName = "Motley"
       ..description = "APIs from a variety of sources";
     var request = rpc.CreateProjectRequest()
-      ..projectId = "atlas"
+      ..projectId = "motley"
       ..project = project;
     await client.createProject(request, options: rpc.callOptions());
   }
@@ -143,7 +143,7 @@ void uploadApi(
     String description}) async {
   // does the api exist?
   try {
-    var request = rpc.GetApiRequest()..name = "projects/atlas/apis/" + apiId;
+    var request = rpc.GetApiRequest()..name = "projects/motley/apis/" + apiId;
     await client.getApi(request, options: rpc.callOptions());
   } catch (error) {
     var api = rpc.Api()
@@ -152,7 +152,7 @@ void uploadApi(
     api.labels["created-from"] = "googleapis";
     api.labels["google-title"] = title;
     var request = rpc.CreateApiRequest()
-      ..parent = "projects/atlas"
+      ..parent = "projects/motley"
       ..apiId = apiId
       ..api = api;
     try {
@@ -164,13 +164,13 @@ void uploadApi(
   // does the version exist?
   try {
     var request = rpc.GetApiVersionRequest()
-      ..name = "projects/atlas/apis/" + apiId + "/versions/" + versionId;
+      ..name = "projects/motley/apis/" + apiId + "/versions/" + versionId;
     await client.getApiVersion(request, options: rpc.callOptions());
   } catch (error) {
     var apiVersion = rpc.ApiVersion()..displayName = versionId;
     apiVersion.labels["created-from"] = "googleapis";
     var request = rpc.CreateApiVersionRequest()
-      ..parent = "projects/atlas/apis/" + apiId
+      ..parent = "projects/motley/apis/" + apiId
       ..apiVersionId = versionId
       ..apiVersion = apiVersion;
     await client.createApiVersion(request, options: rpc.callOptions());
@@ -178,7 +178,7 @@ void uploadApi(
   // does the spec exist?
   try {
     var request = rpc.GetApiSpecRequest()
-      ..name = "projects/atlas/apis/" +
+      ..name = "projects/motley/apis/" +
           apiId +
           "/versions/" +
           versionId +
@@ -205,7 +205,7 @@ void uploadApi(
       ..mimeType = "application/x.protobuf+zip";
     apiSpec.labels["created-from"] = "googleapis";
     var request = rpc.CreateApiSpecRequest()
-      ..parent = "projects/atlas/apis/" + apiId + "/versions/" + versionId
+      ..parent = "projects/motley/apis/" + apiId + "/versions/" + versionId
       ..apiSpecId = "protos.zip"
       ..apiSpec = apiSpec;
     await client.createApiSpec(request, options: rpc.callOptions());
