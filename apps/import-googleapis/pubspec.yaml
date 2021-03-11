@@ -5,6 +5,8 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
+  importer:
+    path: ../importer
   registry:
     path: ../../registry
   archive: ^2.0.13
