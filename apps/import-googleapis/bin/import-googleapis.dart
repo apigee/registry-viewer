@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:typed_data';
-
-import 'package:registry/registry.dart' as rpc;
-import 'package:archive/archive.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:yaml/yaml.dart';
-import 'package:importer/importer.dart';
 
-final projectName = "projects/motley";
-final projectDisplayName = "Motley APIs";
+import 'package:archive/archive.dart';
+import 'package:importer/importer.dart';
+import 'package:registry/registry.dart' as rpc;
+import 'package:yaml/yaml.dart';
+
 final projectDescription = "APIs from a variety of sources";
+final projectDisplayName = "Motley APIs";
+final projectName = "projects/motley";
+final source = "googleapis";
 
 void main(List<String> arguments) async {
   final channel = rpc.createClientChannel();
@@ -87,7 +84,7 @@ extension GoogleApiImporter on rpc.RegistryClient {
             ..name = apiName
             ..displayName = apiTitle
             ..description = description;
-          api.labels["created-from"] = "googleapis";
+          api.labels["created-from"] = source;
           api.labels["google-title"] = title;
           await this.ensureApiExists(api);
 
@@ -95,7 +92,7 @@ extension GoogleApiImporter on rpc.RegistryClient {
           var version = rpc.ApiVersion()
             ..name = versionName
             ..displayName = versionId;
-          version.labels["created-from"] = "googleapis";
+          version.labels["created-from"] = source;
           await this.ensureApiVersionExists(version);
 
           final specName = versionName + "/specs/protos.zip";
@@ -114,7 +111,7 @@ extension GoogleApiImporter on rpc.RegistryClient {
               ..contents = ZipEncoder().encode(archive)
               ..sourceUri = ""
               ..mimeType = "application/x.protobuf+zip";
-            apiSpec.labels["created-from"] = "googleapis";
+            apiSpec.labels["created-from"] = source;
             var request = rpc.CreateApiSpecRequest()
               ..parent =
                   "projects/motley/apis/" + apiId + "/versions/" + versionId

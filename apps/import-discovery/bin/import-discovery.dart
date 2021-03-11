@@ -13,23 +13,16 @@
 // limitations under the License.
 
 import 'dart:convert';
+
 import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
-import 'package:registry/registry.dart' as rpc;
 import 'package:importer/importer.dart';
+import 'package:registry/registry.dart' as rpc;
 
-final projectName = "projects/motley";
-final projectDisplayName = "Motley APIs";
 final projectDescription = "APIs from a variety of sources";
-
-Future<List<dynamic>> fetchApiListings() {
-  return http
-      .get(Uri.parse('https://www.googleapis.com/discovery/v1/apis'))
-      .then((response) {
-    Map<String, dynamic> discoveryList = jsonDecode(response.body);
-    return discoveryList["items"];
-  });
-}
+final projectDisplayName = "Motley APIs";
+final projectName = "projects/motley";
+final source = "discovery";
 
 void main(List<String> arguments) async {
   final channel = rpc.createClientChannel();
@@ -61,7 +54,7 @@ void main(List<String> arguments) async {
       ..name = apiName
       ..displayName = apiTitle
       ..description = description;
-    api.labels["created-from"] = "discovery";
+    api.labels["created-from"] = source;
     api.labels["google-title"] = title;
     await client.ensureApiExists(api);
 
@@ -69,7 +62,7 @@ void main(List<String> arguments) async {
     var version = rpc.ApiVersion()
       ..name = versionName
       ..displayName = versionId;
-    version.labels["created-from"] = "discovery";
+    version.labels["created-from"] = source;
     await client.ensureApiVersionExists(version);
 
     final specName = versionName + "/specs/discovery.json";
@@ -81,14 +74,14 @@ void main(List<String> arguments) async {
           ..contents = contents
           ..sourceUri = discoveryUrl
           ..mimeType = "application/x.discovery+gzip";
-        apiSpec.labels["created-from"] = "discovery";
+        apiSpec.labels["created-from"] = source;
         var revision = discoveryDoc["revision"];
         if (revision != null) {
           apiSpec.labels["revision-date"] = revision;
         }
         var request = rpc.CreateApiSpecRequest()
-          ..parent = "projects/motley/apis/" + apiId + "/versions/" + versionId
-          ..apiSpecId = "discovery.json"
+          ..parent = versionName
+          ..apiSpecId = specName.split("/").last
           ..apiSpec = apiSpec;
         await client.createApiSpec(request);
       } catch (error) {
@@ -100,4 +93,13 @@ void main(List<String> arguments) async {
   }
 
   await channel.shutdown();
+}
+
+Future<List<dynamic>> fetchApiListings() {
+  return http
+      .get(Uri.parse('https://www.googleapis.com/discovery/v1/apis'))
+      .then((response) {
+    Map<String, dynamic> discoveryList = jsonDecode(response.body);
+    return discoveryList["items"];
+  });
 }
