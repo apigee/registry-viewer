@@ -87,6 +87,7 @@ class ApiService {
   BuildContext context;
   String filter;
   Map<int, String> tokens;
+  Map<int, List<Api>> carry;
   String projectName;
 
   Future<List<Api>> getApisPage(int pageIndex) {
@@ -100,6 +101,7 @@ class ApiService {
     }
     if (offset == 0) {
       tokens = Map();
+      carry = Map();
     }
     final client = getClient();
     final request = ListApisRequest();
@@ -112,18 +114,27 @@ class ApiService {
     if (token != null) {
       request.pageToken = token;
     }
+    List<Api> apis = [];
+    if (carry[offset] != null) {
+      apis.addAll(carry[offset]);
+    }
     try {
       var response = await client.listApis(request, options: callOptions());
-      var apis = response.apis;
-      while ((apis.length == 0) && (response.nextPageToken != "")) {
+      apis.addAll(response.apis);
+      while ((apis.length < limit) && (response.nextPageToken != "")) {
         request.pageToken = response.nextPageToken;
         response = await client.listApis(request, options: callOptions());
         apis.addAll(response.apis);
-        if (response.nextPageToken == "") {
+        if (response.nextPageToken == "" ||
+            response.nextPageToken == request.pageToken) {
           break;
         }
       }
       tokens[offset + limit] = response.nextPageToken;
+      if (apis.length > limit) {
+        carry[offset] = apis.sublist(limit);
+        apis = apis.sublist(0, limit);
+      }
       return apis;
     } catch (err) {
       reportError(context, err);
