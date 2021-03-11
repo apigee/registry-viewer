@@ -82,7 +82,7 @@ void main(List<String> arguments) async {
           ..sourceUri = discoveryUrl
           ..mimeType = "application/x.discovery+gzip";
         apiSpec.labels["created-from"] = "discovery";
-        var revision = discoveryDoc["revision"] as String;
+        var revision = discoveryDoc["revision"];
         if (revision != null) {
           apiSpec.labels["revision-date"] = revision;
         }
