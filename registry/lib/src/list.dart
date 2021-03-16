@@ -19,9 +19,8 @@ import 'grpc_client.dart';
 
 void nil() {}
 
-void listProjects({Function f = nil, String filter = ''}) async {
-  final channel = createClientChannel();
-  final client = RegistryClient(channel);
+void listProjects(RegistryClient client,
+    {Function f = nil, String filter = ''}) async {
   var request = ListProjectsRequest()
     ..filter = filter
     ..pageSize = 500;
@@ -35,70 +34,59 @@ void listProjects({Function f = nil, String filter = ''}) async {
     }
     request.pageToken = response.nextPageToken;
   }
-  await channel.shutdown();
 }
 
-void listAPIs(
+void listAPIs(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
-  final channel = createClientChannel();
-  final client = RegistryClient(channel);
   var request = ListApisRequest()
     ..parent = parent
     ..filter = filter
-    ..pageSize = 500;
+    ..pageSize = 50;
   while (true) {
     var response = await client.listApis(request, options: callOptions());
     for (var api in response.apis) {
-      f(api);
+      await f(api);
     }
     if (response.nextPageToken == '') {
       break;
     }
     request.pageToken = response.nextPageToken;
   }
-  await channel.shutdown();
 }
 
-void listAPIVersions(
+void listAPIVersions(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
-  final channel = createClientChannel();
-  final client = RegistryClient(channel);
   var request = ListApiVersionsRequest()
     ..parent = parent
     ..filter = filter
-    ..pageSize = 10;
+    ..pageSize = 50;
   while (true) {
     var response =
         await client.listApiVersions(request, options: callOptions());
     for (var spec in response.apiVersions) {
-      f(spec);
+      await f(spec);
     }
     if (response.nextPageToken == '') {
       break;
     }
     request.pageToken = response.nextPageToken;
   }
-  await channel.shutdown();
 }
 
-void listAPISpecs(
+void listAPISpecs(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
-  final channel = createClientChannel();
-  final client = RegistryClient(channel);
   var request = ListApiSpecsRequest()
     ..parent = parent
     ..filter = filter
-    ..view = View.FULL
-    ..pageSize = 10;
+    ..pageSize = 50;
   while (true) {
     var response = await client.listApiSpecs(request, options: callOptions());
     for (var spec in response.apiSpecs) {
-      f(spec);
+      await f(spec);
     }
     if (response.nextPageToken == '') {
       break;
     }
     request.pageToken = response.nextPageToken;
   }
-  await channel.shutdown();
 }

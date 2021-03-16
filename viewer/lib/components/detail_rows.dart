@@ -333,13 +333,22 @@ class LabelsRow extends StatelessWidget {
           Chip(
             backgroundColor: Theme.of(context).accentColor,
             label: Text(
-              key + ":" + map[key],
+              labelText(key, map[key]),
               style: GoogleFonts.inconsolata()
                   .copyWith(color: Theme.of(context).canvasColor),
             ),
           ),
       ],
     );
+  }
+
+  static String labelText(String key, value) {
+    if (value == "true") {
+      return key;
+    } else if (value == "false") {
+      return "!" + key;
+    }
+    return key + ":" + value;
   }
 }
 

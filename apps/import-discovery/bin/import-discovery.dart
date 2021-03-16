@@ -28,12 +28,29 @@ void main(List<String> arguments) async {
   final channel = rpc.createClientChannel();
   final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-  client.ensureProjectExists(rpc.Project()
+  await client.ensureProjectExists(rpc.Project()
     ..name = projectName
     ..displayName = projectDisplayName
     ..description = projectDescription);
 
   for (var item in await fetchApiListings()) {
+    await client.importDiscoveryAPI(item);
+  }
+
+  await channel.shutdown();
+}
+
+Future<List<dynamic>> fetchApiListings() {
+  return http
+      .get(Uri.parse('https://www.googleapis.com/discovery/v1/apis'))
+      .then((response) {
+    Map<String, dynamic> discoveryList = jsonDecode(response.body);
+    return discoveryList["items"];
+  });
+}
+
+extension DiscoveryImporter on rpc.RegistryClient {
+  void importDiscoveryAPI(item) async {
     // get basic API attributes from the Discovery Service list
     var dict = item as Map<String, dynamic>;
     var title = dict["title"];
@@ -54,19 +71,19 @@ void main(List<String> arguments) async {
       ..name = apiName
       ..displayName = apiTitle
       ..description = description;
-    api.labels["created-from"] = source;
-    api.labels["google-title"] = title;
-    await client.ensureApiExists(api);
+    api.labels["created_from"] = source;
+    api.labels["owner"] = "google";
+    await this.ensureApiExists(api);
 
     final versionName = apiName + "/versions/" + versionId;
     var version = rpc.ApiVersion()
       ..name = versionName
       ..displayName = versionId;
-    version.labels["created-from"] = source;
-    await client.ensureApiVersionExists(version);
+    version.labels["created_from"] = source;
+    await this.ensureApiVersionExists(version);
 
     final specName = versionName + "/specs/discovery.json";
-    if (!await client.apiSpecExists(specName)) {
+    if (!await this.apiSpecExists(specName)) {
       try {
         var contents = GZipEncoder().encode(doc.bodyBytes);
         var apiSpec = rpc.ApiSpec()
@@ -74,7 +91,7 @@ void main(List<String> arguments) async {
           ..contents = contents
           ..sourceUri = discoveryUrl
           ..mimeType = "application/x.discovery+gzip";
-        apiSpec.labels["created-from"] = source;
+        apiSpec.labels["created_from"] = source;
         var revision = discoveryDoc["revision"];
         if (revision != null) {
           apiSpec.labels["revision-date"] = revision;
@@ -83,7 +100,7 @@ void main(List<String> arguments) async {
           ..parent = versionName
           ..apiSpecId = specName.split("/").last
           ..apiSpec = apiSpec;
-        await client.createApiSpec(request);
+        await this.createApiSpec(request);
       } catch (error) {
         print("$error");
         print(discoveryUrl);
@@ -91,15 +108,4 @@ void main(List<String> arguments) async {
       }
     }
   }
-
-  await channel.shutdown();
-}
-
-Future<List<dynamic>> fetchApiListings() {
-  return http
-      .get(Uri.parse('https://www.googleapis.com/discovery/v1/apis'))
-      .then((response) {
-    Map<String, dynamic> discoveryList = jsonDecode(response.body);
-    return discoveryList["items"];
-  });
 }

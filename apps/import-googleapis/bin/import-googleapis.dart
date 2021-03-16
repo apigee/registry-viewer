@@ -28,7 +28,7 @@ void main(List<String> arguments) async {
   final channel = rpc.createClientChannel();
   final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-  client.ensureProjectExists(rpc.Project()
+  await client.ensureProjectExists(rpc.Project()
     ..name = projectName
     ..displayName = projectDisplayName
     ..description = projectDescription);
@@ -84,15 +84,15 @@ extension GoogleApiImporter on rpc.RegistryClient {
             ..name = apiName
             ..displayName = apiTitle
             ..description = description;
-          api.labels["created-from"] = source;
-          api.labels["google-title"] = title;
+          api.labels["created_from"] = source;
+          api.labels["owner"] = "google";
           await this.ensureApiExists(api);
 
           final versionName = apiName + "/versions/" + versionId;
           var version = rpc.ApiVersion()
             ..name = versionName
             ..displayName = versionId;
-          version.labels["created-from"] = source;
+          version.labels["created_from"] = source;
           await this.ensureApiVersionExists(version);
 
           final specName = versionName + "/specs/protos.zip";
@@ -111,7 +111,7 @@ extension GoogleApiImporter on rpc.RegistryClient {
               ..contents = ZipEncoder().encode(archive)
               ..sourceUri = ""
               ..mimeType = "application/x.protobuf+zip";
-            apiSpec.labels["created-from"] = source;
+            apiSpec.labels["created_from"] = source;
             var request = rpc.CreateApiSpecRequest()
               ..parent =
                   "projects/motley/apis/" + apiId + "/versions/" + versionId

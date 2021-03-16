@@ -166,112 +166,117 @@ class _SpecFileCardState extends State<SpecFileCard> {
     } else {
       if (this.items == null) {
         // single-file view
-        return Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PanelNameRow(name: specManager.value.filename),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  child: CodeView(body),
+        return Expanded(
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PanelNameRow(name: specManager.value.filename),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    child: CodeView(body),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       } else {
         // multi-file view
-        return Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PanelNameRow(
-                        name: specManager.value.filename + " contents"),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        child: Scrollbar(
-                          controller: listScrollController,
-                          isAlwaysShown: true,
-                          child: MeasureSize(
-                            onChange: (size) {
-                              listHeight = size.height;
-                            },
-                            child: ListView.builder(
-                              itemCount: this.items.length,
-                              controller: listScrollController,
-                              itemBuilder: (BuildContext context, int index) {
-                                String fileName = this.items[index].headerValue;
-
-                                Color color = (index != selectedItemIndex)
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color
-                                    : Theme.of(context).primaryColor;
-
-                                return GestureDetector(
-                                  child: Container(
-                                    color: (index == selectedItemIndex)
-                                        ? color.withAlpha(64)
-                                        : Theme.of(context).canvasColor,
-                                    height: rowHeight,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          fileName,
-                                          softWrap: false,
-                                          style: GoogleFonts.inconsolata()
-                                              .copyWith(color: color),
-                                          overflow: TextOverflow.clip,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    selection.fileName.update(fileName);
-                                    selection.highlight.update(null);
-                                  },
-                                );
+        return Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PanelNameRow(
+                          name: specManager.value.filename + " contents"),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          child: Scrollbar(
+                            controller: listScrollController,
+                            isAlwaysShown: true,
+                            child: MeasureSize(
+                              onChange: (size) {
+                                listHeight = size.height;
                               },
+                              child: ListView.builder(
+                                itemCount: this.items.length,
+                                controller: listScrollController,
+                                itemBuilder: (BuildContext context, int index) {
+                                  String fileName =
+                                      this.items[index].headerValue;
+
+                                  Color color = (index != selectedItemIndex)
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color
+                                      : Theme.of(context).primaryColor;
+
+                                  return GestureDetector(
+                                    child: Container(
+                                      color: (index == selectedItemIndex)
+                                          ? color.withAlpha(64)
+                                          : Theme.of(context).canvasColor,
+                                      height: rowHeight,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            fileName,
+                                            softWrap: false,
+                                            style: GoogleFonts.inconsolata()
+                                                .copyWith(color: color),
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      selection.fileName.update(fileName);
+                                      selection.highlight.update(null);
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PanelNameRow(
-                        name: this.items[selectedItemIndex].headerValue),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        child: CodeView(
-                            this.items[selectedItemIndex].expandedValue),
+              Expanded(
+                flex: 2,
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PanelNameRow(
+                          name: this.items[selectedItemIndex].headerValue),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          child: CodeView(
+                              this.items[selectedItemIndex].expandedValue),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       }
     }

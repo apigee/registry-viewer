@@ -17,6 +17,7 @@ import '../models/selection.dart';
 import '../components/spec_detail.dart';
 import '../components/artifact_list.dart';
 import '../components/spec_file.dart';
+import '../components/spec_outline.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
@@ -72,6 +73,7 @@ class SpecDetailPage extends StatelessWidget {
                 Expanded(
                   child: SpecFileCard(),
                 ),
+                SpecOutlineCard(),
               ],
             ),
           ),
