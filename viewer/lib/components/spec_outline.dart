@@ -39,7 +39,9 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   void managerListener() {
     setState(() {
       ApiSpec spec = specManager?.value;
-      if ((spec.contents != null) && (spec.contents.length > 0)) {
+      if ((spec != null) &&
+          (spec.contents != null) &&
+          (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
           this.body = Utf8Codec().decoder.convert(bytes);
@@ -78,6 +80,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
     selection = SelectionProvider.of(context);
     selection.specName.addListener(specNameListener);
     super.didChangeDependencies();
+    specNameListener(); // ensure this is called when the widget is created
   }
 
   @override
@@ -90,32 +93,30 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   @override
   Widget build(BuildContext context) {
     if ((specManager?.value == null) || (this.body == "")) {
-      return Container(height: 0, width: 0);
+      return Card();
     }
-    return Expanded(
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            PanelNameRow(name: specManager.value.filename + " (outline)"),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                width: double.infinity,
-                child: Scrollbar(
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PanelNameRow(name: specManager.value.filename + " (outline)"),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              width: double.infinity,
+              child: Scrollbar(
+                controller: scrollController,
+                child: ListView.builder(
+                  shrinkWrap: true,
                   controller: scrollController,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: scrollController,
-                    itemBuilder: (BuildContext context, int index) =>
-                        EntryItem(data[index]),
-                    itemCount: data.length,
-                  ),
+                  itemBuilder: (BuildContext context, int index) =>
+                      EntryItem(data[index]),
+                  itemCount: data.length,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

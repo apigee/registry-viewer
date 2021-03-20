@@ -13,11 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:split_view/split_view.dart';
 import '../models/selection.dart';
 import '../components/spec_detail.dart';
 import '../components/artifact_list.dart';
 import '../components/spec_file.dart';
-import '../components/spec_outline.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
@@ -51,30 +51,23 @@ class SpecDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            flex: 2,
-            child: Row(
-              children: [
-                Expanded(child: SpecDetailCard(editable: true)),
-                Expanded(child: ArtifactListCard(SelectionProvider.spec)),
-                Expanded(
-                  child: ArtifactDetailCard(
+            child: SplitView(
+              viewMode: SplitViewMode.Vertical,
+              initialWeight: 0.33,
+              view1: SplitView(
+                viewMode: SplitViewMode.Horizontal,
+                initialWeight: 0.33,
+                view1: SpecDetailCard(editable: true),
+                view2: SplitView(
+                  viewMode: SplitViewMode.Horizontal,
+                  view1: ArtifactListCard(SelectionProvider.spec),
+                  view2: ArtifactDetailCard(
                     selflink: true,
                     editable: true,
                   ),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: SpecFileCard(),
-                ),
-                SpecOutlineCard(),
-              ],
+              ),
+              view2: SpecFileCard(),
             ),
           ),
           BottomBar(),

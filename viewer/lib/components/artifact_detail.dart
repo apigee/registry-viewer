@@ -19,6 +19,7 @@ import 'artifact_detail_complexity.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_string.dart';
+import 'artifact_detail_summary.dart';
 import 'artifact_detail_vocabulary.dart';
 import '../helpers/extensions.dart';
 import '../models/artifact.dart';
@@ -108,6 +109,8 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
           return LintArtifactCard(artifact, selflink: selflink);
         case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
           return LintStatsArtifactCard(artifact, selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.RegistrySummary":
+          return RegistrySummaryArtifactCard(artifact, selflink: selflink);
       }
 
       // otherwise return a default display of the artifact

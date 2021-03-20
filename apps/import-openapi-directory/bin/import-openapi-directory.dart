@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:io';
+import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:archive/archive.dart';
-import 'package:http/http.dart' as http;
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
@@ -37,9 +37,13 @@ void main(List<String> arguments) async {
     ..displayName = projectDisplayName
     ..description = projectDescription);
 
+  await channel.shutdown();
+
   // This assumes the OpenAPI Directory repo is checked out in ~/Desktop/openapi-directory
   String root =
       (Platform.environment['HOME'] ?? "") + '/Desktop/openapi-directory/APIs';
+
+  final Queue<rpc.Task> tasks = Queue();
 
   // API specs are in files named "swagger.yaml" or "openapi.yaml".
   RegExp apiSpecPattern = new RegExp(r"/(swagger|openapi).yaml$");
@@ -48,13 +52,25 @@ void main(List<String> arguments) async {
   await Future.forEach(paths, (entity) async {
     if (entity is File) {
       if (apiSpecPattern.hasMatch(entity.path)) {
-        await client.importOpenAPIDirectoryAPI(root, entity.path);
+        tasks.add(ImportOpenAPIDirectoryTask(root, entity.path));
       }
     }
   });
 
-  print("done");
-  await channel.shutdown();
+  await rpc.TaskProcessor(tasks, 64).run();
+}
+
+class ImportOpenAPIDirectoryTask implements rpc.Task {
+  final String root;
+  final String path;
+
+  ImportOpenAPIDirectoryTask(this.root, this.path);
+
+  String name() => path;
+
+  void run(rpc.RegistryClient client) async {
+    await client.importOpenAPIDirectoryAPI(root, path);
+  }
 }
 
 extension OpenApiDirectoryImporter on rpc.RegistryClient {
@@ -70,6 +86,7 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
     } else {
       apiId = owner + "-" + apiParts.sublist(1).join("-");
     }
+    apiId = apiId.toLowerCase();
     var versionId = parts[parts.length - 2];
     var specId = parts.last;
 
@@ -89,17 +106,13 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
       }
       var info = doc["info"];
       var apiTitle = info["title"] ?? "";
+      if (owner == "google") {
+        apiTitle = GoogleApis.titleForTitle(apiTitle);
+      }
       var description = info["description"] ?? "";
       if (description.length > maxDescriptionLength) {
         description = description.substring(0, maxDescriptionLength) + "...";
       }
-      //if (apiTitle != "") {
-      //  apiId = apiTitle.trim().toLowerCase().replaceAll(" ", "-");
-      //}
-
-      print("uploading $apiId $versionId $specId");
-      print("$apiTitle");
-      print("$description");
 
       final apiName = projectName + "/apis/" + apiId;
       var api = rpc.Api()
@@ -138,11 +151,6 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
   }
 
   String filterOwner(String owner) {
-    switch (owner) {
-      case "googleapis.com":
-        return "google";
-      default:
-        return owner;
-    }
+    return owner.toLowerCase();
   }
 }

@@ -52,7 +52,6 @@ void main(List<String> arguments) async {
     }
   });
 
-  print("done");
   await channel.shutdown();
 }
 

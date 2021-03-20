@@ -12,17 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:async';
-import 'dart:io';
-import 'dart:convert';
 import 'dart:collection';
-import 'dart:isolate';
-
-import 'package:archive/archive.dart';
-import 'package:http/http.dart' as http;
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
-import 'package:yaml/yaml.dart';
 
 final projectDescription = "APIs from a variety of sources";
 final projectDisplayName = "Motley APIs";
@@ -47,114 +39,63 @@ void main(List<String> arguments) async {
     ..displayName = projectDisplayName
     ..description = projectDescription);
 
-  final Queue<String> apiNames = Queue();
-
+  final Queue<rpc.Task> tasks = Queue();
   await rpc.listAPIs(
     client,
     parent: projectName,
     f: (api) async {
       print(api.name);
-      apiNames.add(api.name);
+      tasks.add(LabelApiTask(api.name));
     },
   );
+
   await channel.shutdown();
 
-  var futures = <Future>[];
-  for (var i = 0; i < 256; i++) {
-    futures.add(initIsolate(i, apiNames));
-  }
-  await Future.wait(futures);
-  print("everything is done");
+  await rpc.TaskProcessor(tasks, 64).run();
 }
 
-Future initIsolate(int i, Queue apiNames) async {
-  Completer completer = new Completer();
-  ReceivePort isolateToMainStream = ReceivePort();
-  SendPort mainToIsolateStream;
+class LabelApiTask implements rpc.Task {
+  final String apiName;
+  LabelApiTask(this.apiName);
 
-  Future<Isolate> myIsolateInstance;
+  String name() => apiName;
 
-  isolateToMainStream.listen((data) {
-    if (data is SendPort) {
-      mainToIsolateStream = data;
-      mainToIsolateStream.send("# $i");
-    } else if (data is String) {
-      if (data == "ready") {
-        if (apiNames.length > 0) {
-          var name = apiNames.removeFirst();
-          mainToIsolateStream?.send(name);
-        } else {
-          mainToIsolateStream?.send("quit");
-        }
-      } else if (data == "done") {
-        print("closing $i");
-        myIsolateInstance.then((isolate) {
-          isolateToMainStream.close();
+  void run(rpc.RegistryClient client) async {
+    var getRequest = rpc.GetApiRequest()..name = apiName;
+    rpc.Api api = await client.getApi(getRequest);
+
+    int versionCount = 0;
+    int specCount = 0;
+    Map<String, bool> apiSpecTypes = {};
+    await rpc.listAPIVersions(
+      client,
+      parent: apiName,
+      f: (version) async {
+        versionCount++;
+        Map<String, bool> versionSpecTypes = {};
+        await rpc.listAPISpecs(client, parent: version.name, f: (spec) {
+          specCount++;
+          var type = typeFromMimeType(spec.mimeType);
+          apiSpecTypes[type] = true;
+          versionSpecTypes[type] = true;
         });
-        print("completing $i");
-        completer.complete();
-      } else {
-        print('[isolateToMainStream] $data');
-      }
-    }
-  });
-
-  myIsolateInstance = Isolate.spawn(runWorker, isolateToMainStream.sendPort);
-
-  return completer.future;
-}
-
-void runWorker(SendPort isolateToMainStream) {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
-
-  int id = -1;
-
-  ReceivePort mainToIsolateStream = ReceivePort();
-  isolateToMainStream.send(mainToIsolateStream.sendPort);
-  mainToIsolateStream.listen((data) async {
-    print('[mainToIsolateStream $id] $data');
-    if (data[0] == "#") {
-      id = int.parse(data.substring(2));
-      isolateToMainStream.send('ready');
-    } else if (data == "quit") {
-      await channel.shutdown();
-      isolateToMainStream.send('done');
-    } else {
-      await labelApi(client, data);
-      isolateToMainStream.send('ready');
-    }
-  });
-}
-
-void labelApi(rpc.RegistryClient client, String apiName) async {
-  var getRequest = rpc.GetApiRequest()..name = apiName;
-  rpc.Api api = await client.getApi(getRequest);
-
-  int versionCount = 0;
-  Map<String, bool> apiSpecTypes = {};
-  await rpc.listAPIVersions(client, parent: apiName, f: (version) async {
-    versionCount++;
-    Map<String, bool> versionSpecTypes = {};
-    await rpc.listAPISpecs(client, parent: version.name, f: (spec) {
-      var type = typeFromMimeType(spec.mimeType);
-      apiSpecTypes[type] = true;
-      versionSpecTypes[type] = true;
-    });
+        for (var key in versionSpecTypes.keys) {
+          version.labels[key] = "true";
+        }
+        var updateRequest = rpc.UpdateApiVersionRequest()
+          ..apiVersion = version
+          ..updateMask = (rpc.FieldMask()..paths.add("labels"));
+        await client.updateApiVersion(updateRequest);
+      },
+    );
+    api.labels["versions"] = "$versionCount";
+    api.labels["specs"] = "$specCount";
     for (var key in apiSpecTypes.keys) {
-      version.labels[key] = "true";
+      api.labels[key] = "true";
     }
-    var updateRequest = rpc.UpdateApiVersionRequest()
-      ..apiVersion = version
+    var updateRequest = rpc.UpdateApiRequest()
+      ..api = api
       ..updateMask = (rpc.FieldMask()..paths.add("labels"));
-    await client.updateApiVersion(updateRequest);
-  });
-  api.labels["versions"] = "$versionCount";
-  for (var key in apiSpecTypes.keys) {
-    api.labels[key] = "true";
+    await client.updateApi(updateRequest);
   }
-  var updateRequest = rpc.UpdateApiRequest()
-    ..api = api
-    ..updateMask = (rpc.FieldMask()..paths.add("labels"));
-  await client.updateApi(updateRequest);
 }

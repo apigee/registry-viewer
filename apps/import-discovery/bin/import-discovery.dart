@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
@@ -33,11 +34,15 @@ void main(List<String> arguments) async {
     ..displayName = projectDisplayName
     ..description = projectDescription);
 
+  await channel.shutdown();
+
+  final Queue<rpc.Task> tasks = Queue();
+
   for (var item in await fetchApiListings()) {
-    await client.importDiscoveryAPI(item);
+    tasks.add(ImportDiscoveryTask(item));
   }
 
-  await channel.shutdown();
+  await rpc.TaskProcessor(tasks, 64).run();
 }
 
 Future<List<dynamic>> fetchApiListings() {
@@ -49,12 +54,35 @@ Future<List<dynamic>> fetchApiListings() {
   });
 }
 
+class ImportDiscoveryTask implements rpc.Task {
+  final item;
+
+  ImportDiscoveryTask(this.item);
+
+  String name() {
+    final map = item as Map<String, dynamic>;
+    return map["name"] + " " + map["version"];
+  }
+
+  void run(rpc.RegistryClient client) async {
+    await client.importDiscoveryAPI(item);
+  }
+}
+
+String filterOwner(String owner) {
+  owner = (owner ?? "Google").toLowerCase();
+  if (owner == "google") {
+    owner = "googleapis.com";
+  }
+  return owner;
+}
+
 extension DiscoveryImporter on rpc.RegistryClient {
   void importDiscoveryAPI(item) async {
     // get basic API attributes from the Discovery Service list
     var dict = item as Map<String, dynamic>;
     var title = dict["title"];
-    var apiId = GoogleApis.idForTitle(title);
+    var apiId = filterOwner(dict["owner"]) + "-" + dict["name"].toLowerCase();
     var apiTitle = GoogleApis.titleForTitle(title);
     var versionId = dict["version"] as String;
 
@@ -64,15 +92,13 @@ extension DiscoveryImporter on rpc.RegistryClient {
     Map<String, dynamic> discoveryDoc = jsonDecode(doc.body);
     var description = discoveryDoc["description"] ?? "";
 
-    print("uploading $apiId $versionId");
-
     final apiName = projectName + "/apis/" + apiId;
     var api = rpc.Api()
       ..name = apiName
       ..displayName = apiTitle
       ..description = description;
     api.labels["created_from"] = source;
-    api.labels["owner"] = "google";
+    api.labels["owner"] = "googleapis.com";
     await this.ensureApiExists(api);
 
     final versionName = apiName + "/versions/" + versionId;
