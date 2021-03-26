@@ -61,6 +61,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     selection = SelectionProvider.of(context);
     selection.projectName.addListener(selectionListener);
     super.didChangeDependencies();
+    selectionListener();
   }
 
   @override

@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../helpers/errors.dart';
 
 class EditSpecForm extends StatefulWidget {
   @override
@@ -132,7 +133,7 @@ class EditSpecFormState extends State<EditSpecForm> {
         spec.description = descriptionController.text;
         paths.add("description");
       }
-      specManager?.update(spec, paths);
+      specManager?.update(spec, paths, onError(context));
     }
   }
 }

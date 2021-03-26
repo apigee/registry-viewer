@@ -21,6 +21,7 @@ import '../models/project.dart';
 import '../models/selection.dart';
 import '../models/string.dart';
 import '../service/service.dart';
+import '../helpers/errors.dart';
 
 typedef ProjectSelectionHandler = Function(
     BuildContext context, Project project);
@@ -103,6 +104,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     widget.projectService.onError = () => setState(() {});
 
     if (widget.pageLoadController?.error != null) {
+      reportError(context, widget.pageLoadController?.error);
       return Text("${widget.pageLoadController.error}");
     }
     return Scrollbar(

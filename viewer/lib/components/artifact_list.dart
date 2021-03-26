@@ -154,6 +154,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
     filter = ObservableStringProvider.of(context);
     filter.addListener(filterListener);
     super.didChangeDependencies();
+    filterListener();
   }
 
   @override

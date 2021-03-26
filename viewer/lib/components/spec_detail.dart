@@ -94,6 +94,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     selection = SelectionProvider.of(context);
     selection.specName.addListener(selectionListener);
     super.didChangeDependencies();
+    selectionListener();
   }
 
   @override
@@ -158,7 +159,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                     children: [
                       PageSection(
                         children: [
-                          BodyRow(api.displayName +
+                          SuperTitleRow(api.displayName +
                               "/" +
                               version.name.split("/")?.last),
                           TitleRow(spec.name.split("/").last, action: selflink),

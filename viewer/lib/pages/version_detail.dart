@@ -22,6 +22,7 @@ import '../components/artifact_list.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
+import '../components/split_view.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String name;
@@ -50,14 +51,14 @@ class VersionDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            child: SplitView(
+            child: CustomSplitView(
               viewMode: SplitViewMode.Vertical,
               initialWeight: 0.33,
-              view1: SplitView(
+              view1: CustomSplitView(
                 viewMode: SplitViewMode.Horizontal,
                 initialWeight: 0.33,
                 view1: VersionDetailCard(editable: true),
-                view2: SplitView(
+                view2: CustomSplitView(
                   viewMode: SplitViewMode.Horizontal,
                   view1: ArtifactListCard(SelectionProvider.version),
                   view2: ArtifactDetailCard(
@@ -66,7 +67,7 @@ class VersionDetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-              view2: SplitView(
+              view2: CustomSplitView(
                 viewMode: SplitViewMode.Horizontal,
                 initialWeight: 0.33,
                 view1: SpecListCard(),

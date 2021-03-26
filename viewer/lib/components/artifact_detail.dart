@@ -66,6 +66,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
     selection = SelectionProvider.of(context);
     selection.artifactName.addListener(selectionListener);
     super.didChangeDependencies();
+    selectionListener();
   }
 
   @override

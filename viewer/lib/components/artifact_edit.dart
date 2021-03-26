@@ -18,6 +18,7 @@ import 'package:registry/registry.dart';
 import '../models/selection.dart';
 import '../models/artifact.dart';
 import '../service/registry.dart';
+import '../helpers/errors.dart';
 
 class EditArtifactForm extends StatefulWidget {
   @override
@@ -143,7 +144,9 @@ class EditArtifactFormState extends State<EditArtifactForm> {
       if (artifact.stringValue != stringValueController.text) {
         artifact.stringValue = stringValueController.text;
       }
-      artifactManager?.update(artifact)?.then((Artifact artifact) {
+      artifactManager
+          ?.update(artifact, onError(context))
+          ?.then((Artifact artifact) {
         selection.notifySubscribersOf(artifact.subject);
       });
     }

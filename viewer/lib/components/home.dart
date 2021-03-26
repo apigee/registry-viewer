@@ -19,6 +19,7 @@ import '../components/project_detail.dart';
 import '../components/registry_detail.dart';
 import '../models/selection.dart';
 import '../components/bottom_bar.dart';
+import '../components/split_view.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -30,11 +31,11 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: SplitView(
+              child: CustomSplitView(
                 viewMode: SplitViewMode.Vertical,
                 initialWeight: 0.33,
                 view1: RegistryDetailCard(),
-                view2: SplitView(
+                view2: CustomSplitView(
                   viewMode: SplitViewMode.Horizontal,
                   initialWeight: 0.33,
                   view1: ProjectListCard(),

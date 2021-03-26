@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../helpers/errors.dart';
 
 class EditAPIForm extends StatefulWidget {
   @override
@@ -145,7 +146,7 @@ class EditAPIFormState extends State<EditAPIForm> {
         api.description = descriptionController.text;
         paths.add("description");
       }
-      apiManager?.update(api, paths);
+      apiManager?.update(api, paths, onError(context));
     }
   }
 }

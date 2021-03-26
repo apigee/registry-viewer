@@ -25,6 +25,7 @@ import '../helpers/measure_size.dart';
 import '../models/highlight.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../components/split_view.dart';
 
 final scrollDuration = Duration(milliseconds: 300);
 final scrollCurve = Curves.easeInOut;
@@ -153,6 +154,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
     selection.specName.addListener(specNameListener);
     selection.fileName.addListener(fileNameListener);
     super.didChangeDependencies();
+    specNameListener();
+    fileNameListener();
   }
 
   @override
@@ -170,7 +173,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
     } else {
       if (this.items == null) {
         // single-file view
-        return SplitView(
+        return CustomSplitView(
           viewMode: SplitViewMode.Horizontal,
           view1: Card(
             child: Column(
@@ -190,7 +193,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
         );
       } else {
         // multi-file view
-        return SplitView(
+        return CustomSplitView(
           viewMode: SplitViewMode.Horizontal,
           view1: Card(
             child: Column(

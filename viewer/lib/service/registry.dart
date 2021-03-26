@@ -142,7 +142,7 @@ class ProjectManager extends ResourceManager<Project> {
     return client.getProject(request, options: callOptions());
   }
 
-  void update(Project newValue, List<String> paths) {
+  void update(Project newValue, List<String> paths, Function onError) {
     final client = getClient();
     final request = UpdateProjectRequest();
     request.project = newValue;
@@ -150,10 +150,11 @@ class ProjectManager extends ResourceManager<Project> {
     for (String path in paths) {
       request.updateMask.paths.add(path);
     }
+
     client.updateProject(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
-    });
+    }).catchError((error) => onError(error));
   }
 }
 
@@ -165,7 +166,7 @@ class ApiManager extends ResourceManager<Api> {
     return client.getApi(request, options: callOptions());
   }
 
-  void update(Api newValue, List<String> paths) {
+  void update(Api newValue, List<String> paths, Function onError) {
     final client = getClient();
     final request = UpdateApiRequest();
     request.api = newValue;
@@ -176,7 +177,7 @@ class ApiManager extends ResourceManager<Api> {
     client.updateApi(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
-    });
+    }).catchError((error) => onError(error));
   }
 }
 
@@ -188,7 +189,7 @@ class VersionManager extends ResourceManager<ApiVersion> {
     return client.getApiVersion(request, options: callOptions());
   }
 
-  void update(ApiVersion newValue, List<String> paths) {
+  void update(ApiVersion newValue, List<String> paths, Function onError) {
     final client = getClient();
     final request = UpdateApiVersionRequest();
     request.apiVersion = newValue;
@@ -199,7 +200,7 @@ class VersionManager extends ResourceManager<ApiVersion> {
     client.updateApiVersion(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
-    });
+    }).catchError((error) => onError(error));
   }
 }
 
@@ -212,7 +213,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
     return client.getApiSpec(request, options: callOptions());
   }
 
-  void update(ApiSpec newValue, List<String> paths) {
+  void update(ApiSpec newValue, List<String> paths, Function onError) {
     final client = getClient();
     final request = UpdateApiSpecRequest();
     request.apiSpec = newValue;
@@ -223,7 +224,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
     client.updateApiSpec(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
-    });
+    }).catchError((error) => onError(error));
   }
 }
 
@@ -236,7 +237,7 @@ class ArtifactManager extends ResourceManager<Artifact> {
     return client.getArtifact(request, options: callOptions());
   }
 
-  Future<Artifact> update(Artifact newValue) {
+  Future<Artifact> update(Artifact newValue, Function onError) {
     final client = getClient();
     final request = ReplaceArtifactRequest();
     request.artifact = newValue;
@@ -246,7 +247,7 @@ class ArtifactManager extends ResourceManager<Artifact> {
       _value = value;
       notifyListeners();
       return value;
-    });
+    }).catchError((error) => onError(error));
   }
 
   Future delete(String name) {

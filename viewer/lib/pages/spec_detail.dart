@@ -21,6 +21,7 @@ import '../components/spec_file.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
+import '../components/split_view.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String name;
@@ -51,14 +52,14 @@ class SpecDetailPage extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            child: SplitView(
+            child: CustomSplitView(
               viewMode: SplitViewMode.Vertical,
               initialWeight: 0.33,
-              view1: SplitView(
+              view1: CustomSplitView(
                 viewMode: SplitViewMode.Horizontal,
                 initialWeight: 0.33,
                 view1: SpecDetailCard(editable: true),
-                view2: SplitView(
+                view2: CustomSplitView(
                   viewMode: SplitViewMode.Horizontal,
                   view1: ArtifactListCard(SelectionProvider.spec),
                   view2: ArtifactDetailCard(
