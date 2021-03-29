@@ -129,6 +129,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
   }
 
   void setFileName(String name) {
+    if (name == "") {
+      return;
+    }
     if (this.items != null) {
       for (int i = 0; i < this.items.length; i++) {
         if (this.items[i].headerValue == name) {

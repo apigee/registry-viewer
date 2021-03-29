@@ -12,9 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pb.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbenum.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbjson.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pbenum.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pbjson.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pb.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pbenum.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pbjson.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pbenum.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pbjson.dart';

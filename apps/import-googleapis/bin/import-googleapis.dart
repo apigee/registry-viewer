@@ -71,7 +71,7 @@ extension GoogleApiImporter on rpc.RegistryClient {
   void importProtobufApi(String root, Directory dir, String versionId) async {
     // only import APIs with service yaml that specifies their title and name
     RegExp yamlPattern = new RegExp(r"\.yaml$");
-    await Future.forEach(dir.listSync(recursive: false), (entity) async {
+    await Future.forEach(dir.listSync(recursive: true), (entity) async {
       if ((entity is File) &&
           yamlPattern.hasMatch(entity.path) &&
           !entity.path.contains("gapic")) {

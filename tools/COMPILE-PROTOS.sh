@@ -49,7 +49,9 @@ protoc \
 	${PROTOC}/google/protobuf/empty.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_service.proto \
+	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_index.proto \
 	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.proto \
+	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_references.proto \
 	${PROTOS}/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.proto \
 	${GNOSTIC}/metrics/complexity.proto \
 	${GNOSTIC}/metrics/vocabulary.proto \
