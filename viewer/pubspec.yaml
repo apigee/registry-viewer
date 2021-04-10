@@ -38,16 +38,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  archive: ^2.0.13
+  archive: ^3.0.0
   async: '>=1.13.3 <3.0.0'
   flutter_linkify: ^5.0.0
   flutter_pagewise: ^1.2.3
-  google_fonts: ^0.3.8
+  google_fonts: ^2.0.0
   google_sign_in: ^4.1.0
-  grpc: ^2.8.0
-  http: ^0.12.1
+  grpc: ^3.0.0
+  http: ^0.13.1
   intl: ^0.16.1
-  protobuf: ^1.0.1
+  protobuf: ^2.0.0
   split_view: ^1.0.4
   url_launcher: ^5.4.5
   yaml: ^3.1.0

@@ -1,17 +1,16 @@
-name: label_apis
-description: Label APIs with interesting characteristics.
+name: scan_security
+description: Read security schemes of specs in the Registry.
 
 environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  importer:
-    path: ../importer
   registry:
     path: ../../registry
-  archive: ^3.0.0
-  http: ^0.13.0
+  archive: ^3.1.2
+  http: ^0.13.1
   grpc: ^3.0.0
+  args: ^2.0.0
 
 dev_dependencies:
   pedantic: ^1.9.0

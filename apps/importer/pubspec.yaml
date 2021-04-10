@@ -25,7 +25,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  grpc: ^2.8.0
-  http: ^0.12.1
-  protobuf: ^1.0.1
+  grpc: ^3.0.0
+  http: ^0.13.0
+  protobuf: ^2.0.0
   
