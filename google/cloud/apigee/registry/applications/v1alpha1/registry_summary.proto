@@ -1,0 +1,48 @@
+// Copyright 2020 Google LLC. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.apigee.registry.applications.v1alpha1;
+
+option java_package = "com.google.cloud.apigee.registry.applications.v1alpha1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrySummaryProto";
+option go_package = "github.com/apigee/registry/rpc;rpc";
+
+// A RegistrySummary summarizes the contents of a registry.
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: This message is not currently used in an API. --)
+message RegistrySummary {
+  // The number of APIs.
+  int32 api_count = 1;
+  // The number of versions.
+  int32 version_count = 2;
+  // The number of specs.
+  int32 spec_count = 3;
+  // Counts of the API spec formats used.
+  repeated RegistryWordCount formats = 4;
+  // Counts of the API owners.
+  repeated RegistryWordCount owners = 5;
+}
+
+// A RegistryWordCount represents a word with a number of occurrences.
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: This message is not currently used in an API. --)
+message RegistryWordCount {
+  // The word.
+  string word = 1;
+  // The number associated with the word.
+  int32 count = 2;
+}

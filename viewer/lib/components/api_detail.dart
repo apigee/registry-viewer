@@ -61,6 +61,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     selection = SelectionProvider.of(context);
     selection.apiName.addListener(selectionListener);
     super.didChangeDependencies();
+    selectionListener();
   }
 
   @override
@@ -123,6 +124,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
                           BodyRow(
                             api.description,
                             style: Theme.of(context).textTheme.bodyText2,
+                            wrap: true,
                           ),
                         ],
                       ),

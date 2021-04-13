@@ -44,6 +44,7 @@ Future attemptToSignIn() async {
       currentUserIsAuthorized =
           authorized_domains.contains(account.email.split("@").last);
     }
+    currentUserIsAuthorized = true;
     account.authentication.then((auth) {
       setRegistryUserToken(auth.idToken);
       StatusService().getStatus().then((status) {

@@ -106,27 +106,45 @@ extension Importing on rpc.RegistryClient {
 
   void ensureProjectExists(rpc.Project project) async {
     if (!await this.projectExists(project.name)) {
-      await this.createProject(rpc.CreateProjectRequest()
-        ..projectId = project.name.split("/").last
-        ..project = project);
+      try {
+        await this.createProject(rpc.CreateProjectRequest()
+          ..projectId = project.name.split("/").last
+          ..project = project);
+      } on grpc.GrpcError catch (error) {
+        if (error.code != grpc.StatusCode.alreadyExists) {
+          rethrow;
+        }
+      }
     }
   }
 
   void ensureApiExists(rpc.Api api) async {
     if (!await this.apiExists(api.name)) {
-      await this.createApi(rpc.CreateApiRequest()
-        ..parent = api.name.split("/").sublist(0, 2).join("/")
-        ..apiId = api.name.split("/").last
-        ..api = api);
+      try {
+        await this.createApi(rpc.CreateApiRequest()
+          ..parent = api.name.split("/").sublist(0, 2).join("/")
+          ..apiId = api.name.split("/").last
+          ..api = api);
+      } on grpc.GrpcError catch (error) {
+        if (error.code != grpc.StatusCode.alreadyExists) {
+          rethrow;
+        }
+      }
     }
   }
 
   void ensureApiVersionExists(rpc.ApiVersion version) async {
     if (!await this.apiVersionExists(version.name)) {
-      await this.createApiVersion(rpc.CreateApiVersionRequest()
-        ..parent = version.name.split("/").sublist(0, 4).join("/")
-        ..apiVersionId = version.name.split("/").last
-        ..apiVersion = version);
+      try {
+        await this.createApiVersion(rpc.CreateApiVersionRequest()
+          ..parent = version.name.split("/").sublist(0, 4).join("/")
+          ..apiVersionId = version.name.split("/").last
+          ..apiVersion = version);
+      } on grpc.GrpcError catch (error) {
+        if (error.code != grpc.StatusCode.alreadyExists) {
+          rethrow;
+        }
+      }
     }
   }
 }

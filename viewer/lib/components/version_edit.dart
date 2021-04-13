@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../helpers/errors.dart';
 
 class EditVersionForm extends StatefulWidget {
   @override
@@ -158,7 +159,7 @@ class EditVersionFormState extends State<EditVersionForm> {
         version.state = stateController.text;
         paths.add("state");
       }
-      versionManager?.update(version, paths);
+      versionManager?.update(version, paths, onError(context));
     }
   }
 }

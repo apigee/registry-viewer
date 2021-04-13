@@ -13,43 +13,34 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:split_view/split_view.dart';
 import 'project_list.dart';
 import '../components/project_detail.dart';
 import '../components/registry_detail.dart';
 import '../models/selection.dart';
 import '../components/bottom_bar.dart';
+import '../components/split_view.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
-    final showAbout = true;
     return SelectionProvider(
       selection: selection,
       child: Container(
         child: Column(
           children: [
-            if (showAbout)
-              Row(
-                children: [
-                  Expanded(
-                    child: RegistryDetailCard(),
-                  ),
-                ],
-              ),
             Expanded(
-              flex: 3,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: ProjectListCard(),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: ProjectDetailCard(selflink: true, editable: true),
-                  ),
-                ],
+              child: CustomSplitView(
+                viewMode: SplitViewMode.Vertical,
+                initialWeight: 0.33,
+                view1: RegistryDetailCard(),
+                view2: CustomSplitView(
+                  viewMode: SplitViewMode.Horizontal,
+                  initialWeight: 0.33,
+                  view1: ProjectListCard(),
+                  view2: ProjectDetailCard(selflink: true, editable: true),
+                ),
               ),
             ),
             BottomBar(),

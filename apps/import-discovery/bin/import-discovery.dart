@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
@@ -28,71 +29,20 @@ void main(List<String> arguments) async {
   final channel = rpc.createClientChannel();
   final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-  client.ensureProjectExists(rpc.Project()
+  await client.ensureProjectExists(rpc.Project()
     ..name = projectName
     ..displayName = projectDisplayName
     ..description = projectDescription);
 
+  await channel.shutdown();
+
+  final Queue<rpc.Task> tasks = Queue();
+
   for (var item in await fetchApiListings()) {
-    // get basic API attributes from the Discovery Service list
-    var dict = item as Map<String, dynamic>;
-    var title = dict["title"];
-    var apiId = GoogleApis.idForTitle(title);
-    var apiTitle = GoogleApis.titleForTitle(title);
-    var versionId = dict["version"] as String;
-
-    // read the discovery doc
-    var discoveryUrl = dict["discoveryRestUrl"] as String;
-    var doc = await http.get(Uri.parse(discoveryUrl));
-    Map<String, dynamic> discoveryDoc = jsonDecode(doc.body);
-    var description = discoveryDoc["description"] ?? "";
-
-    print("uploading $apiId $versionId");
-
-    final apiName = projectName + "/apis/" + apiId;
-    var api = rpc.Api()
-      ..name = apiName
-      ..displayName = apiTitle
-      ..description = description;
-    api.labels["created-from"] = source;
-    api.labels["google-title"] = title;
-    await client.ensureApiExists(api);
-
-    final versionName = apiName + "/versions/" + versionId;
-    var version = rpc.ApiVersion()
-      ..name = versionName
-      ..displayName = versionId;
-    version.labels["created-from"] = source;
-    await client.ensureApiVersionExists(version);
-
-    final specName = versionName + "/specs/discovery.json";
-    if (!await client.apiSpecExists(specName)) {
-      try {
-        var contents = GZipEncoder().encode(doc.bodyBytes);
-        var apiSpec = rpc.ApiSpec()
-          ..filename = "discovery.json"
-          ..contents = contents
-          ..sourceUri = discoveryUrl
-          ..mimeType = "application/x.discovery+gzip";
-        apiSpec.labels["created-from"] = source;
-        var revision = discoveryDoc["revision"];
-        if (revision != null) {
-          apiSpec.labels["revision-date"] = revision;
-        }
-        var request = rpc.CreateApiSpecRequest()
-          ..parent = versionName
-          ..apiSpecId = specName.split("/").last
-          ..apiSpec = apiSpec;
-        await client.createApiSpec(request);
-      } catch (error) {
-        print("$error");
-        print(discoveryUrl);
-        print(doc.body.toString());
-      }
-    }
+    tasks.add(ImportDiscoveryTask(item));
   }
 
-  await channel.shutdown();
+  await rpc.TaskProcessor(tasks, 64).run();
 }
 
 Future<List<dynamic>> fetchApiListings() {
@@ -102,4 +52,86 @@ Future<List<dynamic>> fetchApiListings() {
     Map<String, dynamic> discoveryList = jsonDecode(response.body);
     return discoveryList["items"];
   });
+}
+
+class ImportDiscoveryTask implements rpc.Task {
+  final item;
+
+  ImportDiscoveryTask(this.item);
+
+  String name() {
+    final map = item as Map<String, dynamic>;
+    return map["name"] + " " + map["version"];
+  }
+
+  void run(rpc.RegistryClient client) async {
+    await client.importDiscoveryAPI(item);
+  }
+}
+
+String filterOwner(String owner) {
+  owner = (owner ?? "Google").toLowerCase();
+  if (owner == "google") {
+    owner = "googleapis.com";
+  }
+  return owner;
+}
+
+extension DiscoveryImporter on rpc.RegistryClient {
+  void importDiscoveryAPI(item) async {
+    // get basic API attributes from the Discovery Service list
+    var dict = item as Map<String, dynamic>;
+    var title = dict["title"];
+    var apiId = filterOwner(dict["owner"]) + "-" + dict["name"].toLowerCase();
+    var apiTitle = GoogleApis.titleForTitle(title);
+    var versionId = dict["version"] as String;
+
+    // read the discovery doc
+    var discoveryUrl = dict["discoveryRestUrl"] as String;
+    var doc = await http.get(Uri.parse(discoveryUrl));
+    Map<String, dynamic> discoveryDoc = jsonDecode(doc.body);
+    var description = discoveryDoc["description"] ?? "";
+
+    final apiName = projectName + "/apis/" + apiId;
+    var api = rpc.Api()
+      ..name = apiName
+      ..displayName = apiTitle
+      ..description = description;
+    api.labels["created_from"] = source;
+    api.labels["owner"] = "googleapis.com";
+    await this.ensureApiExists(api);
+
+    final versionName = apiName + "/versions/" + versionId;
+    var version = rpc.ApiVersion()
+      ..name = versionName
+      ..displayName = versionId;
+    version.labels["created_from"] = source;
+    await this.ensureApiVersionExists(version);
+
+    final specName = versionName + "/specs/discovery.json";
+    if (!await this.apiSpecExists(specName)) {
+      try {
+        var contents = GZipEncoder().encode(doc.bodyBytes);
+        var apiSpec = rpc.ApiSpec()
+          ..filename = "discovery.json"
+          ..contents = contents
+          ..sourceUri = discoveryUrl
+          ..mimeType = "application/x.discovery+gzip";
+        apiSpec.labels["created_from"] = source;
+        var revision = discoveryDoc["revision"];
+        if (revision != null) {
+          apiSpec.labels["revision-date"] = revision;
+        }
+        var request = rpc.CreateApiSpecRequest()
+          ..parent = versionName
+          ..apiSpecId = specName.split("/").last
+          ..apiSpec = apiSpec;
+        await this.createApiSpec(request);
+      } catch (error) {
+        print("$error");
+        print(discoveryUrl);
+        print(doc.body.toString());
+      }
+    }
+  }
 }

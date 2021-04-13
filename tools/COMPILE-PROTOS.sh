@@ -31,6 +31,9 @@ export REGISTRY="third_party/registry"
 # This is a third_party directory containing message protos used to store API metrics.
 export GNOSTIC="third_party/gnostic"
 
+# This is a directory containing project-specific protos.
+export PROTOS="."
+
 mkdir -p registry/lib/src/generated 
 
 echo "Generating Dart support code."
@@ -39,13 +42,17 @@ protoc \
 	--proto_path=${COMMON} \
 	--proto_path=${REGISTRY} \
 	--proto_path=${GNOSTIC} \
+	--proto_path=${PROTOS} \
 	${PROTOC}/google/protobuf/any.proto \
 	${PROTOC}/google/protobuf/timestamp.proto \
 	${PROTOC}/google/protobuf/field_mask.proto \
 	${PROTOC}/google/protobuf/empty.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_service.proto \
+	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_index.proto \
 	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.proto \
+	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_references.proto \
+	${PROTOS}/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.proto \
 	${GNOSTIC}/metrics/complexity.proto \
 	${GNOSTIC}/metrics/vocabulary.proto \
 	--dart_out=grpc:registry/lib/src/generated

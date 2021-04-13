@@ -128,6 +128,7 @@ class TitleRow extends StatelessWidget {
                           .headline3
                           .copyWith(color: Theme.of(context).accentColor),
                       textAlign: TextAlign.left,
+                      softWrap: true,
                     ),
                     onTap: action),
               )
@@ -136,6 +137,7 @@ class TitleRow extends StatelessWidget {
                   text,
                   style: Theme.of(context).textTheme.headline3,
                   textAlign: TextAlign.left,
+                  softWrap: true,
                 ),
               ),
       ],
@@ -157,6 +159,7 @@ class SuperTitleRow extends StatelessWidget {
             .headline6
             .copyWith(color: Colors.grey[500]),
         textAlign: TextAlign.left,
+        softWrap: true,
       )),
     ]);
   }
@@ -165,7 +168,8 @@ class SuperTitleRow extends StatelessWidget {
 class BodyRow extends StatelessWidget {
   final String text;
   final TextStyle style;
-  BodyRow(this.text, {this.style});
+  final bool wrap;
+  BodyRow(this.text, {this.style, this.wrap = false});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -174,7 +178,7 @@ class BodyRow extends StatelessWidget {
           text,
           style: style ?? Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.left,
-          softWrap: true,
+          softWrap: wrap,
         ),
       ),
     ]);
@@ -333,13 +337,22 @@ class LabelsRow extends StatelessWidget {
           Chip(
             backgroundColor: Theme.of(context).accentColor,
             label: Text(
-              key + ":" + map[key],
+              labelText(key, map[key]),
               style: GoogleFonts.inconsolata()
                   .copyWith(color: Theme.of(context).canvasColor),
             ),
           ),
       ],
     );
+  }
+
+  static String labelText(String key, value) {
+    if (value == "true") {
+      return key;
+    } else if (value == "false") {
+      return "!" + key;
+    }
+    return key + ":" + value;
   }
 }
 

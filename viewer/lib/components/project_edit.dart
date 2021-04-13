@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../helpers/errors.dart';
 
 class EditProjectForm extends StatefulWidget {
   @override
@@ -145,7 +146,7 @@ class EditProjectFormState extends State<EditProjectForm> {
         project.description = descriptionController.text;
         paths.add("description");
       }
-      projectManager?.update(project, paths);
+      projectManager?.update(project, paths, onError(context));
     }
   }
 }

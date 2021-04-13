@@ -76,6 +76,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     selection = SelectionProvider.of(context);
     selection.versionName.addListener(selectionListener);
     super.didChangeDependencies();
+    selectionListener();
   }
 
   @override
@@ -135,7 +136,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                       PageSection(
                         children: [
                           SizedBox(height: 10),
-                          BodyRow(api?.displayName),
+                          SuperTitleRow(api?.displayName),
                           TitleRow(version.name.split("/").last,
                               action: selflink),
                         ],

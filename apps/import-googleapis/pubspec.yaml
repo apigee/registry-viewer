@@ -9,8 +9,8 @@ dependencies:
     path: ../importer
   registry:
     path: ../../registry
-  archive: ^2.0.13
-  http: ^0.12.1
+  archive: ^3.0.0
+  http: ^0.13.0
   yaml: ^3.1.0
 
 dev_dependencies:

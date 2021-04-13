@@ -18,11 +18,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
+import 'package:split_view/split_view.dart';
 import '../components/detail_rows.dart';
+import '../components/spec_outline.dart';
 import '../helpers/measure_size.dart';
 import '../models/highlight.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import '../components/split_view.dart';
 
 final scrollDuration = Duration(milliseconds: 300);
 final scrollCurve = Curves.easeInOut;
@@ -58,7 +61,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
   void managerListener() {
     setState(() {
       ApiSpec spec = specManager?.value;
-      if ((spec.contents != null) && (spec.contents.length > 0)) {
+      if ((spec != null) &&
+          (spec.contents != null) &&
+          (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
           this.body = Utf8Codec().decoder.convert(data);
@@ -124,6 +129,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
   }
 
   void setFileName(String name) {
+    if (name == "") {
+      return;
+    }
     if (this.items != null) {
       for (int i = 0; i < this.items.length; i++) {
         if (this.items[i].headerValue == name) {
@@ -149,6 +157,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
     selection.specName.addListener(specNameListener);
     selection.fileName.addListener(fileNameListener);
     super.didChangeDependencies();
+    specNameListener();
+    fileNameListener();
   }
 
   @override
@@ -166,112 +176,102 @@ class _SpecFileCardState extends State<SpecFileCard> {
     } else {
       if (this.items == null) {
         // single-file view
-        return Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PanelNameRow(name: specManager.value.filename),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  child: CodeView(body),
+        return CustomSplitView(
+          viewMode: SplitViewMode.Horizontal,
+          view1: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PanelNameRow(name: specManager.value.filename),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    child: CodeView(body),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          view2: SpecOutlineCard(),
         );
       } else {
         // multi-file view
-        return Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PanelNameRow(
-                        name: specManager.value.filename + " contents"),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        child: Scrollbar(
+        return CustomSplitView(
+          viewMode: SplitViewMode.Horizontal,
+          view1: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PanelNameRow(name: specManager.value.filename + " contents"),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    child: Scrollbar(
+                      controller: listScrollController,
+                      isAlwaysShown: true,
+                      child: MeasureSize(
+                        onChange: (size) {
+                          listHeight = size.height;
+                        },
+                        child: ListView.builder(
+                          itemCount: this.items.length,
                           controller: listScrollController,
-                          isAlwaysShown: true,
-                          child: MeasureSize(
-                            onChange: (size) {
-                              listHeight = size.height;
-                            },
-                            child: ListView.builder(
-                              itemCount: this.items.length,
-                              controller: listScrollController,
-                              itemBuilder: (BuildContext context, int index) {
-                                String fileName = this.items[index].headerValue;
+                          itemBuilder: (BuildContext context, int index) {
+                            String fileName = this.items[index].headerValue;
 
-                                Color color = (index != selectedItemIndex)
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color
-                                    : Theme.of(context).primaryColor;
+                            Color color = (index != selectedItemIndex)
+                                ? Theme.of(context).textTheme.bodyText1.color
+                                : Theme.of(context).primaryColor;
 
-                                return GestureDetector(
-                                  child: Container(
-                                    color: (index == selectedItemIndex)
-                                        ? color.withAlpha(64)
-                                        : Theme.of(context).canvasColor,
-                                    height: rowHeight,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          fileName,
-                                          softWrap: false,
-                                          style: GoogleFonts.inconsolata()
-                                              .copyWith(color: color),
-                                          overflow: TextOverflow.clip,
-                                        ),
-                                      ],
+                            return GestureDetector(
+                              child: Container(
+                                color: (index == selectedItemIndex)
+                                    ? color.withAlpha(64)
+                                    : Theme.of(context).canvasColor,
+                                height: rowHeight,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      fileName,
+                                      softWrap: false,
+                                      style: GoogleFonts.inconsolata()
+                                          .copyWith(color: color),
+                                      overflow: TextOverflow.clip,
                                     ),
-                                  ),
-                                  onTap: () async {
-                                    selection.fileName.update(fileName);
-                                    selection.highlight.update(null);
-                                  },
-                                );
+                                  ],
+                                ),
+                              ),
+                              onTap: () async {
+                                selection.fileName.update(fileName);
+                                selection.highlight.update(null);
                               },
-                            ),
-                          ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              flex: 2,
-              child: Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PanelNameRow(
-                        name: this.items[selectedItemIndex].headerValue),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        child: CodeView(
-                            this.items[selectedItemIndex].expandedValue),
-                      ),
-                    ),
-                  ],
+          ),
+          view2: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PanelNameRow(name: this.items[selectedItemIndex].headerValue),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    child:
+                        CodeView(this.items[selectedItemIndex].expandedValue),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         );
       }
     }

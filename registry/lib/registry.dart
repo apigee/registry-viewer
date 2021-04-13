@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pb.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbenum.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbjson.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pbenum.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_lint.pbjson.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pb.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pbenum.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_references.pbjson.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pb.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pbenum.dart';
+export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_summary.pbjson.dart';
 export 'src/generated/google/cloud/apigee/registry/v1/registry_models.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/v1/registry_models.pbenum.dart';
 export 'src/generated/google/cloud/apigee/registry/v1/registry_models.pbjson.dart';
@@ -42,3 +51,4 @@ export 'src/generated/metrics/vocabulary.pbenum.dart';
 export 'src/generated/metrics/vocabulary.pbjson.dart';
 export 'src/grpc_client.dart';
 export 'src/list.dart';
+export 'src/tasks.dart';

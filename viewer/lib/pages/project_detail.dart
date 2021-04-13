@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:split_view/split_view.dart';
 import '../models/selection.dart';
 import '../components/project_detail.dart';
 import '../components/api_list.dart';
@@ -21,6 +22,7 @@ import '../components/artifact_list.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
+import '../components/split_view.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -48,39 +50,33 @@ class ProjectDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              flex: 2,
-              child: Row(
-                children: [
-                  Expanded(child: ProjectDetailCard(editable: true)),
-                  Expanded(
-                    child: ArtifactListCard(SelectionProvider.project),
-                  ),
-                  Expanded(
-                    child: ArtifactDetailCard(
+              child: CustomSplitView(
+                viewMode: SplitViewMode.Vertical,
+                initialWeight: 0.33,
+                view1: CustomSplitView(
+                  viewMode: SplitViewMode.Horizontal,
+                  initialWeight: 0.33,
+                  view1: ProjectDetailCard(editable: true),
+                  view2: CustomSplitView(
+                    viewMode: SplitViewMode.Horizontal,
+                    initialWeight: 0.5,
+                    view1: ArtifactListCard(SelectionProvider.project),
+                    view2: ArtifactDetailCard(
                       selflink: true,
                       editable: true,
                     ),
                   ),
-                ],
+                ),
+                view2: CustomSplitView(
+                  viewMode: SplitViewMode.Horizontal,
+                  initialWeight: 0.33,
+                  view1: ApiListCard(),
+                  view2: ApiDetailCard(
+                    selflink: true,
+                    editable: true,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Row(children: [
-                Expanded(
-                  flex: 1,
-                  child: SizedBox.expand(child: ApiListCard()),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: SizedBox.expand(
-                    child: ApiDetailCard(
-                      selflink: true,
-                      editable: true,
-                    ),
-                  ),
-                ),
-              ]),
             ),
             BottomBar(),
           ],
