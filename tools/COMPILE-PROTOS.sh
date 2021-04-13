@@ -32,7 +32,7 @@ export REGISTRY="third_party/registry"
 export GNOSTIC="third_party/gnostic"
 
 # This is a directory containing project-specific protos.
-export PROTOS="protos"
+export PROTOS="."
 
 mkdir -p registry/lib/src/generated 
 
