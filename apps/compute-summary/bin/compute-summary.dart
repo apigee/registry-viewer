@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'dart:io';
+import 'package:args/args.dart';
 import 'package:registry/registry.dart' as rpc;
-
-final projectName = "projects/motley";
 
 String typeFromMimeType(String mimeType) {
   RegExp mimeTypePattern = new RegExp(r"^application/x.([^\+;]*)(.*)?$");
@@ -26,9 +26,18 @@ String typeFromMimeType(String mimeType) {
 }
 
 void main(List<String> arguments) async {
+  exitCode = 0;
+  final parser = ArgParser();
+  ArgResults argResults = parser.parse(arguments);
+  final paths = argResults.rest;
+  if (paths.length != 1) {
+    exitCode = -1;
+    return;
+  }
+  final projectName = paths[0];
+
   final channel = rpc.createClientChannel();
   final client = rpc.RegistryClient(channel, options: rpc.callOptions());
-
   var apiCount = 0;
   Map<String, int> owners = Map();
   await rpc.listAPIs(
@@ -36,6 +45,7 @@ void main(List<String> arguments) async {
     parent: projectName,
     f: (api) async {
       var owner = api.labels["owner"];
+      if (owner == null) return;
       if (owners[owner] == null) {
         owners[owner] = 0;
       }

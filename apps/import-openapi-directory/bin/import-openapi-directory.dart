@@ -17,64 +17,87 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:args/args.dart';
+import 'package:args/command_runner.dart';
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
 
-final projectDescription = "APIs from a variety of sources";
-final projectDisplayName = "Motley APIs";
-final projectName = "projects/motley";
 final source = "openapi_directory";
 
 final maxDescriptionLength = 140;
 
-void main(List<String> arguments) async {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+void main(List<String> args) {
+  CommandRunner("import", "Import specs.")
+    ..addCommand(ImportOpenAPIDirectoryCommand())
+    ..run(args);
+}
 
-  await client.ensureProjectExists(rpc.Project()
-    ..name = projectName
-    ..displayName = projectDisplayName
-    ..description = projectDescription);
+class ImportOpenAPIDirectoryCommand extends Command {
+  final name = "";
+  final description = "Import specs from the OpenAPI Directory.";
 
-  await channel.shutdown();
+  ImportOpenAPIDirectoryCommand() {
+    this.argParser
+      ..addOption(
+        'project_id',
+        help: "Project id for imports.",
+        valueHelp: "PROJECT_ID",
+      )
+      ..addOption(
+        'path',
+        help: "Path to a directory containing OpenAPI descriptions.",
+        valueHelp: "PATH",
+      );
+  }
 
-  // This assumes the OpenAPI Directory repo is checked out in ~/Desktop/openapi-directory
-  String root =
-      (Platform.environment['HOME'] ?? "") + '/Desktop/openapi-directory/APIs';
-
-  final Queue<rpc.Task> tasks = Queue();
-
-  // API specs are in files named "swagger.yaml" or "openapi.yaml".
-  RegExp apiSpecPattern = new RegExp(r"/(swagger|openapi).yaml$");
-  var paths = Directory(root).listSync(recursive: true);
-  paths.sort((a, b) => a.path.compareTo(b.path));
-  await Future.forEach(paths, (entity) async {
-    if (entity is File) {
-      if (apiSpecPattern.hasMatch(entity.path)) {
-        tasks.add(ImportOpenAPIDirectoryTask(root, entity.path));
-      }
+  void run() async {
+    if (argResults['project_id'] == null) {
+      throw UsageException("Please specify --project_id", this.argParser.usage);
     }
-  });
+    if (argResults['path'] == null) {
+      throw UsageException("Please specify --path", this.argParser.usage);
+    }
+    final channel = rpc.createClientChannel();
+    final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-  await rpc.TaskProcessor(tasks, 64).run();
+    final projectName = "projects/" + argResults['project_id'];
+    final root = argResults['path'];
+
+    final exists = await client.projectExists(projectName);
+    await channel.shutdown();
+    if (!exists) {
+      throw UsageException("$projectName does not exist", this.argParser.usage);
+    }
+
+    final Queue<rpc.Task> tasks = Queue();
+
+    // API specs are in files named "swagger.yaml" or "openapi.yaml".
+    RegExp apiSpecPattern = new RegExp(r"/(swagger|openapi).yaml$");
+    var paths = Directory(root).listSync(recursive: true);
+    paths.sort((a, b) => a.path.compareTo(b.path));
+    await Future.forEach(paths, (entity) async {
+      if (entity is File) {
+        if (apiSpecPattern.hasMatch(entity.path)) {
+          tasks.add(ImportOpenAPIDirectoryTask(root, entity.path, projectName));
+        }
+      }
+    });
+
+    await rpc.TaskProcessor(tasks, 64).run();
+  }
 }
 
 class ImportOpenAPIDirectoryTask implements rpc.Task {
   final String root;
   final String path;
+  final String projectName;
 
-  ImportOpenAPIDirectoryTask(this.root, this.path);
+  ImportOpenAPIDirectoryTask(this.root, this.path, this.projectName);
 
   String name() => path;
 
   void run(rpc.RegistryClient client) async {
-    await client.importOpenAPIDirectoryAPI(root, path);
-  }
-}
-
-extension OpenApiDirectoryImporter on rpc.RegistryClient {
-  void importOpenAPIDirectoryAPI(String root, path) async {
     var name = path.substring(root.length + 1);
 
     var parts = name.split("/");
@@ -121,17 +144,17 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
         ..description = description;
       api.labels["created_from"] = source;
       api.labels["owner"] = owner;
-      await this.ensureApiExists(api);
+      await client.ensureApiExists(api);
 
       final versionName = apiName + "/versions/" + versionId;
       var version = rpc.ApiVersion()
         ..name = versionName
         ..displayName = versionId;
       version.labels["created_from"] = source;
-      await this.ensureApiVersionExists(version);
+      await client.ensureApiVersionExists(version);
 
       final specName = versionName + "/specs/" + specId;
-      if (!await this.apiSpecExists(specName)) {
+      if (!await client.apiSpecExists(specName)) {
         var apiSpec = rpc.ApiSpec()
           ..filename = specId
           ..contents = GZipEncoder().encode(Utf8Encoder().convert(contents))
@@ -141,10 +164,8 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
           ..parent = versionName
           ..apiSpecId = specId
           ..apiSpec = apiSpec;
-        await this.createApiSpec(request);
+        await client.createApiSpec(request);
       }
-
-      // that's all
     } catch (error) {
       print("$error");
     }
