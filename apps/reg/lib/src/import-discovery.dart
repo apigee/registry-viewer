@@ -23,8 +23,6 @@ import 'package:registry/registry.dart' as rpc;
 
 final source = "discovery";
 
-String projectName;
-
 class ImportDiscoveryCommand extends Command {
   final name = "discovery";
   final description = "Import specs from the Google API Discovery Service.";
@@ -32,21 +30,21 @@ class ImportDiscoveryCommand extends Command {
   ImportDiscoveryCommand() {
     this.argParser
       ..addOption(
-        'project_id',
-        help: "Project id for imports.",
-        valueHelp: "PROJECT_ID",
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
       );
   }
 
   void run() async {
-    if (argResults['project_id'] == null) {
-      throw UsageException("Please specify --project_id", this.argParser.usage);
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-    projectName = "projects/" + argResults['project_id'];
+    final projectName = argResults['project'];
 
     final exists = await client.projectExists(projectName);
     await channel.shutdown();
@@ -57,7 +55,7 @@ class ImportDiscoveryCommand extends Command {
     final Queue<rpc.Task> tasks = Queue();
 
     for (var item in await fetchApiListings()) {
-      tasks.add(ImportDiscoveryTask(item));
+      tasks.add(ImportDiscoveryTask(item, projectName));
     }
 
     await rpc.TaskProcessor(tasks, 64).run();
@@ -75,8 +73,9 @@ Future<List<dynamic>> fetchApiListings() {
 
 class ImportDiscoveryTask implements rpc.Task {
   final item;
+  final projectName;
 
-  ImportDiscoveryTask(this.item);
+  ImportDiscoveryTask(this.item, this.projectName);
 
   String name() {
     final map = item as Map<String, dynamic>;
@@ -84,7 +83,7 @@ class ImportDiscoveryTask implements rpc.Task {
   }
 
   void run(rpc.RegistryClient client) async {
-    await client.importDiscoveryAPI(item);
+    await client.importDiscoveryAPI(item, projectName);
   }
 }
 
@@ -97,7 +96,7 @@ String filterOwner(String owner) {
 }
 
 extension DiscoveryImporter on rpc.RegistryClient {
-  void importDiscoveryAPI(item) async {
+  void importDiscoveryAPI(item, projectName) async {
     // get basic API attributes from the Discovery Service list
     var dict = item as Map<String, dynamic>;
     var title = dict["title"];

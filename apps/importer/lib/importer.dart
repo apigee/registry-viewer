@@ -63,6 +63,8 @@ extension Importing on rpc.RegistryClient {
     } on grpc.GrpcError catch (error) {
       if (error.code == grpc.StatusCode.notFound) {
         return false;
+      } else if (error.code == grpc.StatusCode.invalidArgument) {
+        return false;
       }
       rethrow;
     }

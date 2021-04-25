@@ -24,8 +24,6 @@ import 'package:yaml/yaml.dart';
 
 final source = "googleapis";
 
-String projectName;
-
 class ImportGoogleAPIsCommand extends Command {
   final name = "googleapis";
   final description = "Import specs from the GoogleAPIs repository.";
@@ -33,9 +31,9 @@ class ImportGoogleAPIsCommand extends Command {
   ImportGoogleAPIsCommand() {
     this.argParser
       ..addOption(
-        'project_id',
-        help: "Project id for imports.",
-        valueHelp: "PROJECT_ID",
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
       )
       ..addOption(
         'path',
@@ -45,8 +43,8 @@ class ImportGoogleAPIsCommand extends Command {
   }
 
   void run() async {
-    if (argResults['project_id'] == null) {
-      throw UsageException("Please specify --project_id", this.argParser.usage);
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
     if (argResults['path'] == null) {
       throw UsageException("Please specify --path", this.argParser.usage);
@@ -54,7 +52,7 @@ class ImportGoogleAPIsCommand extends Command {
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-    projectName = "projects/" + argResults['project_id'];
+    final projectName = argResults['project'];
 
     final exists = await client.projectExists(projectName);
     await channel.shutdown();
@@ -73,7 +71,8 @@ class ImportGoogleAPIsCommand extends Command {
       if (entity is Directory) {
         final match = versionDirectoryPattern.firstMatch(entity.path);
         if ((match != null) && (match.group(1) != null)) {
-          tasks.add(ImportGoogleApiTask(root, entity, match.group(1)));
+          tasks.add(
+              ImportGoogleApiTask(root, projectName, entity, match.group(1)));
         }
       }
     });
@@ -83,19 +82,21 @@ class ImportGoogleAPIsCommand extends Command {
 
 class ImportGoogleApiTask implements rpc.Task {
   final String root;
+  final String projectName;
   final Directory entity;
   final String versionId;
-  ImportGoogleApiTask(this.root, this.entity, this.versionId);
+  ImportGoogleApiTask(this.root, this.projectName, this.entity, this.versionId);
 
   String name() => entity.path + " " + versionId;
 
   void run(rpc.RegistryClient client) async {
-    await client.importProtobufApi(root, entity, versionId);
+    await client.importProtobufApi(root, projectName, entity, versionId);
   }
 }
 
 extension GoogleApiImporter on rpc.RegistryClient {
-  void importProtobufApi(String root, Directory dir, String versionId) async {
+  void importProtobufApi(
+      String root, String projectName, Directory dir, String versionId) async {
     // only import APIs with service yaml that specifies their title and name
     RegExp yamlPattern = new RegExp(r"\.yaml$");
     await Future.forEach(dir.listSync(recursive: true), (entity) async {

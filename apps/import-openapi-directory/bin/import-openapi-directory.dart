@@ -34,7 +34,7 @@ void main(List<String> args) {
 }
 
 class ImportOpenAPIDirectoryCommand extends Command {
-  final name = "";
+  final name = "import";
   final description = "Import specs from the OpenAPI Directory.";
 
   ImportOpenAPIDirectoryCommand() {

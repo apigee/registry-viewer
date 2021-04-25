@@ -27,15 +27,15 @@ final source = "openapi_directory";
 final maxDescriptionLength = 140;
 
 class ImportOpenAPIDirectoryCommand extends Command {
-  final name = "openapi";
+  final name = "openapi-directory";
   final description = "Import specs from the OpenAPI Directory.";
 
   ImportOpenAPIDirectoryCommand() {
     this.argParser
       ..addOption(
-        'project_id',
-        help: "Project id for imports.",
-        valueHelp: "PROJECT_ID",
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
       )
       ..addOption(
         'path',
@@ -45,8 +45,8 @@ class ImportOpenAPIDirectoryCommand extends Command {
   }
 
   void run() async {
-    if (argResults['project_id'] == null) {
-      throw UsageException("Please specify --project_id", this.argParser.usage);
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
     if (argResults['path'] == null) {
       throw UsageException("Please specify --path", this.argParser.usage);
@@ -54,7 +54,7 @@ class ImportOpenAPIDirectoryCommand extends Command {
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-    final projectName = "projects/" + argResults['project_id'];
+    final projectName = argResults['project'];
     final root = argResults['path'];
 
     final exists = await client.projectExists(projectName);
