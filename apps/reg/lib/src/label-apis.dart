@@ -40,7 +40,7 @@ class LabelAPIsCommand extends Command {
       throw UsageException("Please specify --project", this.argParser.usage);
     }
 
-    final projectName = argResults['version'];
+    final projectName = argResults['project'];
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());

@@ -6,10 +6,19 @@ macos
 test
 
 # Generated Protocol Buffer support code.
-registry/lib/generated
+registry/lib/src/generated
 
 # Generated build timestamp.
-registry/lib/build.dart
+viewer/lib/build.dart
 
 # Copied assets staged for web deployment.
 site/public
+site/public.tgz
+
+# Dart build artifacts
+pubspec.lock
+.dart_tool
+.packages
+
+# Compiled "reg" tool
+apps/reg/reg
