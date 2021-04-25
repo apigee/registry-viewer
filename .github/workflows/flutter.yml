@@ -41,3 +41,8 @@ jobs:
       run: make protos
     - name: Build the web target
       run: make staging
+    - name: Build the reg command-line tool
+      run: |
+        cd apps/reg
+        flutter pub get
+        make

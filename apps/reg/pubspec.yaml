@@ -5,8 +5,6 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  command:
-    path: ../command
   importer:
     path: ../importer
   registry:
