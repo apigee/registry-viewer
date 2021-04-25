@@ -1,11 +1,18 @@
 #!/bin/sh
 
-apg registry delete-project --name projects/motley
+apg registry delete-project \
+	--name projects/motley
 
-dart import-common-protos/bin/import-common-protos.dart 
-dart import-googleapis/bin/import-googleapis.dart 
-dart compute-summary/bin/compute-summary.dart 
-dart label-apis/bin/label-apis.dart 
+apg registry create-project \
+	--project_id motley \
+	--project.display_name "Motley APIs" \
+	--project.description "API descriptions from a variety of sources"
+
+reg import common-protos --project projects/motley --path ~/Desktop/api-common-protos
+reg import googleapis --project projects/motley --path ~/Desktop/googleapis
+reg compute-summary --project projects/motley
+reg label-apis --project projects/motley
+
 registry compute references projects/motley/apis/-/versions/-/specs/-
 registry compute complexity projects/motley/apis/-/versions/-/specs/-
 registry compute index projects/motley/apis/-/versions/-/specs/-

@@ -23,8 +23,6 @@ import 'package:registry/registry.dart' as rpc;
 
 final source = "google-common-protos";
 
-String projectName;
-
 class Entry {
   String api;
   String version;
@@ -40,9 +38,9 @@ class ImportCommonProtosCommand extends Command {
   ImportCommonProtosCommand() {
     this.argParser
       ..addOption(
-        'project_id',
+        'project',
         help: "Project id for imports.",
-        valueHelp: "PROJECT_ID",
+        valueHelp: "PROJECT",
       )
       ..addOption(
         'path',
@@ -52,8 +50,8 @@ class ImportCommonProtosCommand extends Command {
   }
 
   void run() async {
-    if (argResults['project_id'] == null) {
-      throw UsageException("Please specify --project_id", this.argParser.usage);
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
     if (argResults['path'] == null) {
       throw UsageException("Please specify --path", this.argParser.usage);
@@ -61,7 +59,7 @@ class ImportCommonProtosCommand extends Command {
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-    projectName = "projects/" + argResults['project_id'];
+    final projectName = argResults['project'];
 
     final exists = await client.projectExists(projectName);
     await channel.shutdown();
@@ -133,7 +131,7 @@ class ImportCommonProtosCommand extends Command {
 
     final Queue<rpc.Task> tasks = Queue();
     for (var entry in entries) {
-      tasks.add(ImportCommonProtosTask(root, entry));
+      tasks.add(ImportCommonProtosTask(root, projectName, entry));
     }
     await rpc.TaskProcessor(tasks, 1).run();
   }
@@ -141,19 +139,21 @@ class ImportCommonProtosCommand extends Command {
 
 class ImportCommonProtosTask implements rpc.Task {
   final String root;
+  final String projectName;
   final Entry entry;
-  ImportCommonProtosTask(this.root, this.entry);
+  ImportCommonProtosTask(this.root, this.projectName, this.entry);
 
   String name() => entry.api + " " + entry.version + " " + entry.path;
 
   void run(rpc.RegistryClient client) async {
-    await client.importProtobufApi(root, entry);
+    await client.importProtobufApi(root, projectName, entry);
   }
 }
 
 extension GoogleApiImporter on rpc.RegistryClient {
   void importProtobufApi(
     String root,
+    String projectName,
     Entry entry,
   ) async {
     var apiId = entry.api;

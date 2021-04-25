@@ -26,8 +26,6 @@ final source = "asyncapi_directory";
 
 final maxDescriptionLength = 140;
 
-String projectName;
-
 class ImportAsyncAPIDirectoryCommand extends Command {
   final name = "asyncapi-directory";
   final description = "Import specs from an AsyncAPI Directory.";
@@ -35,9 +33,9 @@ class ImportAsyncAPIDirectoryCommand extends Command {
   ImportAsyncAPIDirectoryCommand() {
     this.argParser
       ..addOption(
-        'project_id',
-        help: "Project id for imports.",
-        valueHelp: "PROJECT_ID",
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
       )
       ..addOption(
         'path',
@@ -47,8 +45,8 @@ class ImportAsyncAPIDirectoryCommand extends Command {
   }
 
   void run() async {
-    if (argResults['project_id'] == null) {
-      throw UsageException("Please specify --project_id", this.argParser.usage);
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
     if (argResults['path'] == null) {
       throw UsageException("Please specify --path", this.argParser.usage);
@@ -56,11 +54,10 @@ class ImportAsyncAPIDirectoryCommand extends Command {
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-    projectName = "projects/" + argResults['project_id'];
+    final projectName = argResults['project'];
     final root = argResults['path'];
 
     final exists = await client.projectExists(projectName);
-    await channel.shutdown();
     if (!exists) {
       throw UsageException("$projectName does not exist", this.argParser.usage);
     }
@@ -72,7 +69,7 @@ class ImportAsyncAPIDirectoryCommand extends Command {
     await Future.forEach(paths, (entity) async {
       if (entity is File) {
         if (apiSpecPattern.hasMatch(entity.path)) {
-          await client.importAsyncAPI(root, entity.path);
+          await client.importAsyncAPI(root, projectName, entity.path);
         }
       }
     });
@@ -82,7 +79,7 @@ class ImportAsyncAPIDirectoryCommand extends Command {
 }
 
 extension AsyncAPIImporter on rpc.RegistryClient {
-  void importAsyncAPI(String root, path) async {
+  void importAsyncAPI(String root, projectName, path) async {
     var name = path.substring(root.length + 1);
 
     var parts = name.split("/");
