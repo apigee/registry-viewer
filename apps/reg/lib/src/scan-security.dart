@@ -21,8 +21,6 @@ import 'package:yaml/yaml.dart';
 
 final source = "discovery";
 
-String versionName;
-
 class ScanSecurityCommand extends Command {
   final name = "security";
   final description = "Scan security fields in OpenAPI specs.";
@@ -32,7 +30,12 @@ class ScanSecurityCommand extends Command {
       ..addOption(
         'version',
         help: "Version to scan (may include wildcards).",
-        valueHelp: "VERSION_ID",
+        valueHelp: "VERSION",
+      )
+      ..addOption(
+        'filter',
+        help: "Expression to filter the scanned versions.",
+        valueHelp: "FILTER",
       );
   }
 
@@ -41,7 +44,8 @@ class ScanSecurityCommand extends Command {
       throw UsageException("Please specify --version", this.argParser.usage);
     }
 
-    versionName = argResults['version'];
+    String versionName = argResults['version'];
+    String filter = argResults['filter'];
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
@@ -49,6 +53,7 @@ class ScanSecurityCommand extends Command {
     await rpc.listAPISpecs(
       client,
       parent: versionName,
+      filter: filter,
       f: (spec) async {
         var format = typeFromMimeType(spec.mimeType);
         if (format == "openapi") {
