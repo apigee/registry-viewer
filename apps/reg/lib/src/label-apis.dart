@@ -13,14 +13,9 @@
 // limitations under the License.
 
 import 'dart:collection';
-import 'dart:convert';
 
-import 'package:archive/archive.dart';
 import 'package:args/command_runner.dart';
-import 'package:http/http.dart' as http;
-import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
-import 'dart:io';
 
 class LabelAPIsCommand extends Command {
   final name = "apis";
