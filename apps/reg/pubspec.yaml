@@ -1,5 +1,5 @@
-name: label_apis
-description: Label APIs with interesting characteristics.
+name: reg
+description: Manage information in an API Registry.
 
 environment:
   sdk: '>=2.10.0 <3.0.0'

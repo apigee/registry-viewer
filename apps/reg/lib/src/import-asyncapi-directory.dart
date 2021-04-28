@@ -12,69 +12,73 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:args/command_runner.dart';
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
 
-final projectDescription = "APIs from a variety of sources";
-final projectDisplayName = "Motley APIs";
-final projectName = "projects/motley";
-final source = "openapi_directory";
+final source = "asyncapi_directory";
 
 final maxDescriptionLength = 140;
 
-void main(List<String> arguments) async {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+class ImportAsyncAPIDirectoryCommand extends Command {
+  final name = "asyncapi-directory";
+  final description = "Import specs from an AsyncAPI Directory.";
 
-  await client.ensureProjectExists(rpc.Project()
-    ..name = projectName
-    ..displayName = projectDisplayName
-    ..description = projectDescription);
+  ImportAsyncAPIDirectoryCommand() {
+    this.argParser
+      ..addOption(
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
+      )
+      ..addOption(
+        'path',
+        help: "Path to a directory containing AsyncAPI descriptions.",
+        valueHelp: "PATH",
+      );
+  }
 
-  await channel.shutdown();
-
-  // This assumes the OpenAPI Directory repo is checked out in ~/Desktop/openapi-directory
-  String root =
-      (Platform.environment['HOME'] ?? "") + '/Desktop/openapi-directory/APIs';
-
-  final Queue<rpc.Task> tasks = Queue();
-
-  // API specs are in files named "swagger.yaml" or "openapi.yaml".
-  RegExp apiSpecPattern = new RegExp(r"/(swagger|openapi).yaml$");
-  var paths = Directory(root).listSync(recursive: true);
-  paths.sort((a, b) => a.path.compareTo(b.path));
-  await Future.forEach(paths, (entity) async {
-    if (entity is File) {
-      if (apiSpecPattern.hasMatch(entity.path)) {
-        tasks.add(ImportOpenAPIDirectoryTask(root, entity.path));
-      }
+  void run() async {
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
-  });
+    if (argResults['path'] == null) {
+      throw UsageException("Please specify --path", this.argParser.usage);
+    }
+    final channel = rpc.createClientChannel();
+    final client = rpc.RegistryClient(channel, options: rpc.callOptions());
 
-  await rpc.TaskProcessor(tasks, 64).run();
-}
+    final projectName = argResults['project'];
+    final root = argResults['path'];
 
-class ImportOpenAPIDirectoryTask implements rpc.Task {
-  final String root;
-  final String path;
+    final exists = await client.projectExists(projectName);
+    if (!exists) {
+      throw UsageException("$projectName does not exist", this.argParser.usage);
+    }
 
-  ImportOpenAPIDirectoryTask(this.root, this.path);
+    // API specs are in files named "asyncapi.yaml".
+    RegExp apiSpecPattern = new RegExp(r"/asyncapi.yaml$");
+    var paths = Directory(root).listSync(recursive: true);
+    paths.sort((a, b) => a.path.compareTo(b.path));
+    await Future.forEach(paths, (entity) async {
+      if (entity is File) {
+        if (apiSpecPattern.hasMatch(entity.path)) {
+          await client.importAsyncAPI(root, projectName, entity.path);
+        }
+      }
+    });
 
-  String name() => path;
-
-  void run(rpc.RegistryClient client) async {
-    await client.importOpenAPIDirectoryAPI(root, path);
+    await channel.shutdown();
   }
 }
 
-extension OpenApiDirectoryImporter on rpc.RegistryClient {
-  void importOpenAPIDirectoryAPI(String root, path) async {
+extension AsyncAPIImporter on rpc.RegistryClient {
+  void importAsyncAPI(String root, projectName, path) async {
     var name = path.substring(root.length + 1);
 
     var parts = name.split("/");
@@ -86,7 +90,6 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
     } else {
       apiId = owner + "-" + apiParts.sublist(1).join("-");
     }
-    apiId = apiId.toLowerCase();
     var versionId = parts[parts.length - 2];
     var specId = parts.last;
 
@@ -96,23 +99,20 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
 
       // compute mime type from internal format string
       var mimeType;
-      var swagger = doc["swagger"];
-      if (swagger != null) {
-        mimeType = "application/x.openapi+gzip;version=" + swagger;
-      }
-      var openapi = doc["openapi"];
-      if (openapi != null) {
-        mimeType = "application/x.openapi+gzip;version=" + openapi;
+      var asyncapi = doc["asyncapi"];
+      if (asyncapi != null) {
+        mimeType = "application/x.asyncapi+gzip;version=" + asyncapi;
       }
       var info = doc["info"];
       var apiTitle = info["title"] ?? "";
-      if (owner == "google") {
-        apiTitle = GoogleApis.titleForTitle(apiTitle);
-      }
       var description = info["description"] ?? "";
       if (description.length > maxDescriptionLength) {
         description = description.substring(0, maxDescriptionLength) + "...";
       }
+
+      print("uploading $apiId $versionId $specId");
+      print("$apiTitle");
+      print("$description");
 
       final apiName = projectName + "/apis/" + apiId;
       var api = rpc.Api()
@@ -151,6 +151,11 @@ extension OpenApiDirectoryImporter on rpc.RegistryClient {
   }
 
   String filterOwner(String owner) {
-    return owner.toLowerCase();
+    switch (owner) {
+      case "googleapis.com":
+        return "google";
+      default:
+        return owner;
+    }
   }
 }

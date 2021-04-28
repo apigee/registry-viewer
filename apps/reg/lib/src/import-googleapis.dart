@@ -16,59 +16,87 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:args/command_runner.dart';
 import 'package:grpc/grpc.dart' as grpc;
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
 
-final projectDescription = "APIs from a variety of sources";
-final projectDisplayName = "Motley APIs";
-final projectName = "projects/motley";
 final source = "googleapis";
 
-void main(List<String> arguments) async {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+class ImportGoogleAPIsCommand extends Command {
+  final name = "googleapis";
+  final description = "Import specs from the GoogleAPIs repository.";
 
-  await client.ensureProjectExists(rpc.Project()
-    ..name = projectName
-    ..displayName = projectDisplayName
-    ..description = projectDescription);
-  await channel.shutdown();
+  ImportGoogleAPIsCommand() {
+    this.argParser
+      ..addOption(
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
+      )
+      ..addOption(
+        'path',
+        help: "Path to a directory containing the GoogleAPIs repository.",
+        valueHelp: "PATH",
+      );
+  }
 
-  // This assumes the googleapis repo is checked out in ~/Desktop/googleapis
-  String root = (Platform.environment['HOME'] ?? "") + '/Desktop/googleapis';
-
-  // API versions are in directories with names ending with this pattern.
-  RegExp versionDirectoryPattern = new RegExp(r"/(v(\d+)((alpha|beta)\d+)?)$");
-  final Queue<rpc.Task> tasks = Queue();
-  await Future.forEach(Directory(root).listSync(recursive: true),
-      (entity) async {
-    if (entity is Directory) {
-      final match = versionDirectoryPattern.firstMatch(entity.path);
-      if ((match != null) && (match.group(1) != null)) {
-        tasks.add(ImportGoogleApiTask(root, entity, match.group(1)));
-      }
+  void run() async {
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
     }
-  });
-  await rpc.TaskProcessor(tasks, 64).run();
+    if (argResults['path'] == null) {
+      throw UsageException("Please specify --path", this.argParser.usage);
+    }
+    final channel = rpc.createClientChannel();
+    final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+
+    final projectName = argResults['project'];
+
+    final exists = await client.projectExists(projectName);
+    await channel.shutdown();
+    if (!exists) {
+      throw UsageException("$projectName does not exist", this.argParser.usage);
+    }
+
+    String root = argResults['path'];
+
+    // API versions are in directories with names ending with this pattern.
+    RegExp versionDirectoryPattern =
+        new RegExp(r"/(v(\d+)((alpha|beta)\d+)?)$");
+    final Queue<rpc.Task> tasks = Queue();
+    await Future.forEach(Directory(root).listSync(recursive: true),
+        (entity) async {
+      if (entity is Directory) {
+        final match = versionDirectoryPattern.firstMatch(entity.path);
+        if ((match != null) && (match.group(1) != null)) {
+          tasks.add(
+              ImportGoogleApiTask(root, projectName, entity, match.group(1)));
+        }
+      }
+    });
+    await rpc.TaskProcessor(tasks, 64).run();
+  }
 }
 
 class ImportGoogleApiTask implements rpc.Task {
   final String root;
+  final String projectName;
   final Directory entity;
   final String versionId;
-  ImportGoogleApiTask(this.root, this.entity, this.versionId);
+  ImportGoogleApiTask(this.root, this.projectName, this.entity, this.versionId);
 
   String name() => entity.path + " " + versionId;
 
   void run(rpc.RegistryClient client) async {
-    await client.importProtobufApi(root, entity, versionId);
+    await client.importProtobufApi(root, projectName, entity, versionId);
   }
 }
 
 extension GoogleApiImporter on rpc.RegistryClient {
-  void importProtobufApi(String root, Directory dir, String versionId) async {
+  void importProtobufApi(
+      String root, String projectName, Directory dir, String versionId) async {
     // only import APIs with service yaml that specifies their title and name
     RegExp yamlPattern = new RegExp(r"\.yaml$");
     await Future.forEach(dir.listSync(recursive: true), (entity) async {

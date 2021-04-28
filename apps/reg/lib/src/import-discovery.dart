@@ -16,33 +16,50 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
+import 'package:args/command_runner.dart';
 import 'package:http/http.dart' as http;
 import 'package:importer/importer.dart';
 import 'package:registry/registry.dart' as rpc;
 
-final projectDescription = "APIs from a variety of sources";
-final projectDisplayName = "Motley APIs";
-final projectName = "projects/motley";
 final source = "discovery";
 
-void main(List<String> arguments) async {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+class ImportDiscoveryCommand extends Command {
+  final name = "discovery";
+  final description = "Import specs from the Google API Discovery Service.";
 
-  await client.ensureProjectExists(rpc.Project()
-    ..name = projectName
-    ..displayName = projectDisplayName
-    ..description = projectDescription);
-
-  await channel.shutdown();
-
-  final Queue<rpc.Task> tasks = Queue();
-
-  for (var item in await fetchApiListings()) {
-    tasks.add(ImportDiscoveryTask(item));
+  ImportDiscoveryCommand() {
+    this.argParser
+      ..addOption(
+        'project',
+        help: "Project for imports.",
+        valueHelp: "PROJECT",
+      );
   }
 
-  await rpc.TaskProcessor(tasks, 64).run();
+  void run() async {
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
+    }
+
+    final channel = rpc.createClientChannel();
+    final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+
+    final projectName = argResults['project'];
+
+    final exists = await client.projectExists(projectName);
+    await channel.shutdown();
+    if (!exists) {
+      throw UsageException("$projectName does not exist", this.argParser.usage);
+    }
+
+    final Queue<rpc.Task> tasks = Queue();
+
+    for (var item in await fetchApiListings()) {
+      tasks.add(ImportDiscoveryTask(item, projectName));
+    }
+
+    await rpc.TaskProcessor(tasks, 64).run();
+  }
 }
 
 Future<List<dynamic>> fetchApiListings() {
@@ -56,8 +73,9 @@ Future<List<dynamic>> fetchApiListings() {
 
 class ImportDiscoveryTask implements rpc.Task {
   final item;
+  final projectName;
 
-  ImportDiscoveryTask(this.item);
+  ImportDiscoveryTask(this.item, this.projectName);
 
   String name() {
     final map = item as Map<String, dynamic>;
@@ -65,7 +83,7 @@ class ImportDiscoveryTask implements rpc.Task {
   }
 
   void run(rpc.RegistryClient client) async {
-    await client.importDiscoveryAPI(item);
+    await client.importDiscoveryAPI(item, projectName);
   }
 }
 
@@ -78,7 +96,7 @@ String filterOwner(String owner) {
 }
 
 extension DiscoveryImporter on rpc.RegistryClient {
-  void importDiscoveryAPI(item) async {
+  void importDiscoveryAPI(item, projectName) async {
     // get basic API attributes from the Discovery Service list
     var dict = item as Map<String, dynamic>;
     var title = dict["title"];

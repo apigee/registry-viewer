@@ -13,13 +13,48 @@
 // limitations under the License.
 
 import 'dart:collection';
-import 'package:importer/importer.dart';
+
+import 'package:args/command_runner.dart';
 import 'package:registry/registry.dart' as rpc;
 
-final projectDescription = "APIs from a variety of sources";
-final projectDisplayName = "Motley APIs";
-final projectName = "projects/motley";
-final source = "openapi_directory";
+class LabelAPIsCommand extends Command {
+  final name = "apis";
+  final description = "Label APIs with computed properties.";
+
+  LabelAPIsCommand() {
+    this.argParser
+      ..addOption(
+        'project',
+        help: "Project.",
+        valueHelp: "PROJECT",
+      );
+  }
+
+  void run() async {
+    if (argResults['project'] == null) {
+      throw UsageException("Please specify --project", this.argParser.usage);
+    }
+
+    final projectName = argResults['project'];
+
+    final channel = rpc.createClientChannel();
+    final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+
+    final Queue<rpc.Task> tasks = Queue();
+    await rpc.listAPIs(
+      client,
+      parent: projectName,
+      f: (api) async {
+        print(api.name);
+        tasks.add(LabelApiTask(api.name));
+      },
+    );
+
+    await channel.shutdown();
+
+    await rpc.TaskProcessor(tasks, 64).run();
+  }
+}
 
 String typeFromMimeType(String mimeType) {
   RegExp mimeTypePattern = new RegExp(r"^application/x.([^\+;]*)(.*)?$");
@@ -28,30 +63,6 @@ String typeFromMimeType(String mimeType) {
     return match.group(1);
   }
   return mimeType;
-}
-
-void main(List<String> arguments) async {
-  final channel = rpc.createClientChannel();
-  final client = rpc.RegistryClient(channel, options: rpc.callOptions());
-
-  await client.ensureProjectExists(rpc.Project()
-    ..name = projectName
-    ..displayName = projectDisplayName
-    ..description = projectDescription);
-
-  final Queue<rpc.Task> tasks = Queue();
-  await rpc.listAPIs(
-    client,
-    parent: projectName,
-    f: (api) async {
-      print(api.name);
-      tasks.add(LabelApiTask(api.name));
-    },
-  );
-
-  await channel.shutdown();
-
-  await rpc.TaskProcessor(tasks, 64).run();
 }
 
 class LabelApiTask implements rpc.Task {
