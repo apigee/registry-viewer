@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export 'src/generated/google/api/httpbody.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pb.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbenum.dart';
 export 'src/generated/google/cloud/apigee/registry/applications/v1alpha1/registry_index.pbjson.dart';
