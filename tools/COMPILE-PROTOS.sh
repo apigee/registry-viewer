@@ -47,6 +47,7 @@ protoc \
 	${PROTOC}/google/protobuf/timestamp.proto \
 	${PROTOC}/google/protobuf/field_mask.proto \
 	${PROTOC}/google/protobuf/empty.proto \
+	${COMMON}/google/api/httpbody.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigee/registry/v1/registry_service.proto \
 	${REGISTRY}/google/cloud/apigee/registry/applications/v1alpha1/registry_index.proto \
