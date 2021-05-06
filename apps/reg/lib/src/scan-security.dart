@@ -14,7 +14,6 @@
 
 import 'dart:convert';
 
-import 'package:archive/archive.dart';
 import 'package:args/command_runner.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
