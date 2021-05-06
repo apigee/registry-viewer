@@ -280,19 +280,6 @@ class SpecService {
       throw err;
     }
   }
-
-  Future<ApiSpec> getSpec(String name) {
-    final client = getClient();
-    final request = GetApiSpecRequest();
-    request.name = name;
-    request.view = View.FULL;
-    try {
-      return client.getApiSpec(request, options: callOptions());
-    } catch (err) {
-      print('Caught error: $err');
-      return null;
-    }
-  }
 }
 
 class ArtifactService {
@@ -318,7 +305,6 @@ class ArtifactService {
     final request = ListArtifactsRequest();
     request.parent = parent;
     request.pageSize = limit;
-    request.view = View.FULL;
     if (filter != null) {
       request.filter = filter;
     }

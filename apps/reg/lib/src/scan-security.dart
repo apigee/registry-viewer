@@ -14,7 +14,6 @@
 
 import 'dart:convert';
 
-import 'package:archive/archive.dart';
 import 'package:args/command_runner.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
@@ -45,7 +44,7 @@ class ScanSecurityCommand extends Command {
     }
 
     String versionName = argResults['version'];
-    String filter = argResults['filter'];
+    String filter = argResults['filter'] ?? "";
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
@@ -57,13 +56,11 @@ class ScanSecurityCommand extends Command {
       f: (spec) async {
         var format = typeFromMimeType(spec.mimeType);
         if (format == "openapi") {
-          var request = rpc.GetApiSpecRequest()
-            ..name = spec.name
-            ..view = rpc.View.FULL;
-          var fullSpec = await client.getApiSpec(request);
+          var request = rpc.GetApiSpecContentsRequest()
+            ..name = spec.name + "/contents";
+          var fullSpec = await client.getApiSpecContents(request);
           try {
-            var contents =
-                utf8.decode(GZipDecoder().decodeBytes(fullSpec.contents));
+            var contents = utf8.decode(fullSpec.data);
             var doc = loadYaml(contents);
             if (doc["swagger"] != null) {
               // look for openapi v2 security

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 
@@ -209,8 +210,16 @@ class SpecManager extends ResourceManager<ApiSpec> {
   Future<ApiSpec> fetchFuture(RegistryClient client) {
     final request = GetApiSpecRequest();
     request.name = name;
-    request.view = View.FULL;
-    return client.getApiSpec(request, options: callOptions());
+    return client.getApiSpec(request, options: callOptions()).then((spec) {
+      final request = GetApiSpecContentsRequest();
+      request.name = spec.name + "/contents";
+      return client
+          .getApiSpecContents(request, options: callOptions())
+          .then((contents) {
+        spec.contents = GZipEncoder().encode(contents.data);
+        return spec;
+      });
+    });
   }
 
   void update(ApiSpec newValue, List<String> paths, Function onError) {
@@ -233,8 +242,17 @@ class ArtifactManager extends ResourceManager<Artifact> {
   Future<Artifact> fetchFuture(RegistryClient client) {
     final request = GetArtifactRequest();
     request.name = name;
-    request.view = View.FULL;
-    return client.getArtifact(request, options: callOptions());
+    return client.getArtifact(request, options: callOptions()).then((artifact) {
+      final request = GetArtifactContentsRequest();
+      request.name = artifact.name + "/contents";
+      return client
+          .getArtifactContents(request, options: callOptions())
+          .then((contents) {
+        artifact.contents = contents.data;
+        artifact.mimeType = contents.contentType;
+        return artifact;
+      });
+    });
   }
 
   Future<Artifact> update(Artifact newValue, Function onError) {
