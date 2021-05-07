@@ -134,7 +134,7 @@ server:
   to call the
   [Google Signin API](https://developers.google.com/identity/sign-in/web).
 
-- `registry-server` (environment variable `REGISTRY_SERVER`) is the URL of your
+- `registry-service` (environment variable `REGISTRY_SERVICE`) is the URL of your
   Registry API server (backend). Note that because web deployments run in
   browsers, a [grpc-web](https://github.com/grpc/grpc-web) interface to the
   Registry API is required. To support this, the
