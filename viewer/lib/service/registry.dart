@@ -216,7 +216,12 @@ class SpecManager extends ResourceManager<ApiSpec> {
       return client
           .getApiSpecContents(request, options: callOptions())
           .then((contents) {
-        spec.contents = GZipEncoder().encode(contents.data);
+        if (spec.mimeType.contains("+gzip") &&
+            !contents.contentType.contains("+gzip")) {
+          spec.contents = GZipEncoder().encode(contents.data);
+        } else {
+          spec.contents = contents.data;
+        }
         return spec;
       });
     });
