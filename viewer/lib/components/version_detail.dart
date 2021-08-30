@@ -136,7 +136,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
                       PageSection(
                         children: [
                           SizedBox(height: 10),
-                          SuperTitleRow(api?.displayName),
+                          SuperTitleRow(api?.displayName ?? ""),
                           TitleRow(version.name.split("/").last,
                               action: selflink),
                         ],

@@ -33,9 +33,9 @@ class SpecDetailPage extends StatelessWidget {
 
     Future.delayed(const Duration(), () {
       selection
-          .updateApiName(name.substring(1).split("/").sublist(0, 4).join("/"));
+          .updateApiName(name.substring(1).split("/").sublist(0, 6).join("/"));
       selection.updateVersionName(
-          name.substring(1).split("/").sublist(0, 6).join("/"));
+          name.substring(1).split("/").sublist(0, 8).join("/"));
       selection.updateSpecName(name.substring(1));
     });
 

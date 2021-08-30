@@ -45,10 +45,10 @@ class _VersionListPageState extends State<VersionListPage> {
         pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
   }
 
-  // convert /projects/{project}/apis/{api}/versions
-  // to projects/{project}/apis/{api}
+  // convert /projects/{project}/locations/global/apis/{api}/versions
+  // to projects/{project}/locations/global/apis/{api}
   String parentName() {
-    return widget.name.split('/').sublist(1, 5).join('/');
+    return widget.name.split('/').sublist(1, 7).join('/');
   }
 
   @override

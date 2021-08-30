@@ -45,9 +45,9 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
         pageFuture: (pageIndex) => artifactService.getArtifactsPage(pageIndex));
   }
 
-  // convert /projects/{project}/artifacts to projects/{project}
+  // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global
   String parentName() {
-    return widget.name.split('/').sublist(1, 3).join('/');
+    return widget.name.split('/').sublist(1, 5).join('/');
   }
 
   @override
