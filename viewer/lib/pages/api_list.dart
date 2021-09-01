@@ -45,9 +45,10 @@ class _ApiListPageState extends State<ApiListPage> {
         pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
   }
 
-  // convert /projects/{project}/apis to projects/{project}
+  // convert /projects/{project}/locations/global/apis
+  // to projects/{project}/locations/global
   String parentName() {
-    return widget.name.split('/').sublist(1, 3).join('/');
+    return widget.name.split('/').sublist(1, 5).join('/');
   }
 
   @override

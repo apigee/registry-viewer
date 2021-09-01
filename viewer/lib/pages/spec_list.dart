@@ -45,10 +45,10 @@ class _SpecListPageState extends State<SpecListPage> {
         pageFuture: (pageIndex) => this.specService.getSpecsPage(pageIndex));
   }
 
-  // convert /projects/{project}/apis/{api}/versions/{version}/specs
-  // to projects/{project}/apis/{api}/versions/{version}
+  // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs
+  // to projects/{project}/locations/global/apis/{api}/versions/{version}
   String parentName() {
-    return widget.name.split('/').sublist(1, 7).join('/');
+    return widget.name.split('/').sublist(1, 9).join('/');
   }
 
   @override

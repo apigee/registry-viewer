@@ -45,7 +45,7 @@ class RegistryRouter {
     const namePattern = r"([a-zA-Z0-9-_\.]+)";
     const projectsPattern = r"^/projects";
     const projectPattern = projectsPattern + r"/" + namePattern;
-    const apisPattern = projectPattern + r"/apis";
+    const apisPattern = projectPattern + r"/locations/global/apis";
     const apiPattern = apisPattern + r"/" + namePattern;
     const versionsPattern = apiPattern + r"/versions";
     const versionPattern = versionsPattern + r"/" + namePattern;
