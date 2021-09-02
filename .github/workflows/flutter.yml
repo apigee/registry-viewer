@@ -21,7 +21,6 @@ jobs:
         sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip > /tmp/protoc.zip
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
-        ln -s /usr/local $HOME/local
     - name: Install Flutter tools
       uses: subosito/flutter-action@v1
       with:

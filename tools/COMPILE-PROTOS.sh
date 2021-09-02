@@ -20,7 +20,7 @@
 #
 
 # This points to the .proto files distributed with protoc.
-export PROTOC="$HOME/local/include"
+export PROTOC="/usr/local/include"
 
 # This is a third_party directory containing .proto files used by many APIs.
 export COMMON="third_party/api-common-protos"
