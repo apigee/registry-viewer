@@ -12,6 +12,7 @@ buildstamp:
 
 protos:
 	cd third_party; ./SETUP.sh
+	flutter pub global activate protoc_plugin 
 	./tools/COMPILE-PROTOS.sh
 
 create:
