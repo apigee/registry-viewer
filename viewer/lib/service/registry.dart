@@ -212,7 +212,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
     request.name = name;
     return client.getApiSpec(request, options: callOptions()).then((spec) {
       final request = GetApiSpecContentsRequest();
-      request.name = spec.name + "/contents";
+      request.name = spec.name;
       return client
           .getApiSpecContents(request, options: callOptions())
           .then((contents) {
@@ -249,7 +249,7 @@ class ArtifactManager extends ResourceManager<Artifact> {
     request.name = name;
     return client.getArtifact(request, options: callOptions()).then((artifact) {
       final request = GetArtifactContentsRequest();
-      request.name = artifact.name + "/contents";
+      request.name = artifact.name;
       return client
           .getArtifactContents(request, options: callOptions())
           .then((contents) {
