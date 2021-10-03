@@ -21,21 +21,21 @@
 # Available platforms will depend on the local installation of Docker.
 
 # ORGANIZATION should be dockerhub organization that will host the images
-ORGANIZATION=apiregistry
+#ORGANIZATION=
 
-TARGET=dev
+#TARGET=
 
 if [[ $TARGET == "dev" ]]
 then
   # If TARGET is specified as "dev", a minimal set of containers are built.
   # Container names have the suffix "-dev".
   SUFFIX="-$TARGET"
-  CONTAINERS=("reg")
+  CONTAINERS=("registry-viewer" "reg")
   PLATFORMS="linux/arm64"
 else
   # Otherwise, all containers are built.
   SUFFIX=""
-  CONTAINERS=("registry-viewer")
+  CONTAINERS=("registry-viewer" "reg")
   PLATFORMS="linux/amd64,linux/arm64"
 fi
 

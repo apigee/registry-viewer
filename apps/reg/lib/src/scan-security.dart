@@ -56,8 +56,7 @@ class ScanSecurityCommand extends Command {
       f: (spec) async {
         var format = typeFromMimeType(spec.mimeType);
         if (format == "openapi") {
-          var request = rpc.GetApiSpecContentsRequest()
-            ..name = spec.name + "/contents";
+          var request = rpc.GetApiSpecContentsRequest()..name = spec.name;
           var fullSpec = await client.getApiSpecContents(request);
           try {
             var contents = utf8.decode(fullSpec.data);
