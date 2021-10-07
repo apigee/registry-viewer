@@ -105,7 +105,7 @@ class ComputeSummaryCommand extends Command {
     var artifact = rpc.Artifact()
       ..name = projectName + "/artifacts/summary"
       ..mimeType =
-          "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.RegistrySummary"
+          "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.RegistrySummary"
       ..contents = summary.writeToBuffer();
     var createRequest = rpc.CreateArtifactRequest()
       ..parent = projectName

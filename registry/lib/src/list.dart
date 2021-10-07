@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'generated/google/cloud/apigee/registry/v1/registry_service.pb.dart';
-import 'generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
-import 'generated/google/cloud/apigee/registry/v1/registry_models.pbenum.dart';
+import 'generated/google/cloud/apigeeregistry/v1/registry_service.pb.dart';
+import 'generated/google/cloud/apigeeregistry/v1/registry_service.pbgrpc.dart';
+import 'generated/google/cloud/apigeeregistry/v1/registry_models.pbenum.dart';
 import 'grpc_client.dart';
 
 void nil() {}

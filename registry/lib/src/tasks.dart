@@ -17,7 +17,7 @@ import 'dart:collection';
 import 'dart:isolate';
 
 import 'grpc_client.dart';
-import 'generated/google/cloud/apigee/registry/v1/registry_service.pbgrpc.dart';
+import 'generated/google/cloud/apigeeregistry/v1/registry_service.pbgrpc.dart';
 
 abstract class Task {
   void run(RegistryClient client);
