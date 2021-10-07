@@ -35,7 +35,7 @@ then
 else
   # Otherwise, all containers are built.
   SUFFIX=""
-  CONTAINERS=("registry-viewer")
+  CONTAINERS=("registry-viewer" "reg")
   PLATFORMS="linux/amd64,linux/arm64"
 fi
 
