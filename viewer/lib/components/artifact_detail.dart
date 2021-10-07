@@ -108,15 +108,15 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
           return ComplexityArtifactCard(artifact, selflink: selflink);
         case "application/octet-stream;type=gnostic.metrics.Vocabulary":
           return VocabularyArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.Index":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Index":
           return IndexArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.Lint":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Lint":
           return LintArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.LintStats":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.LintStats":
           return LintStatsArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.References":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.References":
           return ReferencesArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigee.registry.applications.v1alpha1.RegistrySummary":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.RegistrySummary":
           return RegistrySummaryArtifactCard(artifact, selflink: selflink);
       }
 
