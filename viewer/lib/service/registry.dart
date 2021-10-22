@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
+AdminClient getAdminClient() => AdminClient(createClientChannel());
 
 class RegistryProvider extends InheritedWidget {
   final Registry registry;
@@ -122,8 +123,7 @@ abstract class ResourceManager<T> extends Manager {
 
   void _fetch() {
     if (name == "") return;
-    final client = getClient();
-    _future = fetchFuture(client);
+    _future = fetchFuture(getClient(), getAdminClient());
     _future.then((T value) {
       _value = value;
       _future = null;
@@ -132,19 +132,19 @@ abstract class ResourceManager<T> extends Manager {
   }
 
   // fetchFuture must be overridden to return a future for the fetched resource.
-  Future<T> fetchFuture(RegistryClient client);
+  Future<T> fetchFuture(RegistryClient client, AdminClient adminClient);
 }
 
 class ProjectManager extends ResourceManager<Project> {
   ProjectManager(String name) : super(name);
-  Future<Project> fetchFuture(RegistryClient client) {
+  Future<Project> fetchFuture(RegistryClient client, AdminClient adminClient) {
     final request = GetProjectRequest();
     request.name = name;
-    return client.getProject(request, options: callOptions());
+    return adminClient.getProject(request, options: callOptions());
   }
 
   void update(Project newValue, List<String> paths, Function onError) {
-    final client = getClient();
+    final adminClient = getAdminClient();
     final request = UpdateProjectRequest();
     request.project = newValue;
     request.updateMask = FieldMask();
@@ -152,7 +152,7 @@ class ProjectManager extends ResourceManager<Project> {
       request.updateMask.paths.add(path);
     }
 
-    client.updateProject(request, options: callOptions()).then((value) {
+    adminClient.updateProject(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
     }).catchError((error) => onError(error));
@@ -161,7 +161,7 @@ class ProjectManager extends ResourceManager<Project> {
 
 class ApiManager extends ResourceManager<Api> {
   ApiManager(String name) : super(name);
-  Future<Api> fetchFuture(RegistryClient client) {
+  Future<Api> fetchFuture(RegistryClient client, AdminClient adminClient) {
     final request = GetApiRequest();
     request.name = name;
     return client.getApi(request, options: callOptions());
@@ -184,7 +184,8 @@ class ApiManager extends ResourceManager<Api> {
 
 class VersionManager extends ResourceManager<ApiVersion> {
   VersionManager(String name) : super(name);
-  Future<ApiVersion> fetchFuture(RegistryClient client) {
+  Future<ApiVersion> fetchFuture(
+      RegistryClient client, AdminClient adminClient) {
     final request = GetApiVersionRequest();
     request.name = name;
     return client.getApiVersion(request, options: callOptions());
@@ -207,7 +208,7 @@ class VersionManager extends ResourceManager<ApiVersion> {
 
 class SpecManager extends ResourceManager<ApiSpec> {
   SpecManager(String name) : super(name);
-  Future<ApiSpec> fetchFuture(RegistryClient client) {
+  Future<ApiSpec> fetchFuture(RegistryClient client, AdminClient adminClient) {
     final request = GetApiSpecRequest();
     request.name = name;
     return client.getApiSpec(request, options: callOptions()).then((spec) {
@@ -244,7 +245,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
 
 class ArtifactManager extends ResourceManager<Artifact> {
   ArtifactManager(String name) : super(name);
-  Future<Artifact> fetchFuture(RegistryClient client) {
+  Future<Artifact> fetchFuture(RegistryClient client, AdminClient adminClient) {
     final request = GetArtifactRequest();
     request.name = name;
     return client.getArtifact(request, options: callOptions()).then((artifact) {

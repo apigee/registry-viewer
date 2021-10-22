@@ -25,6 +25,13 @@ export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry
 export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pb.dart';
 export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pbenum.dart';
 export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pbjson.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pb.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pbenum.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pbjson.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_service.pb.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_service.pbenum.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_service.pbgrpc.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/admin_service.pbjson.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/registry_models.pb.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/registry_models.pbenum.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/registry_models.pbjson.dart';

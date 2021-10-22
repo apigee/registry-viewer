@@ -50,6 +50,8 @@ protoc \
 	${COMMON}/google/api/httpbody.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_service.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_models.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_service.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_lint.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.proto \

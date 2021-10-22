@@ -43,10 +43,11 @@ class ImportDiscoveryCommand extends Command {
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
+    final adminClient = rpc.AdminClient(channel, options: rpc.callOptions());
 
     final projectName = argResults['project'];
 
-    final exists = await client.projectExists(projectName);
+    final exists = await adminClient.projectExists(projectName);
     await channel.shutdown();
     if (!exists) {
       throw UsageException("$projectName does not exist", this.argParser.usage);
