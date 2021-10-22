@@ -55,7 +55,7 @@ class GoogleApis {
   }
 }
 
-extension Importing on rpc.RegistryClient {
+extension ImportingAdmin on rpc.AdminClient {
   Future<bool> projectExists(String name) async {
     try {
       await this.getProject(rpc.GetProjectRequest()..name = name);
@@ -70,6 +70,22 @@ extension Importing on rpc.RegistryClient {
     }
   }
 
+  void ensureProjectExists(rpc.Project project) async {
+    if (!await this.projectExists(project.name)) {
+      try {
+        await this.createProject(rpc.CreateProjectRequest()
+          ..projectId = project.name.split("/").last
+          ..project = project);
+      } on grpc.GrpcError catch (error) {
+        if (error.code != grpc.StatusCode.alreadyExists) {
+          rethrow;
+        }
+      }
+    }
+  }
+}
+
+extension Importing on rpc.RegistryClient {
   Future<bool> apiExists(String name) async {
     try {
       await this.getApi(rpc.GetApiRequest()..name = name);
@@ -103,20 +119,6 @@ extension Importing on rpc.RegistryClient {
         return false;
       }
       rethrow;
-    }
-  }
-
-  void ensureProjectExists(rpc.Project project) async {
-    if (!await this.projectExists(project.name)) {
-      try {
-        await this.createProject(rpc.CreateProjectRequest()
-          ..projectId = project.name.split("/").last
-          ..project = project);
-      } on grpc.GrpcError catch (error) {
-        if (error.code != grpc.StatusCode.alreadyExists) {
-          rethrow;
-        }
-      }
     }
   }
 
