@@ -85,7 +85,13 @@ class RegistryRouter {
       }
     } else {
       if (settings.name == "/") {
-        return homePage(settings);
+        Map<String, String> env = Platform.environment;
+        String root = env['APG_REGISTRY_ROOT'];
+        if (root == null) {
+          return homePage(settings);
+        } else {
+          return projectPage(settings.copyWith(name: root));
+        }
       }
     }
     // handle exact string patterns first.

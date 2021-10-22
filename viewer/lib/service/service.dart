@@ -21,11 +21,12 @@ import '../models/artifact.dart';
 const int pageSize = 50;
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
+AdminClient getAdminClient() => AdminClient(createClientChannel());
 
 class StatusService {
   Future<Status> getStatus() {
     try {
-      final client = getClient();
+      final client = getAdminClient();
       final request = Empty();
       return client.getStatus(request, options: callOptions());
     } catch (err) {
@@ -48,7 +49,7 @@ class ProjectService {
     if (offset == 0) {
       tokens = Map();
     }
-    final client = getClient();
+    final client = getAdminClient();
     final request = ListProjectsRequest();
     request.pageSize = limit;
 
@@ -71,7 +72,7 @@ class ProjectService {
   }
 
   Future<Project> getProject(String name) {
-    final client = getClient();
+    final client = getAdminClient();
     final request = GetProjectRequest();
     request.name = name;
     try {
