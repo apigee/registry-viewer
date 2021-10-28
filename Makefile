@@ -39,7 +39,7 @@ build: 	staging
 ifndef REGISTRY_PROJECT_IDENTIFIER
 	@echo "Error! REGISTRY_PROJECT_IDENTIFIER must be set."; exit 1
 endif
-	cd site; gcloud builds submit --tag gcr.io/${REGISTRY_PROJECT_IDENTIFIER}/registry-app
+	gcloud builds submit --tag gcr.io/${REGISTRY_PROJECT_IDENTIFIER}/registry-app
 
 deploy:
 ifndef REGISTRY_PROJECT_IDENTIFIER
