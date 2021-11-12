@@ -14,5 +14,5 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/${PROJECT_ID}/registry-app', '.', '-f', 'site/Dockerfile']
-images: ['gcr.io/${PROJECT_ID}/registry-app']
+  args: [ 'build', '-t', 'gcr.io/${PROJECT_ID}/registry-viewer', '.', '-f', 'site/Dockerfile']
+images: ['gcr.io/${PROJECT_ID}/registry-viewer']
