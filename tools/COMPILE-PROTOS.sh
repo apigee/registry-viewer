@@ -47,7 +47,10 @@ protoc \
 	${PROTOC}/google/protobuf/timestamp.proto \
 	${PROTOC}/google/protobuf/field_mask.proto \
 	${PROTOC}/google/protobuf/empty.proto \
+	${PROTOC}/google/protobuf/duration.proto \
 	${COMMON}/google/api/httpbody.proto \
+	${COMMON}/google/longrunning/operations.proto \
+	${COMMON}/google/rpc/status.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_models.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_service.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_models.proto \
