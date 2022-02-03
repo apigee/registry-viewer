@@ -53,8 +53,6 @@ class SpecFileCard extends StatefulWidget {
 
 class _SpecFileCardState extends State<SpecFileCard> {
   String specName = "";
-  //TODO: Add support for figuring out apiType for Spec
-  String apiType = 'openapi';
   SpecManager specManager;
   String body = "";
   List<Item> items;
@@ -199,7 +197,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                         tooltip: "Viewer",
                         onPressed: () {
                           if(rendererServiceAddress != "SPEC_RENDERER_SERVICE") {
-                            launch(rendererServiceAddress +"/" + apiType + "/" + specManager.value.name );
+                            launch(rendererServiceAddress +"/" + specManager.value.name );
                           } else {
                             AlertDialog alert = AlertDialog(
                               content: Text("Spec renderer service not configured"),
