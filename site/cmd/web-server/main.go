@@ -52,6 +52,18 @@ func main() {
 		ioutil.WriteFile("public/index.html", index, 0644)
 	}
 
+	specRendererService := os.Getenv("SPEC_RENDERER_SERVICE")
+	if specRendererService != "" {
+		b, err := ioutil.ReadFile("public/index.html")
+		if err != nil {
+			panic(err)
+		}
+		r := regexp.MustCompile(`<meta name="spec-renderer-service" content=.*>`)
+		index := r.ReplaceAll(b,
+			[]byte(`<meta name="spec-renderer-service" content="`+specRendererService+`">`))
+		ioutil.WriteFile("public/index.html", index, 0644)
+	}
+
 	fs := http.FileServer(http.Dir("public"))
 	log.Fatal(http.ListenAndServe(":"+port, fs))
 }

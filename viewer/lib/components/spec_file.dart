@@ -19,6 +19,9 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
 import 'package:split_view/split_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:html' as html;
 import '../components/detail_rows.dart';
 import '../components/spec_outline.dart';
 import '../helpers/measure_size.dart';
@@ -29,7 +32,9 @@ import '../components/split_view.dart';
 
 final scrollDuration = Duration(milliseconds: 300);
 final scrollCurve = Curves.easeInOut;
-
+String rendererServiceAddress = html
+    .querySelector('meta[name=spec-renderer-service]')
+    ?.getAttribute('content');
 // An item in a spec file (a file in a zip archive).
 class Item {
   Item({
@@ -182,7 +187,41 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: specManager.value.filename),
+                Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      PanelNameRow(name: specManager.value.filename),
+                      IconButton(
+                        color: Colors.black,
+                        icon: Icon(Icons.open_in_new),
+                        tooltip: "Viewer",
+                        onPressed: () {
+                          if(rendererServiceAddress != "SPEC_RENDERER_SERVICE") {
+                            launch(rendererServiceAddress +"/" + specManager.value.name );
+                          } else {
+                            AlertDialog alert = AlertDialog(
+                              content: Text("Spec renderer service not configured"),
+                              actions: [
+                                TextButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // dismiss dialog
+                                  },
+                                ),
+                              ],
+                            );
+                            // show the dialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          }
+                        },
+                      )
+                  ]
+                ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
