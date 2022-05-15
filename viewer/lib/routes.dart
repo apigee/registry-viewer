@@ -16,6 +16,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'helpers/root.dart';
 import 'pages/project_list.dart';
 import 'pages/project_detail.dart';
 import 'pages/api_list.dart';
@@ -85,12 +86,11 @@ class RegistryRouter {
       }
     } else {
       if (settings.name == "/") {
-        Map<String, String> env = Platform.environment;
-        String root = env['APG_REGISTRY_ROOT'];
-        if (root == null) {
+        String r = root();
+        if (r == "/") {
           return homePage(settings);
         } else {
-          return projectPage(settings.copyWith(name: root));
+          return projectPage(settings.copyWith(name: r));
         }
       }
     }

@@ -86,7 +86,8 @@ class ResourceNameButtonRow extends StatelessWidget {
 
 class PanelNameRow extends StatelessWidget {
   final String name;
-  PanelNameRow({this.name});
+  final Widget button;
+  PanelNameRow({this.name, this.button});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -104,6 +105,7 @@ class PanelNameRow extends StatelessWidget {
               overflow: TextOverflow.clip,
             ),
           ),
+          (button != null) ? button : SizedBox(width: 0, height: 0),
         ],
       ),
     );

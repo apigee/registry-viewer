@@ -23,6 +23,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/root.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String name;
@@ -56,7 +57,7 @@ class ProjectDetailPage extends StatelessWidget {
                 view1: CustomSplitView(
                   viewMode: SplitViewMode.Horizontal,
                   initialWeight: 0.33,
-                  view1: ProjectDetailCard(editable: true),
+                  view1: ProjectDetailCard(editable: (root() == "/")),
                   view2: CustomSplitView(
                     viewMode: SplitViewMode.Horizontal,
                     initialWeight: 0.5,
