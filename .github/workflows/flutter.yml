@@ -18,13 +18,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install protoc
       run: |
-        sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.13.0/protoc-3.13.0-linux-x86_64.zip > /tmp/protoc.zip
+        sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.20.1/protoc-3.20.1-linux-x86_64.zip > /tmp/protoc.zip
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
     - name: Install Flutter tools
       uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.2.0'
+        flutter-version: '3.0.0'
         channel: 'stable'
     - name: Add Flutter .pub-cache to PATH
       run: |
@@ -33,13 +33,20 @@ jobs:
       run: |
         echo $PATH
         flutter pub global activate protoc_plugin
-    - run: flutter config --enable-web
+    - name: "Update apt package cache"
+      run: sudo apt-get update
+    - name: "Install Linux build dependencies"
+      run: sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+    - name: "Enable target platforms"
+      run: flutter config --enable-web --enable-linux-desktop
     - name: Generate flutter project scaffolding
       run: make create
     - name: Generate protobuf support code
       run: make protos
+    - name: Build the linux target
+      run: make linux
     - name: Build the web target
-      run: make staging
+      run: make web
     - name: Build the reg command-line tool
       run: |
         cd apps/reg

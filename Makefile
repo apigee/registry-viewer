@@ -1,11 +1,20 @@
-linux:	buildstamp
-	cd viewer; flutter run -d linux
+linux-run:	buildstamp
+		cd viewer; flutter run -d linux
 
-macos:	buildstamp
-	cd viewer; flutter run -d macos
+linux: 		buildstamp
+	     	cd viewer; flutter build linux
 
-web:	buildstamp
-	cd viewer; flutter run -d chrome --web-hostname localhost --web-port 8888
+macos-run:	buildstamp
+		cd viewer; flutter run -d macos
+
+macos:		buildstamp
+		cd viewer; flutter build macos
+
+web-run:	buildstamp
+		cd viewer; flutter run -d chrome --web-hostname localhost --web-port 8888
+
+web:		buildstamp
+		cd viewer; flutter build web
 
 buildstamp:
 	tools/BUILDSTAMP.sh
