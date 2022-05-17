@@ -15,9 +15,16 @@
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import '../helpers/root.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
-AdminClient getAdminClient() => AdminClient(createClientChannel());
+
+AdminClient getAdminClient() {
+  if (root() == "/") {
+    return AdminClient(createClientChannel());
+  }
+  return null;
+}
 
 class RegistryProvider extends InheritedWidget {
   final Registry registry;
@@ -140,7 +147,10 @@ class ProjectManager extends ResourceManager<Project> {
   Future<Project> fetchFuture(RegistryClient client, AdminClient adminClient) {
     final request = GetProjectRequest();
     request.name = name;
-    return adminClient.getProject(request, options: callOptions());
+    if (adminClient != null) {
+      return adminClient.getProject(request, options: callOptions());
+    }
+    return Future.value(Project(name: name));
   }
 
   void update(Project newValue, List<String> paths, Function onError) {

@@ -17,18 +17,27 @@ import 'package:registry/registry.dart';
 import '../helpers/errors.dart';
 import 'package:flutter/material.dart';
 import '../models/artifact.dart';
+import '../helpers/root.dart';
 
 const int pageSize = 50;
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
-AdminClient getAdminClient() => AdminClient(createClientChannel());
+
+AdminClient getAdminClient() {
+  if (root() == "/") {
+    return AdminClient(createClientChannel());
+  }
+  return null;
+}
 
 class StatusService {
   Future<Status> getStatus() {
     try {
       final client = getAdminClient();
-      final request = Empty();
-      return client.getStatus(request, options: callOptions());
+      if (client == null) {
+        return Future.value(Status(message: "ok"));
+      }
+      return client.getStatus(Empty(), options: callOptions());
     } catch (err) {
       print('Caught error: $err');
       return null;
@@ -73,6 +82,9 @@ class ProjectService {
 
   Future<Project> getProject(String name) {
     final client = getAdminClient();
+    if (client == null) {
+      return Future.value(Project(name: name));
+    }
     final request = GetProjectRequest();
     request.name = name;
     try {

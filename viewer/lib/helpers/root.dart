@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC. All Rights Reserved.
+// Copyright 2022 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:flutter/material.dart';
-import '../helpers/root.dart';
-
-Widget homeButton(BuildContext context) {
-  return IconButton(
-    icon: const Icon(Icons.home),
-    tooltip: 'return to top',
-    onPressed: () {
-      Navigator.popUntil(context, ModalRoute.withName(root()));
-    },
-  );
-}
+export '_root_io.dart' if (dart.library.html) '_root_web.dart';

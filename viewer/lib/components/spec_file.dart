@@ -185,9 +185,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(mainAxisSize: MainAxisSize.max, children: [
-                  PanelNameRow(name: specManager.value.filename),
-                  IconButton(
+                PanelNameRow(
+                  name: specManager.value.filename,
+                  button: IconButton(
                     color: Colors.black,
                     icon: Icon(Icons.open_in_new),
                     tooltip: "Viewer",
@@ -217,8 +217,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
                         );
                       }
                     },
-                  )
-                ]),
+                  ),
+                ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
