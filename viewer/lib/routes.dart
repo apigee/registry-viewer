@@ -54,7 +54,7 @@ class RegistryRouter {
     const specPattern = specsPattern + r"/" + namePattern;
     const artifactsPattern = r"((" +
         projectPattern +
-        ")|(" +
+        r"/locations/global)|(" +
         apiPattern +
         ")|(" +
         versionPattern +

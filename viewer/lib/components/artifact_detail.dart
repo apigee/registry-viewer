@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import 'detail_rows.dart';
 import 'artifact_detail_complexity.dart';
 import 'artifact_detail_index.dart';
+import 'artifact_detail_message.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
@@ -108,6 +109,58 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
           return ComplexityArtifactCard(artifact, selflink: selflink);
         case "application/octet-stream;type=gnostic.metrics.Vocabulary":
           return VocabularyArtifactCard(artifact, selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
+          return MessageArtifactCard(
+              artifact, new ApiSpecExtensionList.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
+          return MessageArtifactCard(
+              artifact, new DisplaySettings.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Lifecycle":
+          return MessageArtifactCard(
+              artifact, new Lifecycle.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
+          return MessageArtifactCard(
+              artifact, new ReferenceList.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
+          return MessageArtifactCard(
+              artifact, new TaxonomyList.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Manifest":
+          return MessageArtifactCard(
+              artifact, new Manifest.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Receipt":
+          return MessageArtifactCard(
+              artifact, new Receipt.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
+          return MessageArtifactCard(
+              artifact, new Score.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
+          return MessageArtifactCard(
+              artifact, new ScoreCard.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
+          return MessageArtifactCard(
+              artifact, new ScoreCardDefinition.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
+          return MessageArtifactCard(
+              artifact, new ScoreDefinition.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
+          return MessageArtifactCard(
+              artifact, new ConformanceReport.fromBuffer(artifact.contents),
+              selflink: selflink);
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
+          return MessageArtifactCard(
+              artifact, new StyleGuide.fromBuffer(artifact.contents),
+              selflink: selflink);
         case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Index":
           return IndexArtifactCard(artifact, selflink: selflink);
         case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Lint":
