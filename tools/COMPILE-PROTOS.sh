@@ -55,8 +55,21 @@ protoc \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_service.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_models.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_service.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/display_settings.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/extensions.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/lifecycle.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/references.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/taxonomies.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/controller/manifest.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/controller/receipt.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/scoring/definition.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/scoring/score_card.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/scoring/score.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/scoring/severity.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/style/conformance_report.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/style/lint.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/style/style_guide.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.proto \
-	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_lint.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.proto \
 	${PROTOS}/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.proto \
 	${GNOSTIC}/metrics/complexity.proto \
