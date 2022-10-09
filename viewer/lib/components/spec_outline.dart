@@ -29,16 +29,16 @@ class SpecOutlineCard extends StatefulWidget {
 
 class _SpecOutlineCardState extends State<SpecOutlineCard> {
   String specName = "";
-  SpecManager specManager;
+  SpecManager? specManager;
   List<Entry> data = [];
   String body = "";
-  YamlNode doc;
-  Selection selection;
+  YamlNode? doc;
+  Selection? selection;
   final ScrollController scrollController = ScrollController();
 
   void managerListener() {
     setState(() {
-      ApiSpec spec = specManager?.value;
+      ApiSpec? spec = specManager?.value;
       if ((spec != null) &&
           (spec.contents != null) &&
           (spec.contents.length > 0)) {
@@ -58,7 +58,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
 
   void specNameListener() {
     setState(() {
-      setSpecName(SelectionProvider.of(context).specName.value);
+      setSpecName(SelectionProvider.of(context)!.specName.value);
     });
   }
 
@@ -69,8 +69,8 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
     // forget the old manager
     specManager?.removeListener(managerListener);
     // get the new manager
-    specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(managerListener);
+    specManager = RegistryProvider.of(context)!.getSpecManager(name);
+    specManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -78,14 +78,14 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.specName.addListener(specNameListener);
+    selection!.specName.addListener(specNameListener);
     super.didChangeDependencies();
     specNameListener(); // ensure this is called when the widget is created
   }
 
   @override
   void dispose() {
-    selection.specName.removeListener(specNameListener);
+    selection!.specName.removeListener(specNameListener);
     specManager?.removeListener(managerListener);
     super.dispose();
   }
@@ -99,7 +99,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PanelNameRow(name: specManager.value.filename + " (outline)"),
+          PanelNameRow(name: specManager!.value!.filename + " (outline)"),
           Expanded(
             child: Container(
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -126,7 +126,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
 class Entry {
   Entry(this.indent, this.label, this.value, [this.children = const <Entry>[]]);
   final int indent;
-  final String label;
+  final String? label;
   final String value;
   final List<Entry> children;
 }
@@ -140,7 +140,7 @@ Container entryRow(Entry e) {
             child: Container(
                 padding: EdgeInsets.zero,
                 child: Text(
-                  ("  " * e.indent) + e.label,
+                  ("  " * e.indent) + e.label!,
                   style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
                 ))),
         Expanded(
@@ -192,7 +192,7 @@ class EntryItem extends StatelessWidget {
   }
 }
 
-List<Entry> parseDoc(YamlNode doc, int indent) {
+List<Entry> parseDoc(YamlNode? doc, int indent) {
   List<Entry> entries = [];
   if (doc is YamlMap) {
     for (var key in doc.keys) {
@@ -214,7 +214,7 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
     for (var node in doc.nodes) {
       if (node is YamlScalar) {
         if (node.value is String) {
-          entries.add(Entry(indent, node.value as String, ""));
+          entries.add(Entry(indent, node.value as String?, ""));
         } else if (node.value is bool) {
           entries.add(Entry(indent, node.value as bool ? "true" : "false", ""));
         }

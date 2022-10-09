@@ -31,7 +31,7 @@ import 'pages/signin.dart';
 import 'pages/home.dart';
 
 class RegistryRouter {
-  RegExp projectRegExp,
+  RegExp? projectRegExp,
       apisRegExp,
       apiRegExp,
       versionsRegExp,
@@ -76,7 +76,7 @@ class RegistryRouter {
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
-    print("routing " + settings.name);
+    print("routing " + settings.name!);
 
     if (kIsWeb || Platform.isAndroid) {
       if ((settings.name == "/") ||
@@ -103,23 +103,23 @@ class RegistryRouter {
       return errorPage(settings);
     }
     // handle regex patterns next, watch for possible ordering sensitivities
-    if (artifactRegExp.hasMatch(settings.name)) {
+    if (artifactRegExp!.hasMatch(settings.name!)) {
       return artifactPage(settings);
-    } else if (artifactsRegExp.hasMatch(settings.name)) {
+    } else if (artifactsRegExp!.hasMatch(settings.name!)) {
       return artifactsPage(settings);
-    } else if (specRegExp.hasMatch(settings.name)) {
+    } else if (specRegExp!.hasMatch(settings.name!)) {
       return specPage(settings);
-    } else if (specsRegExp.hasMatch(settings.name)) {
+    } else if (specsRegExp!.hasMatch(settings.name!)) {
       return specsPage(settings);
-    } else if (versionRegExp.hasMatch(settings.name)) {
+    } else if (versionRegExp!.hasMatch(settings.name!)) {
       return versionPage(settings);
-    } else if (versionsRegExp.hasMatch(settings.name)) {
+    } else if (versionsRegExp!.hasMatch(settings.name!)) {
       return versionsPage(settings);
-    } else if (apiRegExp.hasMatch(settings.name)) {
+    } else if (apiRegExp!.hasMatch(settings.name!)) {
       return apiPage(settings);
-    } else if (apisRegExp.hasMatch(settings.name)) {
+    } else if (apisRegExp!.hasMatch(settings.name!)) {
       return apisPage(settings);
-    } else if (projectRegExp.hasMatch(settings.name)) {
+    } else if (projectRegExp!.hasMatch(settings.name!)) {
       return projectPage(settings);
     }
     // if nothing matches, display a "not found" page.
@@ -260,7 +260,7 @@ MaterialPageRoute notFoundPage(RouteSettings settings) {
           ),
           body: Center(
             child: Text("You were sent to a page that doesn't exist.\n" +
-                settings.name),
+                settings.name!),
           ),
         );
       });

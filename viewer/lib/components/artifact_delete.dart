@@ -25,8 +25,8 @@ class DeleteArtifactForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class DeleteArtifactFormState extends State<DeleteArtifactForm> {
-  Selection selection;
-  ArtifactManager artifactManager;
+  Selection? selection;
+  ArtifactManager? artifactManager;
 
   void listener() {
     setState(() {});
@@ -34,27 +34,27 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
 
   void nameChangeListener() {
     setState(() {
-      setArtifactName(SelectionProvider.of(context).artifactName.value);
+      setArtifactName(SelectionProvider.of(context)!.artifactName.value);
     });
   }
 
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    SelectionProvider.of(context).artifactName.addListener(nameChangeListener);
+    SelectionProvider.of(context)!.artifactName.addListener(nameChangeListener);
     super.didChangeDependencies();
     setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
   }
 
-  void setArtifactName(String name) {
+  void setArtifactName(String? name) {
     if (artifactManager?.name == name) {
       return;
     }
     // forget the old manager
     artifactManager?.removeListener(listener);
     // get the new manager
-    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
-    artifactManager.addListener(listener);
+    artifactManager = RegistryProvider.of(context)!.getArtifactManager(name);
+    artifactManager!.addListener(listener);
     // get the value from the manager
     listener();
   }
@@ -82,7 +82,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final artifact = artifactManager.value;
+      final artifact = artifactManager!.value!;
       stringValueController.text = artifact.relation;
 
       return Form(
@@ -120,13 +120,13 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
   }
 
   void delete(BuildContext context) {
-    Selection selection = SelectionProvider.of(context);
-    if (artifactManager?.value != null && _formKey.currentState.validate()) {
-      final artifact = artifactManager.value.clone();
+    Selection? selection = SelectionProvider.of(context);
+    if (artifactManager?.value != null && _formKey.currentState!.validate()) {
+      final artifact = artifactManager!.value!.clone();
       print("deleting $artifact");
       String subject = artifact.subject;
       artifactManager?.delete(artifact.name)?.then((x) {
-        selection.notifySubscribersOf(subject);
+        selection!.notifySubscribersOf(subject);
       });
     }
   }

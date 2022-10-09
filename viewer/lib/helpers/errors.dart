@@ -15,13 +15,13 @@
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart' as grpc;
 
-void reportError(BuildContext context, Object error) {
+void reportError(BuildContext? context, Object? error) {
   if (context != null) {
     Future.delayed(const Duration(), () {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          String message;
+          String? message;
           if (error is grpc.GrpcError) {
             message = error.message;
             if (message == null) {
@@ -29,7 +29,7 @@ void reportError(BuildContext context, Object error) {
             }
           }
           return AlertDialog(
-            content: Text(message),
+            content: Text(message!),
             actions: [
               TextButton(
                 child: Text("OK"),

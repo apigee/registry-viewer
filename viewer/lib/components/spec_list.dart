@@ -31,14 +31,14 @@ class SpecListCard extends StatefulWidget {
 }
 
 class _SpecListCardState extends State<SpecListCard> {
-  SpecService specService;
-  PagewiseLoadController<ApiSpec> pageLoadController;
+  SpecService? specService;
+  PagewiseLoadController<ApiSpec>? pageLoadController;
 
   _SpecListCardState() {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => specService.getSpecsPage(pageIndex));
+        pageFuture: ((pageIndex) => specService!.getSpecsPage(pageIndex!).then((value) => value!)) as Future<List<ApiSpec>> Function(int?)?);
   }
 
   @override
@@ -49,7 +49,7 @@ class _SpecListCardState extends State<SpecListCard> {
         child: Column(
           children: [
             filterBar(context, SpecSearchBox(),
-                refresh: () => pageLoadController.reset()),
+                refresh: () => pageLoadController!.reset()),
             Expanded(
               child: SpecListView(
                 null,
@@ -66,9 +66,9 @@ class _SpecListCardState extends State<SpecListCard> {
 
 // SpecListView is a scrollable ListView of specs.
 class SpecListView extends StatefulWidget {
-  final SpecSelectionHandler selectionHandler;
-  final SpecService specService;
-  final PagewiseLoadController<ApiSpec> pageLoadController;
+  final SpecSelectionHandler? selectionHandler;
+  final SpecService? specService;
+  final PagewiseLoadController<ApiSpec>? pageLoadController;
 
   SpecListView(
     this.selectionHandler,
@@ -81,10 +81,10 @@ class SpecListView extends StatefulWidget {
 }
 
 class _SpecListViewState extends State<SpecListView> {
-  String versionName;
+  String? versionName;
   int selectedIndex = -1;
-  Selection selection;
-  ObservableString filter;
+  Selection? selection;
+  ObservableString? filter;
   final ScrollController scrollController = ScrollController();
 
   void selectionListener() {
@@ -93,10 +93,10 @@ class _SpecListViewState extends State<SpecListView> {
 
   void filterListener() {
     setState(() {
-      ObservableString filter = ObservableStringProvider.of(context);
+      ObservableString? filter = ObservableStringProvider.of(context);
       if (filter != null) {
-        widget.specService.filter = filter.value;
-        widget.pageLoadController.reset();
+        widget.specService!.filter = filter.value;
+        widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
     });
@@ -105,27 +105,27 @@ class _SpecListViewState extends State<SpecListView> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.versionName.addListener(selectionListener);
+    selection!.versionName.addListener(selectionListener);
     filter = ObservableStringProvider.of(context);
-    filter.addListener(filterListener);
+    filter!.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    selection.versionName.removeListener(selectionListener);
-    filter.removeListener(filterListener);
+    selection!.versionName.removeListener(selectionListener);
+    filter!.removeListener(filterListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.specService.context = context;
-    if (widget.specService.versionName !=
-        SelectionProvider.of(context).versionName.value) {
-      widget.specService.versionName =
-          SelectionProvider.of(context).versionName.value;
-      widget.pageLoadController.reset();
+    widget.specService!.context = context;
+    if (widget.specService!.versionName !=
+        SelectionProvider.of(context)!.versionName.value) {
+      widget.specService!.versionName =
+          SelectionProvider.of(context)!.versionName.value;
+      widget.pageLoadController!.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
@@ -141,7 +141,7 @@ class _SpecListViewState extends State<SpecListView> {
   Widget _itemBuilder(context, ApiSpec spec, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.specName.value == null) ||
                 (selection.specName.value == ""))) {
@@ -162,7 +162,7 @@ class _SpecListViewState extends State<SpecListView> {
         setState(() {
           selectedIndex = index;
         });
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         selection?.updateSpecName(spec.name);
         widget.selectionHandler?.call(context, spec);
       },

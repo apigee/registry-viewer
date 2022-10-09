@@ -49,13 +49,13 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
               tooltip: "Clear",
               onPressed: () {
                 searchTextController.clear();
-                ObservableStringProvider.of(context).update("");
+                ObservableStringProvider.of(context)!.update("");
               },
             ),
             border: InputBorder.none,
             hintText: widget.hintText),
         onSubmitted: (s) {
-          ObservableString filter = ObservableStringProvider.of(context);
+          ObservableString? filter = ObservableStringProvider.of(context);
           if (filter != null) {
             if ((s == null) | (s == "")) {
               filter.update(""); // no filter specified

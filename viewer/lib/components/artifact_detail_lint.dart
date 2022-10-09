@@ -29,7 +29,7 @@ String stringForLocation(LintLocation location) {
 
 class LintArtifactCard extends StatefulWidget {
   final Artifact artifact;
-  final Function selflink;
+  final Function? selflink;
   LintArtifactCard(this.artifact, {this.selflink});
 
   _LintArtifactCardState createState() => _LintArtifactCardState();
@@ -42,14 +42,14 @@ class FileProblem {
 }
 
 class _LintArtifactCardState extends State<LintArtifactCard> {
-  Lint lint;
+  Lint? lint;
   List<FileProblem> problems = [];
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;
-  Selection selection;
+  Selection? selection;
 
   void highlightListener() {
-    Highlight highlight = SelectionProvider.of(context).highlight.value;
+    Highlight? highlight = SelectionProvider.of(context)!.highlight.value;
     if (highlight == null) {
       setState(() {
         selectedIndex = -1;
@@ -60,20 +60,20 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.highlight.addListener(highlightListener);
+    selection!.highlight.addListener(highlightListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    selection.highlight.removeListener(highlightListener);
+    selection!.highlight.removeListener(highlightListener);
     super.dispose();
   }
 
   Widget build(BuildContext context) {
     if (lint == null) {
       lint = new Lint.fromBuffer(widget.artifact.contents);
-      lint.files.forEach((file) {
+      lint!.files.forEach((file) {
         file.problems.forEach((problem) {
           problems.add(FileProblem(file, problem));
         });
@@ -84,7 +84,7 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
         children: [
           ResourceNameButtonRow(
             name: widget.artifact.name.last(1),
-            show: widget.selflink,
+            show: widget.selflink as void Function()?,
             edit: null,
           ),
           Expanded(
@@ -92,16 +92,13 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
               controller: controller,
               child: ListView.builder(
                 controller: controller,
-                itemCount: problems?.length,
+                itemCount: problems.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (problems == null) {
-                    return Container();
-                  }
                   final problem = problems[index];
                   return GestureDetector(
                     onTap: () {
                       selectedIndex = index;
-                      SelectionProvider.of(context)
+                      SelectionProvider.of(context)!
                           .fileName
                           .update(problem.file.filePath);
                       final location = problem.problem.location;
@@ -111,7 +108,9 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                         location.endPosition.lineNumber - 1,
                         location.endPosition.columnNumber - 1,
                       );
-                      SelectionProvider.of(context).highlight.update(highlight);
+                      SelectionProvider.of(context)!
+                          .highlight
+                          .update(highlight);
                       setState(() {});
                     },
                     child: Card(
@@ -129,7 +128,7 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                   stringForLocation(problem.problem.location),
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyText2!
                                   .copyWith(fontWeight: FontWeight.bold),
                               softWrap: false,
                               overflow: TextOverflow.clip,
@@ -152,7 +151,7 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                   child: Text(problem.problem.ruleId,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2
+                                          .bodyText2!
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .accentColor)),

@@ -19,7 +19,7 @@ import '../helpers/extensions.dart';
 
 class ComplexityArtifactCard extends StatelessWidget {
   final Artifact artifact;
-  final Function selflink;
+  final Function? selflink;
   ComplexityArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ComplexityArtifactCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: artifact.name.last(1),
-            show: selflink,
+            show: selflink as void Function()?,
             edit: null,
           ),
           Expanded(

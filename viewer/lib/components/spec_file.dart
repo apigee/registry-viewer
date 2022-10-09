@@ -40,8 +40,8 @@ class Item {
     this.headerValue,
   });
 
-  String expandedValue;
-  String headerValue;
+  String? expandedValue;
+  String? headerValue;
 }
 
 // SpecFileCard is a card that displays the text of a spec.
@@ -51,19 +51,19 @@ class SpecFileCard extends StatefulWidget {
 
 class _SpecFileCardState extends State<SpecFileCard> {
   String specName = "";
-  SpecManager specManager;
+  SpecManager? specManager;
   String body = "";
-  List<Item> items;
+  List<Item>? items;
   int selectedItemIndex = 0;
-  Selection selection;
+  Selection? selection;
   final ScrollController listScrollController = ScrollController();
   final ScrollController fileScrollController = ScrollController();
   final rowHeight = 40.0;
-  double listHeight;
+  late double listHeight;
 
   void managerListener() {
     setState(() {
-      ApiSpec spec = specManager?.value;
+      ApiSpec? spec = specManager?.value;
       if ((spec != null) &&
           (spec.contents != null) &&
           (spec.contents.length > 0)) {
@@ -83,7 +83,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 body = "unavailable";
               }
               Item item = Item(headerValue: filename, expandedValue: body);
-              items.add(item);
+              items!.add(item);
             }
           }
         } else {
@@ -95,7 +95,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
   void specNameListener() {
     setState(() {
-      setSpecName(SelectionProvider.of(context).specName.value);
+      setSpecName(SelectionProvider.of(context)!.specName.value);
     });
   }
 
@@ -106,15 +106,15 @@ class _SpecFileCardState extends State<SpecFileCard> {
     // forget the old manager
     specManager?.removeListener(managerListener);
     // get the new manager
-    specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(managerListener);
+    specManager = RegistryProvider.of(context)!.getSpecManager(name);
+    specManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
 
   void fileNameListener() {
     setState(() {
-      setFileName(SelectionProvider.of(context).fileName.value);
+      setFileName(SelectionProvider.of(context)!.fileName.value);
     });
   }
 
@@ -136,8 +136,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
       return;
     }
     if (this.items != null) {
-      for (int i = 0; i < this.items.length; i++) {
-        if (this.items[i].headerValue == name) {
+      for (int i = 0; i < this.items!.length; i++) {
+        if (this.items![i].headerValue == name) {
           selectedItemIndex = i;
           // if the item is off screen, animate it into position
           if (!isVisible(selectedItemIndex)) {
@@ -157,8 +157,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.specName.addListener(specNameListener);
-    selection.fileName.addListener(fileNameListener);
+    selection!.specName.addListener(specNameListener);
+    selection!.fileName.addListener(fileNameListener);
     super.didChangeDependencies();
     specNameListener();
     fileNameListener();
@@ -166,8 +166,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
   @override
   void dispose() {
-    selection.fileName.removeListener(fileNameListener);
-    selection.specName.removeListener(specNameListener);
+    selection!.fileName.removeListener(fileNameListener);
+    selection!.specName.removeListener(specNameListener);
     specManager?.removeListener(managerListener);
     super.dispose();
   }
@@ -186,7 +186,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PanelNameRow(
-                  name: specManager.value.filename,
+                  name: specManager!.value!.filename,
                   button: IconButton(
                     color: Colors.black,
                     icon: Icon(Icons.open_in_new),
@@ -195,7 +195,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                       var address = rendererServiceAddress();
                       if ((address != "SPEC_RENDERER_SERVICE") &&
                           (address != "")) {
-                        launch(address + "/" + specManager.value.name);
+                        launch(address + "/" + specManager!.value!.name);
                       } else {
                         AlertDialog alert = AlertDialog(
                           content: Text("Spec renderer service not configured"),
@@ -238,7 +238,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: specManager.value.filename + " contents"),
+                PanelNameRow(name: specManager!.value!.filename + " contents"),
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -250,19 +250,19 @@ class _SpecFileCardState extends State<SpecFileCard> {
                           listHeight = size.height;
                         },
                         child: ListView.builder(
-                          itemCount: this.items.length,
+                          itemCount: this.items!.length,
                           controller: listScrollController,
                           itemBuilder: (BuildContext context, int index) {
-                            String fileName = this.items[index].headerValue;
+                            String fileName = this.items![index].headerValue!;
 
-                            Color color = (index != selectedItemIndex)
-                                ? Theme.of(context).textTheme.bodyText1.color
+                            Color? color = (index != selectedItemIndex)
+                                ? Theme.of(context).textTheme.bodyText1!.color
                                 : Theme.of(context).primaryColor;
 
                             return GestureDetector(
                               child: Container(
                                 color: (index == selectedItemIndex)
-                                    ? color.withAlpha(64)
+                                    ? color!.withAlpha(64)
                                     : Theme.of(context).canvasColor,
                                 height: rowHeight,
                                 child: Column(
@@ -280,8 +280,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
                                 ),
                               ),
                               onTap: () async {
-                                selection.fileName.update(fileName);
-                                selection.highlight.update(null);
+                                selection!.fileName.update(fileName);
+                                selection!.highlight.update(null);
                               },
                             );
                           },
@@ -297,12 +297,12 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: this.items[selectedItemIndex].headerValue),
+                PanelNameRow(name: this.items![selectedItemIndex].headerValue),
                 Expanded(
                   child: Container(
                     width: double.infinity,
                     child:
-                        CodeView(this.items[selectedItemIndex].expandedValue),
+                        CodeView(this.items![selectedItemIndex].expandedValue),
                   ),
                 ),
               ],
@@ -315,27 +315,27 @@ class _SpecFileCardState extends State<SpecFileCard> {
 }
 
 class CodeView extends StatefulWidget {
-  final String text;
+  final String? text;
   CodeView(this.text);
   @override
   _CodeViewState createState() => _CodeViewState();
 }
 
 class _CodeViewState extends State<CodeView> {
-  List<String> lines;
+  late List<String> lines;
   ScrollController scrollController = ScrollController();
-  Highlight highlight = Highlight(-1, -1, -1, -1);
-  Selection selection;
+  Highlight? highlight = Highlight(-1, -1, -1, -1);
+  Selection? selection;
   final rowHeight = 18.0;
 
   void highlightListener() {
     setState(() {
-      highlight = SelectionProvider.of(context).highlight.value;
+      highlight = SelectionProvider.of(context)!.highlight.value;
       if (highlight == null) {
         highlight = Highlight(-1, -1, -1, -1);
       } else {
         scrollController.animateTo(
-          (highlight.startRow - 4) * rowHeight,
+          (highlight!.startRow - 4) * rowHeight,
           duration: scrollDuration,
           curve: scrollCurve,
         );
@@ -346,20 +346,20 @@ class _CodeViewState extends State<CodeView> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.highlight.addListener(highlightListener);
+    selection!.highlight.addListener(highlightListener);
     super.didChangeDependencies();
     highlightListener();
   }
 
   @override
   void dispose() {
-    selection.highlight.removeListener(highlightListener);
+    selection!.highlight.removeListener(highlightListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    lines = splitLines(widget.text);
+    lines = splitLines(widget.text!);
     return Scrollbar(
       controller: scrollController,
       isAlwaysShown: true,
@@ -386,21 +386,21 @@ class _CodeViewState extends State<CodeView> {
     String before = "";
     String middle = "";
     String after = "";
-    if (i < highlight.startRow) {
+    if (i < highlight!.startRow) {
       before = line;
-    } else if (i == highlight.startRow) {
-      before = line.substring(0, highlight.startCol);
-      if (i == highlight.endRow) {
-        middle = line.substring(highlight.startCol, highlight.endCol + 1);
-        after = line.substring(highlight.endCol + 1);
+    } else if (i == highlight!.startRow) {
+      before = line.substring(0, highlight!.startCol);
+      if (i == highlight!.endRow) {
+        middle = line.substring(highlight!.startCol, highlight!.endCol + 1);
+        after = line.substring(highlight!.endCol + 1);
       } else {
-        middle = line.substring(highlight.startCol);
+        middle = line.substring(highlight!.startCol);
       }
-    } else if (i < highlight.endRow) {
+    } else if (i < highlight!.endRow) {
       middle = line;
-    } else if (i == highlight.endRow) {
-      middle = line.substring(0, highlight.endCol + 1);
-      after = line.substring(highlight.endCol + 1);
+    } else if (i == highlight!.endRow) {
+      middle = line.substring(0, highlight!.endCol + 1);
+      after = line.substring(highlight!.endCol + 1);
     } else {
       after = line;
     }

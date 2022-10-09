@@ -19,7 +19,7 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final white =
-        Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white);
+        Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white);
     return Container(
       color: Colors.grey[700], // Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(8, 4, 8, 4),

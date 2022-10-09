@@ -28,8 +28,8 @@ class EditArtifactForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditArtifactFormState extends State<EditArtifactForm> {
-  Selection selection;
-  ArtifactManager artifactManager;
+  Selection? selection;
+  ArtifactManager? artifactManager;
 
   void managerListener() {
     setState(() {});
@@ -37,19 +37,19 @@ class EditArtifactFormState extends State<EditArtifactForm> {
 
   void selectionListener() {
     setState(() {
-      setArtifactName(SelectionProvider.of(context).artifactName.value);
+      setArtifactName(SelectionProvider.of(context)!.artifactName.value);
     });
   }
 
-  void setArtifactName(String name) {
+  void setArtifactName(String? name) {
     if (artifactManager?.name == name) {
       return;
     }
     // forget the old manager
     artifactManager?.removeListener(managerListener);
     // get the new manager
-    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
-    artifactManager.addListener(managerListener);
+    artifactManager = RegistryProvider.of(context)!.getArtifactManager(name);
+    artifactManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -57,7 +57,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.artifactName.addListener(selectionListener);
+    selection!.artifactName.addListener(selectionListener);
     super.didChangeDependencies();
     setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
   }
@@ -74,7 +74,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
 
   @override
   void dispose() {
-    selection.artifactName?.removeListener(selectionListener);
+    selection?.artifactName.removeListener(selectionListener);
     artifactManager?.removeListener(managerListener);
     stringValueController.dispose();
     super.dispose();
@@ -86,7 +86,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final artifact = artifactManager.value;
+      final artifact = artifactManager!.value!;
       stringValueController.text = artifact.stringValue;
 
       return Form(
@@ -102,7 +102,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
                   FilteringTextInputFormatter.allow(RegExp(".*")),
                 ],
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter some text';
                   }
                   return null;
@@ -138,16 +138,16 @@ class EditArtifactFormState extends State<EditArtifactForm> {
   }
 
   void save(BuildContext context) {
-    Selection selection = SelectionProvider.of(context);
-    if (artifactManager?.value != null && _formKey.currentState.validate()) {
-      final artifact = artifactManager.value.clone();
+    Selection? selection = SelectionProvider.of(context);
+    if (artifactManager?.value != null && _formKey.currentState!.validate()) {
+      final artifact = artifactManager!.value!.clone();
       if (artifact.stringValue != stringValueController.text) {
         artifact.stringValue = stringValueController.text;
       }
       artifactManager
           ?.update(artifact, onError(context))
           ?.then((Artifact artifact) {
-        selection.notifySubscribersOf(artifact.subject);
+        selection!.notifySubscribersOf(artifact.subject);
       });
     }
   }

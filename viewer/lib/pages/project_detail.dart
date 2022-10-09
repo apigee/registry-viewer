@@ -26,7 +26,7 @@ import '../components/split_view.dart';
 import '../helpers/root.dart';
 
 class ProjectDetailPage extends StatelessWidget {
-  final String name;
+  final String? name;
   ProjectDetailPage({this.name});
 
   @override
@@ -34,7 +34,7 @@ class ProjectDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateProjectName(name.substring(1));
+      selection.updateProjectName(name!.substring(1));
     });
 
     return SelectionProvider(

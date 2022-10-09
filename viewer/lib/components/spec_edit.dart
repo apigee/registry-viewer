@@ -25,8 +25,8 @@ class EditSpecForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditSpecFormState extends State<EditSpecForm> {
-  Selection selection;
-  SpecManager specManager;
+  Selection? selection;
+  SpecManager? specManager;
 
   void managerListener() {
     setState(() {});
@@ -34,7 +34,7 @@ class EditSpecFormState extends State<EditSpecForm> {
 
   void selectionListener() {
     setState(() {
-      setSpecName(SelectionProvider.of(context).specName.value);
+      setSpecName(SelectionProvider.of(context)!.specName.value);
     });
   }
 
@@ -45,8 +45,8 @@ class EditSpecFormState extends State<EditSpecForm> {
     // forget the old manager
     specManager?.removeListener(managerListener);
     // get the new manager
-    specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(managerListener);
+    specManager = RegistryProvider.of(context)!.getSpecManager(name);
+    specManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -54,7 +54,7 @@ class EditSpecFormState extends State<EditSpecForm> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.specName.addListener(selectionListener);
+    selection!.specName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -71,7 +71,7 @@ class EditSpecFormState extends State<EditSpecForm> {
 
   @override
   void dispose() {
-    selection.apiName?.removeListener(selectionListener);
+    selection?.apiName.removeListener(selectionListener);
     specManager?.removeListener(managerListener);
     descriptionController.dispose();
     super.dispose();
@@ -83,7 +83,7 @@ class EditSpecFormState extends State<EditSpecForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final spec = specManager.value;
+      final spec = specManager!.value!;
       descriptionController.text = spec.description;
 
       return Form(
@@ -126,8 +126,8 @@ class EditSpecFormState extends State<EditSpecForm> {
   }
 
   void save(BuildContext context) {
-    if (specManager?.value != null && _formKey.currentState.validate()) {
-      final spec = specManager.value.clone();
+    if (specManager?.value != null && _formKey.currentState!.validate()) {
+      final spec = specManager!.value!.clone();
       List<String> paths = [];
       if (spec.description != descriptionController.text) {
         spec.description = descriptionController.text;

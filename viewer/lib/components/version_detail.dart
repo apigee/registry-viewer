@@ -23,16 +23,16 @@ import '../service/registry.dart';
 
 // VersionDetailCard is a card that displays details about a version.
 class VersionDetailCard extends StatefulWidget {
-  final bool selflink;
-  final bool editable;
+  final bool? selflink;
+  final bool? editable;
   VersionDetailCard({this.selflink, this.editable});
   _VersionDetailCardState createState() => _VersionDetailCardState();
 }
 
 class _VersionDetailCardState extends State<VersionDetailCard> {
-  ApiManager apiManager;
-  VersionManager versionManager;
-  Selection selection;
+  ApiManager? apiManager;
+  VersionManager? versionManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -40,8 +40,8 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setApiName(SelectionProvider.of(context).apiName.value);
-      setVersionName(SelectionProvider.of(context).versionName.value);
+      setApiName(SelectionProvider.of(context)!.apiName.value);
+      setVersionName(SelectionProvider.of(context)!.versionName.value);
     });
   }
 
@@ -52,8 +52,8 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     // forget the old manager
     apiManager?.removeListener(managerListener);
     // get a manager for the new name
-    apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(managerListener);
+    apiManager = RegistryProvider.of(context)!.getApiManager(name);
+    apiManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -65,8 +65,8 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     // forget the old manager
     versionManager?.removeListener(managerListener);
     // get a manager for the new name
-    versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(managerListener);
+    versionManager = RegistryProvider.of(context)!.getVersionManager(name);
+    versionManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -74,7 +74,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.versionName.addListener(selectionListener);
+    selection!.versionName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -83,26 +83,26 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
   void dispose() {
     apiManager?.removeListener(managerListener);
     versionManager?.removeListener(managerListener);
-    selection.versionName.removeListener(selectionListener);
+    selection!.versionName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Function selflink = onlyIf(widget.selflink, () {
-      ApiVersion version = versionManager?.value;
+    Function? selflink = onlyIf(widget.selflink, () {
+      ApiVersion version = (versionManager?.value)!;
       Navigator.pushNamed(
         context,
         version.routeNameForDetail(),
       );
     });
-    Function editable = onlyIf(widget.editable, () {
+    Function? editable = onlyIf(widget.editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: DialogBuilder(
                   child: EditVersionForm(),
@@ -115,16 +115,16 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
     if (versionManager?.value == null) {
       return Card();
     } else {
-      Api api = apiManager.value;
-      ApiVersion version = versionManager.value;
+      Api? api = apiManager!.value;
+      ApiVersion version = versionManager!.value!;
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
               name: version.name.split("/").sublist(4).join("/"),
-              show: selflink,
-              edit: editable,
+              show: selflink as void Function()?,
+              edit: editable as void Function()?,
             ),
             Expanded(
               child: Padding(

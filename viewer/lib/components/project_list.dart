@@ -33,14 +33,14 @@ class ProjectListCard extends StatefulWidget {
 }
 
 class _ProjectListCardState extends State<ProjectListCard> {
-  ProjectService projectService;
-  PagewiseLoadController<Project> pageLoadController;
+  ProjectService? projectService;
+  PagewiseLoadController<Project>? pageLoadController;
 
   _ProjectListCardState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
+        pageFuture: (pageIndex) => projectService!.getProjectsPage(pageIndex!));
   }
 
   @override
@@ -51,7 +51,7 @@ class _ProjectListCardState extends State<ProjectListCard> {
         child: Column(
           children: [
             filterBar(context, ProjectSearchBox(),
-                refresh: () => pageLoadController.reset()),
+                refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ProjectListView(
                 null,
@@ -68,9 +68,9 @@ class _ProjectListCardState extends State<ProjectListCard> {
 
 // ProjectListView is a scrollable ListView of projects.
 class ProjectListView extends StatefulWidget {
-  final ProjectSelectionHandler selectionHandler;
-  final ProjectService projectService;
-  final PagewiseLoadController<Project> pageLoadController;
+  final ProjectSelectionHandler? selectionHandler;
+  final ProjectService? projectService;
+  final PagewiseLoadController<Project>? pageLoadController;
 
   ProjectListView(
     this.selectionHandler,
@@ -88,11 +88,11 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   @override
   void didChangeDependencies() {
-    ObservableStringProvider.of(context).addListener(() => setState(() {
-          ObservableString filter = ObservableStringProvider.of(context);
+    ObservableStringProvider.of(context)!.addListener(() => setState(() {
+          ObservableString? filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            widget.projectService.filter = filter.value;
-            widget.pageLoadController.reset();
+            widget.projectService!.filter = filter.value;
+            widget.pageLoadController!.reset();
             selectedIndex = -1;
           }
         }));
@@ -101,11 +101,11 @@ class _ProjectListViewState extends State<ProjectListView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.projectService.onError = () => setState(() {});
+    widget.projectService!.onError = () => setState(() {});
 
     if (widget.pageLoadController?.error != null) {
       reportError(context, widget.pageLoadController?.error);
-      return Text("${widget.pageLoadController.error}");
+      return Text("${widget.pageLoadController!.error}");
     }
     return Scrollbar(
       controller: scrollController,
@@ -120,7 +120,7 @@ class _ProjectListViewState extends State<ProjectListView> {
   Widget _itemBuilder(context, Project project, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.projectName.value == null) ||
                 (selection.projectName.value == ""))) {
@@ -141,7 +141,7 @@ class _ProjectListViewState extends State<ProjectListView> {
         setState(() {
           selectedIndex = index;
         });
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         selection?.updateProjectName(project.name);
         widget.selectionHandler?.call(context, project);
       },

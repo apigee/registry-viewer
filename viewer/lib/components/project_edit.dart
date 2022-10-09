@@ -25,8 +25,8 @@ class EditProjectForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditProjectFormState extends State<EditProjectForm> {
-  Selection selection;
-  ProjectManager projectManager;
+  Selection? selection;
+  ProjectManager? projectManager;
 
   void managerListener() {
     setState(() {});
@@ -34,7 +34,7 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   void selectionListener() {
     setState(() {
-      setProjectName(SelectionProvider.of(context).projectName.value);
+      setProjectName(SelectionProvider.of(context)!.projectName.value);
     });
   }
 
@@ -45,8 +45,8 @@ class EditProjectFormState extends State<EditProjectForm> {
     // forget the old manager
     projectManager?.removeListener(managerListener);
     // get the new manager
-    projectManager = RegistryProvider.of(context).getProjectManager(name);
-    projectManager.addListener(managerListener);
+    projectManager = RegistryProvider.of(context)!.getProjectManager(name);
+    projectManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -54,7 +54,7 @@ class EditProjectFormState extends State<EditProjectForm> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.projectName.addListener(selectionListener);
+    selection!.projectName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -72,7 +72,7 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   @override
   void dispose() {
-    selection.projectName?.removeListener(selectionListener);
+    selection!.projectName.removeListener(selectionListener);
     projectManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
@@ -85,7 +85,7 @@ class EditProjectFormState extends State<EditProjectForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final project = projectManager.value;
+      final project = projectManager!.value!;
       displayNameController.text = project.displayName;
       descriptionController.text = project.description;
 
@@ -135,8 +135,8 @@ class EditProjectFormState extends State<EditProjectForm> {
   }
 
   void save(BuildContext context) {
-    if (projectManager?.value != null && _formKey.currentState.validate()) {
-      final project = projectManager.value.clone();
+    if (projectManager?.value != null && _formKey.currentState!.validate()) {
+      final project = projectManager!.value!.clone();
       List<String> paths = [];
       if (project.displayName != displayNameController.text) {
         project.displayName = displayNameController.text;

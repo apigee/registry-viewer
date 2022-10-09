@@ -25,9 +25,9 @@ import '../service/service.dart';
 
 // SpecListPage is a full-page display of a list of specs.
 class SpecListPage extends StatefulWidget {
-  final String name;
+  final String? name;
 
-  SpecListPage(String name, {Key key})
+  SpecListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override
@@ -35,20 +35,20 @@ class SpecListPage extends StatefulWidget {
 }
 
 class _SpecListPageState extends State<SpecListPage> {
-  SpecService specService;
-  PagewiseLoadController<ApiSpec> pageLoadController;
+  SpecService? specService;
+  PagewiseLoadController<ApiSpec>? pageLoadController;
 
   _SpecListPageState() {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => this.specService.getSpecsPage(pageIndex));
+        pageFuture: ((pageIndex) => this.specService!.getSpecsPage(pageIndex!).then((value) => value!)) as Future<List<ApiSpec>> Function(int?)?);
   }
 
   // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs
   // to projects/{project}/locations/global/apis/{api}/versions/{version}
   String parentName() {
-    return widget.name.split('/').sublist(1, 9).join('/');
+    return widget.name!.split('/').sublist(1, 9).join('/');
   }
 
   @override
@@ -61,7 +61,7 @@ class _SpecListPageState extends State<SpecListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(widget.name)),
+            title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: SpecSearchBox()),
               homeButton(context),

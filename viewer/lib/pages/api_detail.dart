@@ -25,7 +25,7 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 
 class ApiDetailPage extends StatelessWidget {
-  final String name;
+  final String? name;
   ApiDetailPage({this.name});
 
   @override
@@ -33,7 +33,7 @@ class ApiDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateApiName(name.substring(1));
+      selection.updateApiName(name!.substring(1));
     });
 
     return SelectionProvider(

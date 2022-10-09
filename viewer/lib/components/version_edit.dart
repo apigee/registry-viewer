@@ -25,8 +25,8 @@ class EditVersionForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditVersionFormState extends State<EditVersionForm> {
-  Selection selection;
-  VersionManager versionManager;
+  Selection? selection;
+  VersionManager? versionManager;
 
   void managerListener() {
     setState(() {});
@@ -34,7 +34,7 @@ class EditVersionFormState extends State<EditVersionForm> {
 
   void selectionListener() {
     setState(() {
-      setVersionName(SelectionProvider.of(context).versionName.value);
+      setVersionName(SelectionProvider.of(context)!.versionName.value);
     });
   }
 
@@ -45,8 +45,8 @@ class EditVersionFormState extends State<EditVersionForm> {
     // forget the old manager
     versionManager?.removeListener(managerListener);
     // get the new manager
-    versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(managerListener);
+    versionManager = RegistryProvider.of(context)!.getVersionManager(name);
+    versionManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -54,7 +54,7 @@ class EditVersionFormState extends State<EditVersionForm> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.versionName.addListener(selectionListener);
+    selection!.versionName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -73,7 +73,7 @@ class EditVersionFormState extends State<EditVersionForm> {
 
   @override
   void dispose() {
-    selection.apiName?.removeListener(selectionListener);
+    selection?.apiName.removeListener(selectionListener);
     versionManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
@@ -87,7 +87,7 @@ class EditVersionFormState extends State<EditVersionForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final version = versionManager.value;
+      final version = versionManager!.value!;
       displayNameController.text = version.displayName;
       descriptionController.text = version.description;
       stateController.text = version.state;
@@ -144,8 +144,8 @@ class EditVersionFormState extends State<EditVersionForm> {
   }
 
   void save(BuildContext context) {
-    if (versionManager?.value != null && _formKey.currentState.validate()) {
-      final version = versionManager.value.clone();
+    if (versionManager?.value != null && _formKey.currentState!.validate()) {
+      final version = versionManager!.value!.clone();
       List<String> paths = [];
       if (version.displayName != displayNameController.text) {
         version.displayName = displayNameController.text;

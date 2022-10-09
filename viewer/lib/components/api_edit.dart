@@ -25,8 +25,8 @@ class EditAPIForm extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class EditAPIFormState extends State<EditAPIForm> {
-  Selection selection;
-  ApiManager apiManager;
+  Selection? selection;
+  ApiManager? apiManager;
 
   void managerListener() {
     setState(() {});
@@ -34,7 +34,7 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   void selectionListener() {
     setState(() {
-      setApiName(SelectionProvider.of(context).apiName.value);
+      setApiName(SelectionProvider.of(context)!.apiName.value);
     });
   }
 
@@ -45,8 +45,8 @@ class EditAPIFormState extends State<EditAPIForm> {
     // forget the old manager
     apiManager?.removeListener(managerListener);
     // get the new manager
-    apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(managerListener);
+    apiManager = RegistryProvider.of(context)!.getApiManager(name);
+    apiManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -54,7 +54,7 @@ class EditAPIFormState extends State<EditAPIForm> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.apiName.addListener(selectionListener);
+    selection!.apiName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -72,7 +72,7 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   @override
   void dispose() {
-    selection.apiName?.removeListener(selectionListener);
+    selection!.apiName.removeListener(selectionListener);
     apiManager?.removeListener(managerListener);
     displayNameController.dispose();
     descriptionController.dispose();
@@ -85,7 +85,7 @@ class EditAPIFormState extends State<EditAPIForm> {
       return Card();
     } else {
       // Build a Form widget using the _formKey created above.
-      final api = apiManager.value;
+      final api = apiManager!.value!;
       displayNameController.text = api.displayName;
       descriptionController.text = api.description;
 
@@ -135,8 +135,8 @@ class EditAPIFormState extends State<EditAPIForm> {
   }
 
   void save(BuildContext context) {
-    if (apiManager?.value != null && _formKey.currentState.validate()) {
-      final api = apiManager.value.clone();
+    if (apiManager?.value != null && _formKey.currentState!.validate()) {
+      final api = apiManager!.value!.clone();
       List<String> paths = [];
       if (api.displayName != displayNameController.text) {
         api.displayName = displayNameController.text;

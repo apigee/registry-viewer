@@ -26,9 +26,9 @@ class Highlight {
   }
 }
 
-class ObservableHighlight extends ValueNotifier<Highlight> {
+class ObservableHighlight extends ValueNotifier<Highlight?> {
   ObservableHighlight() : super(Highlight(0, 0, 0, 0));
-  void update(Highlight value) {
+  void update(Highlight? value) {
     this.value = value;
     notifyListeners();
   }
@@ -38,12 +38,12 @@ class ObservableHighlightProvider extends InheritedWidget {
   final ObservableHighlight observable;
 
   const ObservableHighlightProvider(
-      {Key key, @required this.observable, @required Widget child})
+      {Key? key, required this.observable, required Widget child})
       : assert(observable != null),
         assert(child != null),
         super(key: key, child: child);
 
-  static ObservableHighlight of(BuildContext context) => context
+  static ObservableHighlight? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<ObservableHighlightProvider>()
       ?.observable;
 

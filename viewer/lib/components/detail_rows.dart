@@ -21,7 +21,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:registry/registry.dart';
 import '../helpers/timestamp.dart';
 
-Function onlyIf(bool condition, Function action) {
+Function? onlyIf(bool? condition, Function action) {
   if (condition == null || !condition) {
     return null;
   }
@@ -29,9 +29,9 @@ Function onlyIf(bool condition, Function action) {
 }
 
 class ResourceNameButtonRow extends StatelessWidget {
-  final String name;
-  final void Function() show;
-  final void Function() edit;
+  final String? name;
+  final void Function()? show;
+  final void Function()? edit;
   ResourceNameButtonRow({this.name, this.show, this.edit});
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class ResourceNameButtonRow extends StatelessWidget {
           if (show == null)
             Flexible(
               child: Text(
-                name,
+                name!,
                 style: Theme.of(context).textTheme.bodyText1,
                 softWrap: false,
                 overflow: TextOverflow.clip,
@@ -55,10 +55,10 @@ class ResourceNameButtonRow extends StatelessWidget {
             Flexible(
               child: GestureDetector(
                 child: Text(
-                  name,
+                  name!,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(color: Theme.of(context).accentColor),
                   softWrap: false,
                   overflow: TextOverflow.clip,
@@ -72,7 +72,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                 "EDIT",
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .copyWith(color: Theme.of(context).accentColor),
                 textAlign: TextAlign.right,
               ),
@@ -85,8 +85,8 @@ class ResourceNameButtonRow extends StatelessWidget {
 }
 
 class PanelNameRow extends StatelessWidget {
-  final String name;
-  final Widget button;
+  final String? name;
+  final Widget? button;
   PanelNameRow({this.name, this.button});
   @override
   Widget build(BuildContext context) {
@@ -99,13 +99,13 @@ class PanelNameRow extends StatelessWidget {
         children: [
           Flexible(
             child: Text(
-              name,
+              name!,
               style: Theme.of(context).textTheme.bodyText1,
               softWrap: false,
               overflow: TextOverflow.clip,
             ),
           ),
-          (button != null) ? button : SizedBox(width: 0, height: 0),
+          (button != null) ? button! : SizedBox(width: 0, height: 0),
         ],
       ),
     );
@@ -114,7 +114,7 @@ class PanelNameRow extends StatelessWidget {
 
 class TitleRow extends StatelessWidget {
   final String text;
-  final Function action;
+  final Function? action;
   TitleRow(this.text, {this.action});
   @override
   Widget build(BuildContext context) {
@@ -127,12 +127,12 @@ class TitleRow extends StatelessWidget {
                       text,
                       style: Theme.of(context)
                           .textTheme
-                          .headline3
+                          .headline3!
                           .copyWith(color: Theme.of(context).accentColor),
                       textAlign: TextAlign.left,
                       softWrap: true,
                     ),
-                    onTap: action),
+                    onTap: action as void Function()?),
               )
             : Expanded(
                 child: Text(
@@ -158,7 +158,7 @@ class SuperTitleRow extends StatelessWidget {
         text,
         style: Theme.of(context)
             .textTheme
-            .headline6
+            .headline6!
             .copyWith(color: Colors.grey[500]),
         textAlign: TextAlign.left,
         softWrap: true,
@@ -169,7 +169,7 @@ class SuperTitleRow extends StatelessWidget {
 
 class BodyRow extends StatelessWidget {
   final String text;
-  final TextStyle style;
+  final TextStyle? style;
   final bool wrap;
   BodyRow(this.text, {this.style, this.wrap = false});
   @override
@@ -189,11 +189,11 @@ class BodyRow extends StatelessWidget {
 
 class LinkifiedBodyRow extends StatelessWidget {
   final String text;
-  final TextStyle style;
+  final TextStyle? style;
   LinkifiedBodyRow(this.text, {this.style});
   @override
   Widget build(BuildContext context) {
-    final textStyle = style ?? Theme.of(context).textTheme.bodyText1;
+    final textStyle = style ?? Theme.of(context).textTheme.bodyText1!;
     return Linkify(
       onOpen: (link) async {
         if (await canLaunch(link.url)) {
@@ -325,7 +325,7 @@ class DetailRow extends StatelessWidget {
 
 class LabelsRow extends StatelessWidget {
   final Map<String, String> map;
-  final TextStyle style;
+  final TextStyle? style;
   LabelsRow(this.map, {this.style});
   @override
   Widget build(BuildContext context) {
@@ -360,7 +360,7 @@ class LabelsRow extends StatelessWidget {
 
 class AnnotationsRow extends StatelessWidget {
   final Map<String, String> map;
-  final TextStyle style;
+  final TextStyle? style;
   AnnotationsRow(this.map, {this.style});
   @override
   Widget build(BuildContext context) {
@@ -374,7 +374,7 @@ class AnnotationsRow extends StatelessWidget {
           Chip(
             backgroundColor: Theme.of(context).secondaryHeaderColor,
             label: Text(
-              key + ":" + map[key],
+              key + ":" + map[key]!,
               style: GoogleFonts.inconsolata(),
             ),
           ),
@@ -384,13 +384,13 @@ class AnnotationsRow extends StatelessWidget {
 }
 
 class PageSection extends StatelessWidget {
-  final List<Widget> children;
+  final List<Widget>? children;
   PageSection({this.children});
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];
     rows.add(SizedBox(height: 10));
-    rows.addAll(children);
+    rows.addAll(children!);
     return Column(
       children: rows,
     );

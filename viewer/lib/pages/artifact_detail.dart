@@ -21,7 +21,7 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 
 class ArtifactDetailPage extends StatelessWidget {
-  final String name;
+  final String? name;
   ArtifactDetailPage({this.name});
 
   @override
@@ -29,7 +29,7 @@ class ArtifactDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateArtifactName(name.substring(1));
+      selection.updateArtifactName(name!.substring(1));
     });
 
     return SelectionProvider(

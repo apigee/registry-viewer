@@ -19,7 +19,7 @@ import '../helpers/extensions.dart';
 
 class VocabularyArtifactCard extends StatelessWidget {
   final Artifact artifact;
-  final Function selflink;
+  final Function? selflink;
   VocabularyArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class VocabularyArtifactCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: artifact.name.last(1),
-            show: selflink,
+            show: selflink as void Function()?,
             edit: null,
           ),
           Expanded(

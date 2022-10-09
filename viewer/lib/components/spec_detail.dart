@@ -25,18 +25,18 @@ import '../service/registry.dart';
 
 // SpecDetailCard is a card that displays details about a spec.
 class SpecDetailCard extends StatefulWidget {
-  final bool selflink;
-  final bool editable;
+  final bool? selflink;
+  final bool? editable;
   SpecDetailCard({this.selflink, this.editable});
   @override
   _SpecDetailCardState createState() => _SpecDetailCardState();
 }
 
 class _SpecDetailCardState extends State<SpecDetailCard> {
-  ApiManager apiManager;
-  VersionManager versionManager;
-  SpecManager specManager;
-  Selection selection;
+  ApiManager? apiManager;
+  VersionManager? versionManager;
+  SpecManager? specManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -44,9 +44,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setApiName(SelectionProvider.of(context).apiName.value);
-      setVersionName(SelectionProvider.of(context).versionName.value);
-      setSpecName(SelectionProvider.of(context).specName.value);
+      setApiName(SelectionProvider.of(context)!.apiName.value);
+      setVersionName(SelectionProvider.of(context)!.versionName.value);
+      setSpecName(SelectionProvider.of(context)!.specName.value);
     });
   }
 
@@ -57,8 +57,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     // forget the old manager
     apiManager?.removeListener(managerListener);
     // get the new manager
-    apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(managerListener);
+    apiManager = RegistryProvider.of(context)!.getApiManager(name);
+    apiManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -70,8 +70,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     // forget the old manager
     versionManager?.removeListener(managerListener);
     // get the new manager
-    versionManager = RegistryProvider.of(context).getVersionManager(name);
-    versionManager.addListener(managerListener);
+    versionManager = RegistryProvider.of(context)!.getVersionManager(name);
+    versionManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -83,8 +83,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     // forget the old manager
     specManager?.removeListener(managerListener);
     // get the new manager
-    specManager = RegistryProvider.of(context).getSpecManager(name);
-    specManager.addListener(managerListener);
+    specManager = RegistryProvider.of(context)!.getSpecManager(name);
+    specManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -92,7 +92,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.specName.addListener(selectionListener);
+    selection!.specName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -102,26 +102,26 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     apiManager?.removeListener(managerListener);
     versionManager?.removeListener(managerListener);
     specManager?.removeListener(managerListener);
-    selection.specName.removeListener(selectionListener);
+    selection!.specName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Function selflink = onlyIf(widget.selflink, () {
-      ApiSpec spec = specManager?.value;
+    Function? selflink = onlyIf(widget.selflink, () {
+      ApiSpec spec = (specManager?.value)!;
       Navigator.pushNamed(
         context,
         spec.routeNameForDetail(),
       );
     });
-    Function editable = onlyIf(widget.editable, () {
+    Function? editable = onlyIf(widget.editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: DialogBuilder(
                   child: EditSpecForm(),
@@ -134,9 +134,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
     if (specManager?.value == null) {
       return Card();
     } else {
-      Api api = apiManager.value;
-      ApiVersion version = versionManager.value;
-      ApiSpec spec = specManager.value;
+      Api? api = apiManager!.value;
+      ApiVersion? version = versionManager!.value;
+      ApiSpec? spec = specManager!.value;
       if ((api == null) || (version == null) || (spec == null)) {
         return Card();
       }
@@ -147,8 +147,8 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
           children: [
             ResourceNameButtonRow(
               name: spec.name.last(1),
-              show: selflink,
-              edit: editable,
+              show: selflink as void Function()?,
+              edit: editable as void Function()?,
             ),
             Expanded(
               child: Padding(
@@ -161,7 +161,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
                         children: [
                           SuperTitleRow(api.displayName +
                               "/" +
-                              version.name.split("/")?.last),
+                              version.name.split("/").last),
                           TitleRow(spec.name.split("/").last, action: selflink),
                         ],
                       ),
