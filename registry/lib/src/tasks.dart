@@ -41,12 +41,12 @@ class TaskProcessor {
     String id = "$i".padLeft(3, "0");
     Completer completer = new Completer();
     ReceivePort isolateToMainStream = ReceivePort();
-    SendPort mainToIsolateStream;
-    Future<Isolate> myIsolateInstance;
+    SendPort? mainToIsolateStream;
+    Future<Isolate>? myIsolateInstance;
     isolateToMainStream.listen((data) {
       if (data is SendPort) {
         mainToIsolateStream = data;
-        mainToIsolateStream.send("#$id");
+        mainToIsolateStream?.send("#$id");
       } else if (data is String) {
         print("[$id]-> $data");
         if (data == "ready") {
@@ -58,7 +58,7 @@ class TaskProcessor {
           }
         } else if (data == "done") {
           print("closing [$id]");
-          myIsolateInstance.then((isolate) {
+          myIsolateInstance?.then((isolate) {
             isolateToMainStream.close();
           });
           completer.complete();
@@ -90,7 +90,7 @@ class TaskProcessor {
       } else if (data is Task) {
         print('->[$id] ${data.name()}');
         try {
-          await data.run(client);
+          data.run(client);
         } catch (error) {
           print("$error");
         }
