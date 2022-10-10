@@ -19,7 +19,7 @@ import '../helpers/extensions.dart';
 
 class ReferencesArtifactCard extends StatelessWidget {
   final Artifact artifact;
-  final Function selflink;
+  final Function? selflink;
   ReferencesArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ReferencesArtifactCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: artifact.name.last(1),
-            show: selflink,
+            show: selflink as void Function()?,
             edit: null,
           ),
           Expanded(

@@ -19,7 +19,7 @@ import '../helpers/root.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
 
-AdminClient getAdminClient() {
+AdminClient? getAdminClient() {
   if (root() == "/") {
     return AdminClient(createClientChannel());
   }
@@ -30,12 +30,12 @@ class RegistryProvider extends InheritedWidget {
   final Registry registry;
 
   const RegistryProvider(
-      {Key key, @required this.registry, @required Widget child})
+      {Key? key, required this.registry, required Widget child})
       : assert(registry != null),
         assert(child != null),
         super(key: key, child: child);
 
-  static Registry of(BuildContext context) =>
+  static Registry? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<RegistryProvider>()?.registry;
 
   @override
@@ -48,9 +48,9 @@ class Registry {
   Map<String, ApiManager> apiManagers = Map();
   Map<String, VersionManager> versionManagers = Map();
   Map<String, SpecManager> specManagers = Map();
-  Map<String, ArtifactManager> artifactManagers = Map();
+  Map<String?, ArtifactManager> artifactManagers = Map();
 
-  ProjectManager getProjectManager(String name) {
+  ProjectManager? getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
     if (projectManagers[name] == null) {
       projectManagers[name] = ProjectManager(name);
@@ -58,7 +58,7 @@ class Registry {
     return projectManagers[name];
   }
 
-  ApiManager getApiManager(String name) {
+  ApiManager? getApiManager(String name) {
     Manager.removeUnused(apiManagers);
     if (apiManagers[name] == null) {
       apiManagers[name] = ApiManager(name);
@@ -66,7 +66,7 @@ class Registry {
     return apiManagers[name];
   }
 
-  VersionManager getVersionManager(String name) {
+  VersionManager? getVersionManager(String name) {
     Manager.removeUnused(versionManagers);
     if (versionManagers[name] == null) {
       versionManagers[name] = VersionManager(name);
@@ -74,7 +74,7 @@ class Registry {
     return versionManagers[name];
   }
 
-  SpecManager getSpecManager(String name) {
+  SpecManager? getSpecManager(String name) {
     Manager.removeUnused(specManagers);
     if (specManagers[name] == null) {
       specManagers[name] = SpecManager(name);
@@ -82,7 +82,7 @@ class Registry {
     return specManagers[name];
   }
 
-  ArtifactManager getArtifactManager(String name) {
+  ArtifactManager? getArtifactManager(String? name) {
     Manager.removeUnused(artifactManagers);
     if (artifactManagers[name] == null) {
       artifactManagers[name] = ArtifactManager(name);
@@ -98,8 +98,8 @@ class Manager extends ChangeNotifier {
     return !hasListeners;
   }
 
-  static void removeUnused(Map<String, Manager> managers) {
-    List<String> names = [];
+  static void removeUnused(Map<String?, Manager> managers) {
+    List<String?> names = [];
     managers.forEach((name, m) {
       if (m.isUnused) {
         names.add(name);
@@ -113,12 +113,12 @@ class Manager extends ChangeNotifier {
 
 // A ResourceManager gets and updates a resource of a specific type.
 abstract class ResourceManager<T> extends Manager {
-  final String name;
+  final String? name;
   ResourceManager(this.name);
-  T _value;
-  Future<T> _future;
+  T? _value;
+  Future<T>? _future;
 
-  T get value {
+  T? get value {
     if (_value != null) {
       return _value;
     }
@@ -131,7 +131,7 @@ abstract class ResourceManager<T> extends Manager {
   void _fetch() {
     if (name == "") return;
     _future = fetchFuture(getClient(), getAdminClient());
-    _future.then((T value) {
+    _future!.then((T value) {
       _value = value;
       _future = null;
       notifyListeners();
@@ -139,14 +139,14 @@ abstract class ResourceManager<T> extends Manager {
   }
 
   // fetchFuture must be overridden to return a future for the fetched resource.
-  Future<T> fetchFuture(RegistryClient client, AdminClient adminClient);
+  Future<T> fetchFuture(RegistryClient client, AdminClient? adminClient);
 }
 
 class ProjectManager extends ResourceManager<Project> {
   ProjectManager(String name) : super(name);
-  Future<Project> fetchFuture(RegistryClient client, AdminClient adminClient) {
+  Future<Project> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetProjectRequest();
-    request.name = name;
+    request.name = name!;
     if (adminClient != null) {
       return adminClient.getProject(request, options: callOptions());
     }
@@ -154,7 +154,7 @@ class ProjectManager extends ResourceManager<Project> {
   }
 
   void update(Project newValue, List<String> paths, Function onError) {
-    final adminClient = getAdminClient();
+    final adminClient = getAdminClient()!;
     final request = UpdateProjectRequest();
     request.project = newValue;
     request.updateMask = FieldMask();
@@ -171,9 +171,9 @@ class ProjectManager extends ResourceManager<Project> {
 
 class ApiManager extends ResourceManager<Api> {
   ApiManager(String name) : super(name);
-  Future<Api> fetchFuture(RegistryClient client, AdminClient adminClient) {
+  Future<Api> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetApiRequest();
-    request.name = name;
+    request.name = name!;
     return client.getApi(request, options: callOptions());
   }
 
@@ -195,9 +195,9 @@ class ApiManager extends ResourceManager<Api> {
 class VersionManager extends ResourceManager<ApiVersion> {
   VersionManager(String name) : super(name);
   Future<ApiVersion> fetchFuture(
-      RegistryClient client, AdminClient adminClient) {
+      RegistryClient client, AdminClient? adminClient) {
     final request = GetApiVersionRequest();
-    request.name = name;
+    request.name = name!;
     return client.getApiVersion(request, options: callOptions());
   }
 
@@ -218,9 +218,9 @@ class VersionManager extends ResourceManager<ApiVersion> {
 
 class SpecManager extends ResourceManager<ApiSpec> {
   SpecManager(String name) : super(name);
-  Future<ApiSpec> fetchFuture(RegistryClient client, AdminClient adminClient) {
+  Future<ApiSpec> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetApiSpecRequest();
-    request.name = name;
+    request.name = name!;
     return client.getApiSpec(request, options: callOptions()).then((spec) {
       final request = GetApiSpecContentsRequest();
       request.name = spec.name;
@@ -229,7 +229,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
           .then((contents) {
         if (spec.mimeType.contains("+gzip") &&
             !contents.contentType.contains("+gzip")) {
-          spec.contents = GZipEncoder().encode(contents.data);
+          spec.contents = GZipEncoder().encode(contents.data)!;
         } else {
           spec.contents = contents.data;
         }
@@ -254,10 +254,10 @@ class SpecManager extends ResourceManager<ApiSpec> {
 }
 
 class ArtifactManager extends ResourceManager<Artifact> {
-  ArtifactManager(String name) : super(name);
-  Future<Artifact> fetchFuture(RegistryClient client, AdminClient adminClient) {
+  ArtifactManager(String? name) : super(name);
+  Future<Artifact> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetArtifactRequest();
-    request.name = name;
+    request.name = name!;
     return client.getArtifact(request, options: callOptions()).then((artifact) {
       final request = GetArtifactContentsRequest();
       request.name = artifact.name;

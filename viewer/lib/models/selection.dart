@@ -102,12 +102,12 @@ class SelectionProvider extends InheritedWidget {
   final Selection selection;
 
   const SelectionProvider(
-      {Key key, @required this.selection, @required Widget child})
+      {Key? key, required this.selection, required Widget child})
       : assert(selection != null),
         assert(child != null),
         super(key: key, child: child);
 
-  static Selection of(BuildContext context) => context
+  static Selection? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<SelectionProvider>()
       ?.selection;
 
@@ -116,34 +116,34 @@ class SelectionProvider extends InheritedWidget {
       selection != oldWidget.selection;
 
   static ObservableString project(BuildContext context) {
-    return SelectionProvider.of(context).projectName;
+    return SelectionProvider.of(context)!.projectName;
   }
 
   static ObservableString api(BuildContext context) {
-    return SelectionProvider.of(context).apiName;
+    return SelectionProvider.of(context)!.apiName;
   }
 
   static ObservableString version(BuildContext context) {
-    return SelectionProvider.of(context).versionName;
+    return SelectionProvider.of(context)!.versionName;
   }
 
   static ObservableString spec(BuildContext context) {
-    return SelectionProvider.of(context).specName;
+    return SelectionProvider.of(context)!.specName;
   }
 
   static ObservableString label(BuildContext context) {
-    return SelectionProvider.of(context).labelName;
+    return SelectionProvider.of(context)!.labelName;
   }
 
   static ObservableString artifact(BuildContext context) {
-    return SelectionProvider.of(context).artifactName;
+    return SelectionProvider.of(context)!.artifactName;
   }
 
   static ObservableString file(BuildContext context) {
-    return SelectionProvider.of(context).fileName;
+    return SelectionProvider.of(context)!.fileName;
   }
 
   static ObservableHighlight highlight(BuildContext context) {
-    return SelectionProvider.of(context).highlight;
+    return SelectionProvider.of(context)!.highlight;
   }
 }

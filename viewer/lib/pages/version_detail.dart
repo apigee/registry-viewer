@@ -25,7 +25,7 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 
 class VersionDetailPage extends StatelessWidget {
-  final String name;
+  final String? name;
   VersionDetailPage({this.name});
 
   @override
@@ -34,8 +34,8 @@ class VersionDetailPage extends StatelessWidget {
 
     Future.delayed(const Duration(), () {
       selection
-          .updateApiName(name.substring(1).split("/").sublist(0, 6).join("/"));
-      selection.updateVersionName(name.substring(1));
+          .updateApiName(name!.substring(1).split("/").sublist(0, 6).join("/"));
+      selection.updateVersionName(name!.substring(1));
     });
 
     return SelectionProvider(

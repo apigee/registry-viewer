@@ -26,18 +26,18 @@ import '../models/artifact.dart';
 
 class StringArtifactCard extends StatelessWidget {
   final Artifact artifact;
-  final Function selflink;
-  final bool editable;
+  final Function? selflink;
+  final bool? editable;
   StringArtifactCard(this.artifact, {this.selflink, this.editable});
   @override
   Widget build(BuildContext context) {
-    Function editableFn = onlyIf(editable, () {
+    Function? editableFn = onlyIf(editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: EditArtifactForm(),
               ),
@@ -51,7 +51,7 @@ class StringArtifactCard extends StatelessWidget {
       child: Column(
         children: [
           ResourceNameButtonRow(
-              name: artifact.name.last(1), show: selflink, edit: editableFn),
+              name: artifact.name.last(1), show: selflink as void Function()?, edit: editableFn as void Function()?),
           Padding(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(

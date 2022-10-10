@@ -15,7 +15,7 @@
 import 'package:grpc/grpc.dart' as grpc;
 import 'dart:io' show Platform;
 
-String token; // auth token
+String? token; // auth token
 
 // unused in non-web builds
 void setRegistryUserToken(String token) {}
@@ -38,11 +38,11 @@ grpc.ClientChannel createClientChannel() {
   Map<String, String> env = Platform.environment;
   token = env['APG_REGISTRY_TOKEN'];
   final insecure = env['APG_REGISTRY_INSECURE'] == "1";
-  if (!insecure && unset(token)) {
+  if (!insecure && unset(token!)) {
     throw ConnectionError("APG_REGISTRY_TOKEN not set");
   }
   final address = env['APG_REGISTRY_ADDRESS'];
-  if (unset(address)) {
+  if (unset(address!)) {
     throw ConnectionError("APG_REGISTRY_ADDRESS not set");
   }
   final parts = address.split(":");
@@ -63,7 +63,7 @@ grpc.CallOptions callOptions() {
   if (token == null) {
     return grpc.CallOptions();
   }
-  Map<String, String> metadata = {"authorization": "Bearer " + token};
+  Map<String, String> metadata = {"authorization": "Bearer " + token!};
   grpc.CallOptions callOptions = grpc.CallOptions(metadata: metadata);
   return callOptions;
 }

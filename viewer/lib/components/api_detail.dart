@@ -23,15 +23,15 @@ import '../service/registry.dart';
 
 // ApiDetailCard is a card that displays details about a api.
 class ApiDetailCard extends StatefulWidget {
-  final bool selflink;
-  final bool editable;
+  final bool? selflink;
+  final bool? editable;
   ApiDetailCard({this.selflink, this.editable});
   _ApiDetailCardState createState() => _ApiDetailCardState();
 }
 
 class _ApiDetailCardState extends State<ApiDetailCard> {
-  ApiManager apiManager;
-  Selection selection;
+  ApiManager? apiManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -39,7 +39,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setApiName(SelectionProvider.of(context).apiName.value);
+      setApiName(SelectionProvider.of(context)!.apiName.value);
     });
   }
 
@@ -50,8 +50,8 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     // forget the old manager
     apiManager?.removeListener(managerListener);
     // get the new manager
-    apiManager = RegistryProvider.of(context).getApiManager(name);
-    apiManager.addListener(managerListener);
+    apiManager = RegistryProvider.of(context)!.getApiManager(name);
+    apiManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -59,7 +59,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.apiName.addListener(selectionListener);
+    selection!.apiName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -67,26 +67,26 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
   @override
   void dispose() {
     apiManager?.removeListener(managerListener);
-    selection.apiName.removeListener(selectionListener);
+    selection!.apiName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Function selflink = onlyIf(widget.selflink, () {
-      Api api = apiManager?.value;
+    Function? selflink = onlyIf(widget.selflink, () {
+      Api api = (apiManager?.value)!;
       Navigator.pushNamed(
         context,
         api.routeNameForDetail(),
       );
     });
-    Function editable = onlyIf(widget.editable, () {
+    Function? editable = onlyIf(widget.editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: DialogBuilder(
                   child: EditAPIForm(),
@@ -99,15 +99,15 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
     if (apiManager?.value == null) {
       return Card();
     } else {
-      final api = apiManager.value;
+      final api = apiManager!.value!;
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
               name: api.name.split("/").sublist(2).join("/"),
-              show: selflink,
-              edit: editable,
+              show: selflink as void Function()?,
+              edit: editable as void Function()?,
             ),
             Expanded(
               child: Padding(

@@ -24,7 +24,7 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 
 class SpecDetailPage extends StatelessWidget {
-  final String name;
+  final String? name;
   SpecDetailPage({this.name});
 
   @override
@@ -33,10 +33,10 @@ class SpecDetailPage extends StatelessWidget {
 
     Future.delayed(const Duration(), () {
       selection
-          .updateApiName(name.substring(1).split("/").sublist(0, 6).join("/"));
+          .updateApiName(name!.substring(1).split("/").sublist(0, 6).join("/"));
       selection.updateVersionName(
-          name.substring(1).split("/").sublist(0, 8).join("/"));
-      selection.updateSpecName(name.substring(1));
+          name!.substring(1).split("/").sublist(0, 8).join("/"));
+      selection.updateSpecName(name!.substring(1));
     });
 
     return SelectionProvider(

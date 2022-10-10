@@ -25,9 +25,9 @@ import '../service/service.dart';
 
 // ApiListPage is a full-page display of a list of apis.
 class ApiListPage extends StatefulWidget {
-  final String name;
+  final String? name;
 
-  ApiListPage(String name, {Key key})
+  ApiListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override
@@ -35,20 +35,20 @@ class ApiListPage extends StatefulWidget {
 }
 
 class _ApiListPageState extends State<ApiListPage> {
-  ApiService apiService;
-  PagewiseLoadController<Api> pageLoadController;
+  ApiService? apiService;
+  PagewiseLoadController<Api>? pageLoadController;
 
   _ApiListPageState() {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+        pageFuture: ((pageIndex) => apiService!.getApisPage(pageIndex!).then((value) => value!)) as Future<List<Api>> Function(int?)?);
   }
 
   // convert /projects/{project}/locations/global/apis
   // to projects/{project}/locations/global
   String parentName() {
-    return widget.name.split('/').sublist(1, 5).join('/');
+    return widget.name!.split('/').sublist(1, 5).join('/');
   }
 
   @override
@@ -61,7 +61,7 @@ class _ApiListPageState extends State<ApiListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(widget.name)),
+            title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: ApiSearchBox()),
               homeButton(context),

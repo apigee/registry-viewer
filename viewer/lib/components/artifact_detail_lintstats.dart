@@ -29,14 +29,14 @@ String stringForLocation(LintLocation location) {
 
 class LintStatsArtifactCard extends StatefulWidget {
   final Artifact artifact;
-  final Function selflink;
+  final Function? selflink;
   LintStatsArtifactCard(this.artifact, {this.selflink});
 
   _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
 }
 
 class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
-  LintStats lintstats;
+  LintStats? lintstats;
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;
 
@@ -59,7 +59,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
         children: [
           ResourceNameButtonRow(
             name: widget.artifact.name.last(1),
-            show: widget.selflink,
+            show: widget.selflink as void Function()?,
             edit: null,
           ),
           Expanded(
@@ -72,7 +72,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                   if (lintstats == null) {
                     return Container();
                   }
-                  final problemCount = lintstats.problemCounts[index];
+                  final problemCount = lintstats!.problemCounts[index];
                   return GestureDetector(
                     onTap: () {
                       selectedIndex = index;
@@ -94,7 +94,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                                   child: Text(problemCount.ruleId,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2
+                                          .bodyText2!
                                           .copyWith(
                                               color: Theme.of(context)
                                                   .accentColor)),

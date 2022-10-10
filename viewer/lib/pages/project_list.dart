@@ -24,9 +24,9 @@ import '../service/service.dart';
 
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatefulWidget {
-  final String name;
+  final String? name;
 
-  ProjectListPage(String name, {Key key})
+  ProjectListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
 
@@ -35,14 +35,14 @@ class ProjectListPage extends StatefulWidget {
 }
 
 class _ProjectListPageState extends State<ProjectListPage> {
-  ProjectService projectService;
-  PagewiseLoadController<Project> pageLoadController;
+  ProjectService? projectService;
+  PagewiseLoadController<Project>? pageLoadController;
 
   _ProjectListPageState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => projectService.getProjectsPage(pageIndex));
+        pageFuture: (pageIndex) => projectService!.getProjectsPage(pageIndex!));
   }
 
   @override
@@ -51,7 +51,7 @@ class _ProjectListPageState extends State<ProjectListPage> {
       observable: ObservableString(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title(widget.name)),
+          title: Text(title(widget.name!)),
           actions: <Widget>[
             Container(width: 400, child: ProjectSearchBox()),
             homeButton(context),

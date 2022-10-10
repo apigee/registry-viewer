@@ -31,15 +31,15 @@ import '../service/registry.dart';
 
 // ArtifactDetailCard is a card that displays details about an artifact.
 class ArtifactDetailCard extends StatefulWidget {
-  final bool selflink;
-  final bool editable;
+  final bool? selflink;
+  final bool? editable;
   ArtifactDetailCard({this.selflink, this.editable});
   _ArtifactDetailCardState createState() => _ArtifactDetailCardState();
 }
 
 class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
-  ArtifactManager artifactManager;
-  Selection selection;
+  ArtifactManager? artifactManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -47,7 +47,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setProjectName(SelectionProvider.of(context).artifactName.value);
+      setProjectName(SelectionProvider.of(context)!.artifactName.value);
     });
   }
 
@@ -58,8 +58,8 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
     // forget the old manager
     artifactManager?.removeListener(managerListener);
     // get the new manager
-    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
-    artifactManager.addListener(managerListener);
+    artifactManager = RegistryProvider.of(context)!.getArtifactManager(name);
+    artifactManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -67,7 +67,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.artifactName.addListener(selectionListener);
+    selection!.artifactName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -75,14 +75,14 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
   @override
   void dispose() {
     artifactManager?.removeListener(managerListener);
-    selection.artifactName.removeListener(selectionListener);
+    selection!.artifactName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Function selflink = onlyIf(widget.selflink, () {
-      Artifact artifact = artifactManager?.value;
+    Function? selflink = onlyIf(widget.selflink, () {
+      Artifact artifact = (artifactManager?.value)!;
       Navigator.pushNamed(
         context,
         artifact.routeNameForDetail(),
@@ -96,7 +96,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
         ),
       );
     } else {
-      Artifact artifact = artifactManager.value;
+      Artifact artifact = artifactManager!.value!;
 
       switch (artifact.mimeType) {
         case "text/plain":
@@ -181,15 +181,15 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
 
 // DefaultArtifactDetailCard is a card that displays details about an artifact.
 class DefaultArtifactDetailCard extends StatefulWidget {
-  final Function selflink;
+  final Function? selflink;
   DefaultArtifactDetailCard({this.selflink});
   _DefaultArtifactDetailCardState createState() =>
       _DefaultArtifactDetailCardState();
 }
 
 class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
-  ArtifactManager artifactManager;
-  Selection selection;
+  ArtifactManager? artifactManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -197,7 +197,7 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setArtifactName(SelectionProvider.of(context).artifactName.value);
+      setArtifactName(SelectionProvider.of(context)!.artifactName.value);
     });
   }
 
@@ -208,8 +208,8 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
     // forget the old manager
     artifactManager?.removeListener(managerListener);
     // get the new manager
-    artifactManager = RegistryProvider.of(context).getArtifactManager(name);
-    artifactManager.addListener(managerListener);
+    artifactManager = RegistryProvider.of(context)!.getArtifactManager(name);
+    artifactManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -217,7 +217,7 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.artifactName.addListener(selectionListener);
+    selection!.artifactName.addListener(selectionListener);
     selectionListener();
     super.didChangeDependencies();
   }
@@ -225,13 +225,13 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
   @override
   void dispose() {
     artifactManager?.removeListener(managerListener);
-    selection.artifactName.removeListener(selectionListener);
+    selection!.artifactName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Artifact artifact = artifactManager?.value;
+    Artifact? artifact = artifactManager?.value;
     if (artifact == null) {
       return Card(child: Text("$artifactManager"));
     }
@@ -241,7 +241,9 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResourceNameButtonRow(
-              name: artifact.name.last(1), show: widget.selflink, edit: null),
+              name: artifact.name.last(1),
+              show: widget.selflink as void Function()?,
+              edit: null),
           Expanded(
             child: Scrollbar(
               child: Padding(

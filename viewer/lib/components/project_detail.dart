@@ -23,15 +23,15 @@ import '../service/registry.dart';
 
 // ProjectDetailCard is a card that displays details about a project.
 class ProjectDetailCard extends StatefulWidget {
-  final bool selflink;
-  final bool editable;
+  final bool? selflink;
+  final bool? editable;
   ProjectDetailCard({this.selflink, this.editable});
   _ProjectDetailCardState createState() => _ProjectDetailCardState();
 }
 
 class _ProjectDetailCardState extends State<ProjectDetailCard> {
-  ProjectManager projectManager;
-  Selection selection;
+  ProjectManager? projectManager;
+  Selection? selection;
 
   void managerListener() {
     setState(() {});
@@ -39,7 +39,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   void selectionListener() {
     setState(() {
-      setProjectName(SelectionProvider.of(context).projectName.value);
+      setProjectName(SelectionProvider.of(context)!.projectName.value);
     });
   }
 
@@ -50,8 +50,8 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     // forget the old manager
     projectManager?.removeListener(managerListener);
     // get the new manager
-    projectManager = RegistryProvider.of(context).getProjectManager(name);
-    projectManager.addListener(managerListener);
+    projectManager = RegistryProvider.of(context)!.getProjectManager(name);
+    projectManager!.addListener(managerListener);
     // get the value from the manager
     managerListener();
   }
@@ -59,7 +59,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.projectName.addListener(selectionListener);
+    selection!.projectName.addListener(selectionListener);
     super.didChangeDependencies();
     selectionListener();
   }
@@ -67,27 +67,27 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
   @override
   void dispose() {
     projectManager?.removeListener(managerListener);
-    selection.projectName.removeListener(selectionListener);
+    selection!.projectName.removeListener(selectionListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Function selflink = onlyIf(widget.selflink, () {
-      Project project = projectManager?.value;
+    Function? selflink = onlyIf(widget.selflink, () {
+      Project project = (projectManager?.value)!;
       Navigator.pushNamed(
         context,
         project.routeNameForDetail(),
       );
     });
 
-    Function editable = onlyIf(widget.editable, () {
+    Function? editable = onlyIf(widget.editable, () {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: DialogBuilder(
                   child: EditProjectForm(),
@@ -100,15 +100,15 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
     if (projectManager?.value == null) {
       return Card();
     } else {
-      Project project = projectManager.value;
+      Project project = projectManager!.value!;
       return Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ResourceNameButtonRow(
               name: project.name,
-              show: selflink,
-              edit: editable,
+              show: selflink as void Function()?,
+              edit: editable as void Function()?,
             ),
             Expanded(
               child: Padding(

@@ -41,16 +41,16 @@ class ArtifactListCard extends StatefulWidget {
 }
 
 class _ArtifactListCardState extends State<ArtifactListCard> {
-  ObservableString observableSubjectName;
-  String subjectName;
-  ArtifactService artifactService;
-  PagewiseLoadController<Artifact> pageLoadController;
+  late ObservableString observableSubjectName;
+  String? subjectName;
+  ArtifactService? artifactService;
+  PagewiseLoadController<Artifact>? pageLoadController;
 
   _ArtifactListCardState() {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => artifactService.getArtifactsPage(pageIndex));
+        pageFuture: ((pageIndex) => artifactService!.getArtifactsPage(pageIndex!).then((value) => value!)) as Future<List<Artifact>> Function(int?)?);
   }
 
   void selectionListener() {
@@ -84,7 +84,7 @@ class _ArtifactListCardState extends State<ArtifactListCard> {
           context: context,
           builder: (BuildContext context) {
             return SelectionProvider(
-              selection: selection,
+              selection: selection!,
               child: AlertDialog(
                 content: AddArtifactForm(subjectName),
               ),
@@ -99,7 +99,7 @@ class _ArtifactListCardState extends State<ArtifactListCard> {
             filterBar(context, ArtifactSearchBox(),
                 type: "artifacts",
                 add: add,
-                refresh: () => pageLoadController.reset()),
+                refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ArtifactListView(
                 widget.getObservableResourceName,
@@ -117,10 +117,10 @@ class _ArtifactListCardState extends State<ArtifactListCard> {
 
 // ArtifactListView is a scrollable ListView of artifacts.
 class ArtifactListView extends StatefulWidget {
-  final ObservableStringFn getObservableResourceName;
-  final ArtifactSelectionHandler selectionHandler;
-  final ArtifactService artifactService;
-  final PagewiseLoadController<Artifact> pageLoadController;
+  final ObservableStringFn? getObservableResourceName;
+  final ArtifactSelectionHandler? selectionHandler;
+  final ArtifactService? artifactService;
+  final PagewiseLoadController<Artifact>? pageLoadController;
 
   ArtifactListView(
     this.getObservableResourceName,
@@ -133,17 +133,17 @@ class ArtifactListView extends StatefulWidget {
 }
 
 class _ArtifactListViewState extends State<ArtifactListView> {
-  String parentName;
+  String? parentName;
   int selectedIndex = -1;
-  ObservableString filter;
+  ObservableString? filter;
   final ScrollController scrollController = ScrollController();
 
   void filterListener() {
     setState(() {
-      ObservableString filter = ObservableStringProvider.of(context);
+      ObservableString? filter = ObservableStringProvider.of(context);
       if (filter != null) {
-        widget.artifactService.filter = filter.value;
-        widget.pageLoadController.reset();
+        widget.artifactService!.filter = filter.value;
+        widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
     });
@@ -152,24 +152,24 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   @override
   void didChangeDependencies() {
     filter = ObservableStringProvider.of(context);
-    filter.addListener(filterListener);
+    filter!.addListener(filterListener);
     super.didChangeDependencies();
     filterListener();
   }
 
   @override
   void dispose() {
-    filter.removeListener(filterListener);
+    filter!.removeListener(filterListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.artifactService.context = context;
-    String subjectName = widget.getObservableResourceName(context).value;
-    if (widget.artifactService.parentName != subjectName) {
-      widget.artifactService.parentName = subjectName;
-      widget.pageLoadController.reset();
+    widget.artifactService!.context = context;
+    String subjectName = widget.getObservableResourceName!(context).value;
+    if (widget.artifactService!.parentName != subjectName) {
+      widget.artifactService!.parentName = subjectName;
+      widget.pageLoadController!.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
@@ -192,7 +192,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   }
 
   Widget _itemBuilder(context, Artifact artifact, index) {
-    String artifactInfoLink;
+    String? artifactInfoLink;
     switch (artifact.mimeType) {
       case "application/octet-stream;type=gnostic.metrics.Vocabulary":
         artifactInfoLink =
@@ -221,7 +221,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         setState(() {
           selectedIndex = index;
         });
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         selection?.updateArtifactName(artifact.name);
         widget.selectionHandler?.call(context, artifact);
       },
@@ -234,7 +234,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
                 icon: Icon(Icons.info),
                 tooltip: "info",
                 onPressed: () async {
-                  if (await canLaunch(artifactInfoLink)) {
+                  if (await canLaunch(artifactInfoLink!)) {
                     await launch(artifactInfoLink);
                   } else {
                     throw 'Could not launch $artifactInfoLink';
@@ -246,7 +246,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
               icon: Icon(Icons.delete),
               tooltip: "delete",
               onPressed: () {
-                final selection = SelectionProvider.of(context);
+                final selection = SelectionProvider.of(context)!;
                 selection.updateArtifactName(artifact.name);
                 showDialog(
                     context: context,

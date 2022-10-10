@@ -17,9 +17,9 @@ import 'package:flutter/material.dart';
 Widget filterBar(
   BuildContext context,
   Widget filterField, {
-  String type,
-  Function add,
-  Function refresh,
+  String? type,
+  Function? add,
+  Function? refresh,
 }) {
   String tooltip = "Add";
   if (type != null) {
@@ -36,14 +36,14 @@ Widget filterBar(
         color: Colors.black,
         icon: Icon(Icons.refresh),
         tooltip: "refresh",
-        onPressed: refresh,
+        onPressed: refresh as void Function()?,
       ),
       if (type != null)
         IconButton(
           color: Colors.black,
           icon: Icon(Icons.add),
           tooltip: tooltip,
-          onPressed: add,
+          onPressed: add as void Function()?,
         ),
     ],
   );

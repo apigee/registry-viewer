@@ -15,7 +15,7 @@
 import 'package:flutter/material.dart';
 
 class DialogBuilder extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   DialogBuilder({this.child});
 
   @override

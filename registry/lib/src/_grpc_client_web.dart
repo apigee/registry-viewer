@@ -16,22 +16,22 @@ import 'package:grpc/grpc_web.dart' show GrpcWebClientChannel;
 import 'package:grpc/grpc.dart' as grpc;
 import 'dart:html' as html;
 
-String currentUserToken;
+String? currentUserToken;
 
 void setRegistryUserToken(String token) {
   currentUserToken = token;
 }
 
 GrpcWebClientChannel createClientChannel() {
-  String url = html
+  String? url = html
       .querySelector('meta[name=registry-service]')
       ?.getAttribute('content');
 
-  return GrpcWebClientChannel.xhr(Uri.parse(url));
+  return GrpcWebClientChannel.xhr(Uri.parse(url!));
 }
 
 grpc.CallOptions callOptions() {
-  String token = currentUserToken;
+  String? token = currentUserToken;
 
   if (token == null) {
     return grpc.CallOptions();

@@ -32,14 +32,14 @@ class VersionListCard extends StatefulWidget {
 }
 
 class _VersionListCardState extends State<VersionListCard> {
-  VersionService versionService;
-  PagewiseLoadController<ApiVersion> pageLoadController;
+  VersionService? versionService;
+  PagewiseLoadController<ApiVersion>? pageLoadController;
 
   _VersionListCardState() {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+        pageFuture: ((pageIndex) => versionService!.getVersionsPage(pageIndex!).then((value) => value!)) as Future<List<ApiVersion>> Function(int?)?);
   }
 
   @override
@@ -50,7 +50,7 @@ class _VersionListCardState extends State<VersionListCard> {
         child: Column(
           children: [
             filterBar(context, VersionSearchBox(),
-                refresh: () => pageLoadController.reset()),
+                refresh: () => pageLoadController!.reset()),
             Expanded(
               child: VersionListView(
                 null,
@@ -67,9 +67,9 @@ class _VersionListCardState extends State<VersionListCard> {
 
 // VersionListView is a scrollable ListView of versions.
 class VersionListView extends StatefulWidget {
-  final VersionSelectionHandler selectionHandler;
-  final VersionService versionService;
-  final PagewiseLoadController<ApiVersion> pageLoadController;
+  final VersionSelectionHandler? selectionHandler;
+  final VersionService? versionService;
+  final PagewiseLoadController<ApiVersion>? pageLoadController;
 
   VersionListView(
     this.selectionHandler,
@@ -82,10 +82,10 @@ class VersionListView extends StatefulWidget {
 }
 
 class _VersionListViewState extends State<VersionListView> {
-  String apiName;
+  String? apiName;
   int selectedIndex = -1;
-  Selection selection;
-  ObservableString filter;
+  Selection? selection;
+  ObservableString? filter;
   final ScrollController scrollController = ScrollController();
 
   void selectionListener() {
@@ -94,10 +94,10 @@ class _VersionListViewState extends State<VersionListView> {
 
   void filterListener() {
     setState(() {
-      ObservableString filter = ObservableStringProvider.of(context);
+      ObservableString? filter = ObservableStringProvider.of(context);
       if (filter != null) {
-        widget.versionService.filter = filter.value;
-        widget.pageLoadController.reset();
+        widget.versionService!.filter = filter.value;
+        widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
     });
@@ -106,27 +106,27 @@ class _VersionListViewState extends State<VersionListView> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.apiName.addListener(selectionListener);
+    selection!.apiName.addListener(selectionListener);
     filter = ObservableStringProvider.of(context);
-    filter.addListener(filterListener);
+    filter!.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    selection.apiName.removeListener(selectionListener);
-    filter.removeListener(filterListener);
+    selection!.apiName.removeListener(selectionListener);
+    filter!.removeListener(filterListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.versionService.context = context;
-    if (widget.versionService.apiName !=
-        SelectionProvider.of(context).apiName.value) {
-      widget.versionService.apiName =
-          SelectionProvider.of(context).apiName.value;
-      widget.pageLoadController.reset();
+    widget.versionService!.context = context;
+    if (widget.versionService!.apiName !=
+        SelectionProvider.of(context)!.apiName.value) {
+      widget.versionService!.apiName =
+          SelectionProvider.of(context)!.apiName.value;
+      widget.pageLoadController!.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
@@ -142,7 +142,7 @@ class _VersionListViewState extends State<VersionListView> {
   Widget _itemBuilder(context, ApiVersion version, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.versionName.value == null) ||
                 (selection.versionName.value == ""))) {
@@ -162,7 +162,7 @@ class _VersionListViewState extends State<VersionListView> {
         setState(() {
           selectedIndex = index;
         });
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         selection?.updateVersionName(version.name);
         widget.selectionHandler?.call(context, version);
       },

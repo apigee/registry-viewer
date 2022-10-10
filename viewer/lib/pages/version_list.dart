@@ -25,9 +25,9 @@ import '../service/service.dart';
 
 // VersionListPage is a full-page display of a list of versions.
 class VersionListPage extends StatefulWidget {
-  final String name;
+  final String? name;
 
-  VersionListPage(String name, {Key key})
+  VersionListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override
@@ -35,20 +35,20 @@ class VersionListPage extends StatefulWidget {
 }
 
 class _VersionListPageState extends State<VersionListPage> {
-  VersionService versionService;
-  PagewiseLoadController<ApiVersion> pageLoadController;
+  VersionService? versionService;
+  PagewiseLoadController<ApiVersion>? pageLoadController;
 
   _VersionListPageState() {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => versionService.getVersionsPage(pageIndex));
+        pageFuture: ((pageIndex) => versionService!.getVersionsPage(pageIndex!).then((value) => value!)) as Future<List<ApiVersion>> Function(int?)?);
   }
 
   // convert /projects/{project}/locations/global/apis/{api}/versions
   // to projects/{project}/locations/global/apis/{api}
   String parentName() {
-    return widget.name.split('/').sublist(1, 7).join('/');
+    return widget.name!.split('/').sublist(1, 7).join('/');
   }
 
   @override
@@ -61,7 +61,7 @@ class _VersionListPageState extends State<VersionListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(widget.name)),
+            title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: VersionSearchBox()),
               homeButton(context),

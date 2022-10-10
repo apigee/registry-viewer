@@ -19,9 +19,9 @@ enum Side { top, bottom, right, left }
 
 class CustomSplitView extends SplitView {
   CustomSplitView({
-    SplitViewMode viewMode,
-    Widget view1,
-    Widget view2,
+    required SplitViewMode viewMode,
+    Widget? view1,
+    Widget? view2,
     double initialWeight = 0.5,
   }) : super(
           viewMode: viewMode,
@@ -41,8 +41,8 @@ class CustomSplitView extends SplitView {
 }
 
 class ThresholdBox extends StatelessWidget {
-  final Widget child;
-  final Side side;
+  final Widget? child;
+  final Side? side;
   final double width;
   final double height;
   ThresholdBox({this.child, this.side, this.width = 400, this.height = 100});

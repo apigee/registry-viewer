@@ -24,7 +24,7 @@ import 'package:protobuf/protobuf.dart';
 class MessageArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final GeneratedMessage message;
-  final Function selflink;
+  final Function? selflink;
   MessageArtifactCard(this.artifact, this.message, {this.selflink});
   List<Entry> data = [];
   final ScrollController scrollController = ScrollController();
@@ -40,7 +40,7 @@ class MessageArtifactCard extends StatelessWidget {
         children: [
           ResourceNameButtonRow(
             name: artifact.name.last(1),
-            show: selflink,
+            show: selflink as void Function()?,
             edit: null,
           ),
           Expanded(
@@ -91,7 +91,7 @@ class MessageArtifactCard extends StatelessWidget {
 class Entry {
   Entry(this.indent, this.label, this.value, [this.children = const <Entry>[]]);
   final int indent;
-  final String label;
+  final String? label;
   final String value;
   final List<Entry> children;
 }
@@ -105,7 +105,7 @@ Container entryRow(Entry e) {
             child: Container(
                 padding: EdgeInsets.zero,
                 child: Text(
-                  ("  " * e.indent) + e.label,
+                  ("  " * e.indent) + e.label!,
                   style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
                 ))),
         Expanded(
@@ -179,7 +179,7 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
     for (var node in doc.nodes) {
       if (node is YamlScalar) {
         if (node.value is String) {
-          entries.add(Entry(indent, node.value as String, ""));
+          entries.add(Entry(indent, node.value as String?, ""));
         } else if (node.value is bool) {
           entries.add(Entry(indent, node.value as bool ? "true" : "false", ""));
         }

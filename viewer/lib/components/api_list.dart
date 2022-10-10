@@ -31,14 +31,14 @@ class ApiListCard extends StatefulWidget {
 }
 
 class _ApiListCardState extends State<ApiListCard> {
-  ApiService apiService;
-  PagewiseLoadController<Api> pageLoadController;
+  ApiService? apiService;
+  PagewiseLoadController<Api>? pageLoadController;
 
   _ApiListCardState() {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => apiService.getApisPage(pageIndex));
+        pageFuture: ((pageIndex) => apiService!.getApisPage(pageIndex!).then((value) => value!)) as Future<List<Api>> Function(int?)?);
   }
 
   @override
@@ -49,7 +49,7 @@ class _ApiListCardState extends State<ApiListCard> {
         child: Column(
           children: [
             filterBar(context, ApiSearchBox(),
-                refresh: () => pageLoadController.reset()),
+                refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ApiListView(
                 null,
@@ -66,9 +66,9 @@ class _ApiListCardState extends State<ApiListCard> {
 
 // ApiListView is a scrollable ListView of apis.
 class ApiListView extends StatefulWidget {
-  final ApiSelectionHandler selectionHandler;
-  final ApiService apiService;
-  final PagewiseLoadController<Api> pageLoadController;
+  final ApiSelectionHandler? selectionHandler;
+  final ApiService? apiService;
+  final PagewiseLoadController<Api>? pageLoadController;
 
   ApiListView(
     this.selectionHandler,
@@ -81,10 +81,10 @@ class ApiListView extends StatefulWidget {
 }
 
 class _ApiListViewState extends State<ApiListView> {
-  String projectName;
+  String? projectName;
   int selectedIndex = -1;
-  Selection selection;
-  ObservableString filter;
+  Selection? selection;
+  ObservableString? filter;
   final ScrollController scrollController = ScrollController();
 
   void selectionListener() {
@@ -93,10 +93,10 @@ class _ApiListViewState extends State<ApiListView> {
 
   void filterListener() {
     setState(() {
-      ObservableString filter = ObservableStringProvider.of(context);
+      ObservableString? filter = ObservableStringProvider.of(context);
       if (filter != null) {
-        widget.apiService.filter = filter.value;
-        widget.pageLoadController.reset();
+        widget.apiService!.filter = filter.value;
+        widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
     });
@@ -105,27 +105,27 @@ class _ApiListViewState extends State<ApiListView> {
   @override
   void didChangeDependencies() {
     selection = SelectionProvider.of(context);
-    selection.projectName.addListener(selectionListener);
+    selection!.projectName.addListener(selectionListener);
     filter = ObservableStringProvider.of(context);
-    filter.addListener(filterListener);
+    filter!.addListener(filterListener);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    selection.projectName.removeListener(selectionListener);
-    filter.removeListener(filterListener);
+    selection!.projectName.removeListener(selectionListener);
+    filter!.removeListener(filterListener);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.apiService.context = context;
-    if (widget.apiService.projectName !=
-        SelectionProvider.of(context).projectName.value) {
-      widget.apiService.projectName =
-          SelectionProvider.of(context).projectName.value;
-      widget.pageLoadController.reset();
+    widget.apiService!.context = context;
+    if (widget.apiService!.projectName !=
+        SelectionProvider.of(context)!.projectName.value) {
+      widget.apiService!.projectName =
+          SelectionProvider.of(context)!.projectName.value;
+      widget.pageLoadController!.reset();
       selectedIndex = -1;
     }
     return Scrollbar(
@@ -141,7 +141,7 @@ class _ApiListViewState extends State<ApiListView> {
   Widget _itemBuilder(context, Api api, index) {
     if (index == 0) {
       Future.delayed(const Duration(), () {
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         if ((selection != null) &&
             ((selection.apiName.value == null) ||
                 (selection.apiName.value == ""))) {
@@ -162,7 +162,7 @@ class _ApiListViewState extends State<ApiListView> {
         setState(() {
           selectedIndex = index;
         });
-        Selection selection = SelectionProvider.of(context);
+        Selection? selection = SelectionProvider.of(context);
         selection?.updateApiName(api.name);
         widget.selectionHandler?.call(context, api);
       },

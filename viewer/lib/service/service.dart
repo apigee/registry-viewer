@@ -23,7 +23,7 @@ const int pageSize = 50;
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
 
-AdminClient getAdminClient() {
+AdminClient? getAdminClient() {
   if (root() == "/") {
     return AdminClient(createClientChannel());
   }
@@ -31,7 +31,7 @@ AdminClient getAdminClient() {
 }
 
 class StatusService {
-  Future<Status> getStatus() {
+  Future<Status>? getStatus() {
     try {
       final client = getAdminClient();
       if (client == null) {
@@ -46,9 +46,9 @@ class StatusService {
 }
 
 class ProjectService {
-  String filter;
-  Map<int, String> tokens;
-  Function onError;
+  String? filter;
+  late Map<int?, String> tokens;
+  late Function onError;
 
   Future<List<Project>> getProjectsPage(int pageIndex) {
     return _getProjects(offset: pageIndex * pageSize, limit: pageSize);
@@ -58,12 +58,12 @@ class ProjectService {
     if (offset == 0) {
       tokens = Map();
     }
-    final client = getAdminClient();
+    final client = getAdminClient()!;
     final request = ListProjectsRequest();
     request.pageSize = limit;
 
     if (filter != null) {
-      request.filter = filter;
+      request.filter = filter!;
     }
     final token = tokens[offset];
     if (token != null) {
@@ -80,7 +80,7 @@ class ProjectService {
     }
   }
 
-  Future<Project> getProject(String name) {
+  Future<Project>? getProject(String name) {
     final client = getAdminClient();
     if (client == null) {
       return Future.value(Project(name: name));
@@ -97,18 +97,18 @@ class ProjectService {
 }
 
 class ApiService {
-  BuildContext context;
-  String filter;
-  Map<int, String> tokens;
-  Map<int, List<Api>> carry;
-  String projectName;
+  BuildContext? context;
+  String? filter;
+  late Map<int?, String> tokens;
+  late Map<int, List<Api>> carry;
+  String? projectName;
 
-  Future<List<Api>> getApisPage(int pageIndex) {
+  Future<List<Api>?> getApisPage(int pageIndex) {
     return _getApis(
         parent: projectName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Api>> _getApis({parent: String, offset: int, limit: int}) async {
+  Future<List<Api>?> _getApis({parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
     }
@@ -121,7 +121,7 @@ class ApiService {
     request.parent = parent + "/locations/global";
     request.pageSize = limit;
     if (filter != null) {
-      request.filter = filter;
+      request.filter = filter!;
     }
     final token = tokens[offset];
     if (token != null) {
@@ -129,7 +129,7 @@ class ApiService {
     }
     List<Api> apis = [];
     if (carry[offset] != null) {
-      apis.addAll(carry[offset]);
+      apis.addAll(carry[offset]!);
     }
     try {
       var response = await client.listApis(request, options: callOptions());
@@ -155,7 +155,7 @@ class ApiService {
     }
   }
 
-  Future<Api> getApi(String name) {
+  Future<Api>? getApi(String name) {
     final client = getClient();
     final request = GetApiRequest();
     request.name = name;
@@ -167,7 +167,7 @@ class ApiService {
     }
   }
 
-  Future<Api> updateApi(Api api, List<String> paths) {
+  Future<Api>? updateApi(Api api, List<String> paths) {
     final client = getClient();
     final request = UpdateApiRequest();
     request.api = api;
@@ -185,17 +185,17 @@ class ApiService {
 }
 
 class VersionService {
-  BuildContext context;
-  String filter;
-  Map<int, String> tokens;
-  String apiName;
+  BuildContext? context;
+  String? filter;
+  late Map<int?, String> tokens;
+  String? apiName;
 
-  Future<List<ApiVersion>> getVersionsPage(int pageIndex) {
+  Future<List<ApiVersion>?> getVersionsPage(int pageIndex) {
     return _getVersions(
         parent: apiName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<ApiVersion>> _getVersions(
+  Future<List<ApiVersion>?> _getVersions(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -208,7 +208,7 @@ class VersionService {
     request.parent = parent;
     request.pageSize = limit;
     if (filter != null) {
-      request.filter = filter;
+      request.filter = filter!;
     }
     final token = tokens[offset];
     if (token != null) {
@@ -225,7 +225,7 @@ class VersionService {
     }
   }
 
-  Future<ApiVersion> getVersion(String name) {
+  Future<ApiVersion>? getVersion(String name) {
     final client = getClient();
     final request = GetApiVersionRequest();
     request.name = name;
@@ -237,7 +237,7 @@ class VersionService {
     }
   }
 
-  Future<List<ApiVersion>> getVersions(String parent) async {
+  Future<List<ApiVersion>?> getVersions(String parent) async {
     final client = getClient();
     final request = ListApiVersionsRequest();
     request.parent = parent;
@@ -253,18 +253,18 @@ class VersionService {
 }
 
 class SpecService {
-  BuildContext context;
-  String filter;
-  Map<int, String> tokens;
-  String versionName;
+  BuildContext? context;
+  String? filter;
+  late Map<int?, String> tokens;
+  String? versionName;
   SpecService();
 
-  Future<List<ApiSpec>> getSpecsPage(int pageIndex) {
+  Future<List<ApiSpec>?> getSpecsPage(int pageIndex) {
     return _getSpecs(
         parent: versionName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<ApiSpec>> _getSpecs(
+  Future<List<ApiSpec>?> _getSpecs(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -277,7 +277,7 @@ class SpecService {
     request.parent = parent;
     request.pageSize = limit;
     if (filter != null) {
-      request.filter = filter;
+      request.filter = filter!;
     }
     final token = tokens[offset];
     if (token != null) {
@@ -296,17 +296,17 @@ class SpecService {
 }
 
 class ArtifactService {
-  BuildContext context;
-  String filter;
-  Map<int, String> tokens;
-  String parentName;
+  BuildContext? context;
+  String? filter;
+  late Map<int?, String> tokens;
+  String? parentName;
 
-  Future<List<Artifact>> getArtifactsPage(int pageIndex) {
+  Future<List<Artifact>?> getArtifactsPage(int pageIndex) {
     return _getArtifacts(
         parent: parentName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Artifact>> _getArtifacts(
+  Future<List<Artifact>?> _getArtifacts(
       {parent: String, offset: int, limit: int}) async {
     if (parent == "") {
       return null;
@@ -323,7 +323,7 @@ class ArtifactService {
     request.parent = parent;
     request.pageSize = limit;
     if (filter != null) {
-      request.filter = filter;
+      request.filter = filter!;
     }
     final token = tokens[offset];
     if (token != null) {
@@ -340,7 +340,7 @@ class ArtifactService {
     }
   }
 
-  Future<Artifact> create(Artifact artifact) {
+  Future<Artifact>? create(Artifact artifact) {
     final client = getClient();
     final request = CreateArtifactRequest();
     request.artifact = artifact;

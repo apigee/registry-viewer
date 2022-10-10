@@ -32,25 +32,25 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
-  archive: ^3.0.0
-  async: '>=1.13.3 <3.0.0'
-  flutter_linkify: ^5.0.0
-  flutter_pagewise: ^1.2.3
-  google_fonts: ^2.0.0
-  google_sign_in: ^4.1.0
-  grpc: ^3.0.0
-  http: ^0.13.1
-  intl: ^0.16.1
-  protobuf: ^2.0.0
-  split_view: ^1.0.4
-  url_launcher: ^5.4.5
-  yaml: ^3.1.0
+  archive: ^3.3.1
+  async: ^2.8.2
+  flutter_linkify: ^5.0.2
+  flutter_pagewise: ^2.0.4
+  google_fonts: ^3.0.1
+  google_sign_in: ^5.4.2
+  grpc: ^3.0.2
+  http: ^0.13.5
+  intl: ^0.17.0
+  protobuf: ^2.1.0
+  split_view: ^2.1.1
+  url_launcher: ^6.1.6
+  yaml: ^3.1.1
   registry:
     path: ../registry
 

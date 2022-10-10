@@ -16,6 +16,7 @@ import 'dart:html' as html;
 
 String rendererServiceAddress() {
   return html
-      .querySelector('meta[name=spec-renderer-service]')
-      ?.getAttribute('content');
+          .querySelector('meta[name=spec-renderer-service]')
+          ?.getAttribute('content') ??
+      "";
 }

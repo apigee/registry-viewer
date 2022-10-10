@@ -21,7 +21,7 @@ import '../service/service.dart';
 import '../components/home.dart';
 import '../application.dart';
 
-GoogleSignInAccount currentUser;
+GoogleSignInAccount? currentUser;
 bool currentUserIsAuthorized = false;
 
 GoogleSignIn googleSignIn = GoogleSignIn(
@@ -33,7 +33,7 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 // This runs before the application starts, main() waits for completion.
 Future attemptToSignIn() async {
   var completer = new Completer();
-  googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+  googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
     currentUser = account;
     print("current user changed to $currentUser");
     if (account == null) {
@@ -46,8 +46,8 @@ Future attemptToSignIn() async {
     }
     currentUserIsAuthorized = true;
     account.authentication.then((auth) {
-      setRegistryUserToken(auth.idToken);
-      StatusService().getStatus().then((status) {
+      setRegistryUserToken(auth.idToken!);
+      StatusService().getStatus()!.then((status) {
         completer.complete();
       }).catchError((error) {
         print("error calling GetStatus $error");
@@ -68,7 +68,7 @@ class SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {});
     });
   }
@@ -94,17 +94,17 @@ class SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(currentUser.displayName ?? '',
+                  Text(currentUser!.displayName ?? '',
                       textAlign: TextAlign.left,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyText1!
                           .apply(color: Colors.white)),
-                  Text(currentUser.email ?? '',
+                  Text(currentUser?.email ?? '',
                       textAlign: TextAlign.left,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2
+                          .bodyText2!
                           .apply(color: Colors.white)),
                 ]),
           ),
@@ -153,7 +153,7 @@ class SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: _buildAppBar(context) as PreferredSizeWidget?,
       body: ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Container(color: Colors.grey[400], child: _buildBody(context)),

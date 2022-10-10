@@ -86,8 +86,8 @@ class AddArtifactFormState extends State<AddArtifactForm> {
   }
 
   void save(BuildContext context) {
-    Selection selection = SelectionProvider.of(context);
-    if (_formKey.currentState.validate()) {
+    Selection? selection = SelectionProvider.of(context);
+    if (_formKey.currentState!.validate()) {
       String relation = stringValueController.text;
       print("saving relation $relation");
       Artifact artifact = Artifact();
@@ -95,8 +95,8 @@ class AddArtifactFormState extends State<AddArtifactForm> {
       artifact.mimeType = "text/plain";
       print("artifact ${artifact.name}");
       if (relation != "") {
-        ArtifactService().create(artifact).then((Artifact artifact) {
-          selection.notifySubscribersOf(artifact.subject);
+        ArtifactService().create(artifact)!.then((Artifact artifact) {
+          selection!.notifySubscribersOf(artifact.subject);
         });
       }
     }

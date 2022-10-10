@@ -25,9 +25,9 @@ import '../service/service.dart';
 
 // ArtifactListPage is a full-page display of a list of artifacts.
 class ArtifactListPage extends StatefulWidget {
-  final String name;
+  final String? name;
 
-  ArtifactListPage(String name, {Key key})
+  ArtifactListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override
@@ -35,19 +35,19 @@ class ArtifactListPage extends StatefulWidget {
 }
 
 class _ArtifactListPageState extends State<ArtifactListPage> {
-  ArtifactService artifactService;
-  PagewiseLoadController<Artifact> pageLoadController;
+  ArtifactService? artifactService;
+  PagewiseLoadController<Artifact>? pageLoadController;
 
   _ArtifactListPageState() {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: (pageIndex) => artifactService.getArtifactsPage(pageIndex));
+        pageFuture: ((pageIndex) => artifactService!.getArtifactsPage(pageIndex!).then((value) => value!)) as Future<List<Artifact>> Function(int?)?);
   }
 
   // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global
   String parentName() {
-    return widget.name.split('/').sublist(1, 5).join('/');
+    return widget.name!.split('/').sublist(1, 5).join('/');
   }
 
   @override
@@ -60,7 +60,7 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(title(widget.name)),
+            title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: ArtifactSearchBox()),
               homeButton(context),
