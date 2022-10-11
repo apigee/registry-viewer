@@ -42,7 +42,9 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => artifactService!.getArtifactsPage(pageIndex!).then((value) => value!)) as Future<List<Artifact>> Function(int?)?);
+        pageFuture: ((pageIndex) => artifactService!
+            .getArtifactsPage(pageIndex!)
+            .then((value) => value!)));
   }
 
   // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global

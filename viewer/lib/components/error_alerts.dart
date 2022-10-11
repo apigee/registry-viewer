@@ -24,7 +24,7 @@ showErrorAlert(BuildContext context, String message) {
           content: new Text(
               "The signed-in account does not have access to the necessary resources."),
           actions: <Widget>[
-            new FlatButton(
+            new TextButton(
               child: new Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -37,7 +37,7 @@ showErrorAlert(BuildContext context, String message) {
         title: new Text("A problem:"),
         content: new Text(message),
         actions: <Widget>[
-          new FlatButton(
+          new TextButton(
             child: new Text("Close"),
             onPressed: () {
               Navigator.of(context).pop();

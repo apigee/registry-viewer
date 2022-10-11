@@ -39,9 +39,7 @@ class ObservableHighlightProvider extends InheritedWidget {
 
   const ObservableHighlightProvider(
       {Key? key, required this.observable, required Widget child})
-      : assert(observable != null),
-        assert(child != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   static ObservableHighlight? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<ObservableHighlightProvider>()

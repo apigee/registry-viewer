@@ -42,7 +42,10 @@ class _SpecListPageState extends State<SpecListPage> {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => this.specService!.getSpecsPage(pageIndex!).then((value) => value!)) as Future<List<ApiSpec>> Function(int?)?);
+        pageFuture: ((pageIndex) => this
+            .specService!
+            .getSpecsPage(pageIndex!)
+            .then((value) => value!)));
   }
 
   // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs

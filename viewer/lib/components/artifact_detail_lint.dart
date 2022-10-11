@@ -154,11 +154,12 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                           .bodyText2!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .accentColor)),
+                                                  .primaryColorDark)),
                                   onTap: () async {
-                                    if (await canLaunch(
-                                        problem.problem.ruleDocUri)) {
-                                      await launch(problem.problem.ruleDocUri);
+                                    if (await canLaunchUrl(Uri.parse(
+                                        problem.problem.ruleDocUri))) {
+                                      await launchUrl(Uri.parse(
+                                          problem.problem.ruleDocUri));
                                     } else {
                                       throw 'Could not launch ${problem.problem.ruleDocUri}';
                                     }

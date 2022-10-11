@@ -50,7 +50,9 @@ class _ArtifactListCardState extends State<ArtifactListCard> {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => artifactService!.getArtifactsPage(pageIndex!).then((value) => value!)) as Future<List<Artifact>> Function(int?)?);
+        pageFuture: ((pageIndex) => artifactService!
+            .getArtifactsPage(pageIndex!)
+            .then((value) => value!)));
   }
 
   void selectionListener() {
@@ -234,8 +236,8 @@ class _ArtifactListViewState extends State<ArtifactListView> {
                 icon: Icon(Icons.info),
                 tooltip: "info",
                 onPressed: () async {
-                  if (await canLaunch(artifactInfoLink!)) {
-                    await launch(artifactInfoLink);
+                  if (await canLaunchUrl(Uri.parse(artifactInfoLink!))) {
+                    await launchUrl(Uri.parse(artifactInfoLink));
                   } else {
                     throw 'Could not launch $artifactInfoLink';
                   }

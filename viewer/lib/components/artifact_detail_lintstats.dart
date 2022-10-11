@@ -17,8 +17,6 @@ import 'package:registry/registry.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'detail_rows.dart';
 import '../helpers/extensions.dart';
-import '../models/selection.dart';
-import '../models/highlight.dart';
 
 String stringForLocation(LintLocation location) {
   return "[${location.startPosition.lineNumber}:" +
@@ -67,7 +65,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
               controller: controller,
               child: ListView.builder(
                 controller: controller,
-                itemCount: lintstats?.problemCounts?.length,
+                itemCount: lintstats?.problemCounts.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (lintstats == null) {
                     return Container();
@@ -97,11 +95,12 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                                           .bodyText2!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .accentColor)),
+                                                  .primaryColorDark)),
                                   onTap: () async {
-                                    if (await canLaunch(
-                                        problemCount.ruleDocUri)) {
-                                      await launch(problemCount.ruleDocUri);
+                                    if (await canLaunchUrl(
+                                        Uri.parse(problemCount.ruleDocUri))) {
+                                      await launchUrl(
+                                          Uri.parse(problemCount.ruleDocUri));
                                     } else {
                                       throw 'Could not launch ${problemCount.ruleDocUri}';
                                     }

@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -59,7 +57,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
-                      .copyWith(color: Theme.of(context).accentColor),
+                      .copyWith(color: Theme.of(context).primaryColorDark),
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
@@ -73,7 +71,7 @@ class ResourceNameButtonRow extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
-                    .copyWith(color: Theme.of(context).accentColor),
+                    .copyWith(color: Theme.of(context).primaryColorDark),
                 textAlign: TextAlign.right,
               ),
               onTap: edit != null ? edit : () {},
@@ -128,7 +126,7 @@ class TitleRow extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headline3!
-                          .copyWith(color: Theme.of(context).accentColor),
+                          .copyWith(color: Theme.of(context).primaryColorDark),
                       textAlign: TextAlign.left,
                       softWrap: true,
                     ),
@@ -196,8 +194,8 @@ class LinkifiedBodyRow extends StatelessWidget {
     final textStyle = style ?? Theme.of(context).textTheme.bodyText1!;
     return Linkify(
       onOpen: (link) async {
-        if (await canLaunch(link.url)) {
-          await launch(link.url);
+        if (await canLaunchUrl(Uri.parse(link.url))) {
+          await launchUrl(Uri.parse(link.url));
         } else {
           throw 'Could not launch $link';
         }
@@ -205,7 +203,7 @@ class LinkifiedBodyRow extends StatelessWidget {
       text: text,
       textAlign: TextAlign.left,
       style: textStyle,
-      linkStyle: textStyle.copyWith(color: Theme.of(context).accentColor),
+      linkStyle: textStyle.copyWith(color: Theme.of(context).primaryColorDark),
       softWrap: false,
       overflow: TextOverflow.clip,
     );
@@ -225,12 +223,12 @@ class LinkRow extends StatelessWidget {
             child: Text(
               text,
               style: GoogleFonts.inconsolata()
-                  .copyWith(color: Theme.of(context).accentColor),
+                  .copyWith(color: Theme.of(context).primaryColorDark),
               textAlign: TextAlign.left,
             ),
             onTap: () async {
-              if (await canLaunch(url)) {
-                await launch(url);
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url));
               } else {
                 throw 'Could not launch $url';
               }
@@ -337,7 +335,7 @@ class LabelsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Chip(
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Theme.of(context).primaryColorDark,
             label: Text(
               labelText(key, map[key]),
               style: GoogleFonts.inconsolata()

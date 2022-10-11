@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 import '../helpers/errors.dart';
@@ -145,7 +146,7 @@ class EditVersionFormState extends State<EditVersionForm> {
 
   void save(BuildContext context) {
     if (versionManager?.value != null && _formKey.currentState!.validate()) {
-      final version = versionManager!.value!.clone();
+      final version = versionManager!.value!.deepCopy();
       List<String> paths = [];
       if (version.displayName != displayNameController.text) {
         version.displayName = displayNameController.text;

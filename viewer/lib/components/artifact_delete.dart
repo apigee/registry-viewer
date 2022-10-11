@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import '../models/artifact.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
@@ -43,7 +44,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
     selection = SelectionProvider.of(context);
     SelectionProvider.of(context)!.artifactName.addListener(nameChangeListener);
     super.didChangeDependencies();
-    setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
+    setArtifactName(SelectionProvider.of(context)?.artifactName.value);
   }
 
   void setArtifactName(String? name) {
@@ -69,7 +70,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
 
   @override
   void dispose() {
-    selection?.artifactName?.removeListener(nameChangeListener);
+    selection?.artifactName.removeListener(nameChangeListener);
     artifactManager?.removeListener(listener);
     stringValueController.dispose();
     super.dispose();
@@ -122,10 +123,10 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
   void delete(BuildContext context) {
     Selection? selection = SelectionProvider.of(context);
     if (artifactManager?.value != null && _formKey.currentState!.validate()) {
-      final artifact = artifactManager!.value!.clone();
+      final artifact = artifactManager!.value!.deepCopy();
       print("deleting $artifact");
       String subject = artifact.subject;
-      artifactManager?.delete(artifact.name)?.then((x) {
+      artifactManager?.delete(artifact.name).then((x) {
         selection!.notifySubscribersOf(subject);
       });
     }

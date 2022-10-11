@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:protobuf/protobuf.dart';
 import 'package:registry/registry.dart';
 import '../models/selection.dart';
 import '../models/artifact.dart';
@@ -59,7 +60,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
     selection = SelectionProvider.of(context);
     selection!.artifactName.addListener(selectionListener);
     super.didChangeDependencies();
-    setArtifactName(SelectionProvider.of(context)?.artifactName?.value);
+    setArtifactName(SelectionProvider.of(context)?.artifactName.value);
   }
 
   // Create a global key that uniquely identifies the Form widget
@@ -140,13 +141,13 @@ class EditArtifactFormState extends State<EditArtifactForm> {
   void save(BuildContext context) {
     Selection? selection = SelectionProvider.of(context);
     if (artifactManager?.value != null && _formKey.currentState!.validate()) {
-      final artifact = artifactManager!.value!.clone();
+      final artifact = artifactManager!.value!.deepCopy();
       if (artifact.stringValue != stringValueController.text) {
         artifact.stringValue = stringValueController.text;
       }
       artifactManager
           ?.update(artifact, onError(context))
-          ?.then((Artifact artifact) {
+          .then((Artifact artifact) {
         selection!.notifySubscribersOf(artifact.subject);
       });
     }

@@ -22,7 +22,7 @@ void showHelp(context) {
         title: new Text("Help"),
         content: new Text(""),
         actions: <Widget>[
-          new FlatButton(
+          new TextButton(
             child: new Text("Close"),
             onPressed: () {
               Navigator.of(context).pop();

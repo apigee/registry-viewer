@@ -141,8 +141,6 @@ class EntryItem extends StatelessWidget {
       children.add(_buildTiles(context, child));
     }
     return ExpansionTile(
-      //backgroundColor: Theme.of(context).accentColor,
-      //collapsedBackgroundColor: Theme.of(context).highlightColor,
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
       children: children,

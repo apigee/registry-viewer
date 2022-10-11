@@ -38,7 +38,8 @@ class _SpecListCardState extends State<SpecListCard> {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => specService!.getSpecsPage(pageIndex!).then((value) => value!)) as Future<List<ApiSpec>> Function(int?)?);
+        pageFuture: ((pageIndex) =>
+            specService!.getSpecsPage(pageIndex!).then((value) => value!)));
   }
 
   @override
@@ -142,9 +143,7 @@ class _SpecListViewState extends State<SpecListView> {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection? selection = SelectionProvider.of(context);
-        if ((selection != null) &&
-            ((selection.specName.value == null) ||
-                (selection.specName.value == ""))) {
+        if ((selection != null) && (selection.specName.value == "")) {
           selection.updateSpecName(spec.name);
           setState(() {
             selectedIndex = 0;
