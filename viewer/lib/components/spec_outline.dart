@@ -39,9 +39,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) &&
-          (spec.contents != null) &&
-          (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
           this.body = Utf8Codec().decoder.convert(bytes);
@@ -176,8 +174,6 @@ class EntryItem extends StatelessWidget {
       children.add(_buildTiles(context, child));
     }
     return ExpansionTile(
-      //backgroundColor: Theme.of(context).accentColor,
-      //collapsedBackgroundColor: Theme.of(context).highlightColor,
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
       children: children,

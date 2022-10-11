@@ -39,7 +39,9 @@ class _VersionListCardState extends State<VersionListCard> {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => versionService!.getVersionsPage(pageIndex!).then((value) => value!)) as Future<List<ApiVersion>> Function(int?)?);
+        pageFuture: ((pageIndex) => versionService!
+            .getVersionsPage(pageIndex!)
+            .then((value) => value!)));
   }
 
   @override
@@ -143,9 +145,7 @@ class _VersionListViewState extends State<VersionListView> {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection? selection = SelectionProvider.of(context);
-        if ((selection != null) &&
-            ((selection.versionName.value == null) ||
-                (selection.versionName.value == ""))) {
+        if ((selection != null) && (selection.versionName.value == "")) {
           selection.updateVersionName(version.name);
           setState(() {
             selectedIndex = 0;

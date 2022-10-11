@@ -15,12 +15,10 @@
 import 'dart:convert';
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
 import 'package:split_view/split_view.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/foundation.dart';
 import '../helpers/renderer.dart';
 import '../components/detail_rows.dart';
 import '../components/spec_outline.dart';
@@ -64,9 +62,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) &&
-          (spec.contents != null) &&
-          (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
           this.body = Utf8Codec().decoder.convert(data);
@@ -195,7 +191,8 @@ class _SpecFileCardState extends State<SpecFileCard> {
                       var address = rendererServiceAddress();
                       if ((address != "SPEC_RENDERER_SERVICE") &&
                           (address != "")) {
-                        launch(address + "/" + specManager!.value!.name);
+                        launchUrl(Uri.parse(
+                            address + "/" + specManager!.value!.name));
                       } else {
                         AlertDialog alert = AlertDialog(
                           content: Text("Spec renderer service not configured"),
@@ -244,7 +241,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                     width: double.infinity,
                     child: Scrollbar(
                       controller: listScrollController,
-                      isAlwaysShown: true,
+                      thumbVisibility: true,
                       child: MeasureSize(
                         onChange: (size) {
                           listHeight = size.height;
@@ -362,7 +359,7 @@ class _CodeViewState extends State<CodeView> {
     lines = splitLines(widget.text!);
     return Scrollbar(
       controller: scrollController,
-      isAlwaysShown: true,
+      thumbVisibility: true,
       child: ListView.builder(
         itemBuilder: (context, i) {
           return rowForText(i, lines[i]);

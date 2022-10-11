@@ -103,9 +103,7 @@ class SelectionProvider extends InheritedWidget {
 
   const SelectionProvider(
       {Key? key, required this.selection, required Widget child})
-      : assert(selection != null),
-        assert(child != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   static Selection? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<SelectionProvider>()

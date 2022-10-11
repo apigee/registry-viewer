@@ -38,7 +38,8 @@ class _ApiListCardState extends State<ApiListCard> {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => apiService!.getApisPage(pageIndex!).then((value) => value!)) as Future<List<Api>> Function(int?)?);
+        pageFuture: ((pageIndex) =>
+            apiService!.getApisPage(pageIndex!).then((value) => value!)));
   }
 
   @override
@@ -142,9 +143,7 @@ class _ApiListViewState extends State<ApiListView> {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection? selection = SelectionProvider.of(context);
-        if ((selection != null) &&
-            ((selection.apiName.value == null) ||
-                (selection.apiName.value == ""))) {
+        if ((selection != null) && (selection.apiName.value == "")) {
           selection.updateApiName(api.name);
           setState(() {
             selectedIndex = 0;

@@ -57,7 +57,7 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
         onSubmitted: (s) {
           ObservableString? filter = ObservableStringProvider.of(context);
           if (filter != null) {
-            if ((s == null) | (s == "")) {
+            if (s == "") {
               filter.update(""); // no filter specified
             } else if (s[0] == "=") {
               filter.update(s.substring(1)); // filter is a CEL expression

@@ -31,7 +31,7 @@ class ConnectionError extends Error {
 }
 
 bool unset(String s) {
-  return (s == null) || (s == "");
+  return (s == "");
 }
 
 grpc.ClientChannel createClientChannel() {

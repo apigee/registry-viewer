@@ -42,7 +42,8 @@ class _ApiListPageState extends State<ApiListPage> {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => apiService!.getApisPage(pageIndex!).then((value) => value!)) as Future<List<Api>> Function(int?)?);
+        pageFuture: ((pageIndex) =>
+            apiService!.getApisPage(pageIndex!).then((value) => value!)));
   }
 
   // convert /projects/{project}/locations/global/apis

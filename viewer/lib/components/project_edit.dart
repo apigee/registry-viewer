@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 import '../helpers/errors.dart';
@@ -136,7 +137,7 @@ class EditProjectFormState extends State<EditProjectForm> {
 
   void save(BuildContext context) {
     if (projectManager?.value != null && _formKey.currentState!.validate()) {
-      final project = projectManager!.value!.clone();
+      final project = projectManager!.value!.deepCopy();
       List<String> paths = [];
       if (project.displayName != displayNameController.text) {
         project.displayName = displayNameController.text;

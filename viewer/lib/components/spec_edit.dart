@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 import '../helpers/errors.dart';
@@ -127,7 +128,7 @@ class EditSpecFormState extends State<EditSpecForm> {
 
   void save(BuildContext context) {
     if (specManager?.value != null && _formKey.currentState!.validate()) {
-      final spec = specManager!.value!.clone();
+      final spec = specManager!.value!.deepCopy();
       List<String> paths = [];
       if (spec.description != descriptionController.text) {
         spec.description = descriptionController.text;

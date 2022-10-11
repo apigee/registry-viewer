@@ -31,9 +31,7 @@ class RegistryProvider extends InheritedWidget {
 
   const RegistryProvider(
       {Key? key, required this.registry, required Widget child})
-      : assert(registry != null),
-        assert(child != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   static Registry? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<RegistryProvider>()?.registry;
@@ -255,7 +253,8 @@ class SpecManager extends ResourceManager<ApiSpec> {
 
 class ArtifactManager extends ResourceManager<Artifact> {
   ArtifactManager(String? name) : super(name);
-  Future<Artifact> fetchFuture(RegistryClient client, AdminClient? adminClient) {
+  Future<Artifact> fetchFuture(
+      RegistryClient client, AdminClient? adminClient) {
     final request = GetArtifactRequest();
     request.name = name!;
     return client.getArtifact(request, options: callOptions()).then((artifact) {

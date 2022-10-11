@@ -26,9 +26,7 @@ class ObservableStringProvider extends InheritedWidget {
 
   const ObservableStringProvider(
       {Key? key, required this.observable, required Widget child})
-      : assert(observable != null),
-        assert(child != null),
-        super(key: key, child: child);
+      : super(key: key, child: child);
 
   static ObservableString? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<ObservableStringProvider>()

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
+import 'package:protobuf/protobuf.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 import '../helpers/errors.dart';
@@ -136,7 +137,7 @@ class EditAPIFormState extends State<EditAPIForm> {
 
   void save(BuildContext context) {
     if (apiManager?.value != null && _formKey.currentState!.validate()) {
-      final api = apiManager!.value!.clone();
+      final api = apiManager!.value!.deepCopy();
       List<String> paths = [];
       if (api.displayName != displayNameController.text) {
         api.displayName = displayNameController.text;

@@ -42,7 +42,9 @@ class _VersionListPageState extends State<VersionListPage> {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
-        pageFuture: ((pageIndex) => versionService!.getVersionsPage(pageIndex!).then((value) => value!)) as Future<List<ApiVersion>> Function(int?)?);
+        pageFuture: ((pageIndex) => versionService!
+            .getVersionsPage(pageIndex!)
+            .then((value) => value!)));
   }
 
   // convert /projects/{project}/locations/global/apis/{api}/versions

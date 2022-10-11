@@ -19,7 +19,6 @@ ThemeData appTheme() {
     // Define the default brightness and colors.
     brightness: Brightness.light,
     primaryColor: Colors.red[900],
-    accentColor: Colors.blueGrey,
 
     // Define the default font family.
     fontFamily: 'Roboto',

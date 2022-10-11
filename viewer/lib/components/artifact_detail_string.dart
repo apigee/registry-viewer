@@ -51,7 +51,9 @@ class StringArtifactCard extends StatelessWidget {
       child: Column(
         children: [
           ResourceNameButtonRow(
-              name: artifact.name.last(1), show: selflink as void Function()?, edit: editableFn as void Function()?),
+              name: artifact.name.last(1),
+              show: selflink as void Function()?,
+              edit: editableFn as void Function()?),
           Padding(
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(
@@ -59,8 +61,8 @@ class StringArtifactCard extends StatelessWidget {
                 SizedBox(height: 30),
                 Linkify(
                   onOpen: (link) async {
-                    if (await canLaunch(link.url)) {
-                      await launch(link.url);
+                    if (await canLaunchUrl(Uri.parse(link.url))) {
+                      await launchUrl(Uri.parse(link.url));
                     } else {
                       throw 'Could not launch $link';
                     }
@@ -69,7 +71,7 @@ class StringArtifactCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: style,
                   linkStyle:
-                      style.copyWith(color: Theme.of(context).accentColor),
+                      style.copyWith(color: Theme.of(context).primaryColorDark),
                 ),
               ],
             ),

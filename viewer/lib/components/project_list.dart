@@ -121,9 +121,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     if (index == 0) {
       Future.delayed(const Duration(), () {
         Selection? selection = SelectionProvider.of(context);
-        if ((selection != null) &&
-            ((selection.projectName.value == null) ||
-                (selection.projectName.value == ""))) {
+        if ((selection != null) && (selection.projectName.value == "")) {
           selection.updateProjectName(project.name);
           setState(() {
             selectedIndex = 0;
