@@ -49,6 +49,7 @@ dependencies:
   intl: ^0.17.0
   protobuf: ^2.1.0
   split_view: ^2.1.1
+  universal_html: ^2.0.8
   url_launcher: ^6.1.6
   yaml: ^3.1.1
   registry:
