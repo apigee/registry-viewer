@@ -25,15 +25,14 @@ class MessageArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final GeneratedMessage message;
   final Function? selflink;
-  MessageArtifactCard(this.artifact, this.message, {this.selflink});
-  List<Entry> data = [];
+  final List<Entry> data;
+
+  MessageArtifactCard(this.artifact, this.message, {this.selflink})
+      : data = parseDoc(loadYamlNode(jsonEncode(message.toProto3Json())), 0);
+
   final ScrollController scrollController = ScrollController();
 
   Widget build(BuildContext context) {
-    String json = jsonEncode(message.toProto3Json());
-    YamlNode doc = loadYamlNode(json);
-    data = parseDoc(doc, 0);
-
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
