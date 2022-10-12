@@ -94,6 +94,18 @@ class Entry {
   final String? label;
   final String value;
   final List<Entry> children;
+
+  dump(int indent) {
+    if (this.label != null) {
+      print('${" " * indent}' + this.label!);
+    }
+    print('${" " * indent}' + this.value);
+    dumpList(this.children, indent + 1);
+  }
+}
+
+dumpList(List<Entry> data, int indent) {
+  data.forEach((element) => element.dump(indent));
 }
 
 Container entryRow(Entry e) {
@@ -164,6 +176,10 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
         entries.add(Entry(indent, key, node));
       } else if (node is bool) {
         entries.add(Entry(indent, key, node ? "true" : "false"));
+      } else if (node is double) {
+        entries.add(Entry(indent, key, "$node"));
+      } else if (node is int) {
+        entries.add(Entry(indent, key, "$node"));
       } else if (node is YamlMap) {
         entries.add(Entry(
             indent, key, "map[${node.length}]", parseDoc(node, indent + 1)));
@@ -180,6 +196,10 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
           entries.add(Entry(indent, node.value as String?, ""));
         } else if (node.value is bool) {
           entries.add(Entry(indent, node.value as bool ? "true" : "false", ""));
+        } else if (node is double) {
+          entries.add(Entry(indent, "$node", ""));
+        } else if (node is int) {
+          entries.add(Entry(indent, "$node", ""));
         }
       } else if (node is YamlMap) {
         entries.add(Entry(
