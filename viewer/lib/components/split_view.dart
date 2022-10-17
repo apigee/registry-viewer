@@ -25,17 +25,18 @@ class CustomSplitView extends SplitView {
     double initialWeight = 0.5,
   }) : super(
           viewMode: viewMode,
-          view1: ThresholdBox(
-              child: view1,
-              side:
-                  (viewMode == SplitViewMode.Vertical) ? Side.top : Side.right),
-          view2: ThresholdBox(
-              child: view2,
-              side: (viewMode == SplitViewMode.Vertical)
-                  ? Side.bottom
-                  : Side.left),
-          initialWeight: initialWeight,
-          positionLimit: 10,
+          children: [
+            ThresholdBox(
+                child: view1,
+                side: (viewMode == SplitViewMode.Vertical)
+                    ? Side.top
+                    : Side.right),
+            ThresholdBox(
+                child: view2,
+                side: (viewMode == SplitViewMode.Vertical)
+                    ? Side.bottom
+                    : Side.left)
+          ],
           gripSize: 10,
         );
 }
