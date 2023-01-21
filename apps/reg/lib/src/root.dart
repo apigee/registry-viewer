@@ -15,13 +15,11 @@
 import 'package:args/command_runner.dart';
 
 import 'import.dart';
-import 'compute.dart';
 import 'label.dart';
 import 'scan.dart';
 
 CommandRunner root() {
   return CommandRunner("reg", "Another API Registry tool.")
-    ..addCommand(ComputeCommand())
     ..addCommand(ImportCommand())
     ..addCommand(LabelCommand())
     ..addCommand(ScanCommand());
