@@ -54,26 +54,20 @@ class StringArtifactCard extends StatelessWidget {
               name: artifact.name.last(1),
               show: selflink as void Function()?,
               edit: editableFn as void Function()?),
-          Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-            child: Column(
-              children: [
-                SizedBox(height: 30),
-                Linkify(
-                  onOpen: (link) async {
-                    if (await canLaunchUrl(Uri.parse(link.url))) {
-                      await launchUrl(Uri.parse(link.url));
-                    } else {
-                      throw 'Could not launch $link';
-                    }
-                  },
-                  text: artifact.stringValue,
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                margin: EdgeInsets.all(10),
+                width: double.infinity,
+                child: Text(
+                  artifact.stringValue,
                   textAlign: TextAlign.left,
-                  style: style,
-                  linkStyle:
-                      style.copyWith(color: Theme.of(context).primaryColorDark),
+                  style: style.copyWith(
+                    fontSize: 12,
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ],

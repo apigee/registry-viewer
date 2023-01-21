@@ -35,7 +35,9 @@ extension Display on Artifact {
   }
 
   String get stringValue {
-    if (this.mimeType == "text/plain") {
+    if ((this.mimeType == "text/plain") ||
+        this.mimeType.startsWith("application/yaml") ||
+        this.mimeType.startsWith("application/json")) {
       final codec = Utf8Codec();
       return codec.decode(this.contents);
     }
