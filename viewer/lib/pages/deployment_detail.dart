@@ -23,6 +23,8 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
+import '../helpers/title.dart';
 
 class DeploymentDetailPage extends StatelessWidget {
   final String? name;
@@ -47,7 +49,7 @@ class DeploymentDetailPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              this.name ?? "Deployment Details",
+              pageTitle(this.name) ?? "Deployment Details",
             ),
             actions: <Widget>[
               homeButton(context),
@@ -65,14 +67,17 @@ class DeploymentDetailPage extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     DeploymentDetailCard(editable: true),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      view1: ArtifactListCard(SelectionProvider.deployment),
-                      view2: ArtifactDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
+                    narrow(context)
+                        ? ArtifactListCard(SelectionProvider.deployment)
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            view1:
+                                ArtifactListCard(SelectionProvider.deployment),
+                            view2: ArtifactDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
                   ],
                 ),
               ),

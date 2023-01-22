@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/deployment_edit.dart';
+import '../components/empty.dart';
 import '../models/selection.dart';
 import '../models/deployment.dart';
 import '../service/registry.dart';
@@ -90,6 +91,10 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (deploymentManager?.value == null) {
+      return emptyCard(context, "deployment");
+    }
+
     Function? selflink = onlyIf(widget.selflink, () {
       ApiDeployment deployment = (deploymentManager?.value)!;
       Navigator.pushNamed(
@@ -112,64 +117,59 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard> {
             );
           });
     });
-
-    if (deploymentManager?.value == null) {
-      return Card();
-    } else {
-      Api? api = apiManager!.value;
-      ApiDeployment deployment = deploymentManager!.value!;
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResourceNameButtonRow(
-              name: deployment.name.split("/").sublist(4).join("/"),
-              show: selflink as void Function()?,
-              edit: editable as void Function()?,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+    Api? api = apiManager!.value;
+    ApiDeployment deployment = deploymentManager!.value!;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+            name: deployment.name.split("/").sublist(4).join("/"),
+            show: selflink as void Function()?,
+            edit: editable as void Function()?,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageSection(
+                      children: [
+                        SizedBox(height: 10),
+                        SuperTitleRow(api?.displayName ?? ""),
+                        TitleRow(deployment.name.split("/").last,
+                            action: selflink),
+                      ],
+                    ),
+                    if (deployment.description != "")
                       PageSection(
                         children: [
-                          SizedBox(height: 10),
-                          SuperTitleRow(api?.displayName ?? ""),
-                          TitleRow(deployment.name.split("/").last,
-                              action: selflink),
+                          BodyRow(deployment.description),
                         ],
                       ),
-                      if (deployment.description != "")
-                        PageSection(
-                          children: [
-                            BodyRow(deployment.description),
-                          ],
-                        ),
-                      PageSection(
-                        children: [
-                          TimestampRow(deployment.createTime,
-                              deployment.revisionUpdateTime),
-                        ],
-                      ),
-                      if (deployment.labels.length > 0)
-                        PageSection(children: [
-                          LabelsRow(deployment.labels),
-                        ]),
-                      if (deployment.annotations.length > 0)
-                        PageSection(children: [
-                          AnnotationsRow(deployment.annotations),
-                        ]),
-                    ],
-                  ),
+                    PageSection(
+                      children: [
+                        TimestampRow(deployment.createTime,
+                            deployment.revisionUpdateTime),
+                      ],
+                    ),
+                    if (deployment.labels.length > 0)
+                      PageSection(children: [
+                        LabelsRow(deployment.labels),
+                      ]),
+                    if (deployment.annotations.length > 0)
+                      PageSection(children: [
+                        AnnotationsRow(deployment.annotations),
+                      ]),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }

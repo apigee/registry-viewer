@@ -22,6 +22,8 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
+import '../helpers/title.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String? name;
@@ -48,7 +50,7 @@ class SpecDetailPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              this.name ?? "Spec Details",
+              pageTitle(this.name) ?? "Spec Details",
             ),
             actions: <Widget>[
               homeButton(context),
@@ -67,14 +69,16 @@ class SpecDetailPage extends StatelessWidget {
                 children: [
                   SpecDetailCard(editable: true),
                   SpecFileCard(),
-                  CustomSplitView(
-                    viewMode: SplitViewMode.Horizontal,
-                    view1: ArtifactListCard(SelectionProvider.spec),
-                    view2: ArtifactDetailCard(
-                      selflink: true,
-                      editable: true,
-                    ),
-                  ),
+                  narrow(context)
+                      ? ArtifactListCard(SelectionProvider.spec)
+                      : CustomSplitView(
+                          viewMode: SplitViewMode.Horizontal,
+                          view1: ArtifactListCard(SelectionProvider.spec),
+                          view2: ArtifactDetailCard(
+                            selflink: true,
+                            editable: true,
+                          ),
+                        ),
                 ],
               ),
             ),

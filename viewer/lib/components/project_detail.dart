@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/project_edit.dart';
+import '../components/empty.dart';
 import '../models/project.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
@@ -73,6 +74,10 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (projectManager?.value == null) {
+      return emptyCard(context, "project");
+    }
+
     Function? selflink = onlyIf(widget.selflink, () {
       Project project = (projectManager?.value)!;
       Navigator.pushNamed(
@@ -97,40 +102,36 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
           });
     });
 
-    if (projectManager?.value == null) {
-      return Card();
-    } else {
-      Project project = projectManager!.value!;
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResourceNameButtonRow(
-              name: project.name,
-              show: selflink as void Function()?,
-              edit: editable as void Function()?,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 10),
-                      TitleRow(project.displayName, action: selflink),
-                      SizedBox(height: 10),
-                      BodyRow(project.description),
-                      SizedBox(height: 10),
-                      TimestampRow(project.createTime, project.updateTime),
-                    ],
-                  ),
+    Project project = projectManager!.value!;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+            name: project.name,
+            show: selflink as void Function()?,
+            edit: editable as void Function()?,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10),
+                    TitleRow(project.displayName, action: selflink),
+                    SizedBox(height: 10),
+                    BodyRow(project.description),
+                    SizedBox(height: 10),
+                    TimestampRow(project.createTime, project.updateTime),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -20,6 +20,7 @@ import '../components/registry_detail.dart';
 import '../models/selection.dart';
 import '../components/bottom_bar.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -31,12 +32,14 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: CustomSplitView(
-                viewMode: SplitViewMode.Horizontal,
-                initialWeight: 0.33,
-                view1: ProjectListCard(),
-                view2: ProjectDetailCard(selflink: true, editable: true),
-              ),
+              child: narrow(context)
+                  ? ProjectListCard()
+                  : CustomSplitView(
+                      viewMode: SplitViewMode.Horizontal,
+                      initialWeight: 0.33,
+                      view1: ProjectListCard(),
+                      view2: ProjectDetailCard(selflink: true, editable: true),
+                    ),
             ),
             BottomBar(),
           ],

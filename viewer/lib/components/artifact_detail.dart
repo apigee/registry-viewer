@@ -22,6 +22,7 @@ import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
 import 'artifact_detail_string.dart';
 import 'artifact_detail_vocabulary.dart';
+import 'empty.dart';
 import '../helpers/extensions.dart';
 import '../models/artifact.dart';
 import '../models/selection.dart';
@@ -79,6 +80,10 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (artifactManager?.value == null) {
+      return emptyCard(context, "artifact");
+    }
+
     Function? selflink = onlyIf(widget.selflink, () {
       Artifact artifact = (artifactManager?.value)!;
       Navigator.pushNamed(
@@ -87,93 +92,84 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
       );
     });
 
-    if (artifactManager?.value == null) {
-      return Card(
-        child: Container(
-          color: Theme.of(context).canvasColor,
-        ),
-      );
-    } else {
-      Artifact artifact = artifactManager!.value!;
-      if (artifact.mimeType.startsWith("application/yaml") ||
-          artifact.mimeType.startsWith("application/json")) {
-        return StringArtifactCard(artifact,
-            selflink: selflink, editable: false);
-      }
-      switch (artifact.mimeType) {
-        case "text/plain":
-          return StringArtifactCard(
-            artifact,
-            selflink: selflink,
-            editable: widget.editable,
-          );
-        case "application/octet-stream;type=gnostic.metrics.Complexity":
-          return ComplexityArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=gnostic.metrics.Vocabulary":
-          return VocabularyArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
-          return MessageArtifactCard(
-              artifact, new ApiSpecExtensionList.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
-          return MessageArtifactCard(
-              artifact, new DisplaySettings.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Lifecycle":
-          return MessageArtifactCard(
-              artifact, new Lifecycle.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
-          return MessageArtifactCard(
-              artifact, new ReferenceList.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
-          return MessageArtifactCard(
-              artifact, new TaxonomyList.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Manifest":
-          return MessageArtifactCard(
-              artifact, new Manifest.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Receipt":
-          return MessageArtifactCard(
-              artifact, new Receipt.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
-          return MessageArtifactCard(
-              artifact, new Score.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
-          return MessageArtifactCard(
-              artifact, new ScoreCard.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
-          return MessageArtifactCard(
-              artifact, new ScoreCardDefinition.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
-          return MessageArtifactCard(
-              artifact, new ScoreDefinition.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
-          return MessageArtifactCard(
-              artifact, new ConformanceReport.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
-          return MessageArtifactCard(
-              artifact, new StyleGuide.fromBuffer(artifact.contents),
-              selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.Lint":
-          return LintArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.LintStats":
-          return LintStatsArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.References":
-          return ReferencesArtifactCard(artifact, selflink: selflink);
-      }
-
-      // otherwise return a default display of the artifact
-      return DefaultArtifactDetailCard(selflink: selflink);
+    Artifact artifact = artifactManager!.value!;
+    if (artifact.mimeType.startsWith("application/yaml") ||
+        artifact.mimeType.startsWith("application/json")) {
+      return StringArtifactCard(artifact, selflink: selflink, editable: false);
     }
+    switch (artifact.mimeType) {
+      case "text/plain":
+        return StringArtifactCard(
+          artifact,
+          selflink: selflink,
+          editable: widget.editable,
+        );
+      case "application/octet-stream;type=gnostic.metrics.Complexity":
+        return ComplexityArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=gnostic.metrics.Vocabulary":
+        return VocabularyArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
+        return MessageArtifactCard(
+            artifact, new ApiSpecExtensionList.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
+        return MessageArtifactCard(
+            artifact, new DisplaySettings.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Lifecycle":
+        return MessageArtifactCard(
+            artifact, new Lifecycle.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
+        return MessageArtifactCard(
+            artifact, new ReferenceList.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
+        return MessageArtifactCard(
+            artifact, new TaxonomyList.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Manifest":
+        return MessageArtifactCard(
+            artifact, new Manifest.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Receipt":
+        return MessageArtifactCard(
+            artifact, new Receipt.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
+        return MessageArtifactCard(
+            artifact, new Score.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
+        return MessageArtifactCard(
+            artifact, new ScoreCard.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
+        return MessageArtifactCard(
+            artifact, new ScoreCardDefinition.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
+        return MessageArtifactCard(
+            artifact, new ScoreDefinition.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
+        return MessageArtifactCard(
+            artifact, new ConformanceReport.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
+        return MessageArtifactCard(
+            artifact, new StyleGuide.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.Lint":
+        return LintArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.LintStats":
+        return LintStatsArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.References":
+        return ReferencesArtifactCard(artifact, selflink: selflink);
+    }
+
+    // otherwise return a default display of the artifact
+    return DefaultArtifactDetailCard(selflink: selflink);
   }
 }
 
