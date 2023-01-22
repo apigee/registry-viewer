@@ -25,6 +25,8 @@ import 'pages/version_list.dart';
 import 'pages/version_detail.dart';
 import 'pages/spec_list.dart';
 import 'pages/spec_detail.dart';
+import 'pages/deployment_list.dart';
+import 'pages/deployment_detail.dart';
 import 'pages/artifact_list.dart';
 import 'pages/artifact_detail.dart';
 import 'pages/signin.dart';
@@ -38,6 +40,8 @@ class RegistryRouter {
       versionRegExp,
       specsRegExp,
       specRegExp,
+      deploymentsRegExp,
+      deploymentRegExp,
       artifactsRegExp,
       artifactRegExp;
 
@@ -52,10 +56,14 @@ class RegistryRouter {
     const versionPattern = versionsPattern + r"/" + namePattern;
     const specsPattern = versionPattern + r"/specs";
     const specPattern = specsPattern + r"/" + namePattern;
+    const deploymentsPattern = apiPattern + r"/deployments";
+    const deploymentPattern = deploymentsPattern + r"/" + namePattern;
     const artifactsPattern = r"((" +
         projectPattern +
         r"/locations/global)|(" +
         apiPattern +
+        ")|(" +
+        deploymentPattern +
         ")|(" +
         versionPattern +
         ")|(" +
@@ -71,6 +79,8 @@ class RegistryRouter {
     versionRegExp = RegExp(versionPattern + endPattern);
     specsRegExp = RegExp(specsPattern + endPattern);
     specRegExp = RegExp(specPattern + endPattern);
+    deploymentsRegExp = RegExp(deploymentsPattern + endPattern);
+    deploymentRegExp = RegExp(deploymentPattern + endPattern);
     artifactsRegExp = RegExp(artifactsPattern + endPattern);
     artifactRegExp = RegExp(artifactPattern + endPattern);
   }
@@ -115,6 +125,10 @@ class RegistryRouter {
       return versionPage(settings);
     } else if (versionsRegExp!.hasMatch(settings.name!)) {
       return versionsPage(settings);
+    } else if (deploymentRegExp!.hasMatch(settings.name!)) {
+      return deploymentPage(settings);
+    } else if (deploymentsRegExp!.hasMatch(settings.name!)) {
+      return deploymentsPage(settings);
     } else if (apiRegExp!.hasMatch(settings.name!)) {
       return apiPage(settings);
     } else if (apisRegExp!.hasMatch(settings.name!)) {
@@ -224,6 +238,26 @@ MaterialPageRoute specPage(RouteSettings settings) {
       settings: settings,
       builder: (context) {
         return SpecDetailPage(
+          name: settings.name,
+        );
+      });
+}
+
+MaterialPageRoute deploymentsPage(RouteSettings settings) {
+  return MaterialPageRoute(
+      settings: settings,
+      builder: (context) {
+        return DeploymentListPage(
+          settings.name,
+        );
+      });
+}
+
+MaterialPageRoute deploymentPage(RouteSettings settings) {
+  return MaterialPageRoute(
+      settings: settings,
+      builder: (context) {
+        return DeploymentDetailPage(
           name: settings.name,
         );
       });

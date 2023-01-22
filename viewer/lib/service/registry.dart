@@ -45,6 +45,7 @@ class Registry {
   Map<String, ProjectManager> projectManagers = Map();
   Map<String, ApiManager> apiManagers = Map();
   Map<String, VersionManager> versionManagers = Map();
+  Map<String, DeploymentManager> deploymentManagers = Map();
   Map<String, SpecManager> specManagers = Map();
   Map<String?, ArtifactManager> artifactManagers = Map();
 
@@ -78,6 +79,14 @@ class Registry {
       specManagers[name] = SpecManager(name);
     }
     return specManagers[name];
+  }
+
+  DeploymentManager? getDeploymentManager(String name) {
+    Manager.removeUnused(deploymentManagers);
+    if (deploymentManagers[name] == null) {
+      deploymentManagers[name] = DeploymentManager(name);
+    }
+    return deploymentManagers[name];
   }
 
   ArtifactManager? getArtifactManager(String? name) {
@@ -245,6 +254,30 @@ class SpecManager extends ResourceManager<ApiSpec> {
       request.updateMask.paths.add(path);
     }
     client.updateApiSpec(request, options: callOptions()).then((value) {
+      _value = value;
+      notifyListeners();
+    }).catchError((error) => onError(error));
+  }
+}
+
+class DeploymentManager extends ResourceManager<ApiDeployment> {
+  DeploymentManager(String name) : super(name);
+  Future<ApiDeployment> fetchFuture(
+      RegistryClient client, AdminClient? adminClient) {
+    final request = GetApiDeploymentRequest();
+    request.name = name!;
+    return client.getApiDeployment(request, options: callOptions());
+  }
+
+  void update(ApiDeployment newValue, List<String> paths, Function onError) {
+    final client = getClient();
+    final request = UpdateApiDeploymentRequest();
+    request.apiDeployment = newValue;
+    request.updateMask = FieldMask();
+    for (String path in paths) {
+      request.updateMask.paths.add(path);
+    }
+    client.updateApiDeployment(request, options: callOptions()).then((value) {
       _value = value;
       notifyListeners();
     }).catchError((error) => onError(error));

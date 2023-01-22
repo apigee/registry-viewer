@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,48 +15,47 @@
 import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 import '../models/selection.dart';
-import '../components/api_detail.dart';
-import '../components/version_detail.dart';
-import '../components/version_list.dart';
 import '../components/deployment_detail.dart';
-import '../components/deployment_list.dart';
+import '../components/spec_list.dart';
+import '../components/spec_detail.dart';
 import '../components/artifact_list.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 
-class ApiDetailPage extends StatelessWidget {
+class DeploymentDetailPage extends StatelessWidget {
   final String? name;
-  ApiDetailPage({this.name});
+  DeploymentDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateApiName(name!.substring(1));
+      selection
+          .updateApiName(name!.substring(1).split("/").sublist(0, 6).join("/"));
+      selection.updateDeploymentName(name!.substring(1));
     });
 
     return SelectionProvider(
       selection: selection,
       child: DefaultTabController(
-        length: 4,
+        length: 2,
         animationDuration: Duration.zero,
+        initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              this.name ?? "API Details",
+              this.name ?? "Deployment Details",
             ),
             actions: <Widget>[
               homeButton(context),
             ],
             bottom: const TabBar(
               tabs: [
-                Tab(text: "API Details"),
-                Tab(text: "API Versions"),
-                Tab(text: "API Deployments"),
-                Tab(text: "API Artifacts"),
+                Tab(text: "Deployment Details"),
+                Tab(text: "Deployment Artifacts"),
               ],
             ),
           ),
@@ -65,28 +64,10 @@ class ApiDetailPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    ApiDetailCard(editable: true),
+                    DeploymentDetailCard(editable: true),
                     CustomSplitView(
                       viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: VersionListCard(),
-                      view2: VersionDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: DeploymentListCard(),
-                      view2: DeploymentDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      view1: ArtifactListCard(SelectionProvider.api),
+                      view1: ArtifactListCard(SelectionProvider.deployment),
                       view2: ArtifactDetailCard(
                         selflink: true,
                         editable: true,
