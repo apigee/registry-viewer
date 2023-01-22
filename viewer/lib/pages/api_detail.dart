@@ -38,47 +38,54 @@ class ApiDetailPage extends StatelessWidget {
 
     return SelectionProvider(
       selection: selection,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "API Details",
+      child: DefaultTabController(
+        length: 3,
+        animationDuration: Duration.zero,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              this.name ?? "API Details",
+            ),
+            actions: <Widget>[
+              homeButton(context),
+            ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: "API Details"),
+                Tab(text: "Versions"),
+                Tab(text: "API Artifacts"),
+              ],
+            ),
           ),
-          actions: <Widget>[
-            homeButton(context),
-          ],
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: CustomSplitView(
-                viewMode: SplitViewMode.Vertical,
-                initialWeight: 0.33,
-                view1: CustomSplitView(
-                  viewMode: SplitViewMode.Horizontal,
-                  initialWeight: 0.33,
-                  view1: ApiDetailCard(editable: true),
-                  view2: CustomSplitView(
-                    viewMode: SplitViewMode.Horizontal,
-                    view1: ArtifactListCard(SelectionProvider.api),
-                    view2: ArtifactDetailCard(
-                      selflink: true,
-                      editable: true,
+          body: Column(
+            children: [
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    ApiDetailCard(editable: true),
+                    CustomSplitView(
+                      viewMode: SplitViewMode.Horizontal,
+                      initialWeight: 0.33,
+                      view1: VersionListCard(),
+                      view2: VersionDetailCard(
+                        selflink: true,
+                        editable: true,
+                      ),
                     ),
-                  ),
-                ),
-                view2: CustomSplitView(
-                  viewMode: SplitViewMode.Horizontal,
-                  initialWeight: 0.33,
-                  view1: VersionListCard(),
-                  view2: VersionDetailCard(
-                    selflink: true,
-                    editable: true,
-                  ),
+                    CustomSplitView(
+                      viewMode: SplitViewMode.Horizontal,
+                      view1: ArtifactListCard(SelectionProvider.api),
+                      view2: ArtifactDetailCard(
+                        selflink: true,
+                        editable: true,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            BottomBar(),
-          ],
+              BottomBar(),
+            ],
+          ),
         ),
       ),
     );

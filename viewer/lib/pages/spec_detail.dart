@@ -41,38 +41,46 @@ class SpecDetailPage extends StatelessWidget {
 
     return SelectionProvider(
       selection: selection,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Spec Details",
-          ),
-          actions: <Widget>[
-            homeButton(context),
-          ],
-        ),
-        body: Column(children: [
-          Expanded(
-            child: CustomSplitView(
-              viewMode: SplitViewMode.Vertical,
-              initialWeight: 0.33,
-              view1: CustomSplitView(
-                viewMode: SplitViewMode.Horizontal,
-                initialWeight: 0.33,
-                view1: SpecDetailCard(editable: true),
-                view2: CustomSplitView(
-                  viewMode: SplitViewMode.Horizontal,
-                  view1: ArtifactListCard(SelectionProvider.spec),
-                  view2: ArtifactDetailCard(
-                    selflink: true,
-                    editable: true,
-                  ),
-                ),
-              ),
-              view2: SpecFileCard(),
+      child: DefaultTabController(
+        length: 3,
+        animationDuration: Duration.zero,
+        initialIndex: 1,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              this.name ?? "Spec Details",
+            ),
+            actions: <Widget>[
+              homeButton(context),
+            ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: "Spec Details"),
+                Tab(text: "Spec Contents"),
+                Tab(text: "Spec Artifacts"),
+              ],
             ),
           ),
-          BottomBar(),
-        ]),
+          body: Column(children: [
+            Expanded(
+              child: TabBarView(
+                children: [
+                  SpecDetailCard(editable: true),
+                  SpecFileCard(),
+                  CustomSplitView(
+                    viewMode: SplitViewMode.Horizontal,
+                    view1: ArtifactListCard(SelectionProvider.spec),
+                    view2: ArtifactDetailCard(
+                      selflink: true,
+                      editable: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            BottomBar(),
+          ]),
+        ),
       ),
     );
   }
