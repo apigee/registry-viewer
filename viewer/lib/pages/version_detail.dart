@@ -24,6 +24,7 @@ import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/media.dart';
+import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class VersionDetailPage extends StatelessWidget {
@@ -44,22 +45,24 @@ class VersionDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 3,
-        animationDuration: Duration.zero,
+        animationDuration: Duration(milliseconds: 10),
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               pageTitle(this.name) ?? "Version Details",
             ),
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: const TabBar(
+            bottom: TabBar(
               tabs: [
                 Tab(text: "Version Details"),
                 Tab(text: "Version Specs"),
                 Tab(text: "Version Artifacts"),
               ],
+              indicator: tabDecoration(context),
             ),
           ),
           body: Column(

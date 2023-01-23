@@ -32,9 +32,12 @@ class ProjectListCard extends StatefulWidget {
   _ProjectListCardState createState() => _ProjectListCardState();
 }
 
-class _ProjectListCardState extends State<ProjectListCard> {
+class _ProjectListCardState extends State<ProjectListCard>
+    with AutomaticKeepAliveClientMixin {
   ProjectService? projectService;
   PagewiseLoadController<Project>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _ProjectListCardState() {
     projectService = ProjectService();
@@ -45,6 +48,7 @@ class _ProjectListCardState extends State<ProjectListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(

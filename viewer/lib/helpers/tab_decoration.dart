@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,20 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 import 'package:flutter/material.dart';
-import '../application.dart';
-import '../components/home.dart';
 
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(applicationName),
-      ),
-      body: Home(),
-    );
-  }
+const Radius radius = Radius.circular(0);
+
+Decoration tabDecoration(BuildContext context) {
+  return ShapeDecoration(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topRight: radius, topLeft: radius)),
+    color: Theme.of(context).toggleableActiveColor,
+  );
 }

@@ -63,6 +63,7 @@ class _DeploymentListPageState extends State<DeploymentListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: DeploymentSearchBox()),

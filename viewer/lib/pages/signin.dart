@@ -85,6 +85,7 @@ class SignInPageState extends State<SignInPage> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       title: Text((currentUser == null) ? "" : applicationName),
       actions: <Widget>[
         if (currentUser != null)

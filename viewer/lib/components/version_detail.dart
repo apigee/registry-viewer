@@ -30,10 +30,13 @@ class VersionDetailCard extends StatefulWidget {
   _VersionDetailCardState createState() => _VersionDetailCardState();
 }
 
-class _VersionDetailCardState extends State<VersionDetailCard> {
+class _VersionDetailCardState extends State<VersionDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -90,6 +93,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (versionManager?.value == null) {
       return emptyCard(context, "version");
     }

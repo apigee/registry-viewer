@@ -17,28 +17,47 @@ import 'package:split_view/split_view.dart';
 
 enum Side { top, bottom, right, left }
 
-class CustomSplitView extends SplitView {
+class CustomSplitView extends StatefulWidget {
+  final Widget? view1;
+  final Widget? view2;
+  final SplitViewMode? viewMode;
+  final double initialWeight;
+
   CustomSplitView({
-    required SplitViewMode viewMode,
-    Widget? view1,
-    Widget? view2,
-    double initialWeight = 0.5,
-  }) : super(
-          viewMode: viewMode,
-          children: [
-            ThresholdBox(
-                child: view1,
-                side: (viewMode == SplitViewMode.Vertical)
-                    ? Side.top
-                    : Side.right),
-            ThresholdBox(
-                child: view2,
-                side: (viewMode == SplitViewMode.Vertical)
-                    ? Side.bottom
-                    : Side.left)
-          ],
-          gripSize: 10,
-        );
+    this.viewMode,
+    this.view1,
+    this.view2,
+    this.initialWeight = 0.5,
+  });
+
+  _CustomSplitViewState createState() => _CustomSplitViewState();
+}
+
+class _CustomSplitViewState extends State<CustomSplitView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return SplitView(
+      viewMode: widget.viewMode!,
+      children: [
+        ThresholdBox(
+            child: widget.view1,
+            side: (widget.viewMode == SplitViewMode.Vertical)
+                ? Side.top
+                : Side.right),
+        ThresholdBox(
+            child: widget.view2,
+            side: (widget.viewMode == SplitViewMode.Vertical)
+                ? Side.bottom
+                : Side.left)
+      ],
+      gripSize: 10,
+    );
+  }
 }
 
 class ThresholdBox extends StatelessWidget {

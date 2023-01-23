@@ -62,6 +62,7 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: ArtifactSearchBox()),

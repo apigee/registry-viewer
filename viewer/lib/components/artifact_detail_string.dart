@@ -14,9 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'detail_rows.dart';
 import 'artifact_edit.dart';

@@ -25,6 +25,7 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/root.dart';
 import '../helpers/media.dart';
+import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class ProjectDetailPage extends StatelessWidget {
@@ -43,22 +44,24 @@ class ProjectDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 3,
-        animationDuration: Duration.zero,
+        animationDuration: Duration(milliseconds: 10),
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               pageTitle(this.name) ?? "Project Details",
             ),
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: const TabBar(
+            bottom: TabBar(
               tabs: [
                 Tab(text: "Project Details"),
                 Tab(text: "APIs"),
                 Tab(text: "Project Artifacts"),
               ],
+              indicator: tabDecoration(context),
             ),
           ),
           body: Column(

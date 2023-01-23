@@ -40,11 +40,14 @@ class ArtifactListCard extends StatefulWidget {
   _ArtifactListCardState createState() => _ArtifactListCardState();
 }
 
-class _ArtifactListCardState extends State<ArtifactListCard> {
+class _ArtifactListCardState extends State<ArtifactListCard>
+    with AutomaticKeepAliveClientMixin {
   late ObservableString observableSubjectName;
   String? subjectName;
   ArtifactService? artifactService;
   PagewiseLoadController<Artifact>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _ArtifactListCardState() {
     artifactService = ArtifactService();
@@ -80,6 +83,7 @@ class _ArtifactListCardState extends State<ArtifactListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Function add = () {
       final selection = SelectionProvider.of(context);
       showDialog(
@@ -148,6 +152,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateArtifactName("");
     });
   }
 

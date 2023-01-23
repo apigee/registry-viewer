@@ -30,9 +30,12 @@ class SpecListCard extends StatefulWidget {
   _SpecListCardState createState() => _SpecListCardState();
 }
 
-class _SpecListCardState extends State<SpecListCard> {
+class _SpecListCardState extends State<SpecListCard>
+    with AutomaticKeepAliveClientMixin {
   SpecService? specService;
   PagewiseLoadController<ApiSpec>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _SpecListCardState() {
     specService = SpecService();
@@ -44,6 +47,7 @@ class _SpecListCardState extends State<SpecListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
@@ -100,6 +104,7 @@ class _SpecListViewState extends State<SpecListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateSpecName("");
     });
   }
 

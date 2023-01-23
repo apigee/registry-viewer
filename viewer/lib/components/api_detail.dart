@@ -30,9 +30,12 @@ class ApiDetailCard extends StatefulWidget {
   _ApiDetailCardState createState() => _ApiDetailCardState();
 }
 
-class _ApiDetailCardState extends State<ApiDetailCard> {
+class _ApiDetailCardState extends State<ApiDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -74,6 +77,7 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (apiManager?.value == null) {
       return emptyCard(context, "api");
     }

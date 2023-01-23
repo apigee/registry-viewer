@@ -31,9 +31,12 @@ class DeploymentListCard extends StatefulWidget {
   _DeploymentListCardState createState() => _DeploymentListCardState();
 }
 
-class _DeploymentListCardState extends State<DeploymentListCard> {
+class _DeploymentListCardState extends State<DeploymentListCard>
+    with AutomaticKeepAliveClientMixin {
   DeploymentService? deploymentService;
   PagewiseLoadController<ApiDeployment>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _DeploymentListCardState() {
     deploymentService = DeploymentService();
@@ -46,6 +49,7 @@ class _DeploymentListCardState extends State<DeploymentListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
@@ -83,12 +87,15 @@ class DeploymentListView extends StatefulWidget {
   _DeploymentListViewState createState() => _DeploymentListViewState();
 }
 
-class _DeploymentListViewState extends State<DeploymentListView> {
+class _DeploymentListViewState extends State<DeploymentListView>
+    with AutomaticKeepAliveClientMixin {
   String? apiName;
   int selectedIndex = -1;
   Selection? selection;
   ObservableString? filter;
   final ScrollController scrollController = ScrollController();
+  @override
+  bool get wantKeepAlive => true;
 
   void selectionListener() {
     setState(() {});
@@ -102,6 +109,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateDeploymentName("");
     });
   }
 
@@ -123,6 +131,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     widget.deploymentService!.context = context;
     if (widget.deploymentService!.apiName !=
         SelectionProvider.of(context)!.apiName.value) {

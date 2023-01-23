@@ -30,9 +30,12 @@ class ApiListCard extends StatefulWidget {
   _ApiListCardState createState() => _ApiListCardState();
 }
 
-class _ApiListCardState extends State<ApiListCard> {
+class _ApiListCardState extends State<ApiListCard>
+    with AutomaticKeepAliveClientMixin {
   ApiService? apiService;
   PagewiseLoadController<Api>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _ApiListCardState() {
     apiService = ApiService();
@@ -44,6 +47,7 @@ class _ApiListCardState extends State<ApiListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
@@ -100,6 +104,7 @@ class _ApiListViewState extends State<ApiListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateApiName("");
     });
   }
 

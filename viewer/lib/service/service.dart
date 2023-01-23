@@ -61,6 +61,7 @@ class ProjectService {
     final client = getAdminClient()!;
     final request = ListProjectsRequest();
     request.pageSize = limit;
+    request.orderBy = "display_name";
 
     if (filter != null) {
       request.filter = filter!;
@@ -119,6 +120,7 @@ class ApiService {
     final client = getClient();
     final request = ListApisRequest();
     request.parent = parent + "/locations/global";
+    request.orderBy = "display_name";
     request.pageSize = limit;
     if (filter != null) {
       request.filter = filter!;

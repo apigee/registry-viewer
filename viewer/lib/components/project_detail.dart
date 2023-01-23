@@ -30,9 +30,12 @@ class ProjectDetailCard extends StatefulWidget {
   _ProjectDetailCardState createState() => _ProjectDetailCardState();
 }
 
-class _ProjectDetailCardState extends State<ProjectDetailCard> {
+class _ProjectDetailCardState extends State<ProjectDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ProjectManager? projectManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -74,6 +77,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (projectManager?.value == null) {
       return emptyCard(context, "project");
     }

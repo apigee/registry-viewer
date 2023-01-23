@@ -33,11 +33,14 @@ class SpecDetailCard extends StatefulWidget {
   _SpecDetailCardState createState() => _SpecDetailCardState();
 }
 
-class _SpecDetailCardState extends State<SpecDetailCard> {
+class _SpecDetailCardState extends State<SpecDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;
   SpecManager? specManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -109,6 +112,7 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (specManager?.value == null) {
       return emptyCard(context, "spec");
     }
