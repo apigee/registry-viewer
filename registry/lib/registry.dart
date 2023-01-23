@@ -13,15 +13,6 @@
 // limitations under the License.
 
 export 'src/generated/google/api/httpbody.pb.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.pb.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.pbenum.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.pbjson.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.pb.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.pbenum.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.pbjson.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pb.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pbenum.dart';
-export 'src/generated/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.pbjson.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pb.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pbenum.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/admin_models.pbjson.dart';

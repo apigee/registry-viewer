@@ -23,7 +23,7 @@ class ReferencesArtifactCard extends StatelessWidget {
   ReferencesArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    References references = new References.fromBuffer(artifact.contents);
+    ReferenceList references = new ReferenceList.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -34,26 +34,6 @@ class ReferencesArtifactCard extends StatelessWidget {
             name: artifact.name.last(1),
             show: selflink as void Function()?,
             edit: null,
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child:
-                      WordListCard("externals", references.externalReferences),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child:
-                      WordListCard("available", references.availableReferences),
-                ),
-              ],
-            ),
           ),
         ],
       ),

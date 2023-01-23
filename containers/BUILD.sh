@@ -23,19 +23,17 @@
 # ORGANIZATION should be dockerhub organization that will host the images
 #ORGANIZATION=
 
-#TARGET=
+#TARGET=dev
 
 if [[ $TARGET == "dev" ]]
 then
-  # If TARGET is specified as "dev", a minimal set of containers are built.
-  # Container names have the suffix "-dev".
+  # If TARGET is specified as "dev", container names have the suffix "-dev".
   SUFFIX="-$TARGET"
   CONTAINERS=("registry-viewer")
-  PLATFORMS="linux/arm64"
+  PLATFORMS="linux/amd64,linux/arm64"
 else
-  # Otherwise, all containers are built.
   SUFFIX=""
-  CONTAINERS=("registry-viewer" "reg")
+  CONTAINERS=("registry-viewer")
   PLATFORMS="linux/amd64,linux/arm64"
 fi
 

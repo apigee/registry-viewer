@@ -69,9 +69,6 @@ protoc \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/style/conformance_report.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/style/lint.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/style/style_guide.proto \
-	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_index.proto \
-	${REGISTRY}/google/cloud/apigeeregistry/applications/v1alpha1/registry_references.proto \
-	${PROTOS}/google/cloud/apigeeregistry/applications/v1alpha1/registry_summary.proto \
 	${GNOSTIC}/metrics/complexity.proto \
 	${GNOSTIC}/metrics/vocabulary.proto \
 	--dart_out=grpc:registry/lib/src/generated

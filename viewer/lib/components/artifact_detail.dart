@@ -16,13 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'detail_rows.dart';
 import 'artifact_detail_complexity.dart';
-import 'artifact_detail_index.dart';
 import 'artifact_detail_message.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
 import 'artifact_detail_string.dart';
-import 'artifact_detail_summary.dart';
 import 'artifact_detail_vocabulary.dart';
 import '../helpers/extensions.dart';
 import '../models/artifact.dart';
@@ -161,16 +159,12 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
           return MessageArtifactCard(
               artifact, new StyleGuide.fromBuffer(artifact.contents),
               selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Index":
-          return IndexArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Lint":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.Lint":
           return LintArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.LintStats":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.LintStats":
           return LintStatsArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.References":
+        case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.References":
           return ReferencesArtifactCard(artifact, selflink: selflink);
-        case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.RegistrySummary":
-          return RegistrySummaryArtifactCard(artifact, selflink: selflink);
       }
 
       // otherwise return a default display of the artifact
