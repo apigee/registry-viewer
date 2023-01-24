@@ -45,6 +45,7 @@ class ApiDetailPage extends StatelessWidget {
         animationDuration: Duration.zero,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               this.name ?? "API Details",
             ),

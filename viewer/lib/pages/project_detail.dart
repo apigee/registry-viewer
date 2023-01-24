@@ -45,6 +45,7 @@ class ProjectDetailPage extends StatelessWidget {
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               this.name ?? "Project Details",
             ),

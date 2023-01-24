@@ -290,6 +290,7 @@ MaterialPageRoute notFoundPage(RouteSettings settings) {
       builder: (context) {
         return Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: const Text('NOT FOUND'),
           ),
           body: Center(
@@ -306,6 +307,7 @@ MaterialPageRoute settingsPage(RouteSettings settings) {
     builder: (context) {
       return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Settings Page'),
         ),
       );
@@ -319,6 +321,7 @@ MaterialPageRoute errorPage(RouteSettings settings) {
     builder: (context) {
       return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Error'),
         ),
         body: Center(
