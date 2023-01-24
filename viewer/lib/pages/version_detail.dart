@@ -40,43 +40,53 @@ class VersionDetailPage extends StatelessWidget {
 
     return SelectionProvider(
       selection: selection,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Version Details",
-          ),
-          actions: <Widget>[
-            homeButton(context),
-          ],
-        ),
-        body: Column(children: [
-          Expanded(
-            child: CustomSplitView(
-              viewMode: SplitViewMode.Vertical,
-              initialWeight: 0.33,
-              view1: CustomSplitView(
-                viewMode: SplitViewMode.Horizontal,
-                initialWeight: 0.33,
-                view1: VersionDetailCard(editable: true),
-                view2: CustomSplitView(
-                  viewMode: SplitViewMode.Horizontal,
-                  view1: ArtifactListCard(SelectionProvider.version),
-                  view2: ArtifactDetailCard(
-                    selflink: true,
-                    editable: true,
-                  ),
-                ),
-              ),
-              view2: CustomSplitView(
-                viewMode: SplitViewMode.Horizontal,
-                initialWeight: 0.33,
-                view1: SpecListCard(),
-                view2: SpecDetailCard(selflink: true, editable: true),
-              ),
+      child: DefaultTabController(
+        length: 3,
+        animationDuration: Duration.zero,
+        initialIndex: 1,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              this.name ?? "Version Details",
+            ),
+            actions: <Widget>[
+              homeButton(context),
+            ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: "Version Details"),
+                Tab(text: "Specs"),
+                Tab(text: "Version Artifacts"),
+              ],
             ),
           ),
-          BottomBar(),
-        ]),
+          body: Column(
+            children: [
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    VersionDetailCard(editable: true),
+                    CustomSplitView(
+                      viewMode: SplitViewMode.Horizontal,
+                      initialWeight: 0.33,
+                      view1: SpecListCard(),
+                      view2: SpecDetailCard(selflink: true, editable: true),
+                    ),
+                    CustomSplitView(
+                      viewMode: SplitViewMode.Horizontal,
+                      view1: ArtifactListCard(SelectionProvider.version),
+                      view2: ArtifactDetailCard(
+                        selflink: true,
+                        editable: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              BottomBar(),
+            ],
+          ),
+        ),
       ),
     );
   }
