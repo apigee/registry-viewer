@@ -95,7 +95,11 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
       );
     } else {
       Artifact artifact = artifactManager!.value!;
-
+      if (artifact.mimeType.startsWith("application/yaml") ||
+          artifact.mimeType.startsWith("application/json")) {
+        return StringArtifactCard(artifact,
+            selflink: selflink, editable: false);
+      }
       switch (artifact.mimeType) {
         case "text/plain":
           return StringArtifactCard(
