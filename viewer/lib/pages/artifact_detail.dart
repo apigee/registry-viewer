@@ -36,6 +36,7 @@ class ArtifactDetailPage extends StatelessWidget {
       selection: selection,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             "Artifact Details",
           ),

@@ -46,6 +46,7 @@ class VersionDetailPage extends StatelessWidget {
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               this.name ?? "Version Details",
             ),

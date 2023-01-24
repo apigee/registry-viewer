@@ -64,6 +64,7 @@ class _SpecListPageState extends State<SpecListPage> {
         observable: ObservableString(),
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
               Container(width: 400, child: SpecSearchBox()),

@@ -26,6 +26,7 @@ Widget filterBar(
     tooltip += " " + type;
   }
   return AppBar(
+    centerTitle: true,
     backgroundColor: Theme.of(context).secondaryHeaderColor,
     primary: false,
     elevation: 0,

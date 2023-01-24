@@ -46,6 +46,7 @@ class DeploymentDetailPage extends StatelessWidget {
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
               this.name ?? "Deployment Details",
             ),

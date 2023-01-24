@@ -51,6 +51,7 @@ class _ProjectListPageState extends State<ProjectListPage> {
       observable: ObservableString(),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(title(widget.name!)),
           actions: <Widget>[
             Container(width: 400, child: ProjectSearchBox()),
