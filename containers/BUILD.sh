@@ -22,9 +22,8 @@
 
 # ORGANIZATION should be dockerhub organization that will host the images
 #ORGANIZATION=
-ORGANIZATION=apiregistry
 
-TARGET=dev
+#TARGET=dev
 
 if [[ $TARGET == "dev" ]]
 then
