@@ -55,8 +55,8 @@ class DeploymentDetailPage extends StatelessWidget {
             ],
             bottom: const TabBar(
               tabs: [
-                Tab(text: "Deployment Details"),
-                Tab(text: "Deployment Artifacts"),
+                Tab(text: "Details"),
+                Tab(text: "Artifacts"),
               ],
             ),
           ),
