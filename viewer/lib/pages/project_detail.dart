@@ -57,9 +57,9 @@ class ProjectDetailPage extends StatelessWidget {
             ],
             bottom: TabBar(
               tabs: [
-                Tab(text: "Project Details"),
+                Tab(text: "Details"),
                 Tab(text: "APIs"),
-                Tab(text: "Project Artifacts"),
+                Tab(text: "Artifacts"),
               ],
               indicator: tabDecoration(context),
             ),

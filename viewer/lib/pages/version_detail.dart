@@ -58,9 +58,9 @@ class VersionDetailPage extends StatelessWidget {
             ],
             bottom: TabBar(
               tabs: [
-                Tab(text: "Version Details"),
-                Tab(text: "Version Specs"),
-                Tab(text: "Version Artifacts"),
+                Tab(text: "Details"),
+                Tab(text: "Specs"),
+                Tab(text: "Artifacts"),
               ],
               indicator: tabDecoration(context),
             ),

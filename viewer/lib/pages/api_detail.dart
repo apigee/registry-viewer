@@ -57,10 +57,10 @@ class ApiDetailPage extends StatelessWidget {
             ],
             bottom: TabBar(
               tabs: [
-                Tab(text: "API Details"),
-                Tab(text: "API Versions"),
-                Tab(text: "API Deployments"),
-                Tab(text: "API Artifacts"),
+                Tab(text: "Details"),
+                Tab(text: "Versions"),
+                Tab(text: "Deployments"),
+                Tab(text: "Artifacts"),
               ],
               indicator: tabDecoration(context),
             ),
