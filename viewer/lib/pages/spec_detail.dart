@@ -55,9 +55,9 @@ class SpecDetailPage extends StatelessWidget {
             ],
             bottom: const TabBar(
               tabs: [
-                Tab(text: "Spec Details"),
-                Tab(text: "Spec Contents"),
-                Tab(text: "Spec Artifacts"),
+                Tab(text: "Details"),
+                Tab(text: "Contents"),
+                Tab(text: "Artifacts"),
               ],
             ),
           ),
