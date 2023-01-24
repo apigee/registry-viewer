@@ -295,6 +295,74 @@ class SpecService {
   }
 }
 
+class DeploymentService {
+  BuildContext? context;
+  String? filter;
+  late Map<int?, String> tokens;
+  String? apiName;
+
+  Future<List<ApiDeployment>?> getDeploymentsPage(int pageIndex) {
+    return _getDeployments(
+        parent: apiName, offset: pageIndex * pageSize, limit: pageSize);
+  }
+
+  Future<List<ApiDeployment>?> _getDeployments(
+      {parent: String, offset: int, limit: int}) async {
+    if (parent == "") {
+      return null;
+    }
+    if (offset == 0) {
+      tokens = Map();
+    }
+    final client = getClient();
+    final request = ListApiDeploymentsRequest();
+    request.parent = parent;
+    request.pageSize = limit;
+    if (filter != null) {
+      request.filter = filter!;
+    }
+    final token = tokens[offset];
+    if (token != null) {
+      request.pageToken = token;
+    }
+    try {
+      final response =
+          await client.listApiDeployments(request, options: callOptions());
+      tokens[offset + limit] = response.nextPageToken;
+      return response.apiDeployments;
+    } catch (err) {
+      reportError(context, err);
+      throw err;
+    }
+  }
+
+  Future<ApiDeployment>? getDeployment(String name) {
+    final client = getClient();
+    final request = GetApiDeploymentRequest();
+    request.name = name;
+    try {
+      return client.getApiDeployment(request, options: callOptions());
+    } catch (err) {
+      print('Caught error: $err');
+      return null;
+    }
+  }
+
+  Future<List<ApiDeployment>?> getDeployments(String parent) async {
+    final client = getClient();
+    final request = ListApiDeploymentsRequest();
+    request.parent = parent;
+    request.pageSize = 20;
+    try {
+      final response =
+          await client.listApiDeployments(request, options: callOptions());
+      return response.apiDeployments;
+    } catch (err) {
+      return null;
+    }
+  }
+}
+
 class ArtifactService {
   BuildContext? context;
   String? filter;

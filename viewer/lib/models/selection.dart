@@ -21,6 +21,7 @@ class Selection extends ChangeNotifier {
   ObservableString apiName = ObservableString();
   ObservableString versionName = ObservableString();
   ObservableString specName = ObservableString();
+  ObservableString deploymentName = ObservableString();
   ObservableString labelName = ObservableString();
   ObservableString artifactName = ObservableString();
   ObservableString fileName = ObservableString();
@@ -31,6 +32,7 @@ class Selection extends ChangeNotifier {
     this.apiName.update("");
     this.versionName.update("");
     this.specName.update("");
+    this.deploymentName.update("");
     this.labelName.update("");
     this.artifactName.update("");
     this.fileName.update("");
@@ -41,6 +43,7 @@ class Selection extends ChangeNotifier {
     this.apiName.update(api);
     this.versionName.update("");
     this.specName.update("");
+    this.deploymentName.update("");
     this.labelName.update("");
     this.artifactName.update("");
     this.fileName.update("");
@@ -54,6 +57,12 @@ class Selection extends ChangeNotifier {
     this.artifactName.update("");
     this.fileName.update("");
     this.highlight.update(null);
+  }
+
+  void updateDeploymentName(String deployment) {
+    this.deploymentName.update(deployment);
+    this.labelName.update("");
+    this.artifactName.update("");
   }
 
   void updateSpecName(String spec) {
@@ -86,6 +95,7 @@ class Selection extends ChangeNotifier {
       this.apiName,
       this.versionName,
       this.specName,
+      this.deploymentName,
       this.artifactName,
       this.labelName,
       this.fileName,
@@ -123,6 +133,10 @@ class SelectionProvider extends InheritedWidget {
 
   static ObservableString version(BuildContext context) {
     return SelectionProvider.of(context)!.versionName;
+  }
+
+  static ObservableString deployment(BuildContext context) {
+    return SelectionProvider.of(context)!.deploymentName;
   }
 
   static ObservableString spec(BuildContext context) {
