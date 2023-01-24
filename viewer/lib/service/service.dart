@@ -122,6 +122,7 @@ class ApiService {
     request.parent = parent + "/locations/global";
     request.orderBy = "display_name";
     request.pageSize = limit;
+    request.orderBy = "display_name";
     if (filter != null) {
       request.filter = filter!;
     }
