@@ -23,6 +23,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
 import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
@@ -69,14 +70,17 @@ class DeploymentDetailPage extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     DeploymentDetailCard(editable: true),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      view1: ArtifactListCard(SelectionProvider.deployment),
-                      view2: ArtifactDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
+                    narrow(context)
+                        ? ArtifactListCard(SelectionProvider.deployment)
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            view1:
+                                ArtifactListCard(SelectionProvider.deployment),
+                            view2: ArtifactDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
                   ],
                 ),
               ),

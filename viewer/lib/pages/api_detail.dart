@@ -25,6 +25,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
 import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
@@ -70,32 +71,38 @@ class ApiDetailPage extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     ApiDetailCard(editable: true),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: VersionListCard(),
-                      view2: VersionDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: DeploymentListCard(),
-                      view2: DeploymentDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      view1: ArtifactListCard(SelectionProvider.api),
-                      view2: ArtifactDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
+                    narrow(context)
+                        ? VersionListCard()
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            initialWeight: 0.33,
+                            view1: VersionListCard(),
+                            view2: VersionDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
+                    narrow(context)
+                        ? DeploymentListCard()
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            initialWeight: 0.33,
+                            view1: DeploymentListCard(),
+                            view2: DeploymentDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
+                    narrow(context)
+                        ? ArtifactListCard(SelectionProvider.api)
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            view1: ArtifactListCard(SelectionProvider.api),
+                            view2: ArtifactDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
                   ],
                 ),
               ),
