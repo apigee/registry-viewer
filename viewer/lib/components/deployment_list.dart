@@ -102,6 +102,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateDeploymentName("");
     });
   }
 

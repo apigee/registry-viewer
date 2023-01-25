@@ -102,6 +102,7 @@ class _VersionListViewState extends State<VersionListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateVersionName("");
     });
   }
 
