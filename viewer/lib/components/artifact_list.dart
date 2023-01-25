@@ -148,6 +148,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateArtifactName("");
     });
   }
 
