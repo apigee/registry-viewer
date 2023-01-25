@@ -22,6 +22,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class SpecDetailPage extends StatelessWidget {
@@ -55,12 +56,13 @@ class SpecDetailPage extends StatelessWidget {
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: const TabBar(
+            bottom: TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Contents"),
                 Tab(text: "Artifacts"),
               ],
+              indicator: tabDecoration(context),
             ),
           ),
           body: Column(children: [
