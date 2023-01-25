@@ -23,6 +23,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
 import '../helpers/root.dart';
 import '../helpers/media.dart';
 import '../helpers/tab_decoration.dart';
