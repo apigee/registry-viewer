@@ -13,9 +13,9 @@
 # limitations under the License.
 
 # This Dockerfile builds an image that runs the web server.
-ARG FLUTTER_VERSION=2.2.0
-ARG PROTOBUF_VERSION=3.13.0
-ARG GO_VERSION=1.15
+ARG FLUTTER_VERSION=3.3.10
+ARG PROTOBUF_VERSION=3.20.1
+ARG GO_VERSION=1.18
 
 FROM ubuntu:latest as flutter
 ARG FLUTTER_VERSION
@@ -34,6 +34,7 @@ RUN apt-get update -y && apt-get install curl unzip xz-utils git make -y && \
 
 RUN curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz && \
     tar -xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C / && \
+    git config --global --add safe.directory /flutter && \
     flutter pub global activate protoc_plugin &&  \
     flutter config --enable-web && \
     make create && make protos && make staging
