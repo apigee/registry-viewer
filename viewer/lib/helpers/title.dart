@@ -16,10 +16,23 @@ const pathLength = 3;
 
 // title converts a path into a string suitable for display in the app bar.
 String title(String path) {
+  path = path.replaceAll("/locations/global", "");
+
   var parts = path.split("/").sublist(1);
   if (parts.length > pathLength) {
     parts = parts.sublist(parts.length - pathLength);
     parts.insert(0, "...");
   }
   return parts.join("/");
+}
+
+String? pageTitle(String? path) {
+  if (path == null) {
+    return null;
+  }
+  if (path[0] == '/') {
+    path = path.substring(1);
+  }
+  path = path.replaceAll("/locations/global", "");
+  return path;
 }

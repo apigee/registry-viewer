@@ -25,6 +25,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/title.dart';
 
 class ApiDetailPage extends StatelessWidget {
   final String? name;
@@ -47,7 +48,7 @@ class ApiDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              this.name ?? "API Details",
+              pageTitle(this.name) ?? "API Details",
             ),
             actions: <Widget>[
               homeButton(context),

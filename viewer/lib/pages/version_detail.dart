@@ -23,6 +23,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/title.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String? name;
@@ -48,7 +49,7 @@ class VersionDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              this.name ?? "Version Details",
+              pageTitle(this.name) ?? "Version Details",
             ),
             actions: <Widget>[
               homeButton(context),
