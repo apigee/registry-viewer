@@ -23,6 +23,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/media.dart';
 import '../helpers/root.dart';
 import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
@@ -69,24 +70,28 @@ class ProjectDetailPage extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     ProjectDetailCard(editable: (root() == "/")),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: ApiListCard(),
-                      view2: ApiDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
-                    CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.5,
-                      view1: ArtifactListCard(SelectionProvider.project),
-                      view2: ArtifactDetailCard(
-                        selflink: true,
-                        editable: true,
-                      ),
-                    ),
+                    narrow(context)
+                        ? ApiListCard()
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            initialWeight: 0.33,
+                            view1: ApiListCard(),
+                            view2: ApiDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
+                    narrow(context)
+                        ? ArtifactListCard(SelectionProvider.project)
+                        : CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            initialWeight: 0.5,
+                            view1: ArtifactListCard(SelectionProvider.project),
+                            view2: ArtifactDetailCard(
+                              selflink: true,
+                              editable: true,
+                            ),
+                          ),
                   ],
                 ),
               ),
