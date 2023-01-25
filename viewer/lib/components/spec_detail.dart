@@ -18,6 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
+import '../components/empty.dart';
 import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
@@ -108,6 +109,9 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (specManager?.value == null) {
+      return emptyCard(context, "spec");
+    }
     Function? selflink = onlyIf(widget.selflink, () {
       ApiSpec spec = (specManager?.value)!;
       Navigator.pushNamed(
@@ -131,79 +135,74 @@ class _SpecDetailCardState extends State<SpecDetailCard> {
           });
     });
 
-    if (specManager?.value == null) {
+    Api? api = apiManager!.value;
+    ApiVersion? version = versionManager!.value;
+    ApiSpec? spec = specManager!.value;
+    if ((api == null) || (version == null) || (spec == null)) {
       return Card();
-    } else {
-      Api? api = apiManager!.value;
-      ApiVersion? version = versionManager!.value;
-      ApiSpec? spec = specManager!.value;
-      if ((api == null) || (version == null) || (spec == null)) {
-        return Card();
-      }
-      final codeStyle = GoogleFonts.inconsolata();
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResourceNameButtonRow(
-              name: spec.name.last(1),
-              show: selflink as void Function()?,
-              edit: editable as void Function()?,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+    }
+    final codeStyle = GoogleFonts.inconsolata();
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+            name: spec.name.last(1),
+            show: selflink as void Function()?,
+            edit: editable as void Function()?,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageSection(
+                      children: [
+                        SuperTitleRow(api.displayName +
+                            "/" +
+                            version.name.split("/").last),
+                        TitleRow(spec.name.split("/").last, action: selflink),
+                      ],
+                    ),
+                    if (spec.hasSourceUri())
                       PageSection(
                         children: [
-                          SuperTitleRow(api.displayName +
-                              "/" +
-                              version.name.split("/").last),
-                          TitleRow(spec.name.split("/").last, action: selflink),
+                          LinkRow("${spec.sourceUri}", spec.sourceUri),
                         ],
                       ),
-                      if (spec.hasSourceUri())
-                        PageSection(
-                          children: [
-                            LinkRow("${spec.sourceUri}", spec.sourceUri),
-                          ],
-                        ),
+                    PageSection(
+                      children: [
+                        BodyRow(spec.mimeType, style: codeStyle),
+                        BodyRow("revision " + spec.revisionId,
+                            style: codeStyle),
+                        BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
+                        BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
+                        TimestampRow(spec.createTime, spec.revisionUpdateTime),
+                      ],
+                    ),
+                    if (spec.description != "")
                       PageSection(
                         children: [
-                          BodyRow(spec.mimeType, style: codeStyle),
-                          BodyRow("revision " + spec.revisionId,
-                              style: codeStyle),
-                          BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
-                          BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
-                          TimestampRow(
-                              spec.createTime, spec.revisionUpdateTime),
+                          BodyRow(spec.description),
                         ],
                       ),
-                      if (spec.description != "")
-                        PageSection(
-                          children: [
-                            BodyRow(spec.description),
-                          ],
-                        ),
-                      if (spec.labels.length > 0)
-                        PageSection(children: [
-                          LabelsRow(spec.labels),
-                        ]),
-                      if (spec.annotations.length > 0)
-                        PageSection(children: [
-                          AnnotationsRow(spec.annotations),
-                        ]),
-                    ],
-                  ),
+                    if (spec.labels.length > 0)
+                      PageSection(children: [
+                        LabelsRow(spec.labels),
+                      ]),
+                    if (spec.annotations.length > 0)
+                      PageSection(children: [
+                        AnnotationsRow(spec.annotations),
+                      ]),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }

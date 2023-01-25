@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import '../components/api_edit.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
+import '../components/empty.dart';
 import '../models/api.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
@@ -73,6 +74,9 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (apiManager?.value == null) {
+      return emptyCard(context, "api");
+    }
     Function? selflink = onlyIf(widget.selflink, () {
       Api api = (apiManager?.value)!;
       Navigator.pushNamed(
@@ -95,60 +99,55 @@ class _ApiDetailCardState extends State<ApiDetailCard> {
             );
           });
     });
-
-    if (apiManager?.value == null) {
-      return Card();
-    } else {
-      final api = apiManager!.value!;
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResourceNameButtonRow(
-              name: api.name.split("/").sublist(2).join("/"),
-              show: selflink as void Function()?,
-              edit: editable as void Function()?,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+    final api = apiManager!.value!;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+            name: api.name.split("/").sublist(2).join("/"),
+            show: selflink as void Function()?,
+            edit: editable as void Function()?,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageSection(children: [
+                      TitleRow(api.displayName, action: selflink),
+                    ]),
+                    PageSection(
+                      children: [
+                        BodyRow(
+                          api.description,
+                          style: Theme.of(context).textTheme.bodyText2,
+                          wrap: true,
+                        ),
+                      ],
+                    ),
+                    PageSection(
+                      children: [
+                        TimestampRow(api.createTime, api.updateTime),
+                      ],
+                    ),
+                    if (api.labels.length > 0)
                       PageSection(children: [
-                        TitleRow(api.displayName, action: selflink),
+                        LabelsRow(api.labels),
                       ]),
-                      PageSection(
-                        children: [
-                          BodyRow(
-                            api.description,
-                            style: Theme.of(context).textTheme.bodyText2,
-                            wrap: true,
-                          ),
-                        ],
-                      ),
-                      PageSection(
-                        children: [
-                          TimestampRow(api.createTime, api.updateTime),
-                        ],
-                      ),
-                      if (api.labels.length > 0)
-                        PageSection(children: [
-                          LabelsRow(api.labels),
-                        ]),
-                      if (api.annotations.length > 0)
-                        PageSection(children: [
-                          AnnotationsRow(api.annotations),
-                        ]),
-                    ],
-                  ),
+                    if (api.annotations.length > 0)
+                      PageSection(children: [
+                        AnnotationsRow(api.annotations),
+                      ]),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }
