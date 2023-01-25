@@ -100,6 +100,7 @@ class _SpecListViewState extends State<SpecListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateSpecName("");
     });
   }
 

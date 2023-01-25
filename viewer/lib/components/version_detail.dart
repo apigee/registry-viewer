@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
+import '../components/empty.dart';
 import '../components/version_edit.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
@@ -89,6 +90,10 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (versionManager?.value == null) {
+      return emptyCard(context, "version");
+    }
+
     Function? selflink = onlyIf(widget.selflink, () {
       ApiVersion version = (versionManager?.value)!;
       Navigator.pushNamed(
@@ -112,62 +117,58 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
           });
     });
 
-    if (versionManager?.value == null) {
-      return Card();
-    } else {
-      Api? api = apiManager!.value;
-      ApiVersion version = versionManager!.value!;
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResourceNameButtonRow(
-              name: version.name.split("/").sublist(4).join("/"),
-              show: selflink as void Function()?,
-              edit: editable as void Function()?,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+    Api? api = apiManager!.value;
+    ApiVersion version = versionManager!.value!;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResourceNameButtonRow(
+            name: version.name.split("/").sublist(4).join("/"),
+            show: selflink as void Function()?,
+            edit: editable as void Function()?,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PageSection(
+                      children: [
+                        SizedBox(height: 10),
+                        SuperTitleRow(api?.displayName ?? ""),
+                        TitleRow(version.name.split("/").last,
+                            action: selflink),
+                      ],
+                    ),
+                    if (version.description != "")
                       PageSection(
                         children: [
-                          SizedBox(height: 10),
-                          SuperTitleRow(api?.displayName ?? ""),
-                          TitleRow(version.name.split("/").last,
-                              action: selflink),
+                          BodyRow(version.description),
                         ],
                       ),
-                      if (version.description != "")
-                        PageSection(
-                          children: [
-                            BodyRow(version.description),
-                          ],
-                        ),
-                      PageSection(
-                        children: [
-                          TimestampRow(version.createTime, version.updateTime),
-                        ],
-                      ),
-                      if (version.labels.length > 0)
-                        PageSection(children: [
-                          LabelsRow(version.labels),
-                        ]),
-                      if (version.annotations.length > 0)
-                        PageSection(children: [
-                          AnnotationsRow(version.annotations),
-                        ]),
-                    ],
-                  ),
+                    PageSection(
+                      children: [
+                        TimestampRow(version.createTime, version.updateTime),
+                      ],
+                    ),
+                    if (version.labels.length > 0)
+                      PageSection(children: [
+                        LabelsRow(version.labels),
+                      ]),
+                    if (version.annotations.length > 0)
+                      PageSection(children: [
+                        AnnotationsRow(version.annotations),
+                      ]),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }
