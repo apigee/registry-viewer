@@ -24,6 +24,7 @@ import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/root.dart';
+import '../helpers/title.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String? name;
@@ -47,7 +48,7 @@ class ProjectDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              this.name ?? "Project Details",
+              pageTitle(this.name) ?? "Project Details",
             ),
             actions: <Widget>[
               homeButton(context),

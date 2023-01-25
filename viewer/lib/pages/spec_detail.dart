@@ -22,6 +22,7 @@ import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
+import '../helpers/title.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String? name;
@@ -49,7 +50,7 @@ class SpecDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              this.name ?? "Spec Details",
+              pageTitle(this.name) ?? "Spec Details",
             ),
             actions: <Widget>[
               homeButton(context),
