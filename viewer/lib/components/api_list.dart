@@ -100,6 +100,7 @@ class _ApiListViewState extends State<ApiListView> {
         widget.pageLoadController!.reset();
         selectedIndex = -1;
       }
+      SelectionProvider.of(context)?.updateApiName("");
     });
   }
 
