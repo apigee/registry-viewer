@@ -15,16 +15,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install protoc
       run: |
         sudo curl -L https://github.com/protocolbuffers/protobuf/releases/download/v3.20.1/protoc-3.20.1-linux-x86_64.zip > /tmp/protoc.zip
         sudo unzip /tmp/protoc.zip -d /usr/local
         sudo chown -R $USER /usr/local
     - name: Install Flutter tools
-      uses: subosito/flutter-action@v1
+      uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.0.0'
+        flutter-version: '3.3.10'
         channel: 'stable'
     - name: Add Flutter .pub-cache to PATH
       run: |
