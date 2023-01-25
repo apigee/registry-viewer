@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
+import '../components/empty.dart';
 import '../components/version_edit.dart';
 import '../components/empty.dart';
 import '../models/selection.dart';

@@ -22,7 +22,7 @@ import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
 import 'artifact_detail_string.dart';
 import 'artifact_detail_vocabulary.dart';
-import 'empty.dart';
+import '../components/empty.dart';
 import '../helpers/extensions.dart';
 import '../models/artifact.dart';
 import '../models/selection.dart';

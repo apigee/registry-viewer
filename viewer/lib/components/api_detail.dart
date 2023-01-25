@@ -104,7 +104,6 @@ class _ApiDetailCardState extends State<ApiDetailCard>
             );
           });
     });
-
     final api = apiManager!.value!;
     return Card(
       child: Column(
