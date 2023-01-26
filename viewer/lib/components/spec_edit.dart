@@ -92,7 +92,7 @@ class EditSpecFormState extends State<EditSpecForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(spec.name),
+            Text(spec.name.split("/").sublist(4).join("/")),
             ListTile(
               title: TextFormField(
                 controller: descriptionController,

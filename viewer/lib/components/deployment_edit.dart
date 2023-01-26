@@ -96,7 +96,7 @@ class EditDeploymentFormState extends State<EditDeploymentForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(deployment.name),
+            Text(deployment.name.split("/").sublist(4).join("/")),
             ListTile(
               title: TextFormField(
                 controller: displayNameController,
