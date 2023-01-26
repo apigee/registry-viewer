@@ -18,6 +18,7 @@ import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
 import '../components/version_edit.dart';
+import '../components/empty.dart';
 import '../models/selection.dart';
 import '../models/version.dart';
 import '../service/registry.dart';
@@ -30,10 +31,13 @@ class VersionDetailCard extends StatefulWidget {
   _VersionDetailCardState createState() => _VersionDetailCardState();
 }
 
-class _VersionDetailCardState extends State<VersionDetailCard> {
+class _VersionDetailCardState extends State<VersionDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -90,6 +94,7 @@ class _VersionDetailCardState extends State<VersionDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (versionManager?.value == null) {
       return emptyCard(context, "version");
     }

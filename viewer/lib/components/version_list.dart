@@ -31,9 +31,12 @@ class VersionListCard extends StatefulWidget {
   _VersionListCardState createState() => _VersionListCardState();
 }
 
-class _VersionListCardState extends State<VersionListCard> {
+class _VersionListCardState extends State<VersionListCard>
+    with AutomaticKeepAliveClientMixin {
   VersionService? versionService;
   PagewiseLoadController<ApiVersion>? pageLoadController;
+  @override
+  bool get wantKeepAlive => true;
 
   _VersionListCardState() {
     versionService = VersionService();
@@ -46,6 +49,7 @@ class _VersionListCardState extends State<VersionListCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
