@@ -36,9 +36,12 @@ class ArtifactDetailCard extends StatefulWidget {
   _ArtifactDetailCardState createState() => _ArtifactDetailCardState();
 }
 
-class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
+class _ArtifactDetailCardState extends State<ArtifactDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ArtifactManager? artifactManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -80,9 +83,11 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (artifactManager?.value == null) {
       return emptyCard(context, "artifact");
     }
+
     Function? selflink = onlyIf(widget.selflink, () {
       Artifact artifact = (artifactManager?.value)!;
       Navigator.pushNamed(

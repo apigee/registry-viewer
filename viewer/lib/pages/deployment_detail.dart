@@ -45,7 +45,7 @@ class DeploymentDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 2,
-        animationDuration: Duration.zero,
+        animationDuration: Duration(milliseconds: 100),
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(

@@ -30,10 +30,13 @@ class DeploymentDetailCard extends StatefulWidget {
   _DeploymentDetailCardState createState() => _DeploymentDetailCardState();
 }
 
-class _DeploymentDetailCardState extends State<DeploymentDetailCard> {
+class _DeploymentDetailCardState extends State<DeploymentDetailCard>
+    with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   DeploymentManager? deploymentManager;
   Selection? selection;
+  @override
+  bool get wantKeepAlive => true;
 
   void managerListener() {
     setState(() {});
@@ -91,9 +94,11 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (deploymentManager?.value == null) {
       return emptyCard(context, "deployment");
     }
+
     Function? selflink = onlyIf(widget.selflink, () {
       ApiDeployment deployment = (deploymentManager?.value)!;
       Navigator.pushNamed(
@@ -116,7 +121,6 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard> {
             );
           });
     });
-
     Api? api = apiManager!.value;
     ApiDeployment deployment = deploymentManager!.value!;
     return Card(
