@@ -98,7 +98,7 @@ class EditVersionFormState extends State<EditVersionForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(version.name),
+            Text(version.name.split("/").sublist(4).join("/")),
             ListTile(
               title: TextFormField(
                 controller: displayNameController,

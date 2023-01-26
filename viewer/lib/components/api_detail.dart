@@ -110,7 +110,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResourceNameButtonRow(
-            name: api.name.split("/").sublist(2).join("/"),
+            name: api.name.split("/").sublist(4).join("/"),
             show: selflink as void Function()?,
             edit: editable as void Function()?,
           ),
