@@ -95,7 +95,7 @@ class EditAPIFormState extends State<EditAPIForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(api.name.split("/").sublist(2).join("/")),
+            Text(api.name.split("/").sublist(4).join("/")),
             ListTile(
               title: TextFormField(
                 controller: displayNameController,
