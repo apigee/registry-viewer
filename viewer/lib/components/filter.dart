@@ -27,21 +27,18 @@ Widget filterBar(
   }
   return AppBar(
     centerTitle: true,
-    backgroundColor: Theme.of(context).secondaryHeaderColor,
     primary: false,
     elevation: 0,
     automaticallyImplyLeading: false,
     title: filterField,
     actions: <Widget>[
       IconButton(
-        color: Colors.black,
         icon: Icon(Icons.refresh),
         tooltip: "refresh",
         onPressed: refresh as void Function()?,
       ),
       if (type != null)
         IconButton(
-          color: Colors.black,
           icon: Icon(Icons.add),
           tooltip: tooltip,
           onPressed: add as void Function()?,

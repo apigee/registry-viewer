@@ -18,7 +18,6 @@ import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
 import '../components/project_edit.dart';
-import '../components/empty.dart';
 import '../models/project.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';

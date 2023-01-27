@@ -171,7 +171,6 @@ class _ApiListViewState extends State<ApiListView> {
         widget.selectionHandler?.call(context, api);
       },
       trailing: IconButton(
-        color: Colors.black,
         icon: Icon(Icons.open_in_new),
         tooltip: "open",
         onPressed: () {

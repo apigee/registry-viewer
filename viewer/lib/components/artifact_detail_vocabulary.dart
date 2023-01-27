@@ -89,7 +89,7 @@ class WordCountListCardState extends State<WordCountListCard> {
           color: Theme.of(context).splashColor,
           child: Text(
             "${widget.name} (${widget.wordCountList.length})",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.left,
           ),
         ),

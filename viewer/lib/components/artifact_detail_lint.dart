@@ -128,7 +128,7 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                   stringForLocation(problem.problem.location),
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(fontWeight: FontWeight.bold),
                               softWrap: false,
                               overflow: TextOverflow.clip,
@@ -136,12 +136,12 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                             SizedBox(height: 10),
                             Text(
                               "${problem.problem.message}",
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             if (problem.problem.suggestion != "")
                               Text(
                                 "${problem.problem.suggestion}",
-                                style: Theme.of(context).textTheme.bodyText2,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             SizedBox(height: 10),
                             Row(
@@ -151,10 +151,10 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                                   child: Text(problem.problem.ruleId,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyMedium!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .primaryColorDark)),
+                                                  .primaryColor)),
                                   onTap: () async {
                                     if (await canLaunchUrl(Uri.parse(
                                         problem.problem.ruleDocUri))) {

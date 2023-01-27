@@ -25,7 +25,6 @@ import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/media.dart';
 import '../helpers/root.dart';
-import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class ProjectDetailPage extends StatelessWidget {
@@ -61,7 +60,6 @@ class ProjectDetailPage extends StatelessWidget {
                 Tab(text: "APIs"),
                 Tab(text: "Artifacts"),
               ],
-              indicator: tabDecoration(context),
             ),
           ),
           body: Column(

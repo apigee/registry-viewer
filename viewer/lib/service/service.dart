@@ -54,7 +54,7 @@ class ProjectService {
     return _getProjects(offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Project>> _getProjects({offset: int, limit: int}) async {
+  Future<List<Project>> _getProjects({offset = int, limit = int}) async {
     if (offset == 0) {
       tokens = Map();
     }
@@ -109,7 +109,8 @@ class ApiService {
         parent: projectName, offset: pageIndex * pageSize, limit: pageSize);
   }
 
-  Future<List<Api>?> _getApis({parent: String, offset: int, limit: int}) async {
+  Future<List<Api>?> _getApis(
+      {parent = String, offset = int, limit = int}) async {
     if (parent == "") {
       return null;
     }
@@ -198,7 +199,7 @@ class VersionService {
   }
 
   Future<List<ApiVersion>?> _getVersions(
-      {parent: String, offset: int, limit: int}) async {
+      {parent = String, offset = int, limit = int}) async {
     if (parent == "") {
       return null;
     }
@@ -267,7 +268,7 @@ class SpecService {
   }
 
   Future<List<ApiSpec>?> _getSpecs(
-      {parent: String, offset: int, limit: int}) async {
+      {parent = String, offset = int, limit = int}) async {
     if (parent == "") {
       return null;
     }
@@ -309,7 +310,7 @@ class DeploymentService {
   }
 
   Future<List<ApiDeployment>?> _getDeployments(
-      {parent: String, offset: int, limit: int}) async {
+      {parent = String, offset = int, limit = int}) async {
     if (parent == "") {
       return null;
     }
@@ -377,7 +378,7 @@ class ArtifactService {
   }
 
   Future<List<Artifact>?> _getArtifacts(
-      {parent: String, offset: int, limit: int}) async {
+      {parent = String, offset = int, limit = int}) async {
     if (parent == "") {
       return null;
     }

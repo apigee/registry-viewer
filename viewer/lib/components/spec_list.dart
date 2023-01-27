@@ -171,7 +171,7 @@ class _SpecListViewState extends State<SpecListView> {
         widget.selectionHandler?.call(context, spec);
       },
       trailing: IconButton(
-        color: Colors.black,
+        //color: Colors.black,
         icon: Icon(Icons.open_in_new),
         tooltip: "open",
         onPressed: () {

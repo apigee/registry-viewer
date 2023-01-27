@@ -18,29 +18,22 @@ import '../build.dart';
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final white =
-        Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.white);
     return Container(
-      color: Colors.grey[700], // Theme.of(context).primaryColor,
-      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            child: Text(
-              "Built $buildTime",
-              style: white,
-              softWrap: false,
-              overflow: TextOverflow.clip,
-            ),
+            child: Text(buildTime,
+                softWrap: false,
+                overflow: TextOverflow.clip,
+                style: Theme.of(context).textTheme.bodySmall),
           ),
           Flexible(
-            child: Text(
-              "Commit $commitHash",
-              style: white,
-              softWrap: false,
-              overflow: TextOverflow.clip,
-            ),
+            child: Text(commitHash,
+                softWrap: false,
+                overflow: TextOverflow.clip,
+                style: Theme.of(context).textTheme.bodySmall),
           ),
         ],
       ),

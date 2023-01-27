@@ -18,7 +18,7 @@ import 'detail_rows.dart';
 class RegistryDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyText2;
+    final textStyle = Theme.of(context).textTheme.bodyMedium;
     return Card(
       child: Padding(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),

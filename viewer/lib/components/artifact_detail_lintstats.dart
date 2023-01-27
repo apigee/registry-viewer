@@ -92,10 +92,10 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                                   child: Text(problemCount.ruleId,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyMedium!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .primaryColorDark)),
+                                                  .primaryColor)),
                                   onTap: () async {
                                     if (await canLaunchUrl(
                                         Uri.parse(problemCount.ruleDocUri))) {

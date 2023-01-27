@@ -16,15 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 import '../models/selection.dart';
 import '../components/deployment_detail.dart';
-import '../components/spec_list.dart';
-import '../components/spec_detail.dart';
 import '../components/artifact_list.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/media.dart';
-import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class DeploymentDetailPage extends StatelessWidget {
@@ -61,7 +58,6 @@ class DeploymentDetailPage extends StatelessWidget {
                 Tab(text: "Details"),
                 Tab(text: "Artifacts"),
               ],
-              indicator: tabDecoration(context),
             ),
           ),
           body: Column(

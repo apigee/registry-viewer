@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:split_view/split_view.dart';
 import 'project_list.dart';
 import '../components/project_detail.dart';
-import '../components/registry_detail.dart';
 import '../models/selection.dart';
 import '../components/bottom_bar.dart';
 import '../components/split_view.dart';
