@@ -100,7 +100,8 @@ class RegistryRouter {
         if (r == "/") {
           return homePage(settings);
         } else {
-          return projectPage(settings.copyWith(name: r));
+          return projectPage(
+              RouteSettings(name: r, arguments: settings.arguments));
         }
       }
     }
