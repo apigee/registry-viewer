@@ -172,7 +172,7 @@ class _VersionListViewState extends State<VersionListView> {
         widget.selectionHandler?.call(context, version);
       },
       trailing: IconButton(
-        color: Colors.black,
+        //color: Colors.black,
         icon: Icon(Icons.open_in_new),
         tooltip: "open",
         onPressed: () {

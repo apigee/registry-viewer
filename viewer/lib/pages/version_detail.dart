@@ -24,7 +24,6 @@ import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/media.dart';
-import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class VersionDetailPage extends StatelessWidget {
@@ -62,7 +61,6 @@ class VersionDetailPage extends StatelessWidget {
                 Tab(text: "Specs"),
                 Tab(text: "Artifacts"),
               ],
-              indicator: tabDecoration(context),
             ),
           ),
           body: Column(

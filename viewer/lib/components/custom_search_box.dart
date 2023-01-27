@@ -38,7 +38,6 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
         8,
       ),
       alignment: Alignment.centerLeft,
-      color: Theme.of(context).secondaryHeaderColor,
       child: TextField(
         controller: searchTextController,
         decoration: InputDecoration(

@@ -23,7 +23,6 @@ class ReferencesArtifactCard extends StatelessWidget {
   ReferencesArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    ReferenceList references = new ReferenceList.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -63,7 +62,7 @@ class WordListCardState extends State<WordListCard> {
           color: Theme.of(context).splashColor,
           child: Text(
             "${widget.name} (${widget.wordList.length})",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.left,
           ),
         ),

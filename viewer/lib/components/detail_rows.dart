@@ -34,8 +34,8 @@ class ResourceNameButtonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).secondaryHeaderColor,
-      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+      color: Theme.of(context).canvasColor,
+      padding: EdgeInsets.fromLTRB(16, 13, 16, 13),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -44,7 +44,7 @@ class ResourceNameButtonRow extends StatelessWidget {
             Flexible(
               child: Text(
                 name!,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 softWrap: false,
                 overflow: TextOverflow.clip,
               ),
@@ -56,8 +56,8 @@ class ResourceNameButtonRow extends StatelessWidget {
                   name!,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
-                      .copyWith(color: Theme.of(context).primaryColorDark),
+                      .bodyLarge!
+                      .copyWith(color: Theme.of(context).primaryColor),
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
@@ -70,8 +70,8 @@ class ResourceNameButtonRow extends StatelessWidget {
                 "EDIT",
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1!
-                    .copyWith(color: Theme.of(context).primaryColorDark),
+                    .bodyLarge!
+                    .copyWith(color: Theme.of(context).primaryColor),
                 textAlign: TextAlign.right,
               ),
               onTap: edit != null ? edit : () {},
@@ -89,7 +89,7 @@ class PanelNameRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).secondaryHeaderColor,
+      color: Theme.of(context).canvasColor,
       padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +98,7 @@ class PanelNameRow extends StatelessWidget {
           Flexible(
             child: Text(
               name!,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               softWrap: false,
               overflow: TextOverflow.clip,
             ),
@@ -125,8 +125,8 @@ class TitleRow extends StatelessWidget {
                       text,
                       style: Theme.of(context)
                           .textTheme
-                          .headline3!
-                          .copyWith(color: Theme.of(context).primaryColorDark),
+                          .titleLarge!
+                          .copyWith(color: Theme.of(context).primaryColor),
                       textAlign: TextAlign.left,
                       softWrap: true,
                     ),
@@ -135,7 +135,7 @@ class TitleRow extends StatelessWidget {
             : Expanded(
                 child: Text(
                   text,
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.titleLarge,
                   textAlign: TextAlign.left,
                   softWrap: true,
                 ),
@@ -156,7 +156,7 @@ class SuperTitleRow extends StatelessWidget {
         text,
         style: Theme.of(context)
             .textTheme
-            .headline6!
+            .titleLarge!
             .copyWith(color: Colors.grey[500]),
         textAlign: TextAlign.left,
         softWrap: true,
@@ -176,7 +176,7 @@ class BodyRow extends StatelessWidget {
       Expanded(
         child: Text(
           text,
-          style: style ?? Theme.of(context).textTheme.bodyText1,
+          style: style ?? Theme.of(context).textTheme.bodyLarge,
           textAlign: TextAlign.left,
           softWrap: wrap,
         ),
@@ -191,7 +191,7 @@ class LinkifiedBodyRow extends StatelessWidget {
   LinkifiedBodyRow(this.text, {this.style});
   @override
   Widget build(BuildContext context) {
-    final textStyle = style ?? Theme.of(context).textTheme.bodyText1!;
+    final textStyle = style ?? Theme.of(context).textTheme.bodyLarge!;
     return Linkify(
       onOpen: (link) async {
         if (await canLaunchUrl(Uri.parse(link.url))) {
@@ -203,7 +203,7 @@ class LinkifiedBodyRow extends StatelessWidget {
       text: text,
       textAlign: TextAlign.left,
       style: textStyle,
-      linkStyle: textStyle.copyWith(color: Theme.of(context).primaryColorDark),
+      linkStyle: textStyle.copyWith(color: Theme.of(context).primaryColor),
       softWrap: false,
       overflow: TextOverflow.clip,
     );
@@ -223,7 +223,7 @@ class LinkRow extends StatelessWidget {
             child: Text(
               text,
               style: GoogleFonts.inconsolata()
-                  .copyWith(color: Theme.of(context).primaryColorDark),
+                  .copyWith(color: Theme.of(context).primaryColor),
               textAlign: TextAlign.left,
             ),
             onTap: () async {
@@ -251,7 +251,7 @@ class StringValueRow extends StatelessWidget {
         Expanded(
           child: Text(label + " " + value,
               textAlign: TextAlign.right,
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
     );
@@ -335,7 +335,7 @@ class LabelsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Chip(
-            backgroundColor: Theme.of(context).primaryColorDark,
+            backgroundColor: Theme.of(context).primaryColor,
             label: Text(
               labelText(key, map[key]),
               style: GoogleFonts.inconsolata()
@@ -370,7 +370,7 @@ class AnnotationsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Chip(
-            backgroundColor: Theme.of(context).secondaryHeaderColor,
+            backgroundColor: Theme.of(context).canvasColor,
             label: Text(
               key + ":" + map[key]!,
               style: GoogleFonts.inconsolata(),

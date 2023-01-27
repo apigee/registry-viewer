@@ -75,10 +75,6 @@ class ThresholdBox extends StatelessWidget {
           maxHeight: max(constraints.maxHeight, this.height),
           maxWidth: max(constraints.maxWidth, this.width),
           child: this.child,
-          alignment: Alignment(
-            (this.side == Side.left) ? 1 : -1,
-            (this.side == Side.top) ? -1 : 1,
-          ),
         ),
       );
     });

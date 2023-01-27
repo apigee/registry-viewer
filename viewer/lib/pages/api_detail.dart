@@ -26,7 +26,6 @@ import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/split_view.dart';
 import '../helpers/media.dart';
-import '../helpers/tab_decoration.dart';
 import '../helpers/title.dart';
 
 class ApiDetailPage extends StatelessWidget {
@@ -49,20 +48,42 @@ class ApiDetailPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-              pageTitle(this.name) ?? "API Details",
-            ),
+            title: Text(pageTitle(this.name) ?? "API Details"),
             actions: <Widget>[
               homeButton(context),
             ],
             bottom: TabBar(
               tabs: [
-                Tab(text: "Details"),
-                Tab(text: "Versions"),
-                Tab(text: "Deployments"),
-                Tab(text: "Artifacts"),
+                Tab(
+                  child: Text(
+                    "Details",
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    "Versions",
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    "Deployments",
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    "Artifacts",
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                ),
               ],
-              indicator: tabDecoration(context),
+              //  indicator: tabDecoration(context),
             ),
           ),
           body: Column(

@@ -253,7 +253,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                             String fileName = this.items![index].headerValue!;
 
                             Color? color = (index != selectedItemIndex)
-                                ? Theme.of(context).textTheme.bodyText1!.color
+                                ? Theme.of(context).textTheme.bodyLarge!.color
                                 : Theme.of(context).primaryColor;
 
                             return GestureDetector(

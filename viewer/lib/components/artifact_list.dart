@@ -237,7 +237,6 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         children: [
           if (artifactInfoLink != null)
             IconButton(
-                color: Colors.black,
                 icon: Icon(Icons.info),
                 tooltip: "info",
                 onPressed: () async {
@@ -249,7 +248,6 @@ class _ArtifactListViewState extends State<ArtifactListView> {
                 }),
           if (canDelete)
             IconButton(
-              color: Colors.black,
               icon: Icon(Icons.delete),
               tooltip: "delete",
               onPressed: () {

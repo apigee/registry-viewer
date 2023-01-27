@@ -128,7 +128,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                       children: [
                         BodyRow(
                           api.description,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           wrap: true,
                         ),
                       ],

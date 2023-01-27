@@ -98,13 +98,13 @@ class SignInPageState extends State<SignInPage> {
                       textAlign: TextAlign.left,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1!
+                          .bodyLarge!
                           .apply(color: Colors.white)),
                   Text(currentUser?.email ?? '',
                       textAlign: TextAlign.left,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2!
+                          .bodyMedium!
                           .apply(color: Colors.white)),
                 ]),
           ),
@@ -138,7 +138,6 @@ class SignInPageState extends State<SignInPage> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //Text(applicationName, style: Theme.of(context).textTheme.headline2),
           Container(height: 20),
           ElevatedButton(
             child: const Text('Sign in with Google'),
