@@ -13,12 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:split_view/split_view.dart';
 import '../models/selection.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
-import '../components/split_view.dart';
+import '../helpers/title.dart';
 
 class ArtifactDetailPage extends StatelessWidget {
   final String? name;
@@ -37,7 +36,7 @@ class ArtifactDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Artifact Details"),
+          title: Text(pageTitle(this.name) ?? "Artifact Details"),
           actions: <Widget>[
             homeButton(context),
           ],
@@ -45,12 +44,7 @@ class ArtifactDetailPage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
-              child: CustomSplitView(
-                initialWeight: 0.33,
-                viewMode: SplitViewMode.Horizontal,
-                view1: DefaultArtifactDetailCard(),
-                view2: ArtifactDetailCard(editable: true),
-              ),
+              child: ArtifactDetailCard(editable: true),
             ),
             BottomBar(),
           ],

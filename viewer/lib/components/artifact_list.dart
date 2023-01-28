@@ -199,26 +199,18 @@ class _ArtifactListViewState extends State<ArtifactListView> {
   }
 
   Widget _itemBuilder(context, Artifact artifact, index) {
-    String? artifactInfoLink;
-    switch (artifact.mimeType) {
-      case "application/octet-stream;type=gnostic.metrics.Vocabulary":
-        artifactInfoLink =
-            "https://github.com/google/gnostic/blob/master/metrics/vocabulary.proto#L27";
-        break;
-      case "application/octet-stream;type=gnostic.metrics.Complexity":
-        artifactInfoLink =
-            "https://github.com/google/gnostic/blob/master/metrics/complexity.proto#L23";
-        break;
-      case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.Lint":
-        artifactInfoLink =
-            "https://github.com/apigeeregistry/blob/main/google/cloud/apigeeregistry/v1/registry_lint.proto#L38";
-        break;
-      case "application/octet-stream;type=google.cloud.apigeeregistry.applications.v1alpha1.LintStats":
-        artifactInfoLink =
-            "https://github.com/apigeeregistry/blob/main/google/cloud/apigeeregistry/v1/registry_lint.proto#L91";
-        break;
+    if (index == 0) {
+      Future.delayed(const Duration(), () {
+        Selection? selection = SelectionProvider.of(context);
+        if ((selection != null) && (selection.artifactName.value == "")) {
+          selection.updateArtifactName(artifact.name);
+          setState(() {
+            selectedIndex = 0;
+          });
+        }
+      });
     }
-    bool canDelete = artifact.mimeType == "text/plain";
+
     return ListTile(
       title: Text(artifact.nameForDisplay()),
       subtitle: widgetForArtifactValue(artifact),
@@ -232,40 +224,15 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         selection?.updateArtifactName(artifact.name);
         widget.selectionHandler?.call(context, artifact);
       },
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (artifactInfoLink != null)
-            IconButton(
-                icon: Icon(Icons.info),
-                tooltip: "info",
-                onPressed: () async {
-                  if (await canLaunchUrl(Uri.parse(artifactInfoLink!))) {
-                    await launchUrl(Uri.parse(artifactInfoLink));
-                  } else {
-                    throw 'Could not launch $artifactInfoLink';
-                  }
-                }),
-          if (canDelete)
-            IconButton(
-              icon: Icon(Icons.delete),
-              tooltip: "delete",
-              onPressed: () {
-                final selection = SelectionProvider.of(context)!;
-                selection.updateArtifactName(artifact.name);
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SelectionProvider(
-                        selection: selection,
-                        child: AlertDialog(
-                          content: DeleteArtifactForm(),
-                        ),
-                      );
-                    });
-              },
-            ),
-        ],
+      trailing: IconButton(
+        icon: Icon(Icons.open_in_new),
+        tooltip: "open",
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            artifact.routeNameForDetail(),
+          );
+        },
       ),
     );
   }
