@@ -82,6 +82,7 @@ class _SpecListPageState extends State<SpecListPage> {
               },
               specService,
               pageLoadController,
+              true,
             ),
           ),
         ),

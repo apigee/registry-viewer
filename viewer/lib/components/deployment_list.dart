@@ -27,6 +27,9 @@ typedef DeploymentSelectionHandler = Function(
 
 // DeploymentListCard is a card that displays a list of deployments.
 class DeploymentListCard extends StatefulWidget {
+  final bool singleColumn;
+  DeploymentListCard({required this.singleColumn});
+
   @override
   _DeploymentListCardState createState() => _DeploymentListCardState();
 }
@@ -62,6 +65,7 @@ class _DeploymentListCardState extends State<DeploymentListCard>
                 null,
                 deploymentService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -76,11 +80,13 @@ class DeploymentListView extends StatefulWidget {
   final DeploymentSelectionHandler? selectionHandler;
   final DeploymentService? deploymentService;
   final PagewiseLoadController<ApiDeployment>? pageLoadController;
+  final bool singleColumn;
 
   DeploymentListView(
     this.selectionHandler,
     this.deploymentService,
     this.pageLoadController,
+    this.singleColumn,
   );
 
   @override
@@ -165,7 +171,14 @@ class _DeploymentListViewState extends State<DeploymentListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              deployment.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateDeploymentName(deployment.name);

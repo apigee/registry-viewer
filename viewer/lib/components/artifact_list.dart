@@ -34,7 +34,9 @@ typedef ArtifactSelectionHandler = Function(
 // ArtifactListCard is a card that displays a list of artifacts.
 class ArtifactListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
-  ArtifactListCard(this.getObservableResourceName);
+  final bool singleColumn;
+  ArtifactListCard(this.getObservableResourceName,
+      {required this.singleColumn});
 
   @override
   _ArtifactListCardState createState() => _ArtifactListCardState();
@@ -112,6 +114,7 @@ class _ArtifactListCardState extends State<ArtifactListCard>
                 null,
                 artifactService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -127,12 +130,14 @@ class ArtifactListView extends StatefulWidget {
   final ArtifactSelectionHandler? selectionHandler;
   final ArtifactService? artifactService;
   final PagewiseLoadController<Artifact>? pageLoadController;
+  final bool singleColumn;
 
   ArtifactListView(
     this.getObservableResourceName,
     this.selectionHandler,
     this.artifactService,
     this.pageLoadController,
+    this.singleColumn,
   );
   @override
   _ArtifactListViewState createState() => _ArtifactListViewState();
@@ -218,7 +223,14 @@ class _ArtifactListViewState extends State<ArtifactListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              artifact.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateArtifactName(artifact.name);

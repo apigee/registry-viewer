@@ -28,6 +28,9 @@ typedef ProjectSelectionHandler = Function(
 
 // ProjectListCard is a card that displays a list of projects.
 class ProjectListCard extends StatefulWidget {
+  final bool singleColumn;
+  ProjectListCard({required this.singleColumn});
+
   @override
   _ProjectListCardState createState() => _ProjectListCardState();
 }
@@ -61,6 +64,7 @@ class _ProjectListCardState extends State<ProjectListCard>
                 null,
                 projectService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -75,11 +79,13 @@ class ProjectListView extends StatefulWidget {
   final ProjectSelectionHandler? selectionHandler;
   final ProjectService? projectService;
   final PagewiseLoadController<Project>? pageLoadController;
+  final bool singleColumn;
 
   ProjectListView(
     this.selectionHandler,
     this.projectService,
     this.pageLoadController,
+    this.singleColumn,
   );
 
   @override
@@ -141,7 +147,14 @@ class _ProjectListViewState extends State<ProjectListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              project.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateProjectName(project.name);

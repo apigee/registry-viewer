@@ -71,10 +71,16 @@ class SpecDetailPage extends StatelessWidget {
                   SpecDetailCard(editable: true),
                   SpecFileCard(),
                   narrow(context)
-                      ? ArtifactListCard(SelectionProvider.spec)
+                      ? ArtifactListCard(
+                          SelectionProvider.spec,
+                          singleColumn: true,
+                        )
                       : CustomSplitView(
                           viewMode: SplitViewMode.Horizontal,
-                          view1: ArtifactListCard(SelectionProvider.spec),
+                          view1: ArtifactListCard(
+                            SelectionProvider.spec,
+                            singleColumn: false,
+                          ),
                           view2: ArtifactDetailCard(
                             selflink: true,
                             editable: true,

@@ -70,19 +70,29 @@ class VersionDetailPage extends StatelessWidget {
                   children: [
                     VersionDetailCard(editable: true),
                     narrow(context)
-                        ? SpecListCard()
+                        ? SpecListCard(
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
-                            view1: SpecListCard(),
+                            view1: SpecListCard(
+                              singleColumn: false,
+                            ),
                             view2:
                                 SpecDetailCard(selflink: true, editable: true),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(SelectionProvider.version)
+                        ? ArtifactListCard(
+                            SelectionProvider.version,
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            view1: ArtifactListCard(SelectionProvider.version),
+                            view1: ArtifactListCard(
+                              SelectionProvider.version,
+                              singleColumn: false,
+                            ),
                             view2: ArtifactDetailCard(
                               selflink: true,
                               editable: true,

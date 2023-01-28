@@ -69,6 +69,7 @@ class _ProjectListPageState extends State<ProjectListPage> {
             },
             projectService,
             pageLoadController,
+            true,
           ),
         ),
       ),

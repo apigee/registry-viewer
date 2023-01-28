@@ -26,6 +26,9 @@ typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 
 // ApiListCard is a card that displays a list of apis.
 class ApiListCard extends StatefulWidget {
+  final bool singleColumn;
+  ApiListCard({required this.singleColumn});
+
   @override
   _ApiListCardState createState() => _ApiListCardState();
 }
@@ -60,6 +63,7 @@ class _ApiListCardState extends State<ApiListCard>
                 null,
                 apiService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -74,11 +78,13 @@ class ApiListView extends StatefulWidget {
   final ApiSelectionHandler? selectionHandler;
   final ApiService? apiService;
   final PagewiseLoadController<Api>? pageLoadController;
+  final bool singleColumn;
 
   ApiListView(
     this.selectionHandler,
     this.apiService,
     this.pageLoadController,
+    this.singleColumn,
   );
 
   @override
@@ -164,7 +170,14 @@ class _ApiListViewState extends State<ApiListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              api.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateApiName(api.name);

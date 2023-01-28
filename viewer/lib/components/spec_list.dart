@@ -26,6 +26,9 @@ typedef SpecSelectionHandler = Function(BuildContext context, ApiSpec spec);
 
 // SpecListCard is a card that displays a list of specs.
 class SpecListCard extends StatefulWidget {
+  final bool singleColumn;
+  SpecListCard({required this.singleColumn});
+
   @override
   _SpecListCardState createState() => _SpecListCardState();
 }
@@ -60,6 +63,7 @@ class _SpecListCardState extends State<SpecListCard>
                 null,
                 specService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -74,11 +78,13 @@ class SpecListView extends StatefulWidget {
   final SpecSelectionHandler? selectionHandler;
   final SpecService? specService;
   final PagewiseLoadController<ApiSpec>? pageLoadController;
+  final bool singleColumn;
 
   SpecListView(
     this.selectionHandler,
     this.specService,
     this.pageLoadController,
+    this.singleColumn,
   );
 
   @override
@@ -164,7 +170,14 @@ class _SpecListViewState extends State<SpecListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              spec.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateSpecName(spec.name);

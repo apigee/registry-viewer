@@ -81,6 +81,7 @@ class _DeploymentListPageState extends State<DeploymentListPage> {
               },
               deploymentService,
               pageLoadController,
+              true,
             ),
           ),
         ),

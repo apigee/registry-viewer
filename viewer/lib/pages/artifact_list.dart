@@ -81,6 +81,7 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
               },
               artifactService,
               pageLoadController,
+              true,
             ),
           ),
         ),

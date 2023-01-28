@@ -93,32 +93,44 @@ class ApiDetailPage extends StatelessWidget {
                   children: [
                     ApiDetailCard(editable: true),
                     narrow(context)
-                        ? VersionListCard()
+                        ? VersionListCard(
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
-                            view1: VersionListCard(),
+                            view1: VersionListCard(singleColumn: false),
                             view2: VersionDetailCard(
                               selflink: true,
                               editable: true,
                             ),
                           ),
                     narrow(context)
-                        ? DeploymentListCard()
+                        ? DeploymentListCard(
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
-                            view1: DeploymentListCard(),
+                            view1: DeploymentListCard(
+                              singleColumn: false,
+                            ),
                             view2: DeploymentDetailCard(
                               selflink: true,
                               editable: true,
                             ),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(SelectionProvider.api)
+                        ? ArtifactListCard(
+                            SelectionProvider.api,
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            view1: ArtifactListCard(SelectionProvider.api),
+                            view1: ArtifactListCard(
+                              SelectionProvider.api,
+                              singleColumn: false,
+                            ),
                             view2: ArtifactDetailCard(
                               selflink: true,
                               editable: true,
