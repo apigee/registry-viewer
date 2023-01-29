@@ -37,7 +37,8 @@ class ApiDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateApiName(name!.substring(1));
+      String name2 = name!.replaceAll("/apis/", "/locations/global/apis/");
+      selection.updateApiName(name2.substring(1));
     });
 
     return SelectionProvider(

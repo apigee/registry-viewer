@@ -20,6 +20,10 @@ extension Display on ApiSpec {
   }
 
   String routeNameForDetail() {
-    return "/" + this.name;
+    return "/" + this.name.replaceAll("/locations/global", "");
+  }
+
+  String routeNameForArtifacts() {
+    return "/" + this.name.replaceAll("/locations/global", "") + "/artifacts";
   }
 }

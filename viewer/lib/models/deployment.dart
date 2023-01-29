@@ -24,6 +24,10 @@ extension Display on ApiDeployment {
   }
 
   String routeNameForDetail() {
-    return "/" + this.name;
+    return "/" + this.name.replaceAll("/locations/global/", "/");
+  }
+
+  String routeNameForArtifacts() {
+    return "/" + this.name.replaceAll("/locations/global", "") + "/artifacts";
   }
 }

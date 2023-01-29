@@ -167,6 +167,21 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                       PageSection(children: [
                         AnnotationsRow(deployment.annotations),
                       ]),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: Text("Artifacts"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              deployment.routeNameForArtifacts(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

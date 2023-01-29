@@ -28,6 +28,10 @@ extension Display on Project {
   }
 
   String routeNameForApis() {
-    return "/" + this.name + "/locations/global/apis";
+    return "/" + this.name + "/apis";
+  }
+
+  String routeNameForArtifacts() {
+    return "/" + this.name + "/artifacts";
   }
 }

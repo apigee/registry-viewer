@@ -13,15 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/registry.dart';
 import '../helpers/title.dart';
+import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/version_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import '../models/version.dart';
-import '../service/service.dart';
 
 // VersionListPage is a full-page display of a list of versions.
 class VersionListPage extends StatefulWidget {
@@ -35,22 +32,11 @@ class VersionListPage extends StatefulWidget {
 }
 
 class _VersionListPageState extends State<VersionListPage> {
-  VersionService? versionService;
-  PagewiseLoadController<ApiVersion>? pageLoadController;
-
-  _VersionListPageState() {
-    versionService = VersionService();
-    pageLoadController = PagewiseLoadController<ApiVersion>(
-        pageSize: pageSize,
-        pageFuture: ((pageIndex) => versionService!
-            .getVersionsPage(pageIndex!)
-            .then((value) => value!)));
-  }
-
   // convert /projects/{project}/locations/global/apis/{api}/versions
   // to projects/{project}/locations/global/apis/{api}
   String parentName() {
-    return widget.name!.split('/').sublist(1, 7).join('/');
+    String name2 = widget.name!.replaceAll("/apis/", "/locations/global/apis/");
+    return name2.split('/').sublist(1, 7).join('/');
   }
 
   @override
@@ -66,23 +52,18 @@ class _VersionListPageState extends State<VersionListPage> {
             centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
-              Container(width: 400, child: VersionSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(
-            child: VersionListView(
-              (context, version) {
-                Navigator.pushNamed(
-                  context,
-                  version.routeNameForDetail(),
-                  arguments: version,
-                );
-              },
-              versionService,
-              pageLoadController,
-              true,
-            ),
+          body: Column(
+            children: [
+              Expanded(
+                child: VersionListCard(
+                  singleColumn: true,
+                ),
+              ),
+              BottomBar(),
+            ],
           ),
         ),
       ),

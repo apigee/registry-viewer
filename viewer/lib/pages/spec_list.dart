@@ -13,15 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/registry.dart';
 import '../helpers/title.dart';
+import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/spec_list.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import '../models/spec.dart';
-import '../service/service.dart';
 
 // SpecListPage is a full-page display of a list of specs.
 class SpecListPage extends StatefulWidget {
@@ -35,23 +32,11 @@ class SpecListPage extends StatefulWidget {
 }
 
 class _SpecListPageState extends State<SpecListPage> {
-  SpecService? specService;
-  PagewiseLoadController<ApiSpec>? pageLoadController;
-
-  _SpecListPageState() {
-    specService = SpecService();
-    pageLoadController = PagewiseLoadController<ApiSpec>(
-        pageSize: pageSize,
-        pageFuture: ((pageIndex) => this
-            .specService!
-            .getSpecsPage(pageIndex!)
-            .then((value) => value!)));
-  }
-
   // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs
   // to projects/{project}/locations/global/apis/{api}/versions/{version}
   String parentName() {
-    return widget.name!.split('/').sublist(1, 9).join('/');
+    String name2 = widget.name!.replaceAll("/apis/", "/locations/global/apis/");
+    return name2.split('/').sublist(1, 9).join('/');
   }
 
   @override
@@ -67,23 +52,18 @@ class _SpecListPageState extends State<SpecListPage> {
             centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
-              Container(width: 400, child: SpecSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(
-            child: SpecListView(
-              (context, spec) {
-                Navigator.pushNamed(
-                  context,
-                  spec.routeNameForDetail(),
-                  arguments: spec,
-                );
-              },
-              specService,
-              pageLoadController,
-              true,
-            ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SpecListCard(
+                  singleColumn: true,
+                ),
+              ),
+              BottomBar(),
+            ],
           ),
         ),
       ),

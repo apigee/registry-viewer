@@ -201,6 +201,21 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                       PageSection(children: [
                         AnnotationsRow(spec.annotations),
                       ]),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: Text("Artifacts"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              spec.routeNameForArtifacts(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

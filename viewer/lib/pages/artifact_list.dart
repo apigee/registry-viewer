@@ -13,15 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/registry.dart';
 import '../helpers/title.dart';
 import '../components/artifact_list.dart';
+import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import '../models/artifact.dart';
-import '../service/service.dart';
 
 // ArtifactListPage is a full-page display of a list of artifacts.
 class ArtifactListPage extends StatefulWidget {
@@ -35,27 +32,39 @@ class ArtifactListPage extends StatefulWidget {
 }
 
 class _ArtifactListPageState extends State<ArtifactListPage> {
-  ArtifactService? artifactService;
-  PagewiseLoadController<Artifact>? pageLoadController;
-
-  _ArtifactListPageState() {
-    artifactService = ArtifactService();
-    pageLoadController = PagewiseLoadController<Artifact>(
-        pageSize: pageSize,
-        pageFuture: ((pageIndex) => artifactService!
-            .getArtifactsPage(pageIndex!)
-            .then((value) => value!)));
-  }
-
   // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global
   String parentName() {
-    return widget.name!.split('/').sublist(1, 5).join('/');
+    List parts = widget.name!.split("/");
+    parts.insert(3, "global");
+    parts.insert(3, "locations");
+    String name2 = parts.join("/");
+    List parts2 = name2.split("/");
+    String parent = parts2.sublist(1, parts2.length - 1).join('/');
+    return parent;
   }
 
   @override
   Widget build(BuildContext context) {
+    // what is the parent type? Use that to determine the string to observe for the list view
+    ObservableString Function(BuildContext) parent;
     final selectionModel = Selection();
-    selectionModel.projectName.update(parentName());
+    String name = parentName();
+    if (name.contains("/deployments/")) {
+      parent = SelectionProvider.deployment;
+      selectionModel.deploymentName.update(name);
+    } else if (name.contains("/specs/")) {
+      parent = SelectionProvider.spec;
+      selectionModel.specName.update(name);
+    } else if (name.contains("/versions/")) {
+      parent = SelectionProvider.version;
+      selectionModel.versionName.update(name);
+    } else if (name.contains("/apis/")) {
+      parent = SelectionProvider.api;
+      selectionModel.apiName.update(name);
+    } else {
+      parent = SelectionProvider.project;
+      selectionModel.projectName.update(name);
+    }
     return SelectionProvider(
       selection: selectionModel,
       child: ObservableStringProvider(
@@ -65,24 +74,19 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
             centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
-              Container(width: 400, child: ArtifactSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(
-            child: ArtifactListView(
-              null,
-              (context, artifact) {
-                Navigator.pushNamed(
-                  context,
-                  artifact.routeNameForDetail(),
-                  arguments: artifact,
-                );
-              },
-              artifactService,
-              pageLoadController,
-              true,
-            ),
+          body: Column(
+            children: [
+              Expanded(
+                child: ArtifactListCard(
+                  parent,
+                  singleColumn: true,
+                ),
+              ),
+              BottomBar(),
+            ],
           ),
         ),
       ),

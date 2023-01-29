@@ -13,14 +13,11 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/registry.dart';
 import '../helpers/title.dart';
+import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../components/project_list.dart';
 import '../models/string.dart';
-import '../models/project.dart';
-import '../service/service.dart';
 
 // ProjectListPage is a full-page display of a list of projects.
 class ProjectListPage extends StatefulWidget {
@@ -29,22 +26,11 @@ class ProjectListPage extends StatefulWidget {
   ProjectListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
-
   @override
   _ProjectListPageState createState() => _ProjectListPageState();
 }
 
 class _ProjectListPageState extends State<ProjectListPage> {
-  ProjectService? projectService;
-  PagewiseLoadController<Project>? pageLoadController;
-
-  _ProjectListPageState() {
-    projectService = ProjectService();
-    pageLoadController = PagewiseLoadController<Project>(
-        pageSize: pageSize,
-        pageFuture: (pageIndex) => projectService!.getProjectsPage(pageIndex!));
-  }
-
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -54,23 +40,16 @@ class _ProjectListPageState extends State<ProjectListPage> {
           centerTitle: true,
           title: Text(title(widget.name!)),
           actions: <Widget>[
-            Container(width: 400, child: ProjectSearchBox()),
             homeButton(context),
           ],
         ),
-        body: Center(
-          child: ProjectListView(
-            (context, project) {
-              Navigator.pushNamed(
-                context,
-                project.routeNameForDetail(),
-                arguments: project,
-              );
-            },
-            projectService,
-            pageLoadController,
-            true,
-          ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ProjectListCard(singleColumn: true),
+            ),
+            BottomBar(),
+          ],
         ),
       ),
     );
