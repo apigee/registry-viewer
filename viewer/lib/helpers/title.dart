@@ -33,6 +33,5 @@ String? pageTitle(String? path) {
   if (path[0] == '/') {
     path = path.substring(1);
   }
-  //path = path.replaceAll("/locations/global", "");
   return path;
 }
