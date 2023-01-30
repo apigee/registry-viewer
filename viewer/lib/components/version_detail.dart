@@ -166,6 +166,30 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: Text("Specs"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              version.routeNameForSpecs(),
+                            );
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text("Artifacts"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              version.routeNameForArtifacts(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

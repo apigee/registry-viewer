@@ -146,6 +146,39 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: Text("Versions"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              api.routeNameForVersions(),
+                            );
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text("Deployments"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              api.routeNameForDeployments(),
+                            );
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text("Artifacts"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              api.routeNameForArtifacts(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

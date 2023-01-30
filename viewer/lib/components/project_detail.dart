@@ -129,6 +129,30 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
                     BodyRow(project.description),
                     SizedBox(height: 10),
                     TimestampRow(project.createTime, project.updateTime),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: Text("APIs"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              project.routeNameForApis(),
+                            );
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text("Artifacts"),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              project.routeNameForArtifacts(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

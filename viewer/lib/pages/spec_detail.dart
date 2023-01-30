@@ -34,11 +34,13 @@ class SpecDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
+      String name2 = name!.replaceAll("/apis/", "/locations/global/apis/");
+
       selection
-          .updateApiName(name!.substring(1).split("/").sublist(0, 6).join("/"));
+          .updateApiName(name2.substring(1).split("/").sublist(0, 6).join("/"));
       selection.updateVersionName(
-          name!.substring(1).split("/").sublist(0, 8).join("/"));
-      selection.updateSpecName(name!.substring(1));
+          name2.substring(1).split("/").sublist(0, 8).join("/"));
+      selection.updateSpecName(name2.substring(1));
     });
 
     return SelectionProvider(

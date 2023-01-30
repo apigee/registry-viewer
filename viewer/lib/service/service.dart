@@ -120,7 +120,11 @@ class ApiService {
     }
     final client = getClient();
     final request = ListApisRequest();
-    request.parent = parent + "/locations/global";
+    if (!parent.contains("/locations/global")) {
+      request.parent = parent + "/locations/global";
+    } else {
+      request.parent = parent;
+    }
     request.pageSize = limit;
     request.orderBy = "display_name";
     if (filter != null) {
@@ -388,7 +392,6 @@ class ArtifactService {
     if (offset == 0) {
       tokens = Map();
     }
-
     final client = getClient();
     final request = ListArtifactsRequest();
     request.parent = parent;

@@ -21,7 +21,7 @@ extension Display on Artifact {
   }
 
   String routeNameForDetail() {
-    return "/" + this.name;
+    return "/" + this.name.replaceAll("/locations/global/", "/");
   }
 
   String get subject {

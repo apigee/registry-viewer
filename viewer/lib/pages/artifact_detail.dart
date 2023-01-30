@@ -28,7 +28,11 @@ class ArtifactDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      selection.updateArtifactName(name!.substring(1));
+      List parts = name!.split("/");
+      parts.insert(3, "global");
+      parts.insert(3, "locations");
+      String name2 = parts.join("/");
+      selection.updateArtifactName(name2.substring(1));
     });
 
     return SelectionProvider(

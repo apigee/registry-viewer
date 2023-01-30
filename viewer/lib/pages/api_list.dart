@@ -13,15 +13,12 @@
 // limitations under the License.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:registry/registry.dart';
 import '../helpers/title.dart';
 import '../components/api_list.dart';
+import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
-import '../models/api.dart';
-import '../service/service.dart';
 
 // ApiListPage is a full-page display of a list of apis.
 class ApiListPage extends StatefulWidget {
@@ -35,21 +32,12 @@ class ApiListPage extends StatefulWidget {
 }
 
 class _ApiListPageState extends State<ApiListPage> {
-  ApiService? apiService;
-  PagewiseLoadController<Api>? pageLoadController;
-
-  _ApiListPageState() {
-    apiService = ApiService();
-    pageLoadController = PagewiseLoadController<Api>(
-        pageSize: pageSize,
-        pageFuture: ((pageIndex) =>
-            apiService!.getApisPage(pageIndex!).then((value) => value!)));
-  }
-
   // convert /projects/{project}/locations/global/apis
   // to projects/{project}/locations/global
   String parentName() {
-    return widget.name!.split('/').sublist(1, 5).join('/');
+    String name2 = widget.name!.replaceAll("/apis", "/locations/global/apis");
+    String parent = name2.split('/').sublist(1, 5).join('/');
+    return parent;
   }
 
   @override
@@ -65,23 +53,18 @@ class _ApiListPageState extends State<ApiListPage> {
             centerTitle: true,
             title: Text(title(widget.name!)),
             actions: <Widget>[
-              Container(width: 400, child: ApiSearchBox()),
               homeButton(context),
             ],
           ),
-          body: Center(
-            child: ApiListView(
-              (context, api) {
-                Navigator.pushNamed(
-                  context,
-                  api.routeNameForDetail(),
-                  arguments: api,
-                );
-              },
-              apiService,
-              pageLoadController,
-              true,
-            ),
+          body: Column(
+            children: [
+              Expanded(
+                child: ApiListCard(
+                  singleColumn: true,
+                ),
+              ),
+              BottomBar(),
+            ],
           ),
         ),
       ),
