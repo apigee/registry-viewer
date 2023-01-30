@@ -48,6 +48,7 @@ class RegistryRouter {
   RegistryRouter() {
     // build patterns
     const namePattern = r"([a-zA-Z0-9-_\.]+)";
+    const revisionPattern = r"(@[a-z0-9-]+)?";
     const projectsPattern = r"^/projects";
     const projectPattern = projectsPattern + r"/" + namePattern;
     const apisPattern = projectPattern + r"/locations/global/apis";
@@ -55,9 +56,10 @@ class RegistryRouter {
     const versionsPattern = apiPattern + r"/versions";
     const versionPattern = versionsPattern + r"/" + namePattern;
     const specsPattern = versionPattern + r"/specs";
-    const specPattern = specsPattern + r"/" + namePattern;
+    const specPattern = specsPattern + r"/" + namePattern + revisionPattern;
     const deploymentsPattern = apiPattern + r"/deployments";
-    const deploymentPattern = deploymentsPattern + r"/" + namePattern;
+    const deploymentPattern =
+        deploymentsPattern + r"/" + namePattern + revisionPattern;
     const artifactsPattern = r"((" +
         projectPattern +
         r"/locations/global)|(" +
