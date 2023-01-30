@@ -32,11 +32,15 @@ class Home extends StatelessWidget {
           children: [
             Expanded(
               child: narrow(context)
-                  ? ProjectListCard()
+                  ? ProjectListCard(
+                      singleColumn: true,
+                    )
                   : CustomSplitView(
                       viewMode: SplitViewMode.Horizontal,
                       initialWeight: 0.33,
-                      view1: ProjectListCard(),
+                      view1: ProjectListCard(
+                        singleColumn: false,
+                      ),
                       view2: ProjectDetailCard(selflink: true, editable: true),
                     ),
             ),

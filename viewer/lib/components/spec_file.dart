@@ -175,57 +175,53 @@ class _SpecFileCardState extends State<SpecFileCard> {
     } else {
       if (this.items == null) {
         // single-file view
-        return CustomSplitView(
-          viewMode: SplitViewMode.Horizontal,
-          view1: Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PanelNameRow(
-                  name: specManager!.value!.filename,
-                  button: IconButton(
-                    color: Colors.black,
-                    icon: Icon(Icons.open_in_new),
-                    tooltip: "Viewer",
-                    onPressed: () {
-                      var address = rendererServiceAddress();
-                      if ((address != "SPEC_RENDERER_SERVICE") &&
-                          (address != "")) {
-                        launchUrl(Uri.parse(
-                            address + "/" + specManager!.value!.name));
-                      } else {
-                        AlertDialog alert = AlertDialog(
-                          content: Text("Spec renderer service not configured"),
-                          actions: [
-                            TextButton(
-                              child: Text("OK"),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // dismiss dialog
-                              },
-                            ),
-                          ],
-                        );
-                        // show the dialog
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return alert;
-                          },
-                        );
-                      }
-                    },
-                  ),
+        return Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PanelNameRow(
+                name: specManager!.value!.filename,
+                button: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.open_in_new),
+                  tooltip: "Viewer",
+                  onPressed: () {
+                    var address = rendererServiceAddress();
+                    if ((address != "SPEC_RENDERER_SERVICE") &&
+                        (address != "")) {
+                      launchUrl(
+                          Uri.parse(address + "/" + specManager!.value!.name));
+                    } else {
+                      AlertDialog alert = AlertDialog(
+                        content: Text("Spec renderer service not configured"),
+                        actions: [
+                          TextButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // dismiss dialog
+                            },
+                          ),
+                        ],
+                      );
+                      // show the dialog
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return alert;
+                        },
+                      );
+                    }
+                  },
                 ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    child: CodeView(body),
-                  ),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  child: CodeView(body),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          view2: SpecOutlineCard(),
         );
       } else {
         // multi-file view

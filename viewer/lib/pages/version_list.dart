@@ -81,6 +81,7 @@ class _VersionListPageState extends State<VersionListPage> {
               },
               versionService,
               pageLoadController,
+              true,
             ),
           ),
         ),

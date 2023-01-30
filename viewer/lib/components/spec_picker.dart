@@ -38,16 +38,22 @@ class SpecPicker extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: ProjectListCard(),
+                    child: ProjectListCard(
+                      singleColumn: false,
+                    ),
                   ),
                   Expanded(
-                    child: ApiListCard(),
+                    child: ApiListCard(
+                      singleColumn: false,
+                    ),
                   ),
                   Expanded(
-                    child: VersionListCard(),
+                    child: VersionListCard(
+                      singleColumn: false,
+                    ),
                   ),
                   Expanded(
-                    child: SpecListCard(),
+                    child: SpecListCard(singleColumn: false),
                   ),
                 ],
               ),

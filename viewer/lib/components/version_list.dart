@@ -27,6 +27,9 @@ typedef VersionSelectionHandler = Function(
 
 // VersionListCard is a card that displays a list of versions.
 class VersionListCard extends StatefulWidget {
+  final bool singleColumn;
+  VersionListCard({required this.singleColumn});
+
   @override
   _VersionListCardState createState() => _VersionListCardState();
 }
@@ -62,6 +65,7 @@ class _VersionListCardState extends State<VersionListCard>
                 null,
                 versionService,
                 pageLoadController,
+                widget.singleColumn,
               ),
             ),
           ],
@@ -76,11 +80,13 @@ class VersionListView extends StatefulWidget {
   final VersionSelectionHandler? selectionHandler;
   final VersionService? versionService;
   final PagewiseLoadController<ApiVersion>? pageLoadController;
+  final bool singleColumn;
 
   VersionListView(
     this.selectionHandler,
     this.versionService,
     this.pageLoadController,
+    this.singleColumn,
   );
 
   @override
@@ -165,7 +171,14 @@ class _VersionListViewState extends State<VersionListView> {
       dense: false,
       onTap: () async {
         setState(() {
-          selectedIndex = index;
+          if (widget.singleColumn) {
+            Navigator.pushNamed(
+              context,
+              version.routeNameForDetail(),
+            );
+          } else {
+            selectedIndex = index;
+          }
         });
         Selection? selection = SelectionProvider.of(context);
         selection?.updateVersionName(version.name);

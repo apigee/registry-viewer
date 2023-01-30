@@ -67,11 +67,15 @@ class DeploymentDetailPage extends StatelessWidget {
                   children: [
                     DeploymentDetailCard(editable: true),
                     narrow(context)
-                        ? ArtifactListCard(SelectionProvider.deployment)
+                        ? ArtifactListCard(
+                            SelectionProvider.deployment,
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            view1:
-                                ArtifactListCard(SelectionProvider.deployment),
+                            view1: ArtifactListCard(
+                                SelectionProvider.deployment,
+                                singleColumn: false),
                             view2: ArtifactDetailCard(
                               selflink: true,
                               editable: true,

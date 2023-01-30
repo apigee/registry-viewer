@@ -69,22 +69,28 @@ class ProjectDetailPage extends StatelessWidget {
                   children: [
                     ProjectDetailCard(editable: (root() == "/")),
                     narrow(context)
-                        ? ApiListCard()
+                        ? ApiListCard(singleColumn: true)
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
-                            view1: ApiListCard(),
+                            view1: ApiListCard(singleColumn: false),
                             view2: ApiDetailCard(
                               selflink: true,
                               editable: true,
                             ),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(SelectionProvider.project)
+                        ? ArtifactListCard(
+                            SelectionProvider.project,
+                            singleColumn: true,
+                          )
                         : CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.5,
-                            view1: ArtifactListCard(SelectionProvider.project),
+                            view1: ArtifactListCard(
+                              SelectionProvider.project,
+                              singleColumn: false,
+                            ),
                             view2: ArtifactDetailCard(
                               selflink: true,
                               editable: true,
