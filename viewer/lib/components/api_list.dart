@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/registry.dart';
 import '../components/custom_search_box.dart';
+import '../components/detail_rows.dart';
 import '../components/filter.dart';
 import '../models/api.dart';
 import '../models/string.dart';
@@ -164,8 +165,9 @@ class _ApiListViewState extends State<ApiListView> {
     }
 
     return ListTile(
-      title: Text(api.nameForDisplay()),
-      subtitle: Text(api.description),
+      title: Text(api.nameForDisplay(),
+          style: Theme.of(context).textTheme.titleMedium!),
+      subtitle: LabelsRow(api.labels), //Text(api.description, maxLines: 5),
       selected: index == selectedIndex,
       dense: false,
       onTap: () async {
