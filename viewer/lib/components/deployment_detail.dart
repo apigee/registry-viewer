@@ -141,22 +141,9 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                   children: [
                     PageSection(
                       children: [
-                        SizedBox(height: 10),
                         SuperTitleRow(api?.displayName ?? ""),
                         TitleRow(deployment.name.split("/").last,
                             action: selflink),
-                      ],
-                    ),
-                    if (deployment.description != "")
-                      PageSection(
-                        children: [
-                          BodyRow(deployment.description),
-                        ],
-                      ),
-                    PageSection(
-                      children: [
-                        TimestampRow(deployment.createTime,
-                            deployment.revisionUpdateTime),
                       ],
                     ),
                     if (deployment.labels.length > 0)
@@ -167,6 +154,16 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                       PageSection(children: [
                         AnnotationsRow(deployment.annotations),
                       ]),
+                    PageSection(
+                      children: [
+                        TimestampRow(deployment.createTime,
+                            deployment.revisionUpdateTime),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -182,6 +179,17 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    if (deployment.description != "")
+                      PageSection(
+                        children: [
+                          BodyRow(deployment.description),
+                        ],
+                      ),
                   ],
                 ),
               ),
