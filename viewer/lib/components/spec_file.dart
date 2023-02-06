@@ -21,7 +21,6 @@ import 'package:split_view/split_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/renderer.dart';
 import '../components/detail_rows.dart';
-import '../components/spec_outline.dart';
 import '../helpers/measure_size.dart';
 import '../models/highlight.dart';
 import '../models/selection.dart';
@@ -231,7 +230,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: specManager!.value!.filename + " contents"),
+                PanelNameRow(name: specManager!.value!.filename),
                 Expanded(
                   child: Container(
                     width: double.infinity,

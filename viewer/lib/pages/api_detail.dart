@@ -45,6 +45,7 @@ class ApiDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 4,
+        initialIndex: 1,
         animationDuration: Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(

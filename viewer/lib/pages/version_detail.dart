@@ -45,8 +45,8 @@ class VersionDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 3,
-        animationDuration: Duration(milliseconds: 100),
         initialIndex: 1,
+        animationDuration: Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
