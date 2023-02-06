@@ -163,36 +163,44 @@ class _SpecListViewState extends State<SpecListView> {
       });
     }
 
-    return ListTile(
-      title: Text(spec.nameForDisplay()),
-      subtitle: Text(spec.mimeType),
-      selected: index == selectedIndex,
-      dense: false,
-      onTap: () async {
-        setState(() {
-          if (widget.singleColumn) {
+    return GestureDetector(
+      onDoubleTap: () async {
+        Navigator.pushNamed(
+          context,
+          spec.routeNameForDetail(),
+        );
+      },
+      child: ListTile(
+        title: Text(spec.nameForDisplay()),
+        subtitle: Text(spec.mimeType),
+        selected: index == selectedIndex,
+        dense: false,
+        onTap: () async {
+          setState(() {
+            if (widget.singleColumn) {
+              Navigator.pushNamed(
+                context,
+                spec.routeNameForDetail(),
+              );
+            } else {
+              selectedIndex = index;
+            }
+          });
+          Selection? selection = SelectionProvider.of(context);
+          selection?.updateSpecName(spec.name);
+          widget.selectionHandler?.call(context, spec);
+        },
+        trailing: IconButton(
+          //color: Colors.black,
+          icon: Icon(Icons.open_in_new),
+          tooltip: "open",
+          onPressed: () {
             Navigator.pushNamed(
               context,
               spec.routeNameForDetail(),
             );
-          } else {
-            selectedIndex = index;
-          }
-        });
-        Selection? selection = SelectionProvider.of(context);
-        selection?.updateSpecName(spec.name);
-        widget.selectionHandler?.call(context, spec);
-      },
-      trailing: IconButton(
-        //color: Colors.black,
-        icon: Icon(Icons.open_in_new),
-        tooltip: "open",
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            spec.routeNameForDetail(),
-          );
-        },
+          },
+        ),
       ),
     );
   }
