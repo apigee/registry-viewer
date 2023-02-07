@@ -31,8 +31,6 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   String specName = "";
   SpecManager? specManager;
   List<Entry> data = [];
-  String body = "";
-  YamlNode? doc;
   Selection? selection;
   final ScrollController scrollController = ScrollController();
 
@@ -42,13 +40,13 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
       if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
-          this.body = Utf8Codec().decoder.convert(bytes);
-          doc = loadYamlNode(this.body);
+          String body = Utf8Codec().decoder.convert(bytes);
+          YamlNode? doc = loadYamlNode(body);
           data = parseDoc(doc, 0);
         } else if (spec.mimeType.endsWith("+zip")) {
-          this.body = "";
+          this.data = parseZip(spec.contents);
         } else {
-          this.body = "";
+          //this.body = "";
         }
       }
     });
@@ -90,14 +88,14 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
 
   @override
   Widget build(BuildContext context) {
-    if ((specManager?.value == null) || (this.body == "")) {
+    if ((specManager?.value == null) || (this.data == nil)) {
       return Card();
     }
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PanelNameRow(name: specManager!.value!.filename + " (outline)"),
+          PanelNameRow(name: specManager!.value!.filename),
           Expanded(
             child: Container(
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -125,29 +123,34 @@ class Entry {
   Entry(this.indent, this.label, this.value, [this.children = const <Entry>[]]);
   final int indent;
   final String? label;
-  final String value;
+  final String? value;
   final List<Entry> children;
 }
 
-Container entryRow(Entry e) {
+Widget entryRow(Entry e) {
+  if (e.indent < 0) {
+    return SimpleCodeView(e.value);
+  }
   return Container(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  ("  " * e.indent) + e.label!,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  e.value,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
+        if (e.label != null)
+          Expanded(
+              child: Container(
+                  padding: EdgeInsets.zero,
+                  child: Text(
+                    ("  " * e.indent) + e.label!,
+                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                  ))),
+        if (e.value != null)
+          Expanded(
+              child: Container(
+                  padding: EdgeInsets.zero,
+                  child: Text(
+                    e.value!,
+                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                  ))),
       ],
     ),
   );
@@ -210,9 +213,10 @@ List<Entry> parseDoc(YamlNode? doc, int indent) {
     for (var node in doc.nodes) {
       if (node is YamlScalar) {
         if (node.value is String) {
-          entries.add(Entry(indent, node.value as String?, ""));
+          entries.add(Entry(indent, node.value as String?, null));
         } else if (node.value is bool) {
-          entries.add(Entry(indent, node.value as bool ? "true" : "false", ""));
+          entries
+              .add(Entry(indent, node.value as bool ? "true" : "false", null));
         }
       } else if (node is YamlMap) {
         entries.add(Entry(
@@ -227,4 +231,48 @@ List<Entry> parseDoc(YamlNode? doc, int indent) {
     }
   }
   return entries;
+}
+
+List<Entry> parseZip(List<int> data) {
+  List<Entry> entries = [];
+  final archive = ZipDecoder().decodeBytes(data);
+  for (final file in archive) {
+    final filename = file.name;
+    if (file.isFile) {
+      String body;
+      try {
+        body = Utf8Codec().decoder.convert(file.content);
+      } catch (e) {
+        body = "unavailable";
+      }
+      entries.add(Entry(0, filename, null, parseText(body)));
+    }
+  }
+  return entries;
+}
+
+List<Entry> parseText(String text) {
+  List<Entry> entries = [];
+  entries.add(Entry(-1, null, text));
+  return entries;
+}
+
+class SimpleCodeView extends StatelessWidget {
+  final String? text;
+  final rowHeight = 18.0;
+
+  SimpleCodeView(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      this.text!,
+      textAlign: TextAlign.left,
+      softWrap: false,
+      style: GoogleFonts.inconsolata(color: Colors.grey[800]).copyWith(
+        fontSize: 14,
+        height: 1.1,
+      ),
+    );
+  }
 }

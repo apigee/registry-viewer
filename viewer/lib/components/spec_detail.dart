@@ -171,6 +171,14 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         TitleRow(spec.name.split("/").last, action: selflink),
                       ],
                     ),
+                    if (spec.labels.length > 0)
+                      PageSection(children: [
+                        LabelsRow(spec.labels),
+                      ]),
+                    if (spec.annotations.length > 0)
+                      PageSection(children: [
+                        AnnotationsRow(spec.annotations),
+                      ]),
                     if (spec.hasSourceUri())
                       PageSection(
                         children: [
@@ -187,20 +195,10 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         TimestampRow(spec.createTime, spec.revisionUpdateTime),
                       ],
                     ),
-                    if (spec.description != "")
-                      PageSection(
-                        children: [
-                          BodyRow(spec.description),
-                        ],
-                      ),
-                    if (spec.labels.length > 0)
-                      PageSection(children: [
-                        LabelsRow(spec.labels),
-                      ]),
-                    if (spec.annotations.length > 0)
-                      PageSection(children: [
-                        AnnotationsRow(spec.annotations),
-                      ]),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -216,6 +214,17 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    if (spec.description != "")
+                      PageSection(
+                        children: [
+                          BodyRow(spec.description),
+                        ],
+                      ),
                   ],
                 ),
               ),

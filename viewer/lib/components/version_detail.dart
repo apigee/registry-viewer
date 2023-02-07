@@ -141,21 +141,9 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                   children: [
                     PageSection(
                       children: [
-                        SizedBox(height: 10),
                         SuperTitleRow(api?.displayName ?? ""),
                         TitleRow(version.name.split("/").last,
                             action: selflink),
-                      ],
-                    ),
-                    if (version.description != "")
-                      PageSection(
-                        children: [
-                          BodyRow(version.description),
-                        ],
-                      ),
-                    PageSection(
-                      children: [
-                        TimestampRow(version.createTime, version.updateTime),
                       ],
                     ),
                     if (version.labels.length > 0)
@@ -166,6 +154,15 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),
+                    PageSection(
+                      children: [
+                        TimestampRow(version.createTime, version.updateTime),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -190,6 +187,17 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    if (version.description != "")
+                      PageSection(
+                        children: [
+                          BodyRow(version.description),
+                        ],
+                      )
                   ],
                 ),
               ),

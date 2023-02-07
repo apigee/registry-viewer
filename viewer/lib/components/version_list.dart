@@ -165,35 +165,43 @@ class _VersionListViewState extends State<VersionListView> {
       });
     }
 
-    return ListTile(
-      title: Text(version.nameForDisplay()),
-      selected: index == selectedIndex,
-      dense: false,
-      onTap: () async {
-        setState(() {
-          if (widget.singleColumn) {
+    return GestureDetector(
+      onDoubleTap: () async {
+        Navigator.pushNamed(
+          context,
+          version.routeNameForDetail(),
+        );
+      },
+      child: ListTile(
+        title: Text(version.nameForDisplay()),
+        selected: index == selectedIndex,
+        dense: false,
+        onTap: () async {
+          setState(() {
+            if (widget.singleColumn) {
+              Navigator.pushNamed(
+                context,
+                version.routeNameForDetail(),
+              );
+            } else {
+              selectedIndex = index;
+            }
+          });
+          Selection? selection = SelectionProvider.of(context);
+          selection?.updateVersionName(version.name);
+          widget.selectionHandler?.call(context, version);
+        },
+        trailing: IconButton(
+          //color: Colors.black,
+          icon: Icon(Icons.open_in_new),
+          tooltip: "open",
+          onPressed: () {
             Navigator.pushNamed(
               context,
               version.routeNameForDetail(),
             );
-          } else {
-            selectedIndex = index;
-          }
-        });
-        Selection? selection = SelectionProvider.of(context);
-        selection?.updateVersionName(version.name);
-        widget.selectionHandler?.call(context, version);
-      },
-      trailing: IconButton(
-        //color: Colors.black,
-        icon: Icon(Icons.open_in_new),
-        tooltip: "open",
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            version.routeNameForDetail(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

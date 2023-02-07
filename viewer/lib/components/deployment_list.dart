@@ -165,35 +165,43 @@ class _DeploymentListViewState extends State<DeploymentListView> {
       });
     }
 
-    return ListTile(
-      title: Text(deployment.nameForDisplay()),
-      selected: index == selectedIndex,
-      dense: false,
-      onTap: () async {
-        setState(() {
-          if (widget.singleColumn) {
+    return GestureDetector(
+      onDoubleTap: () async {
+        Navigator.pushNamed(
+          context,
+          deployment.routeNameForDetail(),
+        );
+      },
+      child: ListTile(
+        title: Text(deployment.nameForDisplay()),
+        selected: index == selectedIndex,
+        dense: false,
+        onTap: () async {
+          setState(() {
+            if (widget.singleColumn) {
+              Navigator.pushNamed(
+                context,
+                deployment.routeNameForDetail(),
+              );
+            } else {
+              selectedIndex = index;
+            }
+          });
+          Selection? selection = SelectionProvider.of(context);
+          selection?.updateDeploymentName(deployment.name);
+          widget.selectionHandler?.call(context, deployment);
+        },
+        trailing: IconButton(
+          color: Colors.black,
+          icon: Icon(Icons.open_in_new),
+          tooltip: "open",
+          onPressed: () {
             Navigator.pushNamed(
               context,
               deployment.routeNameForDetail(),
             );
-          } else {
-            selectedIndex = index;
-          }
-        });
-        Selection? selection = SelectionProvider.of(context);
-        selection?.updateDeploymentName(deployment.name);
-        widget.selectionHandler?.call(context, deployment);
-      },
-      trailing: IconButton(
-        color: Colors.black,
-        icon: Icon(Icons.open_in_new),
-        tooltip: "open",
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            deployment.routeNameForDetail(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

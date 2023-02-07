@@ -14,6 +14,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -126,9 +128,11 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
                     SizedBox(height: 10),
                     TitleRow(project.displayName, action: selflink),
                     SizedBox(height: 10),
-                    BodyRow(project.description),
-                    SizedBox(height: 10),
                     TimestampRow(project.createTime, project.updateTime),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                     SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -149,6 +153,21 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
                               context,
                               project.routeNameForArtifacts(),
                             );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    PageSection(
+                      children: [
+                        MarkdownBody(
+                          data: project.description,
+                          onTapLink: (text, url, title) {
+                            launch(url!);
                           },
                         ),
                       ],

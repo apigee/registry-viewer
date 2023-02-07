@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:registry/registry.dart';
 import '../components/custom_search_box.dart';
+import '../components/detail_rows.dart';
 import '../components/filter.dart';
 import '../models/api.dart';
 import '../models/string.dart';
@@ -163,35 +164,44 @@ class _ApiListViewState extends State<ApiListView> {
       });
     }
 
-    return ListTile(
-      title: Text(api.nameForDisplay()),
-      subtitle: Text(api.description),
-      selected: index == selectedIndex,
-      dense: false,
-      onTap: () async {
-        setState(() {
-          if (widget.singleColumn) {
+    return GestureDetector(
+      onDoubleTap: () async {
+        Navigator.pushNamed(
+          context,
+          api.routeNameForDetail(),
+        );
+      },
+      child: ListTile(
+        title: Text(api.nameForDisplay(),
+            style: Theme.of(context).textTheme.titleMedium!),
+        subtitle: LabelsRow(api.labels), //Text(api.description, maxLines: 5),
+        selected: index == selectedIndex,
+        dense: false,
+        onTap: () async {
+          setState(() {
+            if (widget.singleColumn) {
+              Navigator.pushNamed(
+                context,
+                api.routeNameForDetail(),
+              );
+            } else {
+              selectedIndex = index;
+            }
+          });
+          Selection? selection = SelectionProvider.of(context);
+          selection?.updateApiName(api.name);
+          widget.selectionHandler?.call(context, api);
+        },
+        trailing: IconButton(
+          icon: Icon(Icons.open_in_new),
+          tooltip: "open",
+          onPressed: () {
             Navigator.pushNamed(
               context,
               api.routeNameForDetail(),
             );
-          } else {
-            selectedIndex = index;
-          }
-        });
-        Selection? selection = SelectionProvider.of(context);
-        selection?.updateApiName(api.name);
-        widget.selectionHandler?.call(context, api);
-      },
-      trailing: IconButton(
-        icon: Icon(Icons.open_in_new),
-        tooltip: "open",
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            api.routeNameForDetail(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

@@ -14,6 +14,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
@@ -124,20 +126,6 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                     PageSection(children: [
                       TitleRow(api.displayName, action: selflink),
                     ]),
-                    PageSection(
-                      children: [
-                        BodyRow(
-                          api.description,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          wrap: true,
-                        ),
-                      ],
-                    ),
-                    PageSection(
-                      children: [
-                        TimestampRow(api.createTime, api.updateTime),
-                      ],
-                    ),
                     if (api.labels.length > 0)
                       PageSection(children: [
                         LabelsRow(api.labels),
@@ -146,9 +134,18 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
+                    PageSection(
+                      children: [
+                        TimestampRow(api.createTime, api.updateTime),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
                     SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
                           child: Text("Versions"),
@@ -175,6 +172,21 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                               context,
                               api.routeNameForArtifacts(),
                             );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(height: 10),
+                    PageSection(
+                      children: [
+                        MarkdownBody(
+                          data: api.description,
+                          onTapLink: (text, url, title) {
+                            launch(url!);
                           },
                         ),
                       ],

@@ -334,13 +334,10 @@ class LabelsRow extends StatelessWidget {
       runSpacing: 4.0, // gap between lines
       children: <Widget>[
         for (var key in keys)
-          Chip(
-            backgroundColor: Theme.of(context).primaryColor,
-            label: Text(
-              labelText(key, map[key]),
-              style: GoogleFonts.inconsolata()
-                  .copyWith(color: Theme.of(context).canvasColor),
-            ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            color: Theme.of(context).primaryColorLight,
+            child: Text(labelText(key, map[key])),
           ),
       ],
     );
@@ -369,12 +366,10 @@ class AnnotationsRow extends StatelessWidget {
       runSpacing: 4.0, // gap between lines
       children: <Widget>[
         for (var key in keys)
-          Chip(
-            backgroundColor: Theme.of(context).canvasColor,
-            label: Text(
-              key + ":" + map[key]!,
-              style: GoogleFonts.inconsolata(),
-            ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            color: Theme.of(context).primaryColorLight,
+            child: Text(key + ":" + map[key]!),
           ),
       ],
     );

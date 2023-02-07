@@ -18,6 +18,7 @@ import '../models/selection.dart';
 import '../components/spec_detail.dart';
 import '../components/artifact_list.dart';
 import '../components/spec_file.dart';
+import '../components/spec_outline.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
@@ -46,7 +47,7 @@ class SpecDetailPage extends StatelessWidget {
     return SelectionProvider(
       selection: selection,
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         animationDuration: Duration(milliseconds: 100),
         initialIndex: 1,
         child: Scaffold(
@@ -62,6 +63,7 @@ class SpecDetailPage extends StatelessWidget {
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Contents"),
+                Tab(text: "Outline"),
                 Tab(text: "Artifacts"),
               ],
             ),
@@ -72,6 +74,7 @@ class SpecDetailPage extends StatelessWidget {
                 children: [
                   SpecDetailCard(editable: true),
                   SpecFileCard(),
+                  SpecOutlineCard(),
                   narrow(context)
                       ? ArtifactListCard(
                           SelectionProvider.spec,
