@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
+import '../components/artifact_text.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -181,6 +182,11 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                       color: Theme.of(context).primaryColor,
                     ),
                     SizedBox(height: 10),
+                    ArtifactText(
+                      () =>
+                          SelectionProvider.of(context)!.apiName.value +
+                          "/artifacts/summary",
+                    ),
                     PageSection(
                       children: [
                         MarkdownBody(

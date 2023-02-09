@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import '../components/artifact_text.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/deployment_edit.dart';
@@ -184,6 +185,11 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                       color: Theme.of(context).primaryColor,
                     ),
                     SizedBox(height: 10),
+                    ArtifactText(
+                      () =>
+                          SelectionProvider.of(context)!.deploymentName.value +
+                          "/artifacts/summary",
+                    ),
                     if (deployment.description != "")
                       PageSection(
                         children: [
