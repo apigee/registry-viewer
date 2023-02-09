@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../components/artifact_text.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
@@ -219,6 +220,11 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                       color: Theme.of(context).primaryColor,
                     ),
                     SizedBox(height: 10),
+                    ArtifactText(
+                      () =>
+                          SelectionProvider.of(context)!.specName.value +
+                          "/artifacts/summary",
+                    ),
                     if (spec.description != "")
                       PageSection(
                         children: [

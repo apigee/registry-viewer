@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import '../components/artifact_text.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -192,6 +193,11 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                       color: Theme.of(context).primaryColor,
                     ),
                     SizedBox(height: 10),
+                    ArtifactText(
+                      () =>
+                          SelectionProvider.of(context)!.versionName.value +
+                          "/artifacts/summary",
+                    ),
                     if (version.description != "")
                       PageSection(
                         children: [
