@@ -20,7 +20,7 @@ import '../helpers/extensions.dart';
 class ReferencesArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
-  const ReferencesArtifactCard(this.artifact, {this.selflink});
+  const ReferencesArtifactCard(this.artifact, {this.selflink, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class ReferencesArtifactCard extends StatelessWidget {
 class WordListCard extends StatefulWidget {
   final String name;
   final List<String> wordList;
-  const WordListCard(this.name, this.wordList);
+  const WordListCard(this.name, this.wordList, {super.key});
 
   @override
   WordListCardState createState() => WordListCardState();

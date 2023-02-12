@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditSpecForm extends StatefulWidget {
+  const EditSpecForm({super.key});
   @override
   EditSpecFormState createState() => EditSpecFormState();
 }

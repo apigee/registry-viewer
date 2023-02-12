@@ -21,7 +21,7 @@ import '../helpers/title.dart';
 
 class ArtifactDetailPage extends StatelessWidget {
   final String? name;
-  const ArtifactDetailPage({this.name});
+  const ArtifactDetailPage({super.key, this.name});
 
   @override
   Widget build(BuildContext context) {

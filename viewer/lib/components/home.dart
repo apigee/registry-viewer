@@ -22,6 +22,7 @@ import '../components/split_view.dart';
 import '../helpers/media.dart';
 
 class Home extends StatelessWidget {
+  const Home({super.key});
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();

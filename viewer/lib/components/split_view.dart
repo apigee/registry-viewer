@@ -28,6 +28,7 @@ class CustomSplitView extends StatefulWidget {
     this.view1,
     this.view2,
     this.initialWeight = 0.5,
+    super.key,
   });
 
   @override
@@ -69,7 +70,7 @@ class ThresholdBox extends StatelessWidget {
   final double width;
   final double height;
   const ThresholdBox(
-      {this.child, this.side, this.width = 400, this.height = 100});
+      {this.child, this.side, this.width = 400, this.height = 100, super.key});
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(

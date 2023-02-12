@@ -60,6 +60,7 @@ Future attemptToSignIn() async {
 }
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
   @override
   State createState() => SignInPageState();
 }

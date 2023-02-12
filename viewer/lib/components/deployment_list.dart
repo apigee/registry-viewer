@@ -28,7 +28,7 @@ typedef DeploymentSelectionHandler = Function(
 // DeploymentListCard is a card that displays a list of deployments.
 class DeploymentListCard extends StatefulWidget {
   final bool singleColumn;
-  const DeploymentListCard({required this.singleColumn});
+  const DeploymentListCard({required this.singleColumn, super.key});
 
   @override
   DeploymentListCardState createState() => DeploymentListCardState();
@@ -82,12 +82,9 @@ class DeploymentListView extends StatefulWidget {
   final PagewiseLoadController<ApiDeployment>? pageLoadController;
   final bool singleColumn;
 
-  const DeploymentListView(
-    this.selectionHandler,
-    this.deploymentService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const DeploymentListView(this.selectionHandler, this.deploymentService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
   DeploymentListViewState createState() => DeploymentListViewState();
@@ -209,6 +206,6 @@ class DeploymentListViewState extends State<DeploymentListView> {
 
 // DeploymentSearchBox provides a search box for deployments.
 class DeploymentSearchBox extends CustomSearchBox {
-  const DeploymentSearchBox()
+  const DeploymentSearchBox({super.key})
       : super("Filter Deployments", "deployment_id.contains('TEXT')");
 }

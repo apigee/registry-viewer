@@ -28,7 +28,7 @@ typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 // ApiListCard is a card that displays a list of apis.
 class ApiListCard extends StatefulWidget {
   final bool singleColumn;
-  const ApiListCard({required this.singleColumn});
+  const ApiListCard({required this.singleColumn, super.key});
 
   @override
   ApiListCardState createState() => ApiListCardState();
@@ -81,12 +81,9 @@ class ApiListView extends StatefulWidget {
   final PagewiseLoadController<Api>? pageLoadController;
   final bool singleColumn;
 
-  const ApiListView(
-    this.selectionHandler,
-    this.apiService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const ApiListView(this.selectionHandler, this.apiService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
   ApiListViewState createState() => ApiListViewState();
@@ -209,7 +206,7 @@ class ApiListViewState extends State<ApiListView> {
 
 // ApiSearchBox provides a search box for apis.
 class ApiSearchBox extends CustomSearchBox {
-  const ApiSearchBox()
+  const ApiSearchBox({super.key})
       : super(
           "Filter APIs",
           "api_id.contains('TEXT')",

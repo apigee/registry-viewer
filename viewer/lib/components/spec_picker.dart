@@ -24,6 +24,7 @@ import 'spec_detail.dart';
 import '../models/selection.dart';
 
 class SpecPicker extends StatelessWidget {
+  const SpecPicker({super.key});
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();

@@ -30,7 +30,7 @@ String stringForLocation(LintLocation location) {
 class LintArtifactCard extends StatefulWidget {
   final Artifact artifact;
   final Function? selflink;
-  const LintArtifactCard(this.artifact, {this.selflink});
+  const LintArtifactCard(this.artifact, {this.selflink, super.key});
 
   @override
   LintArtifactCardState createState() => LintArtifactCardState();

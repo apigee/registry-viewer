@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'detail_rows.dart';
 
 class RegistryDetailCard extends StatelessWidget {
+  const RegistryDetailCard({super.key});
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyMedium;

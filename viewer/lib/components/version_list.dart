@@ -28,7 +28,7 @@ typedef VersionSelectionHandler = Function(
 // VersionListCard is a card that displays a list of versions.
 class VersionListCard extends StatefulWidget {
   final bool singleColumn;
-  const VersionListCard({required this.singleColumn});
+  const VersionListCard({required this.singleColumn, super.key});
 
   @override
   VersionListCardState createState() => VersionListCardState();
@@ -82,12 +82,9 @@ class VersionListView extends StatefulWidget {
   final PagewiseLoadController<ApiVersion>? pageLoadController;
   final bool singleColumn;
 
-  const VersionListView(
-    this.selectionHandler,
-    this.versionService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const VersionListView(this.selectionHandler, this.versionService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
   VersionListViewState createState() => VersionListViewState();
@@ -209,6 +206,6 @@ class VersionListViewState extends State<VersionListView> {
 
 // VersionSearchBox provides a search box for versions.
 class VersionSearchBox extends CustomSearchBox {
-  const VersionSearchBox()
+  const VersionSearchBox({super.key})
       : super("Filter Versions", "version_id.contains('TEXT')");
 }

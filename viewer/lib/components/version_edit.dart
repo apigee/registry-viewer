@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditVersionForm extends StatefulWidget {
+  const EditVersionForm({super.key});
   @override
   EditVersionFormState createState() => EditVersionFormState();
 }

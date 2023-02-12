@@ -29,7 +29,7 @@ import '../helpers/title.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String? name;
-  const ProjectDetailPage({this.name});
+  const ProjectDetailPage({super.key, this.name});
 
   @override
   Widget build(BuildContext context) {

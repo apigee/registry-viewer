@@ -36,7 +36,7 @@ class ArtifactListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
   final bool singleColumn;
   const ArtifactListCard(this.getObservableResourceName,
-      {required this.singleColumn});
+      {required this.singleColumn, super.key});
 
   @override
   ArtifactListCardState createState() => ArtifactListCardState();
@@ -132,13 +132,9 @@ class ArtifactListView extends StatefulWidget {
   final PagewiseLoadController<Artifact>? pageLoadController;
   final bool singleColumn;
 
-  const ArtifactListView(
-    this.getObservableResourceName,
-    this.selectionHandler,
-    this.artifactService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const ArtifactListView(this.getObservableResourceName, this.selectionHandler,
+      this.artifactService, this.pageLoadController, this.singleColumn,
+      {super.key});
   @override
   ArtifactListViewState createState() => ArtifactListViewState();
 }
@@ -252,7 +248,7 @@ class ArtifactListViewState extends State<ArtifactListView> {
 
 // ArtifactSearchBox provides a search box for artifacts.
 class ArtifactSearchBox extends CustomSearchBox {
-  const ArtifactSearchBox()
+  const ArtifactSearchBox({super.key})
       : super(
           "Filter Artifacts",
           "artifact_id.contains('TEXT')",

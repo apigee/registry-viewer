@@ -20,7 +20,7 @@ import '../models/selection.dart';
 
 class AddArtifactForm extends StatefulWidget {
   final String subjectName;
-  const AddArtifactForm(this.subjectName);
+  const AddArtifactForm(this.subjectName, {super.key});
   @override
   AddArtifactFormState createState() => AddArtifactFormState();
 }

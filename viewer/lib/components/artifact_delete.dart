@@ -19,6 +19,7 @@ import '../models/selection.dart';
 import '../service/registry.dart';
 
 class DeleteArtifactForm extends StatefulWidget {
+  const DeleteArtifactForm({super.key});
   @override
   DeleteArtifactFormState createState() => DeleteArtifactFormState();
 }

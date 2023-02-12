@@ -22,6 +22,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditArtifactForm extends StatefulWidget {
+  const EditArtifactForm({super.key});
   @override
   EditArtifactFormState createState() => EditArtifactFormState();
 }

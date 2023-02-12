@@ -27,7 +27,7 @@ class MessageArtifactCard extends StatelessWidget {
   final Function? selflink;
   final List<Entry> data;
 
-  MessageArtifactCard(this.artifact, this.message, {this.selflink})
+  MessageArtifactCard(this.artifact, this.message, {this.selflink, super.key})
       : data = parseDoc(loadYamlNode(jsonEncode(message.toProto3Json())), 0);
 
   final ScrollController scrollController = ScrollController();
@@ -139,7 +139,7 @@ Container entryRow(Entry e) {
 class EntryItem extends StatelessWidget {
   final Entry entry;
 
-  const EntryItem(this.entry);
+  const EntryItem(this.entry, {super.key});
 
   Widget _buildTiles(BuildContext context, Entry root) {
     if (root.children.isEmpty)

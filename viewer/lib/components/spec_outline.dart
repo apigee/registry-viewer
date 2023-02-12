@@ -24,6 +24,7 @@ import '../components/detail_rows.dart';
 
 // SpecOutlineCard displays an outline view of a spec.
 class SpecOutlineCard extends StatefulWidget {
+  const SpecOutlineCard({super.key});
   @override
   SpecOutlineCardState createState() => SpecOutlineCardState();
 }
@@ -162,7 +163,7 @@ Widget entryRow(Entry e) {
 class EntryItem extends StatelessWidget {
   final Entry entry;
 
-  const EntryItem(this.entry);
+  const EntryItem(this.entry, {super.key});
 
   Widget _buildTiles(BuildContext context, Entry root) {
     if (root.children.isEmpty)
@@ -262,7 +263,7 @@ class SimpleCodeView extends StatelessWidget {
   final String? text;
   final rowHeight = 18.0;
 
-  const SimpleCodeView(this.text);
+  const SimpleCodeView(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

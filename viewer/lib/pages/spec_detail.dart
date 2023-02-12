@@ -28,7 +28,7 @@ import '../helpers/title.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String? name;
-  const SpecDetailPage({this.name});
+  const SpecDetailPage({this.name, super.key});
 
   @override
   Widget build(BuildContext context) {

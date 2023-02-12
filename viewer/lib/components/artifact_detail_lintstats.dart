@@ -28,7 +28,7 @@ String stringForLocation(LintLocation location) {
 class LintStatsArtifactCard extends StatefulWidget {
   final Artifact artifact;
   final Function? selflink;
-  const LintStatsArtifactCard(this.artifact, {this.selflink});
+  const LintStatsArtifactCard(this.artifact, {this.selflink, super.key});
 
   @override
   LintStatsArtifactCardState createState() => LintStatsArtifactCardState();

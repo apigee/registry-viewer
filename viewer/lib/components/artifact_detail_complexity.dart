@@ -20,7 +20,7 @@ import '../helpers/extensions.dart';
 class ComplexityArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
-  const ComplexityArtifactCard(this.artifact, {this.selflink});
+  const ComplexityArtifactCard(this.artifact, {this.selflink, super.key});
 
   @override
   Widget build(BuildContext context) {

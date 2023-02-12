@@ -30,7 +30,7 @@ class ResourceNameButtonRow extends StatelessWidget {
   final String? name;
   final void Function()? show;
   final void Function()? edit;
-  const ResourceNameButtonRow({this.name, this.show, this.edit});
+  const ResourceNameButtonRow({this.name, this.show, this.edit, super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,7 +85,7 @@ class ResourceNameButtonRow extends StatelessWidget {
 class PanelNameRow extends StatelessWidget {
   final String? name;
   final Widget? button;
-  const PanelNameRow({this.name, this.button});
+  const PanelNameRow({this.name, this.button, super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -113,7 +113,7 @@ class PanelNameRow extends StatelessWidget {
 class TitleRow extends StatelessWidget {
   final String text;
   final Function? action;
-  const TitleRow(this.text, {this.action});
+  const TitleRow(this.text, {this.action, super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -148,7 +148,7 @@ class TitleRow extends StatelessWidget {
 
 class SuperTitleRow extends StatelessWidget {
   final String text;
-  const SuperTitleRow(this.text);
+  const SuperTitleRow(this.text, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -170,7 +170,7 @@ class BodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
   final bool wrap;
-  const BodyRow(this.text, {this.style, this.wrap = false});
+  const BodyRow(this.text, {this.style, this.wrap = false, super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -189,7 +189,7 @@ class BodyRow extends StatelessWidget {
 class LinkifiedBodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
-  const LinkifiedBodyRow(this.text, {this.style});
+  const LinkifiedBodyRow(this.text, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     final textStyle = style ?? Theme.of(context).textTheme.bodyLarge!;
@@ -214,7 +214,7 @@ class LinkifiedBodyRow extends StatelessWidget {
 class LinkRow extends StatelessWidget {
   final String text;
   final String url;
-  const LinkRow(this.text, this.url);
+  const LinkRow(this.text, this.url, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -244,7 +244,7 @@ class LinkRow extends StatelessWidget {
 class StringValueRow extends StatelessWidget {
   final String label;
   final String value;
-  const StringValueRow(this.label, this.value);
+  const StringValueRow(this.label, this.value, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -262,7 +262,7 @@ class StringValueRow extends StatelessWidget {
 class TimestampRow extends StatelessWidget {
   final Timestamp created;
   final Timestamp updated;
-  const TimestampRow(this.created, this.updated);
+  const TimestampRow(this.created, this.updated, {super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -300,7 +300,7 @@ class TimestampRow extends StatelessWidget {
 
 class DetailRow extends StatelessWidget {
   final String text;
-  const DetailRow(this.text);
+  const DetailRow(this.text, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -325,7 +325,7 @@ class DetailRow extends StatelessWidget {
 class LabelsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  const LabelsRow(this.map, {this.style});
+  const LabelsRow(this.map, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -357,7 +357,7 @@ class LabelsRow extends StatelessWidget {
 class AnnotationsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  const AnnotationsRow(this.map, {this.style});
+  const AnnotationsRow(this.map, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -379,7 +379,7 @@ class AnnotationsRow extends StatelessWidget {
 
 class PageSection extends StatelessWidget {
   final List<Widget>? children;
-  const PageSection({this.children});
+  const PageSection({this.children, super.key});
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];

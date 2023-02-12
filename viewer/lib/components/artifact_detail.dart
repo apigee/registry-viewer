@@ -32,7 +32,7 @@ import '../service/registry.dart';
 class ArtifactDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  const ArtifactDetailCard({this.selflink, this.editable});
+  const ArtifactDetailCard({this.selflink, this.editable, super.key});
   @override
   ArtifactDetailCardState createState() => ArtifactDetailCardState();
 }
@@ -181,7 +181,7 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
 // DefaultArtifactDetailCard is a card that displays details about an artifact.
 class DefaultArtifactDetailCard extends StatefulWidget {
   final Function? selflink;
-  const DefaultArtifactDetailCard({this.selflink});
+  const DefaultArtifactDetailCard({this.selflink, super.key});
   @override
   DefaultArtifactDetailCardState createState() =>
       DefaultArtifactDetailCardState();

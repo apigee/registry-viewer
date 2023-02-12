@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditDeploymentForm extends StatefulWidget {
+  const EditDeploymentForm({super.key});
   @override
   EditDeploymentFormState createState() => EditDeploymentFormState();
 }

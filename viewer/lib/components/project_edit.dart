@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditProjectForm extends StatefulWidget {
+  const EditProjectForm({super.key});
   @override
   EditProjectFormState createState() => EditProjectFormState();
 }

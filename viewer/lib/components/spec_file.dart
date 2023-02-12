@@ -43,6 +43,7 @@ class Item {
 
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
+  const SpecFileCard({super.key});
   @override
   SpecFileCardState createState() => SpecFileCardState();
 }
@@ -309,7 +310,7 @@ class SpecFileCardState extends State<SpecFileCard> {
 
 class CodeView extends StatefulWidget {
   final String? text;
-  const CodeView(this.text);
+  const CodeView(this.text, {super.key});
   @override
   CodeViewState createState() => CodeViewState();
 }

@@ -26,7 +26,8 @@ class StringArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
   final bool? editable;
-  const StringArtifactCard(this.artifact, {this.selflink, this.editable});
+  const StringArtifactCard(this.artifact,
+      {this.selflink, this.editable, super.key});
   @override
   Widget build(BuildContext context) {
     Function? editableFn = onlyIf(editable, () {

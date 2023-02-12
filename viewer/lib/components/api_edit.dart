@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditAPIForm extends StatefulWidget {
+  const EditAPIForm({super.key});
   @override
   EditAPIFormState createState() => EditAPIFormState();
 }

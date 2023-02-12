@@ -33,6 +33,7 @@ void main() async {
 }
 
 class Application extends StatelessWidget {
+  const Application({super.key});
   @override
   Widget build(BuildContext context) {
     Registry registry = Registry();

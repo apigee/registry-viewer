@@ -19,7 +19,7 @@ import '../models/string.dart';
 class CustomSearchBox extends StatefulWidget {
   final String hintText;
   final String filterText;
-  const CustomSearchBox(this.hintText, this.filterText);
+  const CustomSearchBox(this.hintText, this.filterText, {super.key});
 
   @override
   CustomSearchBoxState createState() => CustomSearchBoxState();
