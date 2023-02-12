@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-typedef Widget ItemBuilder<T>(BuildContext context, T entry, int index);
-typedef Future<List<T>> PageFuture<T>(int? pageIndex);
-typedef Widget ErrorBuilder(BuildContext context, Object? error);
-typedef Widget NoItemsFoundBuilder(BuildContext context);
-typedef Widget RetryBuilder(BuildContext context, RetryCallback retryCallback);
-typedef void RetryCallback();
-typedef Widget PagewiseBuilder<T>(PagewiseState<T> state);
+typedef ItemBuilder<T> = Widget Function(
+    BuildContext context, T entry, int index);
+typedef PageFuture<T> = Future<List<T>> Function(int? pageIndex);
+typedef ErrorBuilder = Widget Function(BuildContext context, Object? error);
+typedef NoItemsFoundBuilder = Widget Function(BuildContext context);
+typedef RetryBuilder = Widget Function(
+    BuildContext context, RetryCallback retryCallback);
+typedef RetryCallback = void Function();
+typedef PagewiseBuilder<T> = Widget Function(PagewiseState<T> state);
 
 /// An abstract base class for widgets that fetch their content one page at a
 /// time.

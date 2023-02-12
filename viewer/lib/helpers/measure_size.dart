@@ -17,7 +17,7 @@ import 'package:flutter/rendering.dart';
 
 // https://stackoverflow.com/a/60868972
 
-typedef void OnWidgetSizeChange(Size size);
+typedef OnWidgetSizeChange = void Function(Size size);
 
 class MeasureSizeRenderObject extends RenderProxyBox {
   Size? oldSize;
