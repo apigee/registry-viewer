@@ -44,19 +44,21 @@ class _CustomSplitViewState extends State<CustomSplitView>
     super.build(context);
     return SplitView(
       viewMode: widget.viewMode!,
+      gripSize: 10,
       children: [
         ThresholdBox(
-            child: widget.view1,
-            side: (widget.viewMode == SplitViewMode.Vertical)
-                ? Side.top
-                : Side.right),
+          side: (widget.viewMode == SplitViewMode.Vertical)
+              ? Side.top
+              : Side.right,
+          child: widget.view1,
+        ),
         ThresholdBox(
-            child: widget.view2,
-            side: (widget.viewMode == SplitViewMode.Vertical)
-                ? Side.bottom
-                : Side.left)
+          side: (widget.viewMode == SplitViewMode.Vertical)
+              ? Side.bottom
+              : Side.left,
+          child: widget.view2,
+        )
       ],
-      gripSize: 10,
     );
   }
 }

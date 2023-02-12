@@ -17,8 +17,8 @@ import 'package:flutter/material.dart';
 Card emptyCard(BuildContext context, String kind) {
   return Card(
     child: Container(
-      child: Center(child: Text("no $kind selected")),
       color: Theme.of(context).canvasColor,
+      child: Center(child: Text("no $kind selected")),
     ),
   );
 }

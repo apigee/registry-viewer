@@ -110,8 +110,8 @@ class SignInPageState extends State<SignInPage> {
           ),
         if (currentUser != null)
           ElevatedButton(
-            child: const Text('Sign out'),
             onPressed: _handleSignOut,
+            child: const Text('Sign out'),
           ),
       ],
     );
@@ -140,8 +140,8 @@ class SignInPageState extends State<SignInPage> {
         children: <Widget>[
           Container(height: 20),
           ElevatedButton(
-            child: const Text('Sign in with Google'),
             onPressed: _handleSignIn,
+            child: const Text('Sign in with Google'),
           ),
           Container(height: 20),
         ],

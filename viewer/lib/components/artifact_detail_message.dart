@@ -155,9 +155,9 @@ class EntryItem extends StatelessWidget {
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
-      children: children,
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
+      children: children,
     );
   }
 

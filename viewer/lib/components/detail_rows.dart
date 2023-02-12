@@ -52,6 +52,7 @@ class ResourceNameButtonRow extends StatelessWidget {
           if (show != null)
             Flexible(
               child: GestureDetector(
+                onTap: show,
                 child: Text(
                   name!,
                   style: Theme.of(context)
@@ -61,11 +62,11 @@ class ResourceNameButtonRow extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
-                onTap: show,
               ),
             ),
           if (edit != null)
             GestureDetector(
+              onTap: edit != null ? edit : () {},
               child: Text(
                 "EDIT",
                 style: Theme.of(context)
@@ -74,7 +75,6 @@ class ResourceNameButtonRow extends StatelessWidget {
                     .copyWith(color: Theme.of(context).primaryColor),
                 textAlign: TextAlign.right,
               ),
-              onTap: edit != null ? edit : () {},
             ),
         ],
       ),
@@ -121,16 +121,17 @@ class TitleRow extends StatelessWidget {
         action != null
             ? Expanded(
                 child: GestureDetector(
-                    child: Text(
-                      text,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: Theme.of(context).primaryColor),
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                    ),
-                    onTap: action as void Function()?),
+                  onTap: action as void Function()?,
+                  child: Text(
+                    text,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Theme.of(context).primaryColor),
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                  ),
+                ),
               )
             : Expanded(
                 child: Text(
