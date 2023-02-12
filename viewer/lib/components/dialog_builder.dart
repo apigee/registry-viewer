@@ -25,7 +25,7 @@ class DialogBuilder extends StatelessWidget {
       var height = MediaQuery.of(context).size.height;
       var width = MediaQuery.of(context).size.width;
 
-      return Container(
+      return SizedBox(
         height: height - 400,
         width: width - 200,
         child: child,

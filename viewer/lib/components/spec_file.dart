@@ -217,7 +217,7 @@ class SpecFileCardState extends State<SpecFileCard> {
                 ),
               ),
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   child: CodeView(body),
                 ),
@@ -235,7 +235,7 @@ class SpecFileCardState extends State<SpecFileCard> {
               children: [
                 PanelNameRow(name: specManager!.value!.filename),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: Scrollbar(
                       controller: listScrollController,
@@ -294,7 +294,7 @@ class SpecFileCardState extends State<SpecFileCard> {
               children: [
                 PanelNameRow(name: items![selectedItemIndex].headerValue),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: CodeView(items![selectedItemIndex].expandedValue),
                   ),
@@ -369,7 +369,7 @@ class CodeViewState extends State<CodeView> {
 
   Widget rowForText(int i, String line) {
     List<Widget> children = [];
-    children.add(Container(
+    children.add(SizedBox(
         width: 50,
         child: Text(
           "${i + 1}",
@@ -421,7 +421,7 @@ class CodeViewState extends State<CodeView> {
         ),
       ),
     );
-    return Container(
+    return SizedBox(
       height: rowHeight,
       child: Row(
         children: children,

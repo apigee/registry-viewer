@@ -105,7 +105,7 @@ class WordCountListCardState extends State<WordCountListCard> {
                 final wordCount = widget.wordCountList[index];
                 return Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 40,
                       child: Text(
                         "${wordCount.count}",
