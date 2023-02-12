@@ -1,0 +1,280 @@
+Analyzing viewer...                                             
+
+   info • The constant name 'authorized_users' isn't a lowerCamelCase identifier • lib/authorizations.dart:16:7 • constant_identifier_names
+   info • The constant name 'authorized_domains' isn't a lowerCamelCase identifier • lib/authorizations.dart:19:7 • constant_identifier_names
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/api_detail.dart:32:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/api_detail.dart:33:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/api_detail.dart:33:23 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/components/api_detail.dart:187:27 • prefer_interpolation_to_compose_strings
+   info • 'launch' is deprecated and shouldn't be used. Use launchUrl instead • lib/components/api_detail.dart:195:29 • deprecated_member_use
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/api_edit.dart:21:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/api_list.dart:31:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/api_list.dart:34:3 • library_private_types_in_public_api
+   info • Use 'const' with the constructor to improve performance • lib/components/api_list.dart:60:32 • prefer_const_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/api_list.dart:84:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/api_list.dart:92:3 • library_private_types_in_public_api
+   info • Use 'const' with the constructor to improve performance • lib/components/api_list.dart:196:17 • prefer_const_constructors
+   info • An uninitialized field should have an explicit type annotation • lib/components/artifact_add.dart:22:9 • prefer_typing_uninitialized_variables
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_add.dart:23:9 • use_key_in_widget_constructors
+   info • Don't invoke 'print' in production code • lib/components/artifact_add.dart:92:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/components/artifact_add.dart:96:7 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_delete.dart:21:7 • use_key_in_widget_constructors
+   info • Don't invoke 'print' in production code • lib/components/artifact_delete.dart:82:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/components/artifact_delete.dart:127:7 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail.dart:35:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_detail.dart:36:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail.dart:36:28 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail.dart:183:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_detail.dart:184:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail.dart:184:35 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_complexity.dart:23:9 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_complexity.dart:25:10 • annotate_overrides
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/components/artifact_detail_complexity.dart:47:37 • prefer_const_literals_to_create_immutables
+   info • Use interpolation to compose strings and values • lib/components/artifact_detail_lint.dart:24:10 • prefer_interpolation_to_compose_strings
+   info • String literals shouldn't be concatenated by the '+' operator • lib/components/artifact_detail_lint.dart:24:51 • prefer_adjacent_string_concatenation
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_lint.dart:33:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_detail_lint.dart:35:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_lint.dart:35:26 • annotate_overrides
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_lint.dart:73:10 • annotate_overrides
+   info • Function literals should not be passed to 'forEach' • lib/components/artifact_detail_lint.dart:76:19 • avoid_function_literals_in_foreach_calls
+   info • Function literals should not be passed to 'forEach' • lib/components/artifact_detail_lint.dart:77:23 • avoid_function_literals_in_foreach_calls
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:121:34 • prefer_const_constructors
+   info • Use interpolation to compose strings and values • lib/components/artifact_detail_lint.dart:126:31 • prefer_interpolation_to_compose_strings
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:136:29 • prefer_const_constructors
+   info • Unnecessary use of string interpolation • lib/components/artifact_detail_lint.dart:138:31 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/components/artifact_detail_lint.dart:143:33 • unnecessary_string_interpolations
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:146:29 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:188:20 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:192:20 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_lint.dart:196:20 • prefer_const_constructors
+   info • Use interpolation to compose strings and values • lib/components/artifact_detail_lintstats.dart:22:10 • prefer_interpolation_to_compose_strings
+   info • String literals shouldn't be concatenated by the '+' operator • lib/components/artifact_detail_lintstats.dart:22:51 • prefer_adjacent_string_concatenation
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_lintstats.dart:31:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_detail_lintstats.dart:33:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_lintstats.dart:33:31 • annotate_overrides
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_lintstats.dart:51:10 • annotate_overrides
+   info • Unnecessary 'null' comparison before assigning a value • lib/components/artifact_detail_lintstats.dart:52:5 • prefer_conditional_assignment
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_message.dart:30:3 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_message.dart:35:10 • annotate_overrides
+   info • Don't invoke 'print' in production code • lib/components/artifact_detail_message.dart:99:7 • avoid_print
+   info • Unnecessary use of string interpolation • lib/components/artifact_detail_message.dart:99:13 • unnecessary_string_interpolations
+   info • Use interpolation to compose strings and values • lib/components/artifact_detail_message.dart:99:13 • prefer_interpolation_to_compose_strings
+   info • Don't invoke 'print' in production code • lib/components/artifact_detail_message.dart:101:5 • avoid_print
+   info • Unnecessary use of string interpolation • lib/components/artifact_detail_message.dart:101:11 • unnecessary_string_interpolations
+   info • Use interpolation to compose strings and values • lib/components/artifact_detail_message.dart:101:11 • prefer_interpolation_to_compose_strings
+   info • Function literals should not be passed to 'forEach' • lib/components/artifact_detail_message.dart:107:8 • avoid_function_literals_in_foreach_calls
+   info • Unnecessary instance of 'Container' • lib/components/artifact_detail_message.dart:111:10 • avoid_unnecessary_containers
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_message.dart:139:9 • use_key_in_widget_constructors
+   info • Statements in an if should be enclosed in a block • lib/components/artifact_detail_message.dart:143:7 • curly_braces_in_flow_control_structures
+   info • The 'children' argument should be last in widget constructor invocations • lib/components/artifact_detail_message.dart:157:7 • sort_child_properties_last
+   info • Don't invoke 'print' in production code • lib/components/artifact_detail_message.dart:210:9 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_references.dart:23:9 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_references.dart:25:10 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_references.dart:46:9 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_references.dart:55:10 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_string.dart:29:9 • use_key_in_widget_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/artifact_detail_string.dart:59:25 • prefer_const_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_vocabulary.dart:23:9 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_vocabulary.dart:25:10 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_detail_vocabulary.dart:73:9 • use_key_in_widget_constructors
+   info • The member 'build' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_detail_vocabulary.dart:82:10 • annotate_overrides
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/artifact_detail_vocabulary.dart:106:21 • sized_box_for_whitespace
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_edit.dart:24:7 • use_key_in_widget_constructors
+   info • Unused import: 'package:url_launcher/url_launcher.dart' • lib/components/artifact_list.dart:19:8 • unused_import
+   info • Unused import: 'artifact_delete.dart' • lib/components/artifact_list.dart:23:8 • unused_import
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_list.dart:38:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_list.dart:42:3 • library_private_types_in_public_api
+   info • Unnecessary 'null' comparison before assigning a value • lib/components/artifact_list.dart:67:7 • prefer_conditional_assignment
+   info • Use a function declaration rather than a variable assignment to bind a function to a name • lib/components/artifact_list.dart:89:14 • prefer_function_declarations_over_variables
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_list.dart:135:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_list.dart:143:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/artifact_text.dart:25:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/artifact_text.dart:26:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/artifact_text.dart:26:22 • annotate_overrides
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/bottom_bar.dart:18:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/custom_search_box.dart:22:9 • use_key_in_widget_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/custom_search_box.dart:47:21 • prefer_const_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/deployment_detail.dart:30:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/deployment_detail.dart:31:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/deployment_detail.dart:31:30 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/components/deployment_detail.dart:190:27 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/deployment_edit.dart:21:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/deployment_list.dart:31:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/deployment_list.dart:34:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/deployment_list.dart:85:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/deployment_list.dart:93:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:33:9 • use_key_in_widget_constructors
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/detail_rows.dart:55:17 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/detail_rows.dart:69:15 • sort_child_properties_last
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/components/detail_rows.dart:77:22 • prefer_if_null_operators
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:88:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:116:9 • use_key_in_widget_constructors
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/detail_rows.dart:124:21 • sort_child_properties_last
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:150:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:172:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:191:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:216:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:246:9 • use_key_in_widget_constructors
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:252:23 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:264:9 • use_key_in_widget_constructors
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:273:17 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:286:17 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:302:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:327:9 • use_key_in_widget_constructors
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:350:14 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:352:12 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:359:9 • use_key_in_widget_constructors
+   info • Use interpolation to compose strings and values • lib/components/detail_rows.dart:372:25 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/detail_rows.dart:381:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/dialog_builder.dart:19:9 • use_key_in_widget_constructors
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/dialog_builder.dart:28:14 • sized_box_for_whitespace
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/empty.dart:20:7 • sort_child_properties_last
+   info • Use interpolation to compose strings and values • lib/components/filter.dart:26:16 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/home.dart:24:7 • use_key_in_widget_constructors
+   info • Unnecessary instance of 'Container' • lib/components/home.dart:30:14 • avoid_unnecessary_containers
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:3:16 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:4:25 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:5:16 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:6:16 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:7:16 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:8:14 • prefer_generic_function_type_aliases
+   info • Use the generic function type syntax in 'typedef's • lib/components/pagewise.dart:9:16 • prefer_generic_function_type_aliases
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/project_detail.dart:32:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/project_detail.dart:33:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/project_detail.dart:33:27 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/components/project_detail.dart:168:27 • prefer_interpolation_to_compose_strings
+   info • 'launch' is deprecated and shouldn't be used. Use launchUrl instead • lib/components/project_detail.dart:176:29 • deprecated_member_use
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/project_edit.dart:21:7 • use_key_in_widget_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/project_edit.dart:103:25 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/project_edit.dart:109:25 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/project_edit.dart:115:26 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/components/project_edit.dart:124:26 • prefer_const_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/project_list.dart:32:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/project_list.dart:35:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/project_list.dart:84:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/project_list.dart:92:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/registry_detail.dart:18:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_detail.dart:32:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_detail.dart:34:3 • library_private_types_in_public_api
+   info • Use interpolation to compose strings and values • lib/components/spec_detail.dart:169:39 • prefer_interpolation_to_compose_strings
+   info • Unnecessary use of string interpolation • lib/components/spec_detail.dart:186:35 • unnecessary_string_interpolations
+   info • Use interpolation to compose strings and values • lib/components/spec_detail.dart:192:33 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/components/spec_detail.dart:225:27 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_edit.dart:21:7 • use_key_in_widget_constructors
+   info • Use 'const' for final variables initialized to a constant value • lib/components/spec_file.dart:30:1 • prefer_const_declarations
+   info • Use 'const' for final variables initialized to a constant value • lib/components/spec_file.dart:31:1 • prefer_const_declarations
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_file.dart:45:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_file.dart:46:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/spec_file.dart:46:22 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/components/spec_file.dart:192:37 • prefer_interpolation_to_compose_strings
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/spec_file.dart:218:24 • sized_box_for_whitespace
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/spec_file.dart:236:26 • sized_box_for_whitespace
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/spec_file.dart:295:26 • sized_box_for_whitespace
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_file.dart:311:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_file.dart:313:3 • library_private_types_in_public_api
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/spec_file.dart:370:18 • sized_box_for_whitespace
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/components/spec_file.dart:422:12 • sized_box_for_whitespace
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_list.dart:30:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_list.dart:33:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_list.dart:83:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_list.dart:91:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_outline.dart:26:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/spec_outline.dart:27:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/spec_outline.dart:27:25 • annotate_overrides
+   info • Neither type of the operands of '==' is a subtype of the other • lib/components/spec_outline.dart:91:42 • unrelated_type_equality_checks
+   info • Unnecessary instance of 'Container' • lib/components/spec_outline.dart:134:10 • avoid_unnecessary_containers
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_outline.dart:164:9 • use_key_in_widget_constructors
+   info • Statements in an if should be enclosed in a block • lib/components/spec_outline.dart:168:7 • curly_braces_in_flow_control_structures
+   info • The 'children' argument should be last in widget constructor invocations • lib/components/spec_outline.dart:182:7 • sort_child_properties_last
+   info • Don't invoke 'print' in production code • lib/components/spec_outline.dart:228:9 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_outline.dart:264:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/spec_picker.dart:26:7 • use_key_in_widget_constructors
+   info • Unnecessary instance of 'Container' • lib/components/spec_picker.dart:33:14 • avoid_unnecessary_containers
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/components/spec_picker.dart:39:27 • prefer_const_literals_to_create_immutables
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/components/spec_picker.dart:64:27 • prefer_const_literals_to_create_immutables
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/split_view.dart:26:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/split_view.dart:33:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/split_view.dart:33:25 • annotate_overrides
+   info • The 'children' argument should be last in widget constructor invocations • lib/components/split_view.dart:46:7 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/split_view.dart:48:13 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/components/split_view.dart:53:13 • sort_child_properties_last
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/split_view.dart:68:9 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/version_detail.dart:30:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/version_detail.dart:31:3 • library_private_types_in_public_api
+   info • The member 'createState' overrides an inherited member but isn't annotated with '@override' • lib/components/version_detail.dart:31:27 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/components/version_detail.dart:198:27 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/version_edit.dart:21:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/version_list.dart:31:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/version_list.dart:34:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/components/version_list.dart:85:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/components/version_list.dart:93:3 • library_private_types_in_public_api
+   info • Unnecessary 'null' comparison before assigning a value • lib/helpers/errors.dart:27:13 • prefer_conditional_assignment
+   info • Don't invoke 'print' in production code • lib/helpers/errors.dart:46:5 • avoid_print
+   info • Use the generic function type syntax in 'typedef's • lib/helpers/measure_size.dart:20:14 • prefer_generic_function_type_aliases
+   info • Constructors for public widgets should have a named 'key' parameter • lib/main.dart:35:7 • use_key_in_widget_constructors
+   info • Use interpolation to compose strings and values • lib/models/api.dart:27:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/api.dart:32:9 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/api.dart:38:9 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/api.dart:44:9 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/artifact.dart:24:12 • prefer_interpolation_to_compose_strings
+   info • Use 'const' for final variables initialized to a constant value • lib/models/artifact.dart:41:7 • prefer_const_declarations
+   info • Use 'const' for final variables initialized to a constant value • lib/models/artifact.dart:49:5 • prefer_const_declarations
+   info • Use interpolation to compose strings and values • lib/models/deployment.dart:27:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/deployment.dart:31:12 • prefer_interpolation_to_compose_strings
+   info • The member 'toString' overrides an inherited member but isn't annotated with '@override' • lib/models/highlight.dart:24:10 • annotate_overrides
+   info • Use interpolation to compose strings and values • lib/models/project.dart:27:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/project.dart:31:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/project.dart:35:12 • prefer_interpolation_to_compose_strings
+   info • Function literals should not be passed to 'forEach' • lib/models/selection.dart:103:13 • avoid_function_literals_in_foreach_calls
+   info • Unnecessary 'this.' qualifier • lib/models/spec.dart:19:12 • unnecessary_this
+   info • Use interpolation to compose strings and values • lib/models/spec.dart:23:12 • prefer_interpolation_to_compose_strings
+   info • Unnecessary 'this.' qualifier • lib/models/spec.dart:23:18 • unnecessary_this
+   info • Use interpolation to compose strings and values • lib/models/spec.dart:27:12 • prefer_interpolation_to_compose_strings
+   info • Unnecessary 'this.' qualifier • lib/models/spec.dart:27:18 • unnecessary_this
+   info • Use interpolation to compose strings and values • lib/models/version.dart:27:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/version.dart:31:12 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/models/version.dart:35:12 • prefer_interpolation_to_compose_strings
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/api_detail.dart:33:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/api_list.dart:28:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/api_list.dart:31:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/artifact_detail.dart:24:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/artifact_list.dart:28:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/artifact_list.dart:31:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/deployment_detail.dart:29:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/deployment_list.dart:28:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/deployment_list.dart:31:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/home.dart:19:7 • use_key_in_widget_constructors
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/project_detail.dart:32:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/project_list.dart:27:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/project_list.dart:30:3 • library_private_types_in_public_api
+   info • Don't invoke 'print' in production code • lib/pages/signin.dart:38:5 • avoid_print
+   info • Don't invoke 'print' in production code • lib/pages/signin.dart:53:9 • avoid_print
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/signin.dart:62:7 • use_key_in_widget_constructors
+   info • Don't invoke 'print' in production code • lib/pages/signin.dart:80:7 • avoid_print
+   info • The 'child' argument should be last in widget constructor invocations • lib/pages/signin.dart:113:13 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/pages/signin.dart:143:13 • sort_child_properties_last
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/spec_detail.dart:31:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/spec_list.dart:28:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/spec_list.dart:31:3 • library_private_types_in_public_api
+   info • Constructors for public widgets should have a named 'key' parameter • lib/pages/version_detail.dart:31:9 • use_key_in_widget_constructors
+   info • Use an initializing formal to assign a parameter to a field • lib/pages/version_list.dart:28:9 • prefer_initializing_formals
+   info • Invalid use of a private type in a public API • lib/pages/version_list.dart:31:3 • library_private_types_in_public_api
+   info • Use interpolation to compose strings and values • lib/routes.dart:63:30 • prefer_interpolation_to_compose_strings
+   info • Don't invoke 'print' in production code • lib/routes.dart:91:5 • avoid_print
+   info • Use interpolation to compose strings and values • lib/routes.dart:91:11 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/routes.dart:300:25 • prefer_interpolation_to_compose_strings
+   info • Function literals should not be passed to 'forEach' • lib/service/registry.dart:115:11 • avoid_function_literals_in_foreach_calls
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:154:19 • annotate_overrides
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:181:15 • annotate_overrides
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:204:22 • annotate_overrides
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:228:19 • annotate_overrides
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:265:25 • annotate_overrides
+   info • The member 'fetchFuture' overrides an inherited member but isn't annotated with '@override' • lib/service/registry.dart:289:20 • annotate_overrides
+   info • Don't invoke 'print' in production code • lib/service/service.dart:42:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:94:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:172:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:188:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:242:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:353:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/service/service.dart:426:7 • avoid_print
+

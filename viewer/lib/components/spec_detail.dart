@@ -183,7 +183,7 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                     if (spec.hasSourceUri())
                       PageSection(
                         children: [
-                          LinkRow("${spec.sourceUri}", spec.sourceUri),
+                          LinkRow(spec.sourceUri, spec.sourceUri),
                         ],
                       ),
                     PageSection(

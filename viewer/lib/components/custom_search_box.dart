@@ -44,7 +44,7 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
             prefixIcon: const Icon(Icons.search, color: Colors.black),
             suffixIcon: IconButton(
               color: Colors.black,
-              icon: Icon(Icons.clear),
+              icon: const Icon(Icons.clear),
               tooltip: "Clear",
               onPressed: () {
                 searchTextController.clear();

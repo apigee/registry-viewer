@@ -56,7 +56,7 @@ class StringArtifactCard extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 width: double.infinity,
                 child: Text(
                   artifact.stringValue,

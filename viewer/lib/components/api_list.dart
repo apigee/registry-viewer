@@ -57,7 +57,7 @@ class _ApiListCardState extends State<ApiListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ApiSearchBox(),
+            filterBar(context, const ApiSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ApiListView(
@@ -193,7 +193,7 @@ class _ApiListViewState extends State<ApiListView> {
           widget.selectionHandler?.call(context, api);
         },
         trailing: IconButton(
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(

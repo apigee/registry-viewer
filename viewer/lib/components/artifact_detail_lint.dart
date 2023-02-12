@@ -137,12 +137,12 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                             ),
                             SizedBox(height: 10),
                             Text(
-                              "${problem.problem.message}",
+                              problem.problem.message,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             if (problem.problem.suggestion != "")
                               Text(
-                                "${problem.problem.suggestion}",
+                                problem.problem.suggestion,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             SizedBox(height: 10),

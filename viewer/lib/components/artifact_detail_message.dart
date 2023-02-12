@@ -97,9 +97,9 @@ class Entry {
 
   dump(int indent) {
     if (label != null) {
-      print('${" " * indent}' + label!);
+      print(" " * indent + label!);
     }
-    print('${" " * indent}' + value);
+    print(" " * indent + value);
     dumpList(children, indent + 1);
   }
 }
