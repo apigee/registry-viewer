@@ -57,7 +57,7 @@ class _SpecListPageState extends State<SpecListPage> {
           ),
           body: Column(
             children: [
-              Expanded(
+              const Expanded(
                 child: SpecListCard(
                   singleColumn: true,
                 ),

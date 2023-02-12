@@ -145,7 +145,7 @@ class _SpecDetailCardState extends State<SpecDetailCard>
     ApiVersion? version = versionManager!.value;
     ApiSpec? spec = specManager!.value;
     if ((api == null) || (version == null) || (spec == null)) {
-      return Card();
+      return const Card();
     }
     final codeStyle = GoogleFonts.inconsolata();
     return Card(
@@ -159,7 +159,7 @@ class _SpecDetailCardState extends State<SpecDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,16 +196,16 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         TimestampRow(spec.createTime, spec.revisionUpdateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -215,11 +215,11 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
                           SelectionProvider.of(context)!.specName.value +

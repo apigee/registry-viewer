@@ -56,7 +56,7 @@ class _SpecListCardState extends State<SpecListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, SpecSearchBox(),
+            filterBar(context, const SpecSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: SpecListView(
@@ -192,7 +192,7 @@ class _SpecListViewState extends State<SpecListView> {
         },
         trailing: IconButton(
           //color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(

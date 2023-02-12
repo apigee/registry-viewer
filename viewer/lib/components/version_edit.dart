@@ -85,7 +85,7 @@ class EditVersionFormState extends State<EditVersionForm> {
   @override
   Widget build(BuildContext context) {
     if (versionManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final version = versionManager!.value!;
@@ -103,25 +103,25 @@ class EditVersionFormState extends State<EditVersionForm> {
               title: TextFormField(
                 controller: displayNameController,
               ),
-              subtitle: Text("Display Name"),
+              subtitle: const Text("Display Name"),
             ),
             ListTile(
               title: TextFormField(
                 controller: descriptionController,
               ),
-              subtitle: Text("Description"),
+              subtitle: const Text("Description"),
             ),
             ListTile(
               title: TextFormField(
                 controller: stateController,
               ),
-              subtitle: Text("State"),
+              subtitle: const Text("State"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -130,7 +130,7 @@ class EditVersionFormState extends State<EditVersionForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

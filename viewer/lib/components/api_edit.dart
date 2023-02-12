@@ -83,7 +83,7 @@ class EditAPIFormState extends State<EditAPIForm> {
   @override
   Widget build(BuildContext context) {
     if (apiManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final api = apiManager!.value!;
@@ -100,19 +100,19 @@ class EditAPIFormState extends State<EditAPIForm> {
               title: TextFormField(
                 controller: displayNameController,
               ),
-              subtitle: Text("Display Name"),
+              subtitle: const Text("Display Name"),
             ),
             ListTile(
               title: TextFormField(
                 controller: descriptionController,
               ),
-              subtitle: Text("Description"),
+              subtitle: const Text("Description"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -121,7 +121,7 @@ class EditAPIFormState extends State<EditAPIForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

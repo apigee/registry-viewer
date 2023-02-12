@@ -19,7 +19,7 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

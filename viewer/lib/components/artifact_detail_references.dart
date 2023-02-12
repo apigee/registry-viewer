@@ -57,7 +57,7 @@ class WordListCardState extends State<WordListCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           width: double.infinity,
           color: Theme.of(context).splashColor,
           child: Text(

@@ -27,7 +27,7 @@ import '../models/selection.dart';
 import '../service/registry.dart';
 import '../components/split_view.dart';
 
-final scrollDuration = Duration(milliseconds: 300);
+final scrollDuration = const Duration(milliseconds: 300);
 final scrollCurve = Curves.easeInOut;
 
 // An item in a spec file (a file in a zip archive).
@@ -64,7 +64,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
       if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
-          body = Utf8Codec().decoder.convert(data);
+          body = const Utf8Codec().decoder.convert(data);
         } else if (spec.mimeType.endsWith("+zip")) {
           items = [];
           final archive = ZipDecoder().decodeBytes(spec.contents);
@@ -73,7 +73,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
             if (file.isFile) {
               String body;
               try {
-                body = Utf8Codec().decoder.convert(file.content);
+                body = const Utf8Codec().decoder.convert(file.content);
               } catch (e) {
                 body = "unavailable";
               }
@@ -170,7 +170,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
   @override
   Widget build(BuildContext context) {
     if (specManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       if (items == null) {
         // single-file view
@@ -182,7 +182,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 name: specManager!.value!.filename,
                 button: IconButton(
                   color: Colors.black,
-                  icon: Icon(Icons.open_in_new),
+                  icon: const Icon(Icons.open_in_new),
                   tooltip: "Viewer",
                   onPressed: () {
                     var address = rendererServiceAddress();
@@ -192,10 +192,11 @@ class _SpecFileCardState extends State<SpecFileCard> {
                           Uri.parse(address + "/" + specManager!.value!.name));
                     } else {
                       AlertDialog alert = AlertDialog(
-                        content: Text("Spec renderer service not configured"),
+                        content:
+                            const Text("Spec renderer service not configured"),
                         actions: [
                           TextButton(
-                            child: Text("OK"),
+                            child: const Text("OK"),
                             onPressed: () {
                               Navigator.of(context).pop(); // dismiss dialog
                             },
@@ -373,7 +374,7 @@ class _CodeViewState extends State<CodeView> {
           textAlign: TextAlign.right,
           style: GoogleFonts.inconsolata(color: Colors.grey[500]),
         )));
-    children.add(SizedBox(width: 10));
+    children.add(const SizedBox(width: 10));
     String before = "";
     String middle = "";
     String after = "";

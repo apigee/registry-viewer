@@ -48,7 +48,7 @@ class SpecDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 4,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
@@ -59,7 +59,7 @@ class SpecDetailPage extends StatelessWidget {
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Contents"),
@@ -72,15 +72,15 @@ class SpecDetailPage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  SpecDetailCard(editable: true),
+                  const SpecDetailCard(editable: true),
                   SpecFileCard(),
                   SpecOutlineCard(),
                   narrow(context)
-                      ? ArtifactListCard(
+                      ? const ArtifactListCard(
                           SelectionProvider.spec,
                           singleColumn: true,
                         )
-                      : CustomSplitView(
+                      : const CustomSplitView(
                           viewMode: SplitViewMode.Horizontal,
                           view1: ArtifactListCard(
                             SelectionProvider.spec,

@@ -33,13 +33,13 @@ Widget filterBar(
     title: filterField,
     actions: <Widget>[
       IconButton(
-        icon: Icon(Icons.refresh),
+        icon: const Icon(Icons.refresh),
         tooltip: "refresh",
         onPressed: refresh as void Function()?,
       ),
       if (type != null)
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           tooltip: tooltip,
           onPressed: add as void Function()?,
         ),

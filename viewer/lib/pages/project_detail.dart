@@ -44,7 +44,7 @@ class ProjectDetailPage extends StatelessWidget {
       child: DefaultTabController(
         length: 3,
         initialIndex: 1,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -54,7 +54,7 @@ class ProjectDetailPage extends StatelessWidget {
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "APIs"),
@@ -69,8 +69,8 @@ class ProjectDetailPage extends StatelessWidget {
                   children: [
                     ProjectDetailCard(editable: (root() == "/")),
                     narrow(context)
-                        ? ApiListCard(singleColumn: true)
-                        : CustomSplitView(
+                        ? const ApiListCard(singleColumn: true)
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
                             view1: ApiListCard(singleColumn: false),
@@ -80,11 +80,11 @@ class ProjectDetailPage extends StatelessWidget {
                             ),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(
+                        ? const ArtifactListCard(
                             SelectionProvider.project,
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.5,
                             view1: ArtifactListCard(

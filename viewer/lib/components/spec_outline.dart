@@ -40,7 +40,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
       if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
-          String body = Utf8Codec().decoder.convert(bytes);
+          String body = const Utf8Codec().decoder.convert(bytes);
           YamlNode? doc = loadYamlNode(body);
           data = parseDoc(doc, 0);
         } else if (spec.mimeType.endsWith("+zip")) {
@@ -89,7 +89,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   @override
   Widget build(BuildContext context) {
     if ((specManager?.value == null) || (data == nil)) {
-      return Card();
+      return const Card();
     }
     return Card(
       child: Column(
@@ -98,7 +98,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
           PanelNameRow(name: specManager!.value!.filename),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               width: double.infinity,
               child: Scrollbar(
                 controller: scrollController,
@@ -169,7 +169,7 @@ class EntryItem extends StatelessWidget {
         minVerticalPadding: 0,
         title: entryRow(root),
         contentPadding: EdgeInsets.zero,
-        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       );
 
     List<Widget> children = [];
@@ -241,7 +241,7 @@ List<Entry> parseZip(List<int> data) {
     if (file.isFile) {
       String body;
       try {
-        body = Utf8Codec().decoder.convert(file.content);
+        body = const Utf8Codec().decoder.convert(file.content);
       } catch (e) {
         body = "unavailable";
       }

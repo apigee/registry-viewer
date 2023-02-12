@@ -41,7 +41,7 @@ class VocabularyArtifactCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("schemas", vocabulary.schemas),
                 ),
-                VerticalDivider(width: 7),
+                const VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("properties", vocabulary.properties),
                 ),
@@ -54,7 +54,7 @@ class VocabularyArtifactCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("operations", vocabulary.operations),
                 ),
-                VerticalDivider(width: 7),
+                const VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("parameters", vocabulary.parameters),
                 ),
@@ -84,7 +84,7 @@ class WordCountListCardState extends State<WordCountListCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           width: double.infinity,
           color: Theme.of(context).splashColor,
           child: Text(
@@ -110,7 +110,7 @@ class WordCountListCardState extends State<WordCountListCard> {
                         textAlign: TextAlign.end,
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Flexible(
                       child: Text(
                         wordCount.word,

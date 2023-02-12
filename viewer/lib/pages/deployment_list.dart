@@ -57,7 +57,7 @@ class _DeploymentListPageState extends State<DeploymentListPage> {
           ),
           body: Column(
             children: [
-              Expanded(
+              const Expanded(
                 child: DeploymentListCard(
                   singleColumn: true,
                 ),

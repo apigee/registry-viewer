@@ -52,18 +52,18 @@ class AddArtifactFormState extends State<AddArtifactForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Add an Artifact"),
+          const Text("Add an Artifact"),
           ListTile(
             title: TextFormField(
               controller: stringValueController,
             ),
-            subtitle: Text("artifact name"),
+            subtitle: const Text("artifact name"),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: Text("Cancel"),
+                child: const Text("Cancel"),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
@@ -72,7 +72,7 @@ class AddArtifactFormState extends State<AddArtifactForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: Text("Save"),
+                child: const Text("Save"),
                 onPressed: () {
                   save(context);
                   Navigator.of(context, rootNavigator: true).pop();

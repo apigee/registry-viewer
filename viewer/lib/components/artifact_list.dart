@@ -104,7 +104,7 @@ class _ArtifactListCardState extends State<ArtifactListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ArtifactSearchBox(),
+            filterBar(context, const ArtifactSearchBox(),
                 type: "artifacts",
                 add: add,
                 refresh: () => pageLoadController!.reset()),
@@ -237,7 +237,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         widget.selectionHandler?.call(context, artifact);
       },
       trailing: IconButton(
-        icon: Icon(Icons.open_in_new),
+        icon: const Icon(Icons.open_in_new),
         tooltip: "open",
         onPressed: () {
           Navigator.pushNamed(

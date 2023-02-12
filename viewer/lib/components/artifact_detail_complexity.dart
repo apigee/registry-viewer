@@ -34,7 +34,7 @@ class ComplexityArtifactCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -45,8 +45,8 @@ class ComplexityArtifactCard extends StatelessWidget {
                       border: TableBorder.symmetric(
                           inside: BorderSide.none, outside: BorderSide.none),
                       columnWidths: {
-                        0: IntrinsicColumnWidth(),
-                        1: FlexColumnWidth(),
+                        0: const IntrinsicColumnWidth(),
+                        1: const FlexColumnWidth(),
                       },
                       children: [
                         row(context, "Paths", "${complexity.pathCount}"),
@@ -75,15 +75,15 @@ class ComplexityArtifactCard extends StatelessWidget {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,

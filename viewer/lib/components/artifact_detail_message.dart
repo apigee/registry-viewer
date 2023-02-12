@@ -44,7 +44,7 @@ class MessageArtifactCard extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               width: double.infinity,
               child: Scrollbar(
                 controller: scrollController,
@@ -67,15 +67,15 @@ class MessageArtifactCard extends StatelessWidget {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,
@@ -144,7 +144,7 @@ class EntryItem extends StatelessWidget {
         minVerticalPadding: 0,
         title: entryRow(root),
         contentPadding: EdgeInsets.zero,
-        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       );
 
     List<Widget> children = [];

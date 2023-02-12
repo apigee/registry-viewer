@@ -80,7 +80,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
   Widget build(BuildContext context) {
     if (artifactManager?.value == null) {
       print("building while empty");
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final artifact = artifactManager!.value!;
@@ -91,13 +91,13 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Delete this artifact?"),
+            const Text("Delete this artifact?"),
             Text(artifact.name),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("No, Cancel"),
+                  child: const Text("No, Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -106,7 +106,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Yes, Delete it"),
+                  child: const Text("Yes, Delete it"),
                   onPressed: () {
                     delete(context);
                     Navigator.of(context, rootNavigator: true).pop();

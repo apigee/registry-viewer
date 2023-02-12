@@ -84,7 +84,7 @@ class EditDeploymentFormState extends State<EditDeploymentForm> {
   @override
   Widget build(BuildContext context) {
     if (deploymentManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final deployment = deploymentManager!.value!;
@@ -101,19 +101,19 @@ class EditDeploymentFormState extends State<EditDeploymentForm> {
               title: TextFormField(
                 controller: displayNameController,
               ),
-              subtitle: Text("Display Name"),
+              subtitle: const Text("Display Name"),
             ),
             ListTile(
               title: TextFormField(
                 controller: descriptionController,
               ),
-              subtitle: Text("Description"),
+              subtitle: const Text("Description"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -122,7 +122,7 @@ class EditDeploymentFormState extends State<EditDeploymentForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

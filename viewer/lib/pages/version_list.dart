@@ -57,7 +57,7 @@ class _VersionListPageState extends State<VersionListPage> {
           ),
           body: Column(
             children: [
-              Expanded(
+              const Expanded(
                 child: VersionListCard(
                   singleColumn: true,
                 ),

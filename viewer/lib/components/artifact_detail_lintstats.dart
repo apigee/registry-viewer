@@ -81,7 +81,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                         color: (selectedIndex == index)
                             ? Theme.of(context).primaryColor.withAlpha(64)
                             : Theme.of(context).canvasColor,
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -127,15 +127,15 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,

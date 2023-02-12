@@ -58,7 +58,7 @@ class _ApiListPageState extends State<ApiListPage> {
           ),
           body: Column(
             children: [
-              Expanded(
+              const Expanded(
                 child: ApiListCard(
                   singleColumn: true,
                 ),

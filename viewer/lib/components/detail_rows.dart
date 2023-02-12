@@ -35,7 +35,7 @@ class ResourceNameButtonRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.fromLTRB(16, 13, 16, 13),
+      padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -90,7 +90,7 @@ class PanelNameRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -103,7 +103,7 @@ class PanelNameRow extends StatelessWidget {
               overflow: TextOverflow.clip,
             ),
           ),
-          (button != null) ? button! : SizedBox(width: 0, height: 0),
+          (button != null) ? button! : const SizedBox(width: 0, height: 0),
         ],
       ),
     );
@@ -307,8 +307,8 @@ class DetailRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
-            Divider(thickness: 2),
+            const SizedBox(height: 10),
+            const Divider(thickness: 2),
             Text(
               text.trim(),
               style: GoogleFonts.robotoMono(color: Colors.grey[500]),
@@ -335,7 +335,7 @@ class LabelsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
             color: Theme.of(context).primaryColorLight,
             child: Text(labelText(key, map[key])),
           ),
@@ -367,7 +367,7 @@ class AnnotationsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
             color: Theme.of(context).primaryColorLight,
             child: Text(key + ":" + map[key]!),
           ),
@@ -382,7 +382,7 @@ class PageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];
-    rows.add(SizedBox(height: 10));
+    rows.add(const SizedBox(height: 10));
     rows.addAll(children!);
     return Column(
       children: rows,

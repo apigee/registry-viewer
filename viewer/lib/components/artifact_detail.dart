@@ -245,12 +245,12 @@ class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
           Expanded(
             child: Scrollbar(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TimestampRow(artifact.createTime, artifact.updateTime),
                     ],
                   ),

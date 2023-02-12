@@ -58,7 +58,7 @@ class _DeploymentListCardState extends State<DeploymentListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, DeploymentSearchBox(),
+            filterBar(context, const DeploymentSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: DeploymentListView(
@@ -193,7 +193,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
         },
         trailing: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(

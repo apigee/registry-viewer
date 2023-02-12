@@ -56,7 +56,7 @@ Future attemptToSignIn() async {
   });
   googleSignIn.signInSilently();
   return completer.future
-      .timeout(Duration(milliseconds: 1000), onTimeout: () => {});
+      .timeout(const Duration(milliseconds: 1000), onTimeout: () => {});
 }
 
 class SignInPage extends StatefulWidget {
@@ -125,9 +125,9 @@ class SignInPageState extends State<SignInPage> {
           if (!currentUserIsAuthorized)
             Column(
               children: [
-                Text("Thank you for signing in!"),
+                const Text("Thank you for signing in!"),
                 Container(height: 10),
-                Text("We're not yet open to the public."),
+                const Text("We're not yet open to the public."),
                 Container(height: 10),
               ],
             ),

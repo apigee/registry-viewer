@@ -83,7 +83,7 @@ class EditProjectFormState extends State<EditProjectForm> {
   @override
   Widget build(BuildContext context) {
     if (projectManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final project = projectManager!.value!;

@@ -223,7 +223,7 @@ class PagewiseState<T> extends State<Pagewise<T?>> {
   }
 
   Widget _getLoadingWidget() {
-    return this._getStandardContainer(child: CircularProgressIndicator());
+    return this._getStandardContainer(child: const CircularProgressIndicator());
   }
 
   Widget _getNoItemsFoundWidget() {

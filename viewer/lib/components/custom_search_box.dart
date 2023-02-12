@@ -31,7 +31,7 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(
+      margin: const EdgeInsets.fromLTRB(
         0,
         8,
         0,
@@ -41,7 +41,7 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
       child: TextField(
         controller: searchTextController,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
+            prefixIcon: const Icon(Icons.search, color: Colors.black),
             suffixIcon: IconButton(
               color: Colors.black,
               icon: Icon(Icons.clear),

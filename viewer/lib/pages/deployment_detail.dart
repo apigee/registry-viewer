@@ -44,7 +44,7 @@ class DeploymentDetailPage extends StatelessWidget {
       child: DefaultTabController(
         length: 2,
         initialIndex: 1,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -54,7 +54,7 @@ class DeploymentDetailPage extends StatelessWidget {
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Artifacts"),
@@ -66,13 +66,13 @@ class DeploymentDetailPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    DeploymentDetailCard(editable: true),
+                    const DeploymentDetailCard(editable: true),
                     narrow(context)
-                        ? ArtifactListCard(
+                        ? const ArtifactListCard(
                             SelectionProvider.deployment,
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             view1: ArtifactListCard(
                                 SelectionProvider.deployment,

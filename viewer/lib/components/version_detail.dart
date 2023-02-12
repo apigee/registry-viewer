@@ -135,7 +135,7 @@ class _VersionDetailCardState extends State<VersionDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,16 +160,16 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                         TimestampRow(version.createTime, version.updateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("Specs"),
+                          child: const Text("Specs"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -178,7 +178,7 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -188,11 +188,11 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
                           SelectionProvider.of(context)!.versionName.value +

@@ -38,7 +38,7 @@ extension Display on Artifact {
     if ((mimeType == "text/plain") ||
         mimeType.startsWith("application/yaml") ||
         mimeType.startsWith("application/json")) {
-      final codec = Utf8Codec();
+      final codec = const Utf8Codec();
       return codec.decode(contents);
     }
     return "";
@@ -46,7 +46,7 @@ extension Display on Artifact {
 
   set stringValue(String value) {
     mimeType = "text/plain";
-    final codec = Utf8Codec();
+    final codec = const Utf8Codec();
     contents = codec.encode(value);
   }
 }

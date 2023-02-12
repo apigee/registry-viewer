@@ -58,7 +58,7 @@ class _VersionListCardState extends State<VersionListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, VersionSearchBox(),
+            filterBar(context, const VersionSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: VersionListView(
@@ -193,7 +193,7 @@ class _VersionListViewState extends State<VersionListView> {
         },
         trailing: IconButton(
           //color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(

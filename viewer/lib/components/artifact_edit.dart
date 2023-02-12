@@ -84,7 +84,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
   @override
   Widget build(BuildContext context) {
     if (artifactManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final artifact = artifactManager!.value!;
@@ -109,13 +109,13 @@ class EditArtifactFormState extends State<EditArtifactForm> {
                   return null;
                 },
               ),
-              subtitle: Text("value (string)"),
+              subtitle: const Text("value (string)"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -124,7 +124,7 @@ class EditArtifactFormState extends State<EditArtifactForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

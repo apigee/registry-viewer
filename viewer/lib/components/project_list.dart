@@ -57,7 +57,7 @@ class _ProjectListCardState extends State<ProjectListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ProjectSearchBox(),
+            filterBar(context, const ProjectSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ProjectListView(
@@ -169,7 +169,7 @@ class _ProjectListViewState extends State<ProjectListView> {
         },
         trailing: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
