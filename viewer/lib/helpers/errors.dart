@@ -43,7 +43,7 @@ void reportError(BuildContext? context, Object? error) {
       );
     });
   } else {
-    print("$error");
+    debugPrint("$error");
   }
 }
 

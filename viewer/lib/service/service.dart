@@ -39,7 +39,7 @@ class StatusService {
       }
       return client.getStatus(Empty(), options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -91,7 +91,7 @@ class ProjectService {
     try {
       return client.getProject(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -169,7 +169,7 @@ class ApiService {
     try {
       return client.getApi(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -185,7 +185,7 @@ class ApiService {
     try {
       return client.updateApi(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -239,7 +239,7 @@ class VersionService {
     try {
       return client.getApiVersion(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -350,7 +350,7 @@ class DeploymentService {
     try {
       return client.getApiDeployment(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -423,7 +423,7 @@ class ArtifactService {
     try {
       return client.createArtifact(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }

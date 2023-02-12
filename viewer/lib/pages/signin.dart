@@ -35,7 +35,7 @@ Future attemptToSignIn() async {
   var completer = Completer();
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
     currentUser = account;
-    print("current user changed to $currentUser");
+    debugPrint("current user changed to $currentUser");
     if (account == null) {
       return;
     }
@@ -50,7 +50,7 @@ Future attemptToSignIn() async {
       StatusService().getStatus()!.then((status) {
         completer.complete();
       }).catchError((error) {
-        print("error calling GetStatus $error");
+        debugPrint("error calling GetStatus $error");
       });
     });
   });
@@ -77,7 +77,7 @@ class SignInPageState extends State<SignInPage> {
     try {
       await googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      debugPrint("$error");
     }
   }
 

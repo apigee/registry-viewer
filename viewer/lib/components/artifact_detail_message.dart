@@ -97,9 +97,9 @@ class Entry {
 
   dump(int indent) {
     if (label != null) {
-      print(" " * indent + label!);
+      debugPrint(" " * indent + label!);
     }
-    print(" " * indent + value);
+    debugPrint(" " * indent + value);
     dumpList(children, indent + 1);
   }
 }
@@ -210,7 +210,7 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
         entries.add(Entry(
             indent, "$i", "list[${node.length}]", parseDoc(node, indent + 1)));
       } else {
-        print(node);
+        debugPrint("$node");
       }
       i++;
     }

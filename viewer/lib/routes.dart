@@ -88,7 +88,7 @@ class RegistryRouter {
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
-    print("routing " + settings.name!);
+    debugPrint("routing " + settings.name!);
 
     if (kIsWeb || Platform.isAndroid) {
       if ((settings.name == "/") ||

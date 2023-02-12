@@ -79,7 +79,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
   @override
   Widget build(BuildContext context) {
     if (artifactManager?.value == null) {
-      print("building while empty");
+      debugPrint("building while empty");
       return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
@@ -124,7 +124,7 @@ class DeleteArtifactFormState extends State<DeleteArtifactForm> {
     Selection? selection = SelectionProvider.of(context);
     if (artifactManager?.value != null && _formKey.currentState!.validate()) {
       final artifact = artifactManager!.value!.deepCopy();
-      print("deleting $artifact");
+      debugPrint("deleting $artifact");
       String subject = artifact.subject;
       artifactManager?.delete(artifact.name).then((x) {
         selection!.notifySubscribersOf(subject);

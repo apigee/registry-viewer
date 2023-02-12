@@ -89,11 +89,11 @@ class AddArtifactFormState extends State<AddArtifactForm> {
     Selection? selection = SelectionProvider.of(context);
     if (_formKey.currentState!.validate()) {
       String relation = stringValueController.text;
-      print("saving relation $relation");
+      debugPrint("saving relation $relation");
       Artifact artifact = Artifact();
       artifact.name = widget.subjectName + "/artifacts/" + relation;
       artifact.mimeType = "text/plain";
-      print("artifact ${artifact.name}");
+      debugPrint("artifact ${artifact.name}");
       if (relation != "") {
         ArtifactService().create(artifact)!.then((Artifact artifact) {
           selection!.notifySubscribersOf(artifact.subject);
