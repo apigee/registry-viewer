@@ -39,10 +39,10 @@ Future attemptToSignIn() async {
     if (account == null) {
       return;
     }
-    currentUserIsAuthorized = authorized_users.contains(account.email);
+    currentUserIsAuthorized = authorizedUsers.contains(account.email);
     if (!currentUserIsAuthorized) {
       currentUserIsAuthorized =
-          authorized_domains.contains(account.email.split("@").last);
+          authorizedDomains.contains(account.email.split("@").last);
     }
     currentUserIsAuthorized = true;
     account.authentication.then((auth) {
