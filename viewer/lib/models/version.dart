@@ -24,14 +24,14 @@ extension Display on ApiVersion {
   }
 
   String routeNameForDetail() {
-    return "/" + name.replaceAll("/locations/global", "");
+    return "/${name.replaceAll("/locations/global", "")}";
   }
 
   String routeNameForSpecs() {
-    return "/" + name.replaceAll("/locations/global", "") + "/specs";
+    return "/${name.replaceAll("/locations/global", "")}/specs";
   }
 
   String routeNameForArtifacts() {
-    return "/" + name.replaceAll("/locations/global", "") + "/artifacts";
+    return "/${name.replaceAll("/locations/global", "")}/artifacts";
   }
 }

@@ -91,7 +91,7 @@ class AddArtifactFormState extends State<AddArtifactForm> {
       String relation = stringValueController.text;
       debugPrint("saving relation $relation");
       Artifact artifact = Artifact();
-      artifact.name = widget.subjectName + "/artifacts/" + relation;
+      artifact.name = "${widget.subjectName}/artifacts/$relation";
       artifact.mimeType = "text/plain";
       debugPrint("artifact ${artifact.name}");
       if (relation != "") {

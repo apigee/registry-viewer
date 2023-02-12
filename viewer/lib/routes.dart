@@ -64,13 +64,13 @@ class RegistryRouter {
         projectPattern +
         r")|(" +
         apiPattern +
-        ")|(" +
+        r")|(" +
         deploymentPattern +
-        ")|(" +
+        r")|(" +
         versionPattern +
-        ")|(" +
+        r")|(" +
         specPattern +
-        "))/artifacts";
+        r"))/artifacts";
     const artifactPattern = artifactsPattern + r"/" + namePattern;
     const endPattern = r"$";
     // use patterns to build regular expressions
@@ -88,7 +88,7 @@ class RegistryRouter {
   }
 
   MaterialPageRoute generateRoute(RouteSettings settings) {
-    debugPrint("routing " + settings.name!);
+    debugPrint("routing ${settings.name!}");
 
     if (kIsWeb || Platform.isAndroid) {
       if ((settings.name == "/") ||
@@ -297,8 +297,8 @@ MaterialPageRoute notFoundPage(RouteSettings settings) {
             title: const Text('NOT FOUND'),
           ),
           body: Center(
-            child: Text("You were sent to a page that doesn't exist.\n" +
-                settings.name!),
+            child: Text(
+                "You were sent to a page that doesn't exist.\n${settings.name!}"),
           ),
         );
       });

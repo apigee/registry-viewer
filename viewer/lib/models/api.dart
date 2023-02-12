@@ -24,24 +24,22 @@ extension Display on Api {
   }
 
   String routeNameForDetail() {
-    return "/" + name.replaceAll("/locations/global", "");
+    return "/${name.replaceAll("/locations/global", "")}";
   }
 
   String routeNameForVersions() {
-    final name =
-        "/" + this.name.replaceAll("/locations/global", "") + "/versions";
+    final name = "/${this.name.replaceAll("/locations/global", "")}/versions";
     return name;
   }
 
   String routeNameForDeployments() {
     final name =
-        "/" + this.name.replaceAll("/locations/global", "") + "/deployments";
+        "/${this.name.replaceAll("/locations/global", "")}/deployments";
     return name;
   }
 
   String routeNameForArtifacts() {
-    final name =
-        "/" + this.name.replaceAll("/locations/global", "") + "/artifacts";
+    final name = "/${this.name.replaceAll("/locations/global", "")}/artifacts";
     return name;
   }
 }

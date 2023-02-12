@@ -21,10 +21,7 @@ import '../models/selection.dart';
 import '../models/highlight.dart';
 
 String stringForLocation(LintLocation location) {
-  return "[${location.startPosition.lineNumber}:" +
-      "${location.startPosition.columnNumber}-" +
-      "${location.endPosition.lineNumber}:" +
-      "${location.endPosition.columnNumber}]";
+  return "[${location.startPosition.lineNumber}:${location.startPosition.columnNumber}-${location.endPosition.lineNumber}:${location.endPosition.columnNumber}]";
 }
 
 class LintArtifactCard extends StatefulWidget {
@@ -125,9 +122,7 @@ class LintArtifactCardState extends State<LintArtifactCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              problem.file.filePath +
-                                  " " +
-                                  stringForLocation(problem.problem.location),
+                              "${problem.file.filePath} ${stringForLocation(problem.problem.location)}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!

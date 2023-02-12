@@ -24,14 +24,14 @@ extension Display on Project {
   }
 
   String routeNameForDetail() {
-    return "/" + name;
+    return "/$name";
   }
 
   String routeNameForApis() {
-    return "/" + name + "/apis";
+    return "/$name/apis";
   }
 
   String routeNameForArtifacts() {
-    return "/" + name + "/artifacts";
+    return "/$name/artifacts";
   }
 }

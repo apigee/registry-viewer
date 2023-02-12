@@ -196,8 +196,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.versionName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.versionName.value}/artifacts/summary",
                     ),
                     if (version.description != "")
                       PageSection(

@@ -23,7 +23,7 @@ Widget filterBar(
 }) {
   String tooltip = "Add";
   if (type != null) {
-    tooltip += " " + type;
+    tooltip += " $type";
   }
   return AppBar(
     centerTitle: true,

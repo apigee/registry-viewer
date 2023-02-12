@@ -166,8 +166,7 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.projectName.value +
-                          "/locations/global/artifacts/summary",
+                          "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/summary",
                     ),
                     PageSection(
                       children: [

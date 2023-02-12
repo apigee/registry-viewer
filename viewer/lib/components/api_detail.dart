@@ -185,8 +185,7 @@ class ApiDetailCardState extends State<ApiDetailCard>
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.apiName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/summary",
                     ),
                     PageSection(
                       children: [

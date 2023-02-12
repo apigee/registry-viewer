@@ -20,10 +20,10 @@ extension Display on ApiSpec {
   }
 
   String routeNameForDetail() {
-    return "/" + name.replaceAll("/locations/global", "");
+    return "/${name.replaceAll("/locations/global", "")}";
   }
 
   String routeNameForArtifacts() {
-    return "/" + name.replaceAll("/locations/global", "") + "/artifacts";
+    return "/${name.replaceAll("/locations/global", "")}/artifacts";
   }
 }

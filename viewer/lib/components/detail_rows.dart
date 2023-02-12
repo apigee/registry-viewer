@@ -250,7 +250,7 @@ class StringValueRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label + " " + value,
+          child: Text("$label $value",
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyMedium),
         ),
@@ -271,7 +271,7 @@ class TimestampRow extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                "created " + format(created),
+                "created ${format(created)}",
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inconsolata(),
                 softWrap: false,
@@ -284,7 +284,7 @@ class TimestampRow extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                "updated " + format(updated),
+                "updated ${format(updated)}",
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inconsolata(),
                 softWrap: false,
@@ -348,9 +348,9 @@ class LabelsRow extends StatelessWidget {
     if (value == "true") {
       return key;
     } else if (value == "false") {
-      return "!" + key;
+      return "!$key";
     }
-    return key + ":" + value;
+    return "$key:$value";
   }
 }
 
@@ -370,7 +370,7 @@ class AnnotationsRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
             color: Theme.of(context).primaryColorLight,
-            child: Text(key + ":" + map[key]!),
+            child: Text("$key:${map[key]!}"),
           ),
       ],
     );

@@ -166,9 +166,8 @@ class SpecDetailCardState extends State<SpecDetailCard>
                   children: [
                     PageSection(
                       children: [
-                        SuperTitleRow(api.displayName +
-                            "/" +
-                            version.name.split("/").last),
+                        SuperTitleRow(
+                            "${api.displayName}/${version.name.split("/").last}"),
                         TitleRow(spec.name.split("/").last, action: selflink),
                       ],
                     ),
@@ -189,7 +188,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
                     PageSection(
                       children: [
                         BodyRow(spec.mimeType, style: codeStyle),
-                        BodyRow("revision " + spec.revisionId,
+                        BodyRow("revision ${spec.revisionId}",
                             style: codeStyle),
                         BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
                         BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
@@ -222,8 +221,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.specName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.specName.value}/artifacts/summary",
                     ),
                     if (spec.description != "")
                       PageSection(

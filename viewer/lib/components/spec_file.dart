@@ -191,7 +191,7 @@ class SpecFileCardState extends State<SpecFileCard> {
                     if ((address != "SPEC_RENDERER_SERVICE") &&
                         (address != "")) {
                       launchUrl(
-                          Uri.parse(address + "/" + specManager!.value!.name));
+                          Uri.parse("$address/${specManager!.value!.name}"));
                     } else {
                       AlertDialog alert = AlertDialog(
                         content:

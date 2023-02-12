@@ -188,8 +188,7 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.deploymentName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.deploymentName.value}/artifacts/summary",
                     ),
                     if (deployment.description != "")
                       PageSection(

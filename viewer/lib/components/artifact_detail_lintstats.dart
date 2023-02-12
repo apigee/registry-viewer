@@ -19,10 +19,7 @@ import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 
 String stringForLocation(LintLocation location) {
-  return "[${location.startPosition.lineNumber}:" +
-      "${location.startPosition.columnNumber}-" +
-      "${location.endPosition.lineNumber}:" +
-      "${location.endPosition.columnNumber}]";
+  return "[${location.startPosition.lineNumber}:${location.startPosition.columnNumber}-${location.endPosition.lineNumber}:${location.endPosition.columnNumber}]";
 }
 
 class LintStatsArtifactCard extends StatefulWidget {
