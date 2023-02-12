@@ -90,7 +90,7 @@ class SpecOutlineCardState extends State<SpecOutlineCard> {
 
   @override
   Widget build(BuildContext context) {
-    if ((specManager?.value == null) || (data == nil)) {
+    if (specManager?.value == null) {
       return const Card();
     }
     return Card(
