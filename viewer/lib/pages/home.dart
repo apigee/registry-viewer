@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title: const Text(applicationName),
       ),
-      body: Home(),
+      body: const Home(),
     );
   }
 }

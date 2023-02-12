@@ -37,7 +37,7 @@ class StringArtifactCard extends StatelessWidget {
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: EditArtifactForm(),
               ),
             );

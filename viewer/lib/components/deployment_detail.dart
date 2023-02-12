@@ -115,7 +115,7 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditDeploymentForm(),
                 ),

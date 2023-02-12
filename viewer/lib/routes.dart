@@ -148,7 +148,7 @@ MaterialPageRoute signInPage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      return SignInPage();
+      return const SignInPage();
     },
   );
 }
@@ -157,7 +157,7 @@ MaterialPageRoute homePage(RouteSettings settings) {
   return MaterialPageRoute(
     settings: settings,
     builder: (context) {
-      return HomePage();
+      return const HomePage();
     },
   );
 }

@@ -132,7 +132,7 @@ class SignInPageState extends State<SignInPage> {
                 Container(height: 10),
               ],
             ),
-          if (currentUserIsAuthorized) Expanded(child: Home()),
+          if (currentUserIsAuthorized) const Expanded(child: Home()),
         ],
       );
     } else {

@@ -62,7 +62,7 @@ class VersionListPageState extends State<VersionListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

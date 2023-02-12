@@ -62,7 +62,7 @@ class DeploymentListPageState extends State<DeploymentListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

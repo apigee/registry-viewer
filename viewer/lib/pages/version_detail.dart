@@ -102,7 +102,7 @@ class VersionDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

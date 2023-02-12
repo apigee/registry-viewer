@@ -99,7 +99,7 @@ class ProjectDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

@@ -73,8 +73,8 @@ class SpecDetailPage extends StatelessWidget {
               child: TabBarView(
                 children: [
                   const SpecDetailCard(editable: true),
-                  SpecFileCard(),
-                  SpecOutlineCard(),
+                  const SpecFileCard(),
+                  const SpecOutlineCard(),
                   narrow(context)
                       ? const ArtifactListCard(
                           SelectionProvider.spec,
@@ -94,7 +94,7 @@ class SpecDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            BottomBar(),
+            const BottomBar(),
           ]),
         ),
       ),

@@ -85,7 +85,7 @@ class DeploymentDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

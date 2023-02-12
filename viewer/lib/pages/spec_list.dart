@@ -62,7 +62,7 @@ class SpecListPageState extends State<SpecListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

@@ -22,7 +22,7 @@ import 'service/registry.dart';
 
 void main() async {
   attemptToSignIn().then((_) {
-    runApp(Application());
+    runApp(const Application());
   },
       onError: (err) => runApp(Center(
             child: Text(

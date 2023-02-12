@@ -48,7 +48,7 @@ class ProjectListPageState extends State<ProjectListPage> {
             const Expanded(
               child: ProjectListCard(singleColumn: true),
             ),
-            BottomBar(),
+            const BottomBar(),
           ],
         ),
       ),

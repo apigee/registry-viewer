@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
                       view2: ProjectDetailCard(selflink: true, editable: true),
                     ),
             ),
-            BottomBar(),
+            const BottomBar(),
           ],
         ),
       ),

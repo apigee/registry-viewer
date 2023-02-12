@@ -85,7 +85,7 @@ class ArtifactListPageState extends State<ArtifactListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

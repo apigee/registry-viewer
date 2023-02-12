@@ -50,7 +50,7 @@ class ArtifactDetailPage extends StatelessWidget {
             const Expanded(
               child: ArtifactDetailCard(editable: true),
             ),
-            BottomBar(),
+            const BottomBar(),
           ],
         ),
       ),

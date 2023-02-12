@@ -100,7 +100,7 @@ class ApiDetailCardState extends State<ApiDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditAPIForm(),
                 ),

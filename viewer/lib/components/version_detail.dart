@@ -114,7 +114,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditVersionForm(),
                 ),

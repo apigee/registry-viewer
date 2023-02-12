@@ -101,7 +101,7 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditProjectForm(),
                 ),

@@ -63,7 +63,7 @@ class ApiListPageState extends State<ApiListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),
