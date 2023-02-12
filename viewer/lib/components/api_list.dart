@@ -31,17 +31,17 @@ class ApiListCard extends StatefulWidget {
   const ApiListCard({required this.singleColumn});
 
   @override
-  _ApiListCardState createState() => _ApiListCardState();
+  ApiListCardState createState() => ApiListCardState();
 }
 
-class _ApiListCardState extends State<ApiListCard>
+class ApiListCardState extends State<ApiListCard>
     with AutomaticKeepAliveClientMixin {
   ApiService? apiService;
   PagewiseLoadController<Api>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _ApiListCardState() {
+  ApiListCardState() {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
@@ -89,10 +89,10 @@ class ApiListView extends StatefulWidget {
   );
 
   @override
-  _ApiListViewState createState() => _ApiListViewState();
+  ApiListViewState createState() => ApiListViewState();
 }
 
-class _ApiListViewState extends State<ApiListView> {
+class ApiListViewState extends State<ApiListView> {
   String? projectName;
   int selectedIndex = -1;
   Selection? selection;

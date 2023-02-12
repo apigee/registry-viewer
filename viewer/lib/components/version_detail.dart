@@ -29,10 +29,10 @@ class VersionDetailCard extends StatefulWidget {
   final bool? editable;
   const VersionDetailCard({this.selflink, this.editable});
   @override
-  _VersionDetailCardState createState() => _VersionDetailCardState();
+  VersionDetailCardState createState() => VersionDetailCardState();
 }
 
-class _VersionDetailCardState extends State<VersionDetailCard>
+class VersionDetailCardState extends State<VersionDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;

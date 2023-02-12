@@ -28,10 +28,10 @@ class ApiListPage extends StatefulWidget {
       : name = name,
         super(key: key);
   @override
-  _ApiListPageState createState() => _ApiListPageState();
+  ApiListPageState createState() => ApiListPageState();
 }
 
-class _ApiListPageState extends State<ApiListPage> {
+class ApiListPageState extends State<ApiListPage> {
   // convert /projects/{project}/locations/global/apis
   // to projects/{project}/locations/global
   String parentName() {

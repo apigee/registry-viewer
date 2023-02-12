@@ -31,10 +31,10 @@ class ProjectDetailCard extends StatefulWidget {
   final bool? editable;
   const ProjectDetailCard({this.selflink, this.editable});
   @override
-  _ProjectDetailCardState createState() => _ProjectDetailCardState();
+  ProjectDetailCardState createState() => ProjectDetailCardState();
 }
 
-class _ProjectDetailCardState extends State<ProjectDetailCard>
+class ProjectDetailCardState extends State<ProjectDetailCard>
     with AutomaticKeepAliveClientMixin {
   ProjectManager? projectManager;
   Selection? selection;

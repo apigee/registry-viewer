@@ -44,10 +44,10 @@ class Item {
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
   @override
-  _SpecFileCardState createState() => _SpecFileCardState();
+  SpecFileCardState createState() => SpecFileCardState();
 }
 
-class _SpecFileCardState extends State<SpecFileCard> {
+class SpecFileCardState extends State<SpecFileCard> {
   String specName = "";
   SpecManager? specManager;
   String body = "";
@@ -311,10 +311,10 @@ class CodeView extends StatefulWidget {
   final String? text;
   const CodeView(this.text);
   @override
-  _CodeViewState createState() => _CodeViewState();
+  CodeViewState createState() => CodeViewState();
 }
 
-class _CodeViewState extends State<CodeView> {
+class CodeViewState extends State<CodeView> {
   late List<String> lines;
   ScrollController scrollController = ScrollController();
   Highlight? highlight = Highlight(-1, -1, -1, -1);

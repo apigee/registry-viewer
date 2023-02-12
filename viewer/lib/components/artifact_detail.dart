@@ -34,10 +34,10 @@ class ArtifactDetailCard extends StatefulWidget {
   final bool? editable;
   const ArtifactDetailCard({this.selflink, this.editable});
   @override
-  _ArtifactDetailCardState createState() => _ArtifactDetailCardState();
+  ArtifactDetailCardState createState() => ArtifactDetailCardState();
 }
 
-class _ArtifactDetailCardState extends State<ArtifactDetailCard>
+class ArtifactDetailCardState extends State<ArtifactDetailCard>
     with AutomaticKeepAliveClientMixin {
   ArtifactManager? artifactManager;
   Selection? selection;
@@ -183,11 +183,11 @@ class DefaultArtifactDetailCard extends StatefulWidget {
   final Function? selflink;
   const DefaultArtifactDetailCard({this.selflink});
   @override
-  _DefaultArtifactDetailCardState createState() =>
-      _DefaultArtifactDetailCardState();
+  DefaultArtifactDetailCardState createState() =>
+      DefaultArtifactDetailCardState();
 }
 
-class _DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
+class DefaultArtifactDetailCardState extends State<DefaultArtifactDetailCard> {
   ArtifactManager? artifactManager;
   Selection? selection;
 

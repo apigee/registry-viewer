@@ -25,10 +25,10 @@ import '../components/detail_rows.dart';
 // SpecOutlineCard displays an outline view of a spec.
 class SpecOutlineCard extends StatefulWidget {
   @override
-  _SpecOutlineCardState createState() => _SpecOutlineCardState();
+  SpecOutlineCardState createState() => SpecOutlineCardState();
 }
 
-class _SpecOutlineCardState extends State<SpecOutlineCard> {
+class SpecOutlineCardState extends State<SpecOutlineCard> {
   String specName = "";
   SpecManager? specManager;
   List<Entry> data = [];

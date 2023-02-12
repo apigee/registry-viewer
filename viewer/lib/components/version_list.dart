@@ -31,17 +31,17 @@ class VersionListCard extends StatefulWidget {
   const VersionListCard({required this.singleColumn});
 
   @override
-  _VersionListCardState createState() => _VersionListCardState();
+  VersionListCardState createState() => VersionListCardState();
 }
 
-class _VersionListCardState extends State<VersionListCard>
+class VersionListCardState extends State<VersionListCard>
     with AutomaticKeepAliveClientMixin {
   VersionService? versionService;
   PagewiseLoadController<ApiVersion>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _VersionListCardState() {
+  VersionListCardState() {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
@@ -90,10 +90,10 @@ class VersionListView extends StatefulWidget {
   );
 
   @override
-  _VersionListViewState createState() => _VersionListViewState();
+  VersionListViewState createState() => VersionListViewState();
 }
 
-class _VersionListViewState extends State<VersionListView> {
+class VersionListViewState extends State<VersionListView> {
   String? apiName;
   int selectedIndex = -1;
   Selection? selection;

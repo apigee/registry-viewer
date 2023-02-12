@@ -33,7 +33,7 @@ class LintArtifactCard extends StatefulWidget {
   const LintArtifactCard(this.artifact, {this.selflink});
 
   @override
-  _LintArtifactCardState createState() => _LintArtifactCardState();
+  LintArtifactCardState createState() => LintArtifactCardState();
 }
 
 class FileProblem {
@@ -42,7 +42,7 @@ class FileProblem {
   FileProblem(this.file, this.problem);
 }
 
-class _LintArtifactCardState extends State<LintArtifactCard> {
+class LintArtifactCardState extends State<LintArtifactCard> {
   Lint? lint;
   List<FileProblem> problems = [];
   final ScrollController controller = ScrollController();

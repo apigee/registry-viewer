@@ -31,10 +31,10 @@ class CustomSplitView extends StatefulWidget {
   });
 
   @override
-  _CustomSplitViewState createState() => _CustomSplitViewState();
+  CustomSplitViewState createState() => CustomSplitViewState();
 }
 
-class _CustomSplitViewState extends State<CustomSplitView>
+class CustomSplitViewState extends State<CustomSplitView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;

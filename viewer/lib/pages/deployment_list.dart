@@ -28,10 +28,10 @@ class DeploymentListPage extends StatefulWidget {
       : name = name,
         super(key: key);
   @override
-  _DeploymentListPageState createState() => _DeploymentListPageState();
+  DeploymentListPageState createState() => DeploymentListPageState();
 }
 
-class _DeploymentListPageState extends State<DeploymentListPage> {
+class DeploymentListPageState extends State<DeploymentListPage> {
   // convert /projects/{project}/locations/global/apis/{api}/deployments
   // to projects/{project}/locations/global/apis/{api}
   String parentName() {

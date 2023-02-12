@@ -31,10 +31,10 @@ class ApiDetailCard extends StatefulWidget {
   final bool? editable;
   const ApiDetailCard({this.selflink, this.editable});
   @override
-  _ApiDetailCardState createState() => _ApiDetailCardState();
+  ApiDetailCardState createState() => ApiDetailCardState();
 }
 
-class _ApiDetailCardState extends State<ApiDetailCard>
+class ApiDetailCardState extends State<ApiDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   Selection? selection;

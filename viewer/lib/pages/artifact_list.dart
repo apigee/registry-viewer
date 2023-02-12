@@ -28,10 +28,10 @@ class ArtifactListPage extends StatefulWidget {
       : name = name,
         super(key: key);
   @override
-  _ArtifactListPageState createState() => _ArtifactListPageState();
+  ArtifactListPageState createState() => ArtifactListPageState();
 }
 
-class _ArtifactListPageState extends State<ArtifactListPage> {
+class ArtifactListPageState extends State<ArtifactListPage> {
   // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global
   String parentName() {
     List parts = widget.name!.split("/");

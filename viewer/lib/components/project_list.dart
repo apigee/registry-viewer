@@ -32,17 +32,17 @@ class ProjectListCard extends StatefulWidget {
   const ProjectListCard({required this.singleColumn});
 
   @override
-  _ProjectListCardState createState() => _ProjectListCardState();
+  ProjectListCardState createState() => ProjectListCardState();
 }
 
-class _ProjectListCardState extends State<ProjectListCard>
+class ProjectListCardState extends State<ProjectListCard>
     with AutomaticKeepAliveClientMixin {
   ProjectService? projectService;
   PagewiseLoadController<Project>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _ProjectListCardState() {
+  ProjectListCardState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
@@ -89,10 +89,10 @@ class ProjectListView extends StatefulWidget {
   );
 
   @override
-  _ProjectListViewState createState() => _ProjectListViewState();
+  ProjectListViewState createState() => ProjectListViewState();
 }
 
-class _ProjectListViewState extends State<ProjectListView> {
+class ProjectListViewState extends State<ProjectListView> {
   int selectedIndex = -1;
   final ScrollController scrollController = ScrollController();
 

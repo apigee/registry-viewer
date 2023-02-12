@@ -29,10 +29,10 @@ class DeploymentDetailCard extends StatefulWidget {
   final bool? editable;
   const DeploymentDetailCard({this.selflink, this.editable});
   @override
-  _DeploymentDetailCardState createState() => _DeploymentDetailCardState();
+  DeploymentDetailCardState createState() => DeploymentDetailCardState();
 }
 
-class _DeploymentDetailCardState extends State<DeploymentDetailCard>
+class DeploymentDetailCardState extends State<DeploymentDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   DeploymentManager? deploymentManager;

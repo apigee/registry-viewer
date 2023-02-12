@@ -31,10 +31,10 @@ class LintStatsArtifactCard extends StatefulWidget {
   const LintStatsArtifactCard(this.artifact, {this.selflink});
 
   @override
-  _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
+  LintStatsArtifactCardState createState() => LintStatsArtifactCardState();
 }
 
-class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
+class LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
   LintStats? lintstats;
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;

@@ -31,17 +31,17 @@ class DeploymentListCard extends StatefulWidget {
   const DeploymentListCard({required this.singleColumn});
 
   @override
-  _DeploymentListCardState createState() => _DeploymentListCardState();
+  DeploymentListCardState createState() => DeploymentListCardState();
 }
 
-class _DeploymentListCardState extends State<DeploymentListCard>
+class DeploymentListCardState extends State<DeploymentListCard>
     with AutomaticKeepAliveClientMixin {
   DeploymentService? deploymentService;
   PagewiseLoadController<ApiDeployment>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _DeploymentListCardState() {
+  DeploymentListCardState() {
     deploymentService = DeploymentService();
     pageLoadController = PagewiseLoadController<ApiDeployment>(
         pageSize: pageSize,
@@ -90,10 +90,10 @@ class DeploymentListView extends StatefulWidget {
   );
 
   @override
-  _DeploymentListViewState createState() => _DeploymentListViewState();
+  DeploymentListViewState createState() => DeploymentListViewState();
 }
 
-class _DeploymentListViewState extends State<DeploymentListView> {
+class DeploymentListViewState extends State<DeploymentListView> {
   String? apiName;
   int selectedIndex = -1;
   Selection? selection;

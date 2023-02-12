@@ -39,10 +39,10 @@ class ArtifactListCard extends StatefulWidget {
       {required this.singleColumn});
 
   @override
-  _ArtifactListCardState createState() => _ArtifactListCardState();
+  ArtifactListCardState createState() => ArtifactListCardState();
 }
 
-class _ArtifactListCardState extends State<ArtifactListCard>
+class ArtifactListCardState extends State<ArtifactListCard>
     with AutomaticKeepAliveClientMixin {
   late ObservableString observableSubjectName;
   String? subjectName;
@@ -51,7 +51,7 @@ class _ArtifactListCardState extends State<ArtifactListCard>
   @override
   bool get wantKeepAlive => true;
 
-  _ArtifactListCardState() {
+  ArtifactListCardState() {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
@@ -140,10 +140,10 @@ class ArtifactListView extends StatefulWidget {
     this.singleColumn,
   );
   @override
-  _ArtifactListViewState createState() => _ArtifactListViewState();
+  ArtifactListViewState createState() => ArtifactListViewState();
 }
 
-class _ArtifactListViewState extends State<ArtifactListView> {
+class ArtifactListViewState extends State<ArtifactListView> {
   String? parentName;
   int selectedIndex = -1;
   ObservableString? filter;

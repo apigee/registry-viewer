@@ -28,10 +28,10 @@ class SpecListPage extends StatefulWidget {
       : name = name,
         super(key: key);
   @override
-  _SpecListPageState createState() => _SpecListPageState();
+  SpecListPageState createState() => SpecListPageState();
 }
 
-class _SpecListPageState extends State<SpecListPage> {
+class SpecListPageState extends State<SpecListPage> {
   // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs
   // to projects/{project}/locations/global/apis/{api}/versions/{version}
   String parentName() {

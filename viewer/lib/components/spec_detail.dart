@@ -31,10 +31,10 @@ class SpecDetailCard extends StatefulWidget {
   final bool? editable;
   const SpecDetailCard({this.selflink, this.editable});
   @override
-  _SpecDetailCardState createState() => _SpecDetailCardState();
+  SpecDetailCardState createState() => SpecDetailCardState();
 }
 
-class _SpecDetailCardState extends State<SpecDetailCard>
+class SpecDetailCardState extends State<SpecDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;

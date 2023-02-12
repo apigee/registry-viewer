@@ -27,10 +27,10 @@ class ProjectListPage extends StatefulWidget {
       : name = name,
         super(key: key);
   @override
-  _ProjectListPageState createState() => _ProjectListPageState();
+  ProjectListPageState createState() => ProjectListPageState();
 }
 
-class _ProjectListPageState extends State<ProjectListPage> {
+class ProjectListPageState extends State<ProjectListPage> {
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(

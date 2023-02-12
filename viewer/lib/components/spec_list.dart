@@ -30,17 +30,17 @@ class SpecListCard extends StatefulWidget {
   const SpecListCard({required this.singleColumn});
 
   @override
-  _SpecListCardState createState() => _SpecListCardState();
+  SpecListCardState createState() => SpecListCardState();
 }
 
-class _SpecListCardState extends State<SpecListCard>
+class SpecListCardState extends State<SpecListCard>
     with AutomaticKeepAliveClientMixin {
   SpecService? specService;
   PagewiseLoadController<ApiSpec>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _SpecListCardState() {
+  SpecListCardState() {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
@@ -88,10 +88,10 @@ class SpecListView extends StatefulWidget {
   );
 
   @override
-  _SpecListViewState createState() => _SpecListViewState();
+  SpecListViewState createState() => SpecListViewState();
 }
 
-class _SpecListViewState extends State<SpecListView> {
+class SpecListViewState extends State<SpecListView> {
   String? versionName;
   int selectedIndex = -1;
   Selection? selection;

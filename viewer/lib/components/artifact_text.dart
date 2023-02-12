@@ -24,10 +24,10 @@ class ArtifactText extends StatefulWidget {
 
   const ArtifactText(this.artifactName);
   @override
-  _ArtifactTextState createState() => _ArtifactTextState();
+  ArtifactTextState createState() => ArtifactTextState();
 }
 
-class _ArtifactTextState extends State<ArtifactText> {
+class ArtifactTextState extends State<ArtifactText> {
   ArtifactManager? artifactManager;
   Selection? selection;
 
