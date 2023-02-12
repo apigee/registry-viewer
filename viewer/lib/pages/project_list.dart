@@ -23,7 +23,7 @@ import '../models/string.dart';
 class ProjectListPage extends StatefulWidget {
   final String? name;
 
-  ProjectListPage(String? name, {Key? key})
+  const ProjectListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override

@@ -29,7 +29,7 @@ import '../service/registry.dart';
 class ApiDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  ApiDetailCard({this.selflink, this.editable});
+  const ApiDetailCard({this.selflink, this.editable});
   _ApiDetailCardState createState() => _ApiDetailCardState();
 }
 

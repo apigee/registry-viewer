@@ -261,7 +261,7 @@ class SimpleCodeView extends StatelessWidget {
   final String? text;
   final rowHeight = 18.0;
 
-  SimpleCodeView(this.text);
+  const SimpleCodeView(this.text);
 
   @override
   Widget build(BuildContext context) {

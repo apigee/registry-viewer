@@ -29,7 +29,7 @@ import '../service/registry.dart';
 class ProjectDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  ProjectDetailCard({this.selflink, this.editable});
+  const ProjectDetailCard({this.selflink, this.editable});
   _ProjectDetailCardState createState() => _ProjectDetailCardState();
 }
 

@@ -24,7 +24,7 @@ import '../models/selection.dart';
 class ApiListPage extends StatefulWidget {
   final String? name;
 
-  ApiListPage(String? name, {Key? key})
+  const ApiListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override

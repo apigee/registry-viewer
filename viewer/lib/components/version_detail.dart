@@ -27,7 +27,7 @@ import '../service/registry.dart';
 class VersionDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  VersionDetailCard({this.selflink, this.editable});
+  const VersionDetailCard({this.selflink, this.editable});
   _VersionDetailCardState createState() => _VersionDetailCardState();
 }
 

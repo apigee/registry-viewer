@@ -30,7 +30,7 @@ class ResourceNameButtonRow extends StatelessWidget {
   final String? name;
   final void Function()? show;
   final void Function()? edit;
-  ResourceNameButtonRow({this.name, this.show, this.edit});
+  const ResourceNameButtonRow({this.name, this.show, this.edit});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,7 +85,7 @@ class ResourceNameButtonRow extends StatelessWidget {
 class PanelNameRow extends StatelessWidget {
   final String? name;
   final Widget? button;
-  PanelNameRow({this.name, this.button});
+  const PanelNameRow({this.name, this.button});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -113,7 +113,7 @@ class PanelNameRow extends StatelessWidget {
 class TitleRow extends StatelessWidget {
   final String text;
   final Function? action;
-  TitleRow(this.text, {this.action});
+  const TitleRow(this.text, {this.action});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -147,7 +147,7 @@ class TitleRow extends StatelessWidget {
 
 class SuperTitleRow extends StatelessWidget {
   final String text;
-  SuperTitleRow(this.text);
+  const SuperTitleRow(this.text);
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -169,7 +169,7 @@ class BodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
   final bool wrap;
-  BodyRow(this.text, {this.style, this.wrap = false});
+  const BodyRow(this.text, {this.style, this.wrap = false});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -188,7 +188,7 @@ class BodyRow extends StatelessWidget {
 class LinkifiedBodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
-  LinkifiedBodyRow(this.text, {this.style});
+  const LinkifiedBodyRow(this.text, {this.style});
   @override
   Widget build(BuildContext context) {
     final textStyle = style ?? Theme.of(context).textTheme.bodyLarge!;
@@ -213,7 +213,7 @@ class LinkifiedBodyRow extends StatelessWidget {
 class LinkRow extends StatelessWidget {
   final String text;
   final String url;
-  LinkRow(this.text, this.url);
+  const LinkRow(this.text, this.url);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -243,7 +243,7 @@ class LinkRow extends StatelessWidget {
 class StringValueRow extends StatelessWidget {
   final String label;
   final String value;
-  StringValueRow(this.label, this.value);
+  const StringValueRow(this.label, this.value);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -261,7 +261,7 @@ class StringValueRow extends StatelessWidget {
 class TimestampRow extends StatelessWidget {
   final Timestamp created;
   final Timestamp updated;
-  TimestampRow(this.created, this.updated);
+  const TimestampRow(this.created, this.updated);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -299,7 +299,7 @@ class TimestampRow extends StatelessWidget {
 
 class DetailRow extends StatelessWidget {
   final String text;
-  DetailRow(this.text);
+  const DetailRow(this.text);
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -324,7 +324,7 @@ class DetailRow extends StatelessWidget {
 class LabelsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  LabelsRow(this.map, {this.style});
+  const LabelsRow(this.map, {this.style});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -356,7 +356,7 @@ class LabelsRow extends StatelessWidget {
 class AnnotationsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  AnnotationsRow(this.map, {this.style});
+  const AnnotationsRow(this.map, {this.style});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -378,7 +378,7 @@ class AnnotationsRow extends StatelessWidget {
 
 class PageSection extends StatelessWidget {
   final List<Widget>? children;
-  PageSection({this.children});
+  const PageSection({this.children});
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];

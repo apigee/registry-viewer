@@ -307,7 +307,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
 class CodeView extends StatefulWidget {
   final String? text;
-  CodeView(this.text);
+  const CodeView(this.text);
   @override
   _CodeViewState createState() => _CodeViewState();
 }

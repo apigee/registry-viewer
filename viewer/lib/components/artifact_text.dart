@@ -22,7 +22,7 @@ import '../service/registry.dart';
 class ArtifactText extends StatefulWidget {
   final String Function() artifactName;
 
-  ArtifactText(this.artifactName);
+  const ArtifactText(this.artifactName);
   _ArtifactTextState createState() => _ArtifactTextState();
 }
 

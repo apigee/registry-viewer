@@ -27,7 +27,7 @@ typedef SpecSelectionHandler = Function(BuildContext context, ApiSpec spec);
 // SpecListCard is a card that displays a list of specs.
 class SpecListCard extends StatefulWidget {
   final bool singleColumn;
-  SpecListCard({required this.singleColumn});
+  const SpecListCard({required this.singleColumn});
 
   @override
   _SpecListCardState createState() => _SpecListCardState();
@@ -80,7 +80,7 @@ class SpecListView extends StatefulWidget {
   final PagewiseLoadController<ApiSpec>? pageLoadController;
   final bool singleColumn;
 
-  SpecListView(
+  const SpecListView(
     this.selectionHandler,
     this.specService,
     this.pageLoadController,
@@ -208,7 +208,7 @@ class _SpecListViewState extends State<SpecListView> {
 
 // SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends CustomSearchBox {
-  SpecSearchBox()
+  const SpecSearchBox()
       : super(
           "Filter Specs",
           "spec_id.contains('TEXT')",

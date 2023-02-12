@@ -28,7 +28,7 @@ import '../helpers/title.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String? name;
-  VersionDetailPage({this.name});
+  const VersionDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {

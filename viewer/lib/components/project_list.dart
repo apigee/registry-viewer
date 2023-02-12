@@ -29,7 +29,7 @@ typedef ProjectSelectionHandler = Function(
 // ProjectListCard is a card that displays a list of projects.
 class ProjectListCard extends StatefulWidget {
   final bool singleColumn;
-  ProjectListCard({required this.singleColumn});
+  const ProjectListCard({required this.singleColumn});
 
   @override
   _ProjectListCardState createState() => _ProjectListCardState();
@@ -81,7 +81,7 @@ class ProjectListView extends StatefulWidget {
   final PagewiseLoadController<Project>? pageLoadController;
   final bool singleColumn;
 
-  ProjectListView(
+  const ProjectListView(
     this.selectionHandler,
     this.projectService,
     this.pageLoadController,
@@ -185,7 +185,7 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 // ProjectSearchBox provides a search box for projects.
 class ProjectSearchBox extends CustomSearchBox {
-  ProjectSearchBox()
+  const ProjectSearchBox()
       : super(
           "Filter Projects",
           "project_id.contains('TEXT')",

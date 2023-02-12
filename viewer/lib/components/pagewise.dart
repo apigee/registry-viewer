@@ -102,7 +102,7 @@ abstract class Pagewise<T> extends StatefulWidget {
   ///
   /// This is an abstract class, this constructor should only be called from
   /// constructors of widgets that extend this class
-  Pagewise(
+  const Pagewise(
       {this.pageSize,
       this.pageFuture,
       Key? key,

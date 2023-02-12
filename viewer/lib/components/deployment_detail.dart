@@ -27,7 +27,7 @@ import '../service/registry.dart';
 class DeploymentDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  DeploymentDetailCard({this.selflink, this.editable});
+  const DeploymentDetailCard({this.selflink, this.editable});
   _DeploymentDetailCardState createState() => _DeploymentDetailCardState();
 }
 

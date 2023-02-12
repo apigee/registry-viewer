@@ -24,7 +24,7 @@ import '../models/selection.dart';
 class ArtifactListPage extends StatefulWidget {
   final String? name;
 
-  ArtifactListPage(String? name, {Key? key})
+  const ArtifactListPage(String? name, {Key? key})
       : name = name,
         super(key: key);
   @override

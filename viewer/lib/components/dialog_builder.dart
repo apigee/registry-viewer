@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 
 class DialogBuilder extends StatelessWidget {
   final Widget? child;
-  DialogBuilder({this.child});
+  const DialogBuilder({this.child});
 
   @override
   Widget build(BuildContext context) {

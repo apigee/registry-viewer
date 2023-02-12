@@ -35,7 +35,7 @@ typedef ArtifactSelectionHandler = Function(
 class ArtifactListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
   final bool singleColumn;
-  ArtifactListCard(this.getObservableResourceName,
+  const ArtifactListCard(this.getObservableResourceName,
       {required this.singleColumn});
 
   @override
@@ -132,7 +132,7 @@ class ArtifactListView extends StatefulWidget {
   final PagewiseLoadController<Artifact>? pageLoadController;
   final bool singleColumn;
 
-  ArtifactListView(
+  const ArtifactListView(
     this.getObservableResourceName,
     this.selectionHandler,
     this.artifactService,
@@ -252,7 +252,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
 
 // ArtifactSearchBox provides a search box for artifacts.
 class ArtifactSearchBox extends CustomSearchBox {
-  ArtifactSearchBox()
+  const ArtifactSearchBox()
       : super(
           "Filter Artifacts",
           "artifact_id.contains('TEXT')",

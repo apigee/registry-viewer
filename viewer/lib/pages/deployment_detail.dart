@@ -26,7 +26,7 @@ import '../helpers/title.dart';
 
 class DeploymentDetailPage extends StatelessWidget {
   final String? name;
-  DeploymentDetailPage({this.name});
+  const DeploymentDetailPage({this.name});
 
   @override
   Widget build(BuildContext context) {
