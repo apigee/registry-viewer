@@ -127,11 +127,11 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                     PageSection(children: [
                       TitleRow(api.displayName, action: selflink),
                     ]),
-                    if (api.labels.length > 0)
+                    if (api.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(api.labels),
                       ]),
-                    if (api.annotations.length > 0)
+                    if (api.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
@@ -140,16 +140,16 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                         TimestampRow(api.createTime, api.updateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          child: Text("Versions"),
+                          child: const Text("Versions"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -158,7 +158,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Deployments"),
+                          child: const Text("Deployments"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -167,7 +167,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -177,11 +177,11 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
                           SelectionProvider.of(context)!.apiName.value +

@@ -147,11 +147,11 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                             action: selflink),
                       ],
                     ),
-                    if (deployment.labels.length > 0)
+                    if (deployment.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(deployment.labels),
                       ]),
-                    if (deployment.annotations.length > 0)
+                    if (deployment.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(deployment.annotations),
                       ]),

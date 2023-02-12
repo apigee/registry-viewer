@@ -37,7 +37,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) && (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.isNotEmpty)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
           String body = const Utf8Codec().decoder.convert(bytes);

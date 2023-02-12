@@ -172,11 +172,11 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         TitleRow(spec.name.split("/").last, action: selflink),
                       ],
                     ),
-                    if (spec.labels.length > 0)
+                    if (spec.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(spec.labels),
                       ]),
-                    if (spec.annotations.length > 0)
+                    if (spec.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(spec.annotations),
                       ]),

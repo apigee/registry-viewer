@@ -355,7 +355,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
 
   /// set to true if no data was found
   bool get noItemsFound =>
-      this._loadedItems!.length == 0 && this.hasMoreItems == false;
+      this._loadedItems!.isEmpty && this.hasMoreItems == false;
 
   /// Called to initialize the controller. Same as [reset]
   void init() {

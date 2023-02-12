@@ -147,11 +147,11 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                             action: selflink),
                       ],
                     ),
-                    if (version.labels.length > 0)
+                    if (version.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(version.labels),
                       ]),
-                    if (version.annotations.length > 0)
+                    if (version.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),

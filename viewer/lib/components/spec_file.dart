@@ -61,7 +61,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) && (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.isNotEmpty)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
           body = const Utf8Codec().decoder.convert(data);
