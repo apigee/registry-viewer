@@ -100,11 +100,11 @@ class Selection extends ChangeNotifier {
       labelName,
       fileName,
     ];
-    strings.forEach((v) {
+    for (var v in strings) {
       if (v.value == subject) {
         v.notifyListeners();
       }
-    });
+    }
   }
 }
 

@@ -75,11 +75,11 @@ class LintArtifactCardState extends State<LintArtifactCard> {
   Widget build(BuildContext context) {
     if (lint == null) {
       lint = Lint.fromBuffer(widget.artifact.contents);
-      lint!.files.forEach((file) {
-        file.problems.forEach((problem) {
+      for (var file in lint!.files) {
+        for (var problem in file.problems) {
           problems.add(FileProblem(file, problem));
-        });
-      });
+        }
+      }
     }
     return Card(
       child: Column(

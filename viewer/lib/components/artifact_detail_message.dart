@@ -105,7 +105,9 @@ class Entry {
 }
 
 dumpList(List<Entry> data, int indent) {
-  data.forEach((element) => element.dump(indent));
+  for (var element in data) {
+    element.dump(indent);
+  }
 }
 
 Container entryRow(Entry e) {

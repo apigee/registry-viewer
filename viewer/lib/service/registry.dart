@@ -112,9 +112,9 @@ class Manager extends ChangeNotifier {
         names.add(name);
       }
     });
-    names.forEach((name) {
+    for (var name in names) {
       managers.remove(name);
-    });
+    }
   }
 }
 
