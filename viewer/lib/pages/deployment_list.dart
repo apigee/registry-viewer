@@ -24,9 +24,7 @@ import '../models/selection.dart';
 class DeploymentListPage extends StatefulWidget {
   final String? name;
 
-  const DeploymentListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const DeploymentListPage(this.name, {super.key});
   @override
   DeploymentListPageState createState() => DeploymentListPageState();
 }

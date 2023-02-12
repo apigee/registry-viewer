@@ -132,7 +132,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditSpecForm(),
                 ),

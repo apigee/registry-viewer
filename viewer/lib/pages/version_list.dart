@@ -24,9 +24,7 @@ import '../models/selection.dart';
 class VersionListPage extends StatefulWidget {
   final String? name;
 
-  const VersionListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const VersionListPage(this.name, {super.key});
   @override
   VersionListPageState createState() => VersionListPageState();
 }

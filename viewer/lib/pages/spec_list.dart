@@ -24,9 +24,7 @@ import '../models/selection.dart';
 class SpecListPage extends StatefulWidget {
   final String? name;
 
-  const SpecListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const SpecListPage(this.name, {super.key});
   @override
   SpecListPageState createState() => SpecListPageState();
 }
