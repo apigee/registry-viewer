@@ -48,9 +48,7 @@ class LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (lintstats == null) {
-      lintstats = LintStats.fromBuffer(widget.artifact.contents);
-    }
+    lintstats ??= LintStats.fromBuffer(widget.artifact.contents);
     return Card(
       child: Column(
         children: [

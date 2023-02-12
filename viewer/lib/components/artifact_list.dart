@@ -64,9 +64,7 @@ class ArtifactListCardState extends State<ArtifactListCard>
     pageLoadController?.reset();
     setState(() {
       subjectName = observableSubjectName.value;
-      if (subjectName == null) {
-        subjectName = "";
-      }
+      subjectName ??= "";
     });
   }
 
