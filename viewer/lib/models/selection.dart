@@ -28,77 +28,77 @@ class Selection extends ChangeNotifier {
   ObservableHighlight highlight = ObservableHighlight();
 
   void updateProjectName(String project) {
-    this.projectName.update(project);
-    this.apiName.update("");
-    this.versionName.update("");
-    this.specName.update("");
-    this.deploymentName.update("");
-    this.labelName.update("");
-    this.artifactName.update("");
-    this.fileName.update("");
-    this.highlight.update(null);
+    projectName.update(project);
+    apiName.update("");
+    versionName.update("");
+    specName.update("");
+    deploymentName.update("");
+    labelName.update("");
+    artifactName.update("");
+    fileName.update("");
+    highlight.update(null);
   }
 
   void updateApiName(String api) {
-    this.apiName.update(api);
-    this.versionName.update("");
-    this.specName.update("");
-    this.deploymentName.update("");
-    this.labelName.update("");
-    this.artifactName.update("");
-    this.fileName.update("");
-    this.highlight.update(null);
+    apiName.update(api);
+    versionName.update("");
+    specName.update("");
+    deploymentName.update("");
+    labelName.update("");
+    artifactName.update("");
+    fileName.update("");
+    highlight.update(null);
   }
 
   void updateVersionName(String version) {
-    this.versionName.update(version);
-    this.specName.update("");
-    this.labelName.update("");
-    this.artifactName.update("");
-    this.fileName.update("");
-    this.highlight.update(null);
+    versionName.update(version);
+    specName.update("");
+    labelName.update("");
+    artifactName.update("");
+    fileName.update("");
+    highlight.update(null);
   }
 
   void updateDeploymentName(String deployment) {
-    this.deploymentName.update(deployment);
-    this.labelName.update("");
-    this.artifactName.update("");
+    deploymentName.update(deployment);
+    labelName.update("");
+    artifactName.update("");
   }
 
   void updateSpecName(String spec) {
-    this.specName.update(spec);
-    this.labelName.update("");
-    this.artifactName.update("");
-    this.fileName.update("");
-    this.highlight.update(null);
+    specName.update(spec);
+    labelName.update("");
+    artifactName.update("");
+    fileName.update("");
+    highlight.update(null);
   }
 
   void updateLabelName(String label) {
-    this.labelName.update(label);
+    labelName.update(label);
   }
 
   void updateArtifactName(String artifact) {
-    this.artifactName.update(artifact);
+    artifactName.update(artifact);
   }
 
   void updateFilename(String file) {
-    this.fileName.update(file);
+    fileName.update(file);
   }
 
-  void updateHighight(Highlight highlight) {
-    this.highlight.update(highlight);
+  void updateHighight(Highlight h) {
+    highlight.update(h);
   }
 
   void notifySubscribersOf(String subject) {
     List<ObservableString> strings = [
-      this.projectName,
-      this.apiName,
-      this.versionName,
-      this.specName,
-      this.deploymentName,
-      this.artifactName,
-      this.labelName,
-      this.fileName,
+      projectName,
+      apiName,
+      versionName,
+      specName,
+      deploymentName,
+      artifactName,
+      labelName,
+      fileName,
     ];
     strings.forEach((v) {
       if (v.value == subject) {

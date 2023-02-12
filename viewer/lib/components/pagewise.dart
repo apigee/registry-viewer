@@ -369,7 +369,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
     this._hasMoreItems = true;
     this._error = null;
     this._isFetching = false;
-    this.notifyListeners();
+    notifyListeners();
   }
 
   /// Fetches a new page by calling [pageFuture]
@@ -386,7 +386,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
       } catch (error) {
         this._error = error;
         this._isFetching = false;
-        this.notifyListeners();
+        notifyListeners();
         return;
       }
 
@@ -411,7 +411,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
   /// Attempts to retry in case an error occurred
   void retry() {
     this._error = null;
-    this.notifyListeners();
+    notifyListeners();
   }
 }
 

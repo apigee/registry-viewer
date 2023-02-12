@@ -145,7 +145,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiDeployment>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),

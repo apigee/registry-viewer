@@ -95,11 +95,11 @@ class Entry {
   final List<Entry> children;
 
   dump(int indent) {
-    if (this.label != null) {
-      print('${" " * indent}' + this.label!);
+    if (label != null) {
+      print('${" " * indent}' + label!);
     }
-    print('${" " * indent}' + this.value);
-    dumpList(this.children, indent + 1);
+    print('${" " * indent}' + value);
+    dumpList(children, indent + 1);
   }
 }
 

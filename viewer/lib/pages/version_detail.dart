@@ -51,7 +51,7 @@ class VersionDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Version Details",
+              pageTitle(name) ?? "Version Details",
             ),
             actions: <Widget>[
               homeButton(context),

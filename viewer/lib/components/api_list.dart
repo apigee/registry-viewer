@@ -144,7 +144,7 @@ class _ApiListViewState extends State<ApiListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Api>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),

@@ -187,7 +187,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Artifact>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),

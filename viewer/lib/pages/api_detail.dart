@@ -50,7 +50,7 @@ class ApiDetailPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(pageTitle(this.name) ?? "API Details"),
+            title: Text(pageTitle(name) ?? "API Details"),
             actions: <Widget>[
               homeButton(context),
             ],

@@ -44,9 +44,9 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
           YamlNode? doc = loadYamlNode(body);
           data = parseDoc(doc, 0);
         } else if (spec.mimeType.endsWith("+zip")) {
-          this.data = parseZip(spec.contents);
+          data = parseZip(spec.contents);
         } else {
-          //this.body = "";
+          //body = "";
         }
       }
     });
@@ -88,7 +88,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
 
   @override
   Widget build(BuildContext context) {
-    if ((specManager?.value == null) || (this.data == nil)) {
+    if ((specManager?.value == null) || (data == nil)) {
       return Card();
     }
     return Card(
@@ -266,7 +266,7 @@ class SimpleCodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      this.text!,
+      text!,
       textAlign: TextAlign.left,
       softWrap: false,
       style: GoogleFonts.inconsolata(color: Colors.grey[800]).copyWith(

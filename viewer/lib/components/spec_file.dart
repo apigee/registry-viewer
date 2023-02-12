@@ -64,9 +64,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
       if ((spec != null) && (spec.contents.length > 0)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
-          this.body = Utf8Codec().decoder.convert(data);
+          body = Utf8Codec().decoder.convert(data);
         } else if (spec.mimeType.endsWith("+zip")) {
-          this.items = [];
+          items = [];
           final archive = ZipDecoder().decodeBytes(spec.contents);
           for (final file in archive) {
             final filename = file.name;
@@ -82,7 +82,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
             }
           }
         } else {
-          this.body = "";
+          body = "";
         }
       }
     });
@@ -130,9 +130,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
     if (name == "") {
       return;
     }
-    if (this.items != null) {
-      for (int i = 0; i < this.items!.length; i++) {
-        if (this.items![i].headerValue == name) {
+    if (items != null) {
+      for (int i = 0; i < items!.length; i++) {
+        if (items![i].headerValue == name) {
           selectedItemIndex = i;
           // if the item is off screen, animate it into position
           if (!isVisible(selectedItemIndex)) {
@@ -172,7 +172,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
     if (specManager?.value == null) {
       return Card();
     } else {
-      if (this.items == null) {
+      if (items == null) {
         // single-file view
         return Card(
           child: Column(
@@ -242,10 +242,10 @@ class _SpecFileCardState extends State<SpecFileCard> {
                           listHeight = size.height;
                         },
                         child: ListView.builder(
-                          itemCount: this.items!.length,
+                          itemCount: items!.length,
                           controller: listScrollController,
                           itemBuilder: (BuildContext context, int index) {
-                            String fileName = this.items![index].headerValue!;
+                            String fileName = items![index].headerValue!;
 
                             Color? color = (index != selectedItemIndex)
                                 ? Theme.of(context).textTheme.bodyLarge!.color
@@ -289,12 +289,11 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: this.items![selectedItemIndex].headerValue),
+                PanelNameRow(name: items![selectedItemIndex].headerValue),
                 Expanded(
                   child: Container(
                     width: double.infinity,
-                    child:
-                        CodeView(this.items![selectedItemIndex].expandedValue),
+                    child: CodeView(items![selectedItemIndex].expandedValue),
                   ),
                 ),
               ],

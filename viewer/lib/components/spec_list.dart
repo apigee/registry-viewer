@@ -143,7 +143,7 @@ class _SpecListViewState extends State<SpecListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiSpec>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),

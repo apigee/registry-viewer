@@ -120,7 +120,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Project>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),

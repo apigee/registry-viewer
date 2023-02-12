@@ -49,7 +49,7 @@ class DeploymentDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Deployment Details",
+              pageTitle(name) ?? "Deployment Details",
             ),
             actions: <Widget>[
               homeButton(context),

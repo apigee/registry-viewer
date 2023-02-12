@@ -40,7 +40,7 @@ class ArtifactDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(pageTitle(this.name) ?? "Artifact Details"),
+          title: Text(pageTitle(name) ?? "Artifact Details"),
           actions: <Widget>[
             homeButton(context),
           ],

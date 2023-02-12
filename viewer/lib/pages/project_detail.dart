@@ -49,7 +49,7 @@ class ProjectDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Project Details",
+              pageTitle(name) ?? "Project Details",
             ),
             actions: <Widget>[
               homeButton(context),

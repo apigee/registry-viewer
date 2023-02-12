@@ -16,18 +16,18 @@ import 'package:registry/registry.dart';
 
 extension Display on ApiDeployment {
   String nameForDisplay() {
-    if (this.displayName != "") {
-      return this.displayName;
+    if (displayName != "") {
+      return displayName;
     } else {
-      return this.name.split("/").last;
+      return name.split("/").last;
     }
   }
 
   String routeNameForDetail() {
-    return "/" + this.name.replaceAll("/locations/global/", "/");
+    return "/" + name.replaceAll("/locations/global/", "/");
   }
 
   String routeNameForArtifacts() {
-    return "/" + this.name.replaceAll("/locations/global", "") + "/artifacts";
+    return "/" + name.replaceAll("/locations/global", "") + "/artifacts";
   }
 }

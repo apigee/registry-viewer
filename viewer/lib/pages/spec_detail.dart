@@ -54,7 +54,7 @@ class SpecDetailPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Spec Details",
+              pageTitle(name) ?? "Spec Details",
             ),
             actions: <Widget>[
               homeButton(context),

@@ -145,7 +145,7 @@ class _VersionListViewState extends State<VersionListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiVersion>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
