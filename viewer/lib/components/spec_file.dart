@@ -27,8 +27,8 @@ import '../models/selection.dart';
 import '../service/registry.dart';
 import '../components/split_view.dart';
 
-final scrollDuration = const Duration(milliseconds: 300);
-final scrollCurve = Curves.easeInOut;
+const scrollDuration = Duration(milliseconds: 300);
+const scrollCurve = Curves.easeInOut;
 
 // An item in a spec file (a file in a zip archive).
 class Item {
