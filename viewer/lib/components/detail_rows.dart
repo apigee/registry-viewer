@@ -66,7 +66,7 @@ class ResourceNameButtonRow extends StatelessWidget {
             ),
           if (edit != null)
             GestureDetector(
-              onTap: edit != null ? edit : () {},
+              onTap: edit ?? () {},
               child: Text(
                 "EDIT",
                 style: Theme.of(context)
