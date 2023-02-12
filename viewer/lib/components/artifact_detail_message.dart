@@ -142,14 +142,14 @@ class EntryItem extends StatelessWidget {
   const EntryItem(this.entry, {super.key});
 
   Widget _buildTiles(BuildContext context, Entry root) {
-    if (root.children.isEmpty)
+    if (root.children.isEmpty) {
       return ListTile(
         minVerticalPadding: 0,
         title: entryRow(root),
         contentPadding: EdgeInsets.zero,
         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       );
-
+    }
     List<Widget> children = [];
     for (var child in root.children) {
       children.add(_buildTiles(context, child));
