@@ -173,7 +173,7 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                         MarkdownBody(
                           data: project.description,
                           onTapLink: (text, url, title) {
-                            launch(url!);
+                            launchUrl(Uri.parse(url!));
                           },
                         ),
                       ],

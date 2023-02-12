@@ -192,7 +192,7 @@ class ApiDetailCardState extends State<ApiDetailCard>
                         MarkdownBody(
                           data: api.description,
                           onTapLink: (text, url, title) {
-                            launch(url!);
+                            launchUrl(Uri.parse(url!));
                           },
                         ),
                       ],
