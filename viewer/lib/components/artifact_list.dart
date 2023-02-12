@@ -82,7 +82,8 @@ class ArtifactListCardState extends State<ArtifactListCard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    Function add = () {
+
+    add() {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
@@ -94,7 +95,8 @@ class ArtifactListCardState extends State<ArtifactListCard>
               ),
             );
           });
-    };
+    }
+
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
