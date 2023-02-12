@@ -42,12 +42,12 @@ class RegistryProvider extends InheritedWidget {
 }
 
 class Registry {
-  Map<String, ProjectManager> projectManagers = Map();
-  Map<String, ApiManager> apiManagers = Map();
-  Map<String, VersionManager> versionManagers = Map();
-  Map<String, DeploymentManager> deploymentManagers = Map();
-  Map<String, SpecManager> specManagers = Map();
-  Map<String?, ArtifactManager> artifactManagers = Map();
+  Map<String, ProjectManager> projectManagers = {};
+  Map<String, ApiManager> apiManagers = {};
+  Map<String, VersionManager> versionManagers = {};
+  Map<String, DeploymentManager> deploymentManagers = {};
+  Map<String, SpecManager> specManagers = {};
+  Map<String?, ArtifactManager> artifactManagers = {};
 
   ProjectManager? getProjectManager(String name) {
     Manager.removeUnused(projectManagers);

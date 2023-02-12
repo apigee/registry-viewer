@@ -56,7 +56,7 @@ class ProjectService {
 
   Future<List<Project>> _getProjects({offset = int, limit = int}) async {
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getAdminClient()!;
     final request = ListProjectsRequest();
@@ -115,8 +115,8 @@ class ApiService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
-      carry = Map();
+      tokens = {};
+      carry = {};
     }
     final client = getClient();
     final request = ListApisRequest();
@@ -208,7 +208,7 @@ class VersionService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiVersionsRequest();
@@ -277,7 +277,7 @@ class SpecService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiSpecsRequest();
@@ -319,7 +319,7 @@ class DeploymentService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiDeploymentsRequest();
@@ -390,7 +390,7 @@ class ArtifactService {
       parent += "/locations/global";
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListArtifactsRequest();
