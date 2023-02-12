@@ -55,13 +55,13 @@ class ApiListPageState extends State<ApiListPage> {
             ],
           ),
           body: Column(
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: ApiListCard(
                   singleColumn: true,
                 ),
               ),
-              const BottomBar(),
+              BottomBar(),
             ],
           ),
         ),

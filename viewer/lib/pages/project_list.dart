@@ -42,11 +42,11 @@ class ProjectListPageState extends State<ProjectListPage> {
           ],
         ),
         body: Column(
-          children: [
-            const Expanded(
+          children: const [
+            Expanded(
               child: ProjectListCard(singleColumn: true),
             ),
-            const BottomBar(),
+            BottomBar(),
           ],
         ),
       ),

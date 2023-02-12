@@ -54,13 +54,13 @@ class SpecListPageState extends State<SpecListPage> {
             ],
           ),
           body: Column(
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: SpecListCard(
                   singleColumn: true,
                 ),
               ),
-              const BottomBar(),
+              BottomBar(),
             ],
           ),
         ),

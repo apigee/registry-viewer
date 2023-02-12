@@ -54,13 +54,13 @@ class VersionListPageState extends State<VersionListPage> {
             ],
           ),
           body: Column(
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: VersionListCard(
                   singleColumn: true,
                 ),
               ),
-              const BottomBar(),
+              BottomBar(),
             ],
           ),
         ),

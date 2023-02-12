@@ -45,9 +45,9 @@ class ComplexityArtifactCard extends StatelessWidget {
                     Table(
                       border: TableBorder.symmetric(
                           inside: BorderSide.none, outside: BorderSide.none),
-                      columnWidths: {
-                        0: const IntrinsicColumnWidth(),
-                        1: const FlexColumnWidth(),
+                      columnWidths: const {
+                        0: IntrinsicColumnWidth(),
+                        1: FlexColumnWidth(),
                       },
                       children: [
                         row(context, "Paths", "${complexity.pathCount}"),

@@ -46,11 +46,11 @@ class ArtifactDetailPage extends StatelessWidget {
           ],
         ),
         body: Column(
-          children: [
-            const Expanded(
+          children: const [
+            Expanded(
               child: ArtifactDetailCard(editable: true),
             ),
-            const BottomBar(),
+            BottomBar(),
           ],
         ),
       ),

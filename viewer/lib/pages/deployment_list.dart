@@ -54,13 +54,13 @@ class DeploymentListPageState extends State<DeploymentListPage> {
             ],
           ),
           body: Column(
-            children: [
-              const Expanded(
+            children: const [
+              Expanded(
                 child: DeploymentListCard(
                   singleColumn: true,
                 ),
               ),
-              const BottomBar(),
+              BottomBar(),
             ],
           ),
         ),

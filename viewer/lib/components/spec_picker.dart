@@ -37,23 +37,23 @@ class SpecPicker extends StatelessWidget {
             Expanded(
               flex: 5,
               child: Row(
-                children: [
-                  const Expanded(
+                children: const [
+                  Expanded(
                     child: ProjectListCard(
                       singleColumn: false,
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: ApiListCard(
                       singleColumn: false,
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: VersionListCard(
                       singleColumn: false,
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: SpecListCard(singleColumn: false),
                   ),
                 ],
@@ -62,17 +62,17 @@ class SpecPicker extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Row(
-                children: [
-                  const Expanded(
+                children: const [
+                  Expanded(
                     child: SizedBox.expand(child: ProjectDetailCard()),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: SizedBox.expand(child: ApiDetailCard()),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: SizedBox.expand(child: VersionDetailCard()),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: SizedBox.expand(child: SpecDetailCard()),
                   ),
                 ],
