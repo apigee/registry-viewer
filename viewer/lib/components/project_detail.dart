@@ -30,6 +30,7 @@ class ProjectDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
   const ProjectDetailCard({this.selflink, this.editable});
+  @override
   _ProjectDetailCardState createState() => _ProjectDetailCardState();
 }
 

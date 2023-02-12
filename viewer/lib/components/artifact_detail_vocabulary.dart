@@ -22,6 +22,7 @@ class VocabularyArtifactCard extends StatelessWidget {
   final Function? selflink;
   const VocabularyArtifactCard(this.artifact, {this.selflink});
 
+  @override
   Widget build(BuildContext context) {
     Vocabulary vocabulary = Vocabulary.fromBuffer(artifact.contents);
     return Card(
@@ -79,6 +80,7 @@ class WordCountListCard extends StatefulWidget {
 class WordCountListCardState extends State<WordCountListCard> {
   final ScrollController controller = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

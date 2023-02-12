@@ -32,6 +32,7 @@ class MessageArtifactCard extends StatelessWidget {
 
   final ScrollController scrollController = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(

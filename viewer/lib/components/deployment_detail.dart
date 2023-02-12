@@ -28,6 +28,7 @@ class DeploymentDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
   const DeploymentDetailCard({this.selflink, this.editable});
+  @override
   _DeploymentDetailCardState createState() => _DeploymentDetailCardState();
 }
 

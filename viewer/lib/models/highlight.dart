@@ -21,6 +21,7 @@ class Highlight {
   int endCol;
   Highlight(this.startRow, this.startCol, this.endRow, this.endCol);
 
+  @override
   String toString() {
     return "Highlight($startRow:$startCol-$endRow:$endCol)";
   }

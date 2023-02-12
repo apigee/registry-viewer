@@ -23,6 +23,7 @@ class ArtifactText extends StatefulWidget {
   final String Function() artifactName;
 
   const ArtifactText(this.artifactName);
+  @override
   _ArtifactTextState createState() => _ArtifactTextState();
 }
 

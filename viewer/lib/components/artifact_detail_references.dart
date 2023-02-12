@@ -22,6 +22,7 @@ class ReferencesArtifactCard extends StatelessWidget {
   final Function? selflink;
   const ReferencesArtifactCard(this.artifact, {this.selflink});
 
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
@@ -52,6 +53,7 @@ class WordListCard extends StatefulWidget {
 class WordListCardState extends State<WordListCard> {
   final ScrollController controller = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

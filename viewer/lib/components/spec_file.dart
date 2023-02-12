@@ -43,6 +43,7 @@ class Item {
 
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
+  @override
   _SpecFileCardState createState() => _SpecFileCardState();
 }
 

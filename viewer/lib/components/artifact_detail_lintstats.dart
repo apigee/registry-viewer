@@ -30,6 +30,7 @@ class LintStatsArtifactCard extends StatefulWidget {
   final Function? selflink;
   const LintStatsArtifactCard(this.artifact, {this.selflink});
 
+  @override
   _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
 }
 
@@ -48,6 +49,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     if (lintstats == null) {
       lintstats = LintStats.fromBuffer(widget.artifact.contents);

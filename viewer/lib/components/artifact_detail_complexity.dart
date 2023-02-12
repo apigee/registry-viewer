@@ -22,6 +22,7 @@ class ComplexityArtifactCard extends StatelessWidget {
   final Function? selflink;
   const ComplexityArtifactCard(this.artifact, {this.selflink});
 
+  @override
   Widget build(BuildContext context) {
     Complexity complexity = Complexity.fromBuffer(artifact.contents);
     return Card(

@@ -30,6 +30,7 @@ class CustomSplitView extends StatefulWidget {
     this.initialWeight = 0.5,
   });
 
+  @override
   _CustomSplitViewState createState() => _CustomSplitViewState();
 }
 

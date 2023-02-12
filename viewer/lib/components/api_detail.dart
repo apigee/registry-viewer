@@ -30,6 +30,7 @@ class ApiDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
   const ApiDetailCard({this.selflink, this.editable});
+  @override
   _ApiDetailCardState createState() => _ApiDetailCardState();
 }
 

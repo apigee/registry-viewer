@@ -33,6 +33,7 @@ class ArtifactDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
   const ArtifactDetailCard({this.selflink, this.editable});
+  @override
   _ArtifactDetailCardState createState() => _ArtifactDetailCardState();
 }
 
@@ -181,6 +182,7 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard>
 class DefaultArtifactDetailCard extends StatefulWidget {
   final Function? selflink;
   const DefaultArtifactDetailCard({this.selflink});
+  @override
   _DefaultArtifactDetailCardState createState() =>
       _DefaultArtifactDetailCardState();
 }
