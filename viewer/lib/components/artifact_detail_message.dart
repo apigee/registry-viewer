@@ -110,27 +110,25 @@ dumpList(List<Entry> data, int indent) {
   }
 }
 
-Container entryRow(Entry e) {
-  return Container(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  ("  " * e.indent) + e.label!,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  e.value,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
-      ],
-    ),
+Widget entryRow(Entry e) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded(
+          child: Container(
+              padding: EdgeInsets.zero,
+              child: Text(
+                ("  " * e.indent) + e.label!,
+                style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+              ))),
+      Expanded(
+          child: Container(
+              padding: EdgeInsets.zero,
+              child: Text(
+                e.value,
+                style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+              ))),
+    ],
   );
 }
 

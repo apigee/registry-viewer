@@ -28,26 +28,24 @@ class Home extends StatelessWidget {
     final Selection selection = Selection();
     return SelectionProvider(
       selection: selection,
-      child: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: narrow(context)
-                  ? const ProjectListCard(
-                      singleColumn: true,
-                    )
-                  : const CustomSplitView(
-                      viewMode: SplitViewMode.Horizontal,
-                      initialWeight: 0.33,
-                      view1: ProjectListCard(
-                        singleColumn: false,
-                      ),
-                      view2: ProjectDetailCard(selflink: true, editable: true),
+      child: Column(
+        children: [
+          Expanded(
+            child: narrow(context)
+                ? const ProjectListCard(
+                    singleColumn: true,
+                  )
+                : const CustomSplitView(
+                    viewMode: SplitViewMode.Horizontal,
+                    initialWeight: 0.33,
+                    view1: ProjectListCard(
+                      singleColumn: false,
                     ),
-            ),
-            const BottomBar(),
-          ],
-        ),
+                    view2: ProjectDetailCard(selflink: true, editable: true),
+                  ),
+          ),
+          const BottomBar(),
+        ],
       ),
     );
   }

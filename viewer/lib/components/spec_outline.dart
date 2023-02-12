@@ -133,28 +133,26 @@ Widget entryRow(Entry e) {
   if (e.indent < 0) {
     return SimpleCodeView(e.value);
   }
-  return Container(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (e.label != null)
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.zero,
-                  child: Text(
-                    ("  " * e.indent) + e.label!,
-                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                  ))),
-        if (e.value != null)
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.zero,
-                  child: Text(
-                    e.value!,
-                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                  ))),
-      ],
-    ),
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (e.label != null)
+        Expanded(
+            child: Container(
+                padding: EdgeInsets.zero,
+                child: Text(
+                  ("  " * e.indent) + e.label!,
+                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                ))),
+      if (e.value != null)
+        Expanded(
+            child: Container(
+                padding: EdgeInsets.zero,
+                child: Text(
+                  e.value!,
+                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                ))),
+    ],
   );
 }
 
