@@ -94,7 +94,7 @@ class ArtifactListCardState extends State<ArtifactListCard>
             return SelectionProvider(
               selection: selection!,
               child: AlertDialog(
-                content: AddArtifactForm(subjectName),
+                content: AddArtifactForm(subjectName!),
               ),
             );
           });
