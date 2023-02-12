@@ -32,7 +32,7 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 
 // This runs before the application starts, main() waits for completion.
 Future attemptToSignIn() async {
-  var completer = new Completer();
+  var completer = Completer();
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
     currentUser = account;
     print("current user changed to $currentUser");
@@ -56,7 +56,7 @@ Future attemptToSignIn() async {
   });
   googleSignIn.signInSilently();
   return completer.future
-      .timeout(new Duration(milliseconds: 1000), onTimeout: () => {});
+      .timeout(Duration(milliseconds: 1000), onTimeout: () => {});
 }
 
 class SignInPage extends StatefulWidget {

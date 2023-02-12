@@ -114,55 +114,55 @@ class _ArtifactDetailCardState extends State<ArtifactDetailCard>
         return VocabularyArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
         return MessageArtifactCard(
-            artifact, new ApiSpecExtensionList.fromBuffer(artifact.contents),
+            artifact, ApiSpecExtensionList.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
         return MessageArtifactCard(
-            artifact, new DisplaySettings.fromBuffer(artifact.contents),
+            artifact, DisplaySettings.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Lifecycle":
         return MessageArtifactCard(
-            artifact, new Lifecycle.fromBuffer(artifact.contents),
+            artifact, Lifecycle.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
         return MessageArtifactCard(
-            artifact, new ReferenceList.fromBuffer(artifact.contents),
+            artifact, ReferenceList.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
         return MessageArtifactCard(
-            artifact, new TaxonomyList.fromBuffer(artifact.contents),
+            artifact, TaxonomyList.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Manifest":
         return MessageArtifactCard(
-            artifact, new Manifest.fromBuffer(artifact.contents),
+            artifact, Manifest.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.controller.Receipt":
         return MessageArtifactCard(
-            artifact, new Receipt.fromBuffer(artifact.contents),
+            artifact, Receipt.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
         return MessageArtifactCard(
-            artifact, new Score.fromBuffer(artifact.contents),
+            artifact, Score.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
         return MessageArtifactCard(
-            artifact, new ScoreCard.fromBuffer(artifact.contents),
+            artifact, ScoreCard.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
         return MessageArtifactCard(
-            artifact, new ScoreCardDefinition.fromBuffer(artifact.contents),
+            artifact, ScoreCardDefinition.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
         return MessageArtifactCard(
-            artifact, new ScoreDefinition.fromBuffer(artifact.contents),
+            artifact, ScoreDefinition.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
         return MessageArtifactCard(
-            artifact, new ConformanceReport.fromBuffer(artifact.contents),
+            artifact, ConformanceReport.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
         return MessageArtifactCard(
-            artifact, new StyleGuide.fromBuffer(artifact.contents),
+            artifact, StyleGuide.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.Lint":
         return LintArtifactCard(artifact, selflink: selflink);

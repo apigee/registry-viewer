@@ -72,7 +72,7 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
 
   Widget build(BuildContext context) {
     if (lint == null) {
-      lint = new Lint.fromBuffer(widget.artifact.contents);
+      lint = Lint.fromBuffer(widget.artifact.contents);
       lint!.files.forEach((file) {
         file.problems.forEach((problem) {
           problems.add(FileProblem(file, problem));

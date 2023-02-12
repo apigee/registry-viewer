@@ -23,7 +23,7 @@ class ComplexityArtifactCard extends StatelessWidget {
   ComplexityArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    Complexity complexity = new Complexity.fromBuffer(artifact.contents);
+    Complexity complexity = Complexity.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         children: [

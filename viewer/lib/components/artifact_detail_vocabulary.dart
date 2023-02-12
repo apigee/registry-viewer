@@ -23,7 +23,7 @@ class VocabularyArtifactCard extends StatelessWidget {
   VocabularyArtifactCard(this.artifact, {this.selflink});
 
   Widget build(BuildContext context) {
-    Vocabulary vocabulary = new Vocabulary.fromBuffer(artifact.contents);
+    Vocabulary vocabulary = Vocabulary.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
