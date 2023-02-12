@@ -77,7 +77,7 @@ class ProjectService {
       return response.projects;
     } catch (err) {
       onError();
-      throw err;
+      rethrow;
     }
   }
 
@@ -158,7 +158,7 @@ class ApiService {
       return apis;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -228,7 +228,7 @@ class VersionService {
       return response.apiVersions;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -297,7 +297,7 @@ class SpecService {
       return response.apiSpecs;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 }
@@ -339,7 +339,7 @@ class DeploymentService {
       return response.apiDeployments;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -410,7 +410,7 @@ class ArtifactService {
       return response.artifacts;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
