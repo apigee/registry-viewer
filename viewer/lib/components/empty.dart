@@ -18,7 +18,6 @@ Card emptyCard(BuildContext context) {
   return Card(
     child: Container(
       color: Theme.of(context).canvasColor,
-      child: Center(child: Text("no $kind selected")),
     ),
   );
 }
