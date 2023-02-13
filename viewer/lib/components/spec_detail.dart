@@ -115,7 +115,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (specManager?.value == null) {
-      return emptyCard(context, "spec");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {

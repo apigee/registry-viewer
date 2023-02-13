@@ -83,7 +83,7 @@ class ApiDetailCardState extends State<ApiDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (apiManager?.value == null) {
-      return emptyCard(context, "api");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {

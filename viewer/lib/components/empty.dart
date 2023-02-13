@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 
-Card emptyCard(BuildContext context, String kind) {
+Card emptyCard(BuildContext context) {
   return Card(
     child: Container(
       color: Theme.of(context).canvasColor,

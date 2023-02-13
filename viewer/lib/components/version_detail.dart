@@ -97,7 +97,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (versionManager?.value == null) {
-      return emptyCard(context, "version");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {

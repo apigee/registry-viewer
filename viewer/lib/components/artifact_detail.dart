@@ -86,7 +86,7 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (artifactManager?.value == null) {
-      return emptyCard(context, "artifact");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {

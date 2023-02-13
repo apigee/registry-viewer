@@ -98,7 +98,7 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (deploymentManager?.value == null) {
-      return emptyCard(context, "deployment");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {
