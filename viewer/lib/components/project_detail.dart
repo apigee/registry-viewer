@@ -82,7 +82,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
   Widget build(BuildContext context) {
     super.build(context);
     if (projectManager?.value == null) {
-      return emptyCard(context, "project");
+      return emptyCard(context);
     }
 
     Function? selflink = onlyIf(widget.selflink, () {
