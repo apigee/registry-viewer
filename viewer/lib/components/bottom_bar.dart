@@ -16,10 +16,11 @@ import 'package:flutter/material.dart';
 import '../build.dart';
 
 class BottomBar extends StatelessWidget {
+  const BottomBar({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-typedef Widget ItemBuilder<T>(BuildContext context, T entry, int index);
-typedef Future<List<T>> PageFuture<T>(int? pageIndex);
-typedef Widget ErrorBuilder(BuildContext context, Object? error);
-typedef Widget NoItemsFoundBuilder(BuildContext context);
-typedef Widget RetryBuilder(BuildContext context, RetryCallback retryCallback);
-typedef void RetryCallback();
-typedef Widget PagewiseBuilder<T>(PagewiseState<T> state);
+typedef ItemBuilder<T> = Widget Function(
+    BuildContext context, T entry, int index);
+typedef PageFuture<T> = Future<List<T>> Function(int? pageIndex);
+typedef ErrorBuilder = Widget Function(BuildContext context, Object? error);
+typedef NoItemsFoundBuilder = Widget Function(BuildContext context);
+typedef RetryBuilder = Widget Function(
+    BuildContext context, RetryCallback retryCallback);
+typedef RetryCallback = void Function();
+typedef PagewiseBuilder<T> = Widget Function(PagewiseState<T> state);
 
 /// An abstract base class for widgets that fetch their content one page at a
 /// time.
@@ -102,7 +104,7 @@ abstract class Pagewise<T> extends StatefulWidget {
   ///
   /// This is an abstract class, this constructor should only be called from
   /// constructors of widgets that extend this class
-  Pagewise(
+  const Pagewise(
       {this.pageSize,
       this.pageFuture,
       Key? key,
@@ -223,7 +225,7 @@ class PagewiseState<T> extends State<Pagewise<T?>> {
   }
 
   Widget _getLoadingWidget() {
-    return this._getStandardContainer(child: CircularProgressIndicator());
+    return this._getStandardContainer(child: const CircularProgressIndicator());
   }
 
   Widget _getNoItemsFoundWidget() {
@@ -355,7 +357,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
 
   /// set to true if no data was found
   bool get noItemsFound =>
-      this._loadedItems!.length == 0 && this.hasMoreItems == false;
+      this._loadedItems!.isEmpty && this.hasMoreItems == false;
 
   /// Called to initialize the controller. Same as [reset]
   void init() {
@@ -369,7 +371,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
     this._hasMoreItems = true;
     this._error = null;
     this._isFetching = false;
-    this.notifyListeners();
+    notifyListeners();
   }
 
   /// Fetches a new page by calling [pageFuture]
@@ -386,7 +388,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
       } catch (error) {
         this._error = error;
         this._isFetching = false;
-        this.notifyListeners();
+        notifyListeners();
         return;
       }
 
@@ -411,7 +413,7 @@ class PagewiseLoadController<T> extends ChangeNotifier {
   /// Attempts to retry in case an error occurred
   void retry() {
     this._error = null;
-    this.notifyListeners();
+    notifyListeners();
   }
 }
 

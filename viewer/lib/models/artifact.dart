@@ -17,36 +17,36 @@ import 'package:registry/registry.dart';
 
 extension Display on Artifact {
   String nameForDisplay() {
-    return this.name.split("/").last;
+    return name.split("/").last;
   }
 
   String routeNameForDetail() {
-    return "/" + this.name.replaceAll("/locations/global/", "/");
+    return "/${name.replaceAll("/locations/global/", "/")}";
   }
 
   String get subject {
-    final parts = this.name.split("/");
+    final parts = name.split("/");
     return parts.sublist(0, parts.length - 2).join("/");
   }
 
   String get relation {
-    final parts = this.name.split("/");
+    final parts = name.split("/");
     return parts[parts.length - 1];
   }
 
   String get stringValue {
-    if ((this.mimeType == "text/plain") ||
-        this.mimeType.startsWith("application/yaml") ||
-        this.mimeType.startsWith("application/json")) {
-      final codec = Utf8Codec();
-      return codec.decode(this.contents);
+    if ((mimeType == "text/plain") ||
+        mimeType.startsWith("application/yaml") ||
+        mimeType.startsWith("application/json")) {
+      const codec = Utf8Codec();
+      return codec.decode(contents);
     }
     return "";
   }
 
   set stringValue(String value) {
-    this.mimeType = "text/plain";
-    final codec = Utf8Codec();
-    this.contents = codec.encode(value);
+    mimeType = "text/plain";
+    const codec = Utf8Codec();
+    contents = codec.encode(value);
   }
 }

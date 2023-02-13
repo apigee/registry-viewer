@@ -28,7 +28,7 @@ import '../helpers/title.dart';
 
 class VersionDetailPage extends StatelessWidget {
   final String? name;
-  VersionDetailPage({this.name});
+  const VersionDetailPage({this.name, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +46,17 @@ class VersionDetailPage extends StatelessWidget {
       child: DefaultTabController(
         length: 3,
         initialIndex: 1,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Version Details",
+              pageTitle(name) ?? "Version Details",
             ),
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Specs"),
@@ -69,12 +69,12 @@ class VersionDetailPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    VersionDetailCard(editable: true),
+                    const VersionDetailCard(editable: true),
                     narrow(context)
-                        ? SpecListCard(
+                        ? const SpecListCard(
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
                             view1: SpecListCard(
@@ -84,11 +84,11 @@ class VersionDetailPage extends StatelessWidget {
                                 SpecDetailCard(selflink: true, editable: true),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(
+                        ? const ArtifactListCard(
                             SelectionProvider.version,
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             view1: ArtifactListCard(
                               SelectionProvider.version,
@@ -102,7 +102,7 @@ class VersionDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

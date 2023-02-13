@@ -28,20 +28,20 @@ typedef ApiSelectionHandler = Function(BuildContext context, Api api);
 // ApiListCard is a card that displays a list of apis.
 class ApiListCard extends StatefulWidget {
   final bool singleColumn;
-  ApiListCard({required this.singleColumn});
+  const ApiListCard({required this.singleColumn, super.key});
 
   @override
-  _ApiListCardState createState() => _ApiListCardState();
+  ApiListCardState createState() => ApiListCardState();
 }
 
-class _ApiListCardState extends State<ApiListCard>
+class ApiListCardState extends State<ApiListCard>
     with AutomaticKeepAliveClientMixin {
   ApiService? apiService;
   PagewiseLoadController<Api>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _ApiListCardState() {
+  ApiListCardState() {
     apiService = ApiService();
     pageLoadController = PagewiseLoadController<Api>(
         pageSize: pageSize,
@@ -57,7 +57,7 @@ class _ApiListCardState extends State<ApiListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ApiSearchBox(),
+            filterBar(context, const ApiSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ApiListView(
@@ -81,18 +81,15 @@ class ApiListView extends StatefulWidget {
   final PagewiseLoadController<Api>? pageLoadController;
   final bool singleColumn;
 
-  ApiListView(
-    this.selectionHandler,
-    this.apiService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const ApiListView(this.selectionHandler, this.apiService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
-  _ApiListViewState createState() => _ApiListViewState();
+  ApiListViewState createState() => ApiListViewState();
 }
 
-class _ApiListViewState extends State<ApiListView> {
+class ApiListViewState extends State<ApiListView> {
   String? projectName;
   int selectedIndex = -1;
   Selection? selection;
@@ -144,7 +141,7 @@ class _ApiListViewState extends State<ApiListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Api>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -193,7 +190,7 @@ class _ApiListViewState extends State<ApiListView> {
           widget.selectionHandler?.call(context, api);
         },
         trailing: IconButton(
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
@@ -209,7 +206,7 @@ class _ApiListViewState extends State<ApiListView> {
 
 // ApiSearchBox provides a search box for apis.
 class ApiSearchBox extends CustomSearchBox {
-  ApiSearchBox()
+  const ApiSearchBox({super.key})
       : super(
           "Filter APIs",
           "api_id.contains('TEXT')",

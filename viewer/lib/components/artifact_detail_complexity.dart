@@ -20,10 +20,11 @@ import '../helpers/extensions.dart';
 class ComplexityArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
-  ComplexityArtifactCard(this.artifact, {this.selflink});
+  const ComplexityArtifactCard(this.artifact, {this.selflink, super.key});
 
+  @override
   Widget build(BuildContext context) {
-    Complexity complexity = new Complexity.fromBuffer(artifact.contents);
+    Complexity complexity = Complexity.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         children: [
@@ -34,7 +35,7 @@ class ComplexityArtifactCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -44,7 +45,7 @@ class ComplexityArtifactCard extends StatelessWidget {
                     Table(
                       border: TableBorder.symmetric(
                           inside: BorderSide.none, outside: BorderSide.none),
-                      columnWidths: {
+                      columnWidths: const {
                         0: IntrinsicColumnWidth(),
                         1: FlexColumnWidth(),
                       },
@@ -75,15 +76,15 @@ class ComplexityArtifactCard extends StatelessWidget {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,

@@ -29,20 +29,20 @@ typedef ProjectSelectionHandler = Function(
 // ProjectListCard is a card that displays a list of projects.
 class ProjectListCard extends StatefulWidget {
   final bool singleColumn;
-  ProjectListCard({required this.singleColumn});
+  const ProjectListCard({required this.singleColumn, super.key});
 
   @override
-  _ProjectListCardState createState() => _ProjectListCardState();
+  ProjectListCardState createState() => ProjectListCardState();
 }
 
-class _ProjectListCardState extends State<ProjectListCard>
+class ProjectListCardState extends State<ProjectListCard>
     with AutomaticKeepAliveClientMixin {
   ProjectService? projectService;
   PagewiseLoadController<Project>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _ProjectListCardState() {
+  ProjectListCardState() {
     projectService = ProjectService();
     pageLoadController = PagewiseLoadController<Project>(
         pageSize: pageSize,
@@ -57,7 +57,7 @@ class _ProjectListCardState extends State<ProjectListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ProjectSearchBox(),
+            filterBar(context, const ProjectSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: ProjectListView(
@@ -81,18 +81,15 @@ class ProjectListView extends StatefulWidget {
   final PagewiseLoadController<Project>? pageLoadController;
   final bool singleColumn;
 
-  ProjectListView(
-    this.selectionHandler,
-    this.projectService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const ProjectListView(this.selectionHandler, this.projectService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
-  _ProjectListViewState createState() => _ProjectListViewState();
+  ProjectListViewState createState() => ProjectListViewState();
 }
 
-class _ProjectListViewState extends State<ProjectListView> {
+class ProjectListViewState extends State<ProjectListView> {
   int selectedIndex = -1;
   final ScrollController scrollController = ScrollController();
 
@@ -120,7 +117,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Project>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -169,7 +166,7 @@ class _ProjectListViewState extends State<ProjectListView> {
         },
         trailing: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
@@ -185,7 +182,7 @@ class _ProjectListViewState extends State<ProjectListView> {
 
 // ProjectSearchBox provides a search box for projects.
 class ProjectSearchBox extends CustomSearchBox {
-  ProjectSearchBox()
+  const ProjectSearchBox({super.key})
       : super(
           "Filter Projects",
           "project_id.contains('TEXT')",

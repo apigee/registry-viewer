@@ -20,12 +20,12 @@ showErrorAlert(BuildContext context, String message) {
     builder: (BuildContext context) {
       if (message.contains("Permission denied")) {
         return AlertDialog(
-          title: new Text("Unauthorized"),
-          content: new Text(
+          title: const Text("Unauthorized"),
+          content: const Text(
               "The signed-in account does not have access to the necessary resources."),
           actions: <Widget>[
-            new TextButton(
-              child: new Text("Close"),
+            TextButton(
+              child: const Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -34,11 +34,11 @@ showErrorAlert(BuildContext context, String message) {
         );
       }
       return AlertDialog(
-        title: new Text("A problem:"),
-        content: new Text(message),
+        title: const Text("A problem:"),
+        content: Text(message),
         actions: <Widget>[
-          new TextButton(
-            child: new Text("Close"),
+          TextButton(
+            child: const Text("Close"),
             onPressed: () {
               Navigator.of(context).pop();
             },

@@ -24,14 +24,12 @@ import '../models/selection.dart';
 class SpecListPage extends StatefulWidget {
   final String? name;
 
-  SpecListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const SpecListPage(this.name, {super.key});
   @override
-  _SpecListPageState createState() => _SpecListPageState();
+  SpecListPageState createState() => SpecListPageState();
 }
 
-class _SpecListPageState extends State<SpecListPage> {
+class SpecListPageState extends State<SpecListPage> {
   // convert /projects/{project}/locations/global/apis/{api}/versions/{version}/specs
   // to projects/{project}/locations/global/apis/{api}/versions/{version}
   String parentName() {
@@ -56,7 +54,7 @@ class _SpecListPageState extends State<SpecListPage> {
             ],
           ),
           body: Column(
-            children: [
+            children: const [
               Expanded(
                 child: SpecListCard(
                   singleColumn: true,

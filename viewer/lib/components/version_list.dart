@@ -28,20 +28,20 @@ typedef VersionSelectionHandler = Function(
 // VersionListCard is a card that displays a list of versions.
 class VersionListCard extends StatefulWidget {
   final bool singleColumn;
-  VersionListCard({required this.singleColumn});
+  const VersionListCard({required this.singleColumn, super.key});
 
   @override
-  _VersionListCardState createState() => _VersionListCardState();
+  VersionListCardState createState() => VersionListCardState();
 }
 
-class _VersionListCardState extends State<VersionListCard>
+class VersionListCardState extends State<VersionListCard>
     with AutomaticKeepAliveClientMixin {
   VersionService? versionService;
   PagewiseLoadController<ApiVersion>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _VersionListCardState() {
+  VersionListCardState() {
     versionService = VersionService();
     pageLoadController = PagewiseLoadController<ApiVersion>(
         pageSize: pageSize,
@@ -58,7 +58,7 @@ class _VersionListCardState extends State<VersionListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, VersionSearchBox(),
+            filterBar(context, const VersionSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: VersionListView(
@@ -82,18 +82,15 @@ class VersionListView extends StatefulWidget {
   final PagewiseLoadController<ApiVersion>? pageLoadController;
   final bool singleColumn;
 
-  VersionListView(
-    this.selectionHandler,
-    this.versionService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const VersionListView(this.selectionHandler, this.versionService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
-  _VersionListViewState createState() => _VersionListViewState();
+  VersionListViewState createState() => VersionListViewState();
 }
 
-class _VersionListViewState extends State<VersionListView> {
+class VersionListViewState extends State<VersionListView> {
   String? apiName;
   int selectedIndex = -1;
   Selection? selection;
@@ -145,7 +142,7 @@ class _VersionListViewState extends State<VersionListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiVersion>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -193,7 +190,7 @@ class _VersionListViewState extends State<VersionListView> {
         },
         trailing: IconButton(
           //color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
@@ -209,5 +206,6 @@ class _VersionListViewState extends State<VersionListView> {
 
 // VersionSearchBox provides a search box for versions.
 class VersionSearchBox extends CustomSearchBox {
-  VersionSearchBox() : super("Filter Versions", "version_id.contains('TEXT')");
+  const VersionSearchBox({super.key})
+      : super("Filter Versions", "version_id.contains('TEXT')");
 }

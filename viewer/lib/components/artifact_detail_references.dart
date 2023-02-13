@@ -20,8 +20,9 @@ import '../helpers/extensions.dart';
 class ReferencesArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
-  ReferencesArtifactCard(this.artifact, {this.selflink});
+  const ReferencesArtifactCard(this.artifact, {this.selflink, super.key});
 
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
@@ -43,7 +44,7 @@ class ReferencesArtifactCard extends StatelessWidget {
 class WordListCard extends StatefulWidget {
   final String name;
   final List<String> wordList;
-  WordListCard(this.name, this.wordList);
+  const WordListCard(this.name, this.wordList, {super.key});
 
   @override
   WordListCardState createState() => WordListCardState();
@@ -52,12 +53,13 @@ class WordListCard extends StatefulWidget {
 class WordListCardState extends State<WordListCard> {
   final ScrollController controller = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           width: double.infinity,
           color: Theme.of(context).splashColor,
           child: Text(

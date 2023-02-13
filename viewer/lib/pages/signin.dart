@@ -32,17 +32,17 @@ GoogleSignIn googleSignIn = GoogleSignIn(
 
 // This runs before the application starts, main() waits for completion.
 Future attemptToSignIn() async {
-  var completer = new Completer();
+  var completer = Completer();
   googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
     currentUser = account;
-    print("current user changed to $currentUser");
+    debugPrint("current user changed to $currentUser");
     if (account == null) {
       return;
     }
-    currentUserIsAuthorized = authorized_users.contains(account.email);
+    currentUserIsAuthorized = authorizedUsers.contains(account.email);
     if (!currentUserIsAuthorized) {
       currentUserIsAuthorized =
-          authorized_domains.contains(account.email.split("@").last);
+          authorizedDomains.contains(account.email.split("@").last);
     }
     currentUserIsAuthorized = true;
     account.authentication.then((auth) {
@@ -50,16 +50,17 @@ Future attemptToSignIn() async {
       StatusService().getStatus()!.then((status) {
         completer.complete();
       }).catchError((error) {
-        print("error calling GetStatus $error");
+        debugPrint("error calling GetStatus $error");
       });
     });
   });
   googleSignIn.signInSilently();
   return completer.future
-      .timeout(new Duration(milliseconds: 1000), onTimeout: () => {});
+      .timeout(const Duration(milliseconds: 1000), onTimeout: () => {});
 }
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
   @override
   State createState() => SignInPageState();
 }
@@ -77,7 +78,7 @@ class SignInPageState extends State<SignInPage> {
     try {
       await googleSignIn.signIn();
     } catch (error) {
-      print(error);
+      debugPrint("$error");
     }
   }
 
@@ -110,8 +111,8 @@ class SignInPageState extends State<SignInPage> {
           ),
         if (currentUser != null)
           ElevatedButton(
-            child: const Text('Sign out'),
             onPressed: _handleSignOut,
+            child: const Text('Sign out'),
           ),
       ],
     );
@@ -125,13 +126,13 @@ class SignInPageState extends State<SignInPage> {
           if (!currentUserIsAuthorized)
             Column(
               children: [
-                Text("Thank you for signing in!"),
+                const Text("Thank you for signing in!"),
                 Container(height: 10),
-                Text("We're not yet open to the public."),
+                const Text("We're not yet open to the public."),
                 Container(height: 10),
               ],
             ),
-          if (currentUserIsAuthorized) Expanded(child: Home()),
+          if (currentUserIsAuthorized) const Expanded(child: Home()),
         ],
       );
     } else {
@@ -140,8 +141,8 @@ class SignInPageState extends State<SignInPage> {
         children: <Widget>[
           Container(height: 20),
           ElevatedButton(
-            child: const Text('Sign in with Google'),
             onPressed: _handleSignIn,
+            child: const Text('Sign in with Google'),
           ),
           Container(height: 20),
         ],

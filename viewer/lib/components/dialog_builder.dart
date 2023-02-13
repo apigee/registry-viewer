@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 
 class DialogBuilder extends StatelessWidget {
   final Widget? child;
-  DialogBuilder({this.child});
+  const DialogBuilder({this.child, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class DialogBuilder extends StatelessWidget {
       var height = MediaQuery.of(context).size.height;
       var width = MediaQuery.of(context).size.width;
 
-      return Container(
+      return SizedBox(
         height: height - 400,
         width: width - 200,
         child: child,

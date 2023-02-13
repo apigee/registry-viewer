@@ -24,14 +24,12 @@ import '../models/selection.dart';
 class ArtifactListPage extends StatefulWidget {
   final String? name;
 
-  ArtifactListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const ArtifactListPage(this.name, {super.key});
   @override
-  _ArtifactListPageState createState() => _ArtifactListPageState();
+  ArtifactListPageState createState() => ArtifactListPageState();
 }
 
-class _ArtifactListPageState extends State<ArtifactListPage> {
+class ArtifactListPageState extends State<ArtifactListPage> {
   // convert /projects/{project}/locations/global/artifacts to projects/{project}/locations/global
   String parentName() {
     List parts = widget.name!.split("/");
@@ -85,7 +83,7 @@ class _ArtifactListPageState extends State<ArtifactListPage> {
                   singleColumn: true,
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

@@ -28,7 +28,7 @@ import '../helpers/title.dart';
 
 class SpecDetailPage extends StatelessWidget {
   final String? name;
-  SpecDetailPage({this.name});
+  const SpecDetailPage({this.name, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +48,18 @@ class SpecDetailPage extends StatelessWidget {
       selection: selection,
       child: DefaultTabController(
         length: 4,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         initialIndex: 1,
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              pageTitle(this.name) ?? "Spec Details",
+              pageTitle(name) ?? "Spec Details",
             ),
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(text: "Details"),
                 Tab(text: "Contents"),
@@ -72,15 +72,15 @@ class SpecDetailPage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  SpecDetailCard(editable: true),
-                  SpecFileCard(),
-                  SpecOutlineCard(),
+                  const SpecDetailCard(editable: true),
+                  const SpecFileCard(),
+                  const SpecOutlineCard(),
                   narrow(context)
-                      ? ArtifactListCard(
+                      ? const ArtifactListCard(
                           SelectionProvider.spec,
                           singleColumn: true,
                         )
-                      : CustomSplitView(
+                      : const CustomSplitView(
                           viewMode: SplitViewMode.Horizontal,
                           view1: ArtifactListCard(
                             SelectionProvider.spec,
@@ -94,7 +94,7 @@ class SpecDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            BottomBar(),
+            const BottomBar(),
           ]),
         ),
       ),

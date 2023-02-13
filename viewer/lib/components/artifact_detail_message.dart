@@ -27,11 +27,12 @@ class MessageArtifactCard extends StatelessWidget {
   final Function? selflink;
   final List<Entry> data;
 
-  MessageArtifactCard(this.artifact, this.message, {this.selflink})
+  MessageArtifactCard(this.artifact, this.message, {this.selflink, super.key})
       : data = parseDoc(loadYamlNode(jsonEncode(message.toProto3Json())), 0);
 
   final ScrollController scrollController = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
@@ -44,7 +45,7 @@ class MessageArtifactCard extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               width: double.infinity,
               child: Scrollbar(
                 controller: scrollController,
@@ -67,15 +68,15 @@ class MessageArtifactCard extends StatelessWidget {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,
@@ -95,39 +96,39 @@ class Entry {
   final List<Entry> children;
 
   dump(int indent) {
-    if (this.label != null) {
-      print('${" " * indent}' + this.label!);
+    if (label != null) {
+      debugPrint(" " * indent + label!);
     }
-    print('${" " * indent}' + this.value);
-    dumpList(this.children, indent + 1);
+    debugPrint(" " * indent + value);
+    dumpList(children, indent + 1);
   }
 }
 
 dumpList(List<Entry> data, int indent) {
-  data.forEach((element) => element.dump(indent));
+  for (var element in data) {
+    element.dump(indent);
+  }
 }
 
-Container entryRow(Entry e) {
-  return Container(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  ("  " * e.indent) + e.label!,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.zero,
-                child: Text(
-                  e.value,
-                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                ))),
-      ],
-    ),
+Widget entryRow(Entry e) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded(
+          child: Container(
+              padding: EdgeInsets.zero,
+              child: Text(
+                ("  " * e.indent) + e.label!,
+                style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+              ))),
+      Expanded(
+          child: Container(
+              padding: EdgeInsets.zero,
+              child: Text(
+                e.value,
+                style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+              ))),
+    ],
   );
 }
 
@@ -136,17 +137,17 @@ Container entryRow(Entry e) {
 class EntryItem extends StatelessWidget {
   final Entry entry;
 
-  const EntryItem(this.entry);
+  const EntryItem(this.entry, {super.key});
 
   Widget _buildTiles(BuildContext context, Entry root) {
-    if (root.children.isEmpty)
+    if (root.children.isEmpty) {
       return ListTile(
         minVerticalPadding: 0,
         title: entryRow(root),
         contentPadding: EdgeInsets.zero,
-        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       );
-
+    }
     List<Widget> children = [];
     for (var child in root.children) {
       children.add(_buildTiles(context, child));
@@ -154,9 +155,9 @@ class EntryItem extends StatelessWidget {
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
-      children: children,
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
+      children: children,
     );
   }
 
@@ -207,7 +208,7 @@ List<Entry> parseDoc(YamlNode doc, int indent) {
         entries.add(Entry(
             indent, "$i", "list[${node.length}]", parseDoc(node, indent + 1)));
       } else {
-        print(node);
+        debugPrint("$node");
       }
       i++;
     }

@@ -19,8 +19,8 @@ import '../models/artifact.dart';
 import '../models/selection.dart';
 
 class AddArtifactForm extends StatefulWidget {
-  final subjectName;
-  AddArtifactForm(this.subjectName);
+  final String subjectName;
+  const AddArtifactForm(this.subjectName, {super.key});
   @override
   AddArtifactFormState createState() => AddArtifactFormState();
 }
@@ -52,18 +52,18 @@ class AddArtifactFormState extends State<AddArtifactForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Add an Artifact"),
+          const Text("Add an Artifact"),
           ListTile(
             title: TextFormField(
               controller: stringValueController,
             ),
-            subtitle: Text("artifact name"),
+            subtitle: const Text("artifact name"),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: Text("Cancel"),
+                child: const Text("Cancel"),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
@@ -72,7 +72,7 @@ class AddArtifactFormState extends State<AddArtifactForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: Text("Save"),
+                child: const Text("Save"),
                 onPressed: () {
                   save(context);
                   Navigator.of(context, rootNavigator: true).pop();
@@ -89,11 +89,11 @@ class AddArtifactFormState extends State<AddArtifactForm> {
     Selection? selection = SelectionProvider.of(context);
     if (_formKey.currentState!.validate()) {
       String relation = stringValueController.text;
-      print("saving relation $relation");
+      debugPrint("saving relation $relation");
       Artifact artifact = Artifact();
-      artifact.name = widget.subjectName + "/artifacts/" + relation;
+      artifact.name = "${widget.subjectName}/artifacts/$relation";
       artifact.mimeType = "text/plain";
-      print("artifact ${artifact.name}");
+      debugPrint("artifact ${artifact.name}");
       if (relation != "") {
         ArtifactService().create(artifact)!.then((Artifact artifact) {
           selection!.notifySubscribersOf(artifact.subject);

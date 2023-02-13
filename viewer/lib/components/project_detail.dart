@@ -29,11 +29,12 @@ import '../service/registry.dart';
 class ProjectDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  ProjectDetailCard({this.selflink, this.editable});
-  _ProjectDetailCardState createState() => _ProjectDetailCardState();
+  const ProjectDetailCard({this.selflink, this.editable, super.key});
+  @override
+  ProjectDetailCardState createState() => ProjectDetailCardState();
 }
 
-class _ProjectDetailCardState extends State<ProjectDetailCard>
+class ProjectDetailCardState extends State<ProjectDetailCard>
     with AutomaticKeepAliveClientMixin {
   ProjectManager? projectManager;
   Selection? selection;
@@ -100,7 +101,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditProjectForm(),
                 ),
@@ -121,25 +122,25 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TitleRow(project.displayName, action: selflink),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TimestampRow(project.createTime, project.updateTime),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("APIs"),
+                          child: const Text("APIs"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -148,7 +149,7 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -158,22 +159,21 @@ class _ProjectDetailCardState extends State<ProjectDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.projectName.value +
-                          "/locations/global/artifacts/summary",
+                          "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/summary",
                     ),
                     PageSection(
                       children: [
                         MarkdownBody(
                           data: project.description,
                           onTapLink: (text, url, title) {
-                            launch(url!);
+                            launchUrl(Uri.parse(url!));
                           },
                         ),
                       ],

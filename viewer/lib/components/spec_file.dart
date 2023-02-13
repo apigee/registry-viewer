@@ -27,8 +27,8 @@ import '../models/selection.dart';
 import '../service/registry.dart';
 import '../components/split_view.dart';
 
-final scrollDuration = Duration(milliseconds: 300);
-final scrollCurve = Curves.easeInOut;
+const scrollDuration = Duration(milliseconds: 300);
+const scrollCurve = Curves.easeInOut;
 
 // An item in a spec file (a file in a zip archive).
 class Item {
@@ -43,10 +43,12 @@ class Item {
 
 // SpecFileCard is a card that displays the text of a spec.
 class SpecFileCard extends StatefulWidget {
-  _SpecFileCardState createState() => _SpecFileCardState();
+  const SpecFileCard({super.key});
+  @override
+  SpecFileCardState createState() => SpecFileCardState();
 }
 
-class _SpecFileCardState extends State<SpecFileCard> {
+class SpecFileCardState extends State<SpecFileCard> {
   String specName = "";
   SpecManager? specManager;
   String body = "";
@@ -61,19 +63,19 @@ class _SpecFileCardState extends State<SpecFileCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) && (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.isNotEmpty)) {
         if (spec.mimeType.contains("+gzip")) {
           final data = GZipDecoder().decodeBytes(spec.contents);
-          this.body = Utf8Codec().decoder.convert(data);
+          body = const Utf8Codec().decoder.convert(data);
         } else if (spec.mimeType.endsWith("+zip")) {
-          this.items = [];
+          items = [];
           final archive = ZipDecoder().decodeBytes(spec.contents);
           for (final file in archive) {
             final filename = file.name;
             if (file.isFile) {
               String body;
               try {
-                body = Utf8Codec().decoder.convert(file.content);
+                body = const Utf8Codec().decoder.convert(file.content);
               } catch (e) {
                 body = "unavailable";
               }
@@ -82,7 +84,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
             }
           }
         } else {
-          this.body = "";
+          body = "";
         }
       }
     });
@@ -130,9 +132,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
     if (name == "") {
       return;
     }
-    if (this.items != null) {
-      for (int i = 0; i < this.items!.length; i++) {
-        if (this.items![i].headerValue == name) {
+    if (items != null) {
+      for (int i = 0; i < items!.length; i++) {
+        if (items![i].headerValue == name) {
           selectedItemIndex = i;
           // if the item is off screen, animate it into position
           if (!isVisible(selectedItemIndex)) {
@@ -170,9 +172,9 @@ class _SpecFileCardState extends State<SpecFileCard> {
   @override
   Widget build(BuildContext context) {
     if (specManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
-      if (this.items == null) {
+      if (items == null) {
         // single-file view
         return Card(
           child: Column(
@@ -182,20 +184,21 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 name: specManager!.value!.filename,
                 button: IconButton(
                   color: Colors.black,
-                  icon: Icon(Icons.open_in_new),
+                  icon: const Icon(Icons.open_in_new),
                   tooltip: "Viewer",
                   onPressed: () {
                     var address = rendererServiceAddress();
                     if ((address != "SPEC_RENDERER_SERVICE") &&
                         (address != "")) {
                       launchUrl(
-                          Uri.parse(address + "/" + specManager!.value!.name));
+                          Uri.parse("$address/${specManager!.value!.name}"));
                     } else {
                       AlertDialog alert = AlertDialog(
-                        content: Text("Spec renderer service not configured"),
+                        content:
+                            const Text("Spec renderer service not configured"),
                         actions: [
                           TextButton(
-                            child: Text("OK"),
+                            child: const Text("OK"),
                             onPressed: () {
                               Navigator.of(context).pop(); // dismiss dialog
                             },
@@ -214,7 +217,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
                 ),
               ),
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   child: CodeView(body),
                 ),
@@ -232,7 +235,7 @@ class _SpecFileCardState extends State<SpecFileCard> {
               children: [
                 PanelNameRow(name: specManager!.value!.filename),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: Scrollbar(
                       controller: listScrollController,
@@ -242,10 +245,10 @@ class _SpecFileCardState extends State<SpecFileCard> {
                           listHeight = size.height;
                         },
                         child: ListView.builder(
-                          itemCount: this.items!.length,
+                          itemCount: items!.length,
                           controller: listScrollController,
                           itemBuilder: (BuildContext context, int index) {
-                            String fileName = this.items![index].headerValue!;
+                            String fileName = items![index].headerValue!;
 
                             Color? color = (index != selectedItemIndex)
                                 ? Theme.of(context).textTheme.bodyLarge!.color
@@ -289,12 +292,11 @@ class _SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: this.items![selectedItemIndex].headerValue),
+                PanelNameRow(name: items![selectedItemIndex].headerValue),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
-                    child:
-                        CodeView(this.items![selectedItemIndex].expandedValue),
+                    child: CodeView(items![selectedItemIndex].expandedValue),
                   ),
                 ),
               ],
@@ -308,12 +310,12 @@ class _SpecFileCardState extends State<SpecFileCard> {
 
 class CodeView extends StatefulWidget {
   final String? text;
-  CodeView(this.text);
+  const CodeView(this.text, {super.key});
   @override
-  _CodeViewState createState() => _CodeViewState();
+  CodeViewState createState() => CodeViewState();
 }
 
-class _CodeViewState extends State<CodeView> {
+class CodeViewState extends State<CodeView> {
   late List<String> lines;
   ScrollController scrollController = ScrollController();
   Highlight? highlight = Highlight(-1, -1, -1, -1);
@@ -367,14 +369,14 @@ class _CodeViewState extends State<CodeView> {
 
   Widget rowForText(int i, String line) {
     List<Widget> children = [];
-    children.add(Container(
+    children.add(SizedBox(
         width: 50,
         child: Text(
           "${i + 1}",
           textAlign: TextAlign.right,
           style: GoogleFonts.inconsolata(color: Colors.grey[500]),
         )));
-    children.add(SizedBox(width: 10));
+    children.add(const SizedBox(width: 10));
     String before = "";
     String middle = "";
     String after = "";
@@ -419,7 +421,7 @@ class _CodeViewState extends State<CodeView> {
         ),
       ),
     );
-    return Container(
+    return SizedBox(
       height: rowHeight,
       child: Row(
         children: children,

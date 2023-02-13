@@ -24,10 +24,12 @@ import '../components/detail_rows.dart';
 
 // SpecOutlineCard displays an outline view of a spec.
 class SpecOutlineCard extends StatefulWidget {
-  _SpecOutlineCardState createState() => _SpecOutlineCardState();
+  const SpecOutlineCard({super.key});
+  @override
+  SpecOutlineCardState createState() => SpecOutlineCardState();
 }
 
-class _SpecOutlineCardState extends State<SpecOutlineCard> {
+class SpecOutlineCardState extends State<SpecOutlineCard> {
   String specName = "";
   SpecManager? specManager;
   List<Entry> data = [];
@@ -37,16 +39,16 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
   void managerListener() {
     setState(() {
       ApiSpec? spec = specManager?.value;
-      if ((spec != null) && (spec.contents.length > 0)) {
+      if ((spec != null) && (spec.contents.isNotEmpty)) {
         if (spec.mimeType.contains("+gzip")) {
           final bytes = GZipDecoder().decodeBytes(spec.contents);
-          String body = Utf8Codec().decoder.convert(bytes);
+          String body = const Utf8Codec().decoder.convert(bytes);
           YamlNode? doc = loadYamlNode(body);
           data = parseDoc(doc, 0);
         } else if (spec.mimeType.endsWith("+zip")) {
-          this.data = parseZip(spec.contents);
+          data = parseZip(spec.contents);
         } else {
-          //this.body = "";
+          //body = "";
         }
       }
     });
@@ -88,8 +90,8 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
 
   @override
   Widget build(BuildContext context) {
-    if ((specManager?.value == null) || (this.data == nil)) {
-      return Card();
+    if (specManager?.value == null) {
+      return const Card();
     }
     return Card(
       child: Column(
@@ -98,7 +100,7 @@ class _SpecOutlineCardState extends State<SpecOutlineCard> {
           PanelNameRow(name: specManager!.value!.filename),
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               width: double.infinity,
               child: Scrollbar(
                 controller: scrollController,
@@ -131,28 +133,26 @@ Widget entryRow(Entry e) {
   if (e.indent < 0) {
     return SimpleCodeView(e.value);
   }
-  return Container(
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (e.label != null)
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.zero,
-                  child: Text(
-                    ("  " * e.indent) + e.label!,
-                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                  ))),
-        if (e.value != null)
-          Expanded(
-              child: Container(
-                  padding: EdgeInsets.zero,
-                  child: Text(
-                    e.value!,
-                    style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
-                  ))),
-      ],
-    ),
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (e.label != null)
+        Expanded(
+            child: Container(
+                padding: EdgeInsets.zero,
+                child: Text(
+                  ("  " * e.indent) + e.label!,
+                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                ))),
+      if (e.value != null)
+        Expanded(
+            child: Container(
+                padding: EdgeInsets.zero,
+                child: Text(
+                  e.value!,
+                  style: GoogleFonts.inconsolata().copyWith(fontSize: 16),
+                ))),
+    ],
   );
 }
 
@@ -161,17 +161,17 @@ Widget entryRow(Entry e) {
 class EntryItem extends StatelessWidget {
   final Entry entry;
 
-  const EntryItem(this.entry);
+  const EntryItem(this.entry, {super.key});
 
   Widget _buildTiles(BuildContext context, Entry root) {
-    if (root.children.isEmpty)
+    if (root.children.isEmpty) {
       return ListTile(
         minVerticalPadding: 0,
         title: entryRow(root),
         contentPadding: EdgeInsets.zero,
-        visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
       );
-
+    }
     List<Widget> children = [];
     for (var child in root.children) {
       children.add(_buildTiles(context, child));
@@ -179,9 +179,9 @@ class EntryItem extends StatelessWidget {
     return ExpansionTile(
       key: PageStorageKey<Entry>(root),
       title: entryRow(root),
-      children: children,
       tilePadding: EdgeInsets.zero,
       childrenPadding: EdgeInsets.zero,
+      children: children,
     );
   }
 
@@ -225,7 +225,7 @@ List<Entry> parseDoc(YamlNode? doc, int indent) {
         entries.add(Entry(
             indent, "$i", "list[${node.length}]", parseDoc(node, indent + 1)));
       } else {
-        print(node);
+        debugPrint("$node");
       }
       i++;
     }
@@ -241,7 +241,7 @@ List<Entry> parseZip(List<int> data) {
     if (file.isFile) {
       String body;
       try {
-        body = Utf8Codec().decoder.convert(file.content);
+        body = const Utf8Codec().decoder.convert(file.content);
       } catch (e) {
         body = "unavailable";
       }
@@ -261,12 +261,12 @@ class SimpleCodeView extends StatelessWidget {
   final String? text;
   final rowHeight = 18.0;
 
-  SimpleCodeView(this.text);
+  const SimpleCodeView(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      this.text!,
+      text!,
       textAlign: TextAlign.left,
       softWrap: false,
       style: GoogleFonts.inconsolata(color: Colors.grey[800]).copyWith(

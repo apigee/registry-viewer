@@ -30,7 +30,7 @@ import '../helpers/title.dart';
 
 class ApiDetailPage extends StatelessWidget {
   final String? name;
-  ApiDetailPage({this.name});
+  const ApiDetailPage({super.key, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +46,15 @@ class ApiDetailPage extends StatelessWidget {
       child: DefaultTabController(
         length: 4,
         initialIndex: 1,
-        animationDuration: Duration(milliseconds: 100),
+        animationDuration: const Duration(milliseconds: 100),
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(pageTitle(this.name) ?? "API Details"),
+            title: Text(pageTitle(name) ?? "API Details"),
             actions: <Widget>[
               homeButton(context),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(
                   child: Text(
@@ -93,12 +93,12 @@ class ApiDetailPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    ApiDetailCard(editable: true),
+                    const ApiDetailCard(editable: true),
                     narrow(context)
-                        ? VersionListCard(
+                        ? const VersionListCard(
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
                             view1: VersionListCard(singleColumn: false),
@@ -108,10 +108,10 @@ class ApiDetailPage extends StatelessWidget {
                             ),
                           ),
                     narrow(context)
-                        ? DeploymentListCard(
+                        ? const DeploymentListCard(
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             initialWeight: 0.33,
                             view1: DeploymentListCard(
@@ -123,11 +123,11 @@ class ApiDetailPage extends StatelessWidget {
                             ),
                           ),
                     narrow(context)
-                        ? ArtifactListCard(
+                        ? const ArtifactListCard(
                             SelectionProvider.api,
                             singleColumn: true,
                           )
-                        : CustomSplitView(
+                        : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
                             view1: ArtifactListCard(
                               SelectionProvider.api,
@@ -141,7 +141,7 @@ class ApiDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              BottomBar(),
+              const BottomBar(),
             ],
           ),
         ),

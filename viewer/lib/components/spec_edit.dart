@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditSpecForm extends StatefulWidget {
+  const EditSpecForm({super.key});
   @override
   EditSpecFormState createState() => EditSpecFormState();
 }
@@ -81,7 +82,7 @@ class EditSpecFormState extends State<EditSpecForm> {
   @override
   Widget build(BuildContext context) {
     if (specManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final spec = specManager!.value!;
@@ -97,13 +98,13 @@ class EditSpecFormState extends State<EditSpecForm> {
               title: TextFormField(
                 controller: descriptionController,
               ),
-              subtitle: Text("Description"),
+              subtitle: const Text("Description"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -112,7 +113,7 @@ class EditSpecFormState extends State<EditSpecForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

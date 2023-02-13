@@ -42,12 +42,12 @@ class RegistryProvider extends InheritedWidget {
 }
 
 class Registry {
-  Map<String, ProjectManager> projectManagers = Map();
-  Map<String, ApiManager> apiManagers = Map();
-  Map<String, VersionManager> versionManagers = Map();
-  Map<String, DeploymentManager> deploymentManagers = Map();
-  Map<String, SpecManager> specManagers = Map();
-  Map<String?, ArtifactManager> artifactManagers = Map();
+  Map<String, ProjectManager> projectManagers = {};
+  Map<String, ApiManager> apiManagers = {};
+  Map<String, VersionManager> versionManagers = {};
+  Map<String, DeploymentManager> deploymentManagers = {};
+  Map<String, SpecManager> specManagers = {};
+  Map<String?, ArtifactManager> artifactManagers = {};
 
   ProjectManager? getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -112,9 +112,9 @@ class Manager extends ChangeNotifier {
         names.add(name);
       }
     });
-    names.forEach((name) {
+    for (var name in names) {
       managers.remove(name);
-    });
+    }
   }
 }
 
@@ -151,6 +151,7 @@ abstract class ResourceManager<T> extends Manager {
 
 class ProjectManager extends ResourceManager<Project> {
   ProjectManager(String name) : super(name);
+  @override
   Future<Project> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetProjectRequest();
     request.name = name!;
@@ -178,6 +179,7 @@ class ProjectManager extends ResourceManager<Project> {
 
 class ApiManager extends ResourceManager<Api> {
   ApiManager(String name) : super(name);
+  @override
   Future<Api> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetApiRequest();
     request.name = name!;
@@ -201,6 +203,7 @@ class ApiManager extends ResourceManager<Api> {
 
 class VersionManager extends ResourceManager<ApiVersion> {
   VersionManager(String name) : super(name);
+  @override
   Future<ApiVersion> fetchFuture(
       RegistryClient client, AdminClient? adminClient) {
     final request = GetApiVersionRequest();
@@ -225,6 +228,7 @@ class VersionManager extends ResourceManager<ApiVersion> {
 
 class SpecManager extends ResourceManager<ApiSpec> {
   SpecManager(String name) : super(name);
+  @override
   Future<ApiSpec> fetchFuture(RegistryClient client, AdminClient? adminClient) {
     final request = GetApiSpecRequest();
     request.name = name!;
@@ -262,6 +266,7 @@ class SpecManager extends ResourceManager<ApiSpec> {
 
 class DeploymentManager extends ResourceManager<ApiDeployment> {
   DeploymentManager(String name) : super(name);
+  @override
   Future<ApiDeployment> fetchFuture(
       RegistryClient client, AdminClient? adminClient) {
     final request = GetApiDeploymentRequest();
@@ -286,6 +291,7 @@ class DeploymentManager extends ResourceManager<ApiDeployment> {
 
 class ArtifactManager extends ResourceManager<Artifact> {
   ArtifactManager(String? name) : super(name);
+  @override
   Future<Artifact> fetchFuture(
       RegistryClient client, AdminClient? adminClient) {
     final request = GetArtifactRequest();

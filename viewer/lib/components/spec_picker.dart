@@ -24,61 +24,60 @@ import 'spec_detail.dart';
 import '../models/selection.dart';
 
 class SpecPicker extends StatelessWidget {
+  const SpecPicker({super.key});
   @override
   Widget build(BuildContext context) {
     final Selection selection = Selection();
 
     return SelectionProvider(
       selection: selection,
-      child: Container(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ProjectListCard(
-                      singleColumn: false,
-                    ),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Row(
+              children: const [
+                Expanded(
+                  child: ProjectListCard(
+                    singleColumn: false,
                   ),
-                  Expanded(
-                    child: ApiListCard(
-                      singleColumn: false,
-                    ),
+                ),
+                Expanded(
+                  child: ApiListCard(
+                    singleColumn: false,
                   ),
-                  Expanded(
-                    child: VersionListCard(
-                      singleColumn: false,
-                    ),
+                ),
+                Expanded(
+                  child: VersionListCard(
+                    singleColumn: false,
                   ),
-                  Expanded(
-                    child: SpecListCard(singleColumn: false),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: SpecListCard(singleColumn: false),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 3,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox.expand(child: ProjectDetailCard()),
-                  ),
-                  Expanded(
-                    child: SizedBox.expand(child: ApiDetailCard()),
-                  ),
-                  Expanded(
-                    child: SizedBox.expand(child: VersionDetailCard()),
-                  ),
-                  Expanded(
-                    child: SizedBox.expand(child: SpecDetailCard()),
-                  ),
-                ],
-              ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: const [
+                Expanded(
+                  child: SizedBox.expand(child: ProjectDetailCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: ApiDetailCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: VersionDetailCard()),
+                ),
+                Expanded(
+                  child: SizedBox.expand(child: SpecDetailCard()),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

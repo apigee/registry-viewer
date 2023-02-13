@@ -24,15 +24,13 @@ void reportError(BuildContext? context, Object? error) {
           String? message;
           if (error is grpc.GrpcError) {
             message = error.message;
-            if (message == null) {
-              message = "$error";
-            }
+            message ??= "$error";
           }
           return AlertDialog(
             content: Text(message!),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop(); // dismiss dialog
                 },
@@ -43,7 +41,7 @@ void reportError(BuildContext? context, Object? error) {
       );
     });
   } else {
-    print("$error");
+    debugPrint("$error");
   }
 }
 

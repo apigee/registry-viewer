@@ -28,20 +28,20 @@ typedef DeploymentSelectionHandler = Function(
 // DeploymentListCard is a card that displays a list of deployments.
 class DeploymentListCard extends StatefulWidget {
   final bool singleColumn;
-  DeploymentListCard({required this.singleColumn});
+  const DeploymentListCard({required this.singleColumn, super.key});
 
   @override
-  _DeploymentListCardState createState() => _DeploymentListCardState();
+  DeploymentListCardState createState() => DeploymentListCardState();
 }
 
-class _DeploymentListCardState extends State<DeploymentListCard>
+class DeploymentListCardState extends State<DeploymentListCard>
     with AutomaticKeepAliveClientMixin {
   DeploymentService? deploymentService;
   PagewiseLoadController<ApiDeployment>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _DeploymentListCardState() {
+  DeploymentListCardState() {
     deploymentService = DeploymentService();
     pageLoadController = PagewiseLoadController<ApiDeployment>(
         pageSize: pageSize,
@@ -58,7 +58,7 @@ class _DeploymentListCardState extends State<DeploymentListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, DeploymentSearchBox(),
+            filterBar(context, const DeploymentSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: DeploymentListView(
@@ -82,18 +82,15 @@ class DeploymentListView extends StatefulWidget {
   final PagewiseLoadController<ApiDeployment>? pageLoadController;
   final bool singleColumn;
 
-  DeploymentListView(
-    this.selectionHandler,
-    this.deploymentService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const DeploymentListView(this.selectionHandler, this.deploymentService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
-  _DeploymentListViewState createState() => _DeploymentListViewState();
+  DeploymentListViewState createState() => DeploymentListViewState();
 }
 
-class _DeploymentListViewState extends State<DeploymentListView> {
+class DeploymentListViewState extends State<DeploymentListView> {
   String? apiName;
   int selectedIndex = -1;
   Selection? selection;
@@ -145,7 +142,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiDeployment>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -193,7 +190,7 @@ class _DeploymentListViewState extends State<DeploymentListView> {
         },
         trailing: IconButton(
           color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
@@ -209,6 +206,6 @@ class _DeploymentListViewState extends State<DeploymentListView> {
 
 // DeploymentSearchBox provides a search box for deployments.
 class DeploymentSearchBox extends CustomSearchBox {
-  DeploymentSearchBox()
+  const DeploymentSearchBox({super.key})
       : super("Filter Deployments", "deployment_id.contains('TEXT')");
 }

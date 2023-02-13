@@ -29,12 +29,12 @@ import '../service/registry.dart';
 class SpecDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  SpecDetailCard({this.selflink, this.editable});
+  const SpecDetailCard({this.selflink, this.editable, super.key});
   @override
-  _SpecDetailCardState createState() => _SpecDetailCardState();
+  SpecDetailCardState createState() => SpecDetailCardState();
 }
 
-class _SpecDetailCardState extends State<SpecDetailCard>
+class SpecDetailCardState extends State<SpecDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;
@@ -132,7 +132,7 @@ class _SpecDetailCardState extends State<SpecDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditSpecForm(),
                 ),
@@ -145,7 +145,7 @@ class _SpecDetailCardState extends State<SpecDetailCard>
     ApiVersion? version = versionManager!.value;
     ApiSpec? spec = specManager!.value;
     if ((api == null) || (version == null) || (spec == null)) {
-      return Card();
+      return const Card();
     }
     final codeStyle = GoogleFonts.inconsolata();
     return Card(
@@ -159,53 +159,52 @@ class _SpecDetailCardState extends State<SpecDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PageSection(
                       children: [
-                        SuperTitleRow(api.displayName +
-                            "/" +
-                            version.name.split("/").last),
+                        SuperTitleRow(
+                            "${api.displayName}/${version.name.split("/").last}"),
                         TitleRow(spec.name.split("/").last, action: selflink),
                       ],
                     ),
-                    if (spec.labels.length > 0)
+                    if (spec.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(spec.labels),
                       ]),
-                    if (spec.annotations.length > 0)
+                    if (spec.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(spec.annotations),
                       ]),
                     if (spec.hasSourceUri())
                       PageSection(
                         children: [
-                          LinkRow("${spec.sourceUri}", spec.sourceUri),
+                          LinkRow(spec.sourceUri, spec.sourceUri),
                         ],
                       ),
                     PageSection(
                       children: [
                         BodyRow(spec.mimeType, style: codeStyle),
-                        BodyRow("revision " + spec.revisionId,
+                        BodyRow("revision ${spec.revisionId}",
                             style: codeStyle),
                         BodyRow("${spec.sizeBytes} bytes", style: codeStyle),
                         BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
                         TimestampRow(spec.createTime, spec.revisionUpdateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -215,15 +214,14 @@ class _SpecDetailCardState extends State<SpecDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.specName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.specName.value}/artifacts/summary",
                     ),
                     if (spec.description != "")
                       PageSection(

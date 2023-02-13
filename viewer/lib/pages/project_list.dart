@@ -23,14 +23,12 @@ import '../models/string.dart';
 class ProjectListPage extends StatefulWidget {
   final String? name;
 
-  ProjectListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const ProjectListPage(this.name, {super.key});
   @override
-  _ProjectListPageState createState() => _ProjectListPageState();
+  ProjectListPageState createState() => ProjectListPageState();
 }
 
-class _ProjectListPageState extends State<ProjectListPage> {
+class ProjectListPageState extends State<ProjectListPage> {
   @override
   Widget build(BuildContext context) {
     return ObservableStringProvider(
@@ -44,7 +42,7 @@ class _ProjectListPageState extends State<ProjectListPage> {
           ],
         ),
         body: Column(
-          children: [
+          children: const [
             Expanded(
               child: ProjectListCard(singleColumn: true),
             ),

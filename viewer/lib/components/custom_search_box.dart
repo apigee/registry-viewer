@@ -19,7 +19,7 @@ import '../models/string.dart';
 class CustomSearchBox extends StatefulWidget {
   final String hintText;
   final String filterText;
-  CustomSearchBox(this.hintText, this.filterText);
+  const CustomSearchBox(this.hintText, this.filterText, {super.key});
 
   @override
   CustomSearchBoxState createState() => CustomSearchBoxState();
@@ -31,7 +31,7 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(
+      margin: const EdgeInsets.fromLTRB(
         0,
         8,
         0,
@@ -41,10 +41,10 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
       child: TextField(
         controller: searchTextController,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.black),
+            prefixIcon: const Icon(Icons.search, color: Colors.black),
             suffixIcon: IconButton(
               color: Colors.black,
-              icon: Icon(Icons.clear),
+              icon: const Icon(Icons.clear),
               tooltip: "Clear",
               onPressed: () {
                 searchTextController.clear();

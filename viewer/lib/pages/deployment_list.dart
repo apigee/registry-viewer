@@ -24,14 +24,12 @@ import '../models/selection.dart';
 class DeploymentListPage extends StatefulWidget {
   final String? name;
 
-  DeploymentListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const DeploymentListPage(this.name, {super.key});
   @override
-  _DeploymentListPageState createState() => _DeploymentListPageState();
+  DeploymentListPageState createState() => DeploymentListPageState();
 }
 
-class _DeploymentListPageState extends State<DeploymentListPage> {
+class DeploymentListPageState extends State<DeploymentListPage> {
   // convert /projects/{project}/locations/global/apis/{api}/deployments
   // to projects/{project}/locations/global/apis/{api}
   String parentName() {
@@ -56,7 +54,7 @@ class _DeploymentListPageState extends State<DeploymentListPage> {
             ],
           ),
           body: Column(
-            children: [
+            children: const [
               Expanded(
                 child: DeploymentListCard(
                   singleColumn: true,

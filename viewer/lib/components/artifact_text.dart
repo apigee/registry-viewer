@@ -22,11 +22,12 @@ import '../service/registry.dart';
 class ArtifactText extends StatefulWidget {
   final String Function() artifactName;
 
-  ArtifactText(this.artifactName);
-  _ArtifactTextState createState() => _ArtifactTextState();
+  const ArtifactText(this.artifactName, {super.key});
+  @override
+  ArtifactTextState createState() => ArtifactTextState();
 }
 
-class _ArtifactTextState extends State<ArtifactText> {
+class ArtifactTextState extends State<ArtifactText> {
   ArtifactManager? artifactManager;
   Selection? selection;
 

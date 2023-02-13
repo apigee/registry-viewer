@@ -24,14 +24,12 @@ import '../models/selection.dart';
 class VersionListPage extends StatefulWidget {
   final String? name;
 
-  VersionListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const VersionListPage(this.name, {super.key});
   @override
-  _VersionListPageState createState() => _VersionListPageState();
+  VersionListPageState createState() => VersionListPageState();
 }
 
-class _VersionListPageState extends State<VersionListPage> {
+class VersionListPageState extends State<VersionListPage> {
   // convert /projects/{project}/locations/global/apis/{api}/versions
   // to projects/{project}/locations/global/apis/{api}
   String parentName() {
@@ -56,7 +54,7 @@ class _VersionListPageState extends State<VersionListPage> {
             ],
           ),
           body: Column(
-            children: [
+            children: const [
               Expanded(
                 child: VersionListCard(
                   singleColumn: true,

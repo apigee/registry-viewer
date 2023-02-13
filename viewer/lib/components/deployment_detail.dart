@@ -27,11 +27,12 @@ import '../service/registry.dart';
 class DeploymentDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  DeploymentDetailCard({this.selflink, this.editable});
-  _DeploymentDetailCardState createState() => _DeploymentDetailCardState();
+  const DeploymentDetailCard({this.selflink, this.editable, super.key});
+  @override
+  DeploymentDetailCardState createState() => DeploymentDetailCardState();
 }
 
-class _DeploymentDetailCardState extends State<DeploymentDetailCard>
+class DeploymentDetailCardState extends State<DeploymentDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   DeploymentManager? deploymentManager;
@@ -114,7 +115,7 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditDeploymentForm(),
                 ),
@@ -135,7 +136,7 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,11 +148,11 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                             action: selflink),
                       ],
                     ),
-                    if (deployment.labels.length > 0)
+                    if (deployment.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(deployment.labels),
                       ]),
-                    if (deployment.annotations.length > 0)
+                    if (deployment.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(deployment.annotations),
                       ]),
@@ -161,16 +162,16 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                             deployment.revisionUpdateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -180,15 +181,14 @@ class _DeploymentDetailCardState extends State<DeploymentDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.deploymentName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.deploymentName.value}/artifacts/summary",
                     ),
                     if (deployment.description != "")
                       PageSection(

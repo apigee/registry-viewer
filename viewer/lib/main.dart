@@ -22,7 +22,7 @@ import 'service/registry.dart';
 
 void main() async {
   attemptToSignIn().then((_) {
-    runApp(Application());
+    runApp(const Application());
   },
       onError: (err) => runApp(Center(
             child: Text(
@@ -33,6 +33,7 @@ void main() async {
 }
 
 class Application extends StatelessWidget {
+  const Application({super.key});
   @override
   Widget build(BuildContext context) {
     Registry registry = Registry();

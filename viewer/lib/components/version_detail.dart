@@ -27,11 +27,12 @@ import '../service/registry.dart';
 class VersionDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  VersionDetailCard({this.selflink, this.editable});
-  _VersionDetailCardState createState() => _VersionDetailCardState();
+  const VersionDetailCard({this.selflink, this.editable, super.key});
+  @override
+  VersionDetailCardState createState() => VersionDetailCardState();
 }
 
-class _VersionDetailCardState extends State<VersionDetailCard>
+class VersionDetailCardState extends State<VersionDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   VersionManager? versionManager;
@@ -113,7 +114,7 @@ class _VersionDetailCardState extends State<VersionDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditVersionForm(),
                 ),
@@ -135,7 +136,7 @@ class _VersionDetailCardState extends State<VersionDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,11 +148,11 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                             action: selflink),
                       ],
                     ),
-                    if (version.labels.length > 0)
+                    if (version.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(version.labels),
                       ]),
-                    if (version.annotations.length > 0)
+                    if (version.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),
@@ -160,16 +161,16 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                         TimestampRow(version.createTime, version.updateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
-                          child: Text("Specs"),
+                          child: const Text("Specs"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -178,7 +179,7 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -188,15 +189,14 @@ class _VersionDetailCardState extends State<VersionDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.versionName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.versionName.value}/artifacts/summary",
                     ),
                     if (version.description != "")
                       PageSection(

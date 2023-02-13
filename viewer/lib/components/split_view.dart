@@ -23,17 +23,19 @@ class CustomSplitView extends StatefulWidget {
   final SplitViewMode? viewMode;
   final double initialWeight;
 
-  CustomSplitView({
+  const CustomSplitView({
     this.viewMode,
     this.view1,
     this.view2,
     this.initialWeight = 0.5,
+    super.key,
   });
 
-  _CustomSplitViewState createState() => _CustomSplitViewState();
+  @override
+  CustomSplitViewState createState() => CustomSplitViewState();
 }
 
-class _CustomSplitViewState extends State<CustomSplitView>
+class CustomSplitViewState extends State<CustomSplitView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -43,19 +45,21 @@ class _CustomSplitViewState extends State<CustomSplitView>
     super.build(context);
     return SplitView(
       viewMode: widget.viewMode!,
+      gripSize: 10,
       children: [
         ThresholdBox(
-            child: widget.view1,
-            side: (widget.viewMode == SplitViewMode.Vertical)
-                ? Side.top
-                : Side.right),
+          side: (widget.viewMode == SplitViewMode.Vertical)
+              ? Side.top
+              : Side.right,
+          child: widget.view1,
+        ),
         ThresholdBox(
-            child: widget.view2,
-            side: (widget.viewMode == SplitViewMode.Vertical)
-                ? Side.bottom
-                : Side.left)
+          side: (widget.viewMode == SplitViewMode.Vertical)
+              ? Side.bottom
+              : Side.left,
+          child: widget.view2,
+        )
       ],
-      gripSize: 10,
     );
   }
 }
@@ -65,16 +69,17 @@ class ThresholdBox extends StatelessWidget {
   final Side? side;
   final double width;
   final double height;
-  ThresholdBox({this.child, this.side, this.width = 400, this.height = 100});
+  const ThresholdBox(
+      {this.child, this.side, this.width = 400, this.height = 100, super.key});
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return ClipRect(
         child: OverflowBox(
-          maxHeight: max(constraints.maxHeight, this.height),
-          maxWidth: max(constraints.maxWidth, this.width),
-          child: this.child,
+          maxHeight: max(constraints.maxHeight, height),
+          maxWidth: max(constraints.maxWidth, width),
+          child: child,
         ),
       );
     });

@@ -19,6 +19,7 @@ import '../service/registry.dart';
 import '../helpers/errors.dart';
 
 class EditProjectForm extends StatefulWidget {
+  const EditProjectForm({super.key});
   @override
   EditProjectFormState createState() => EditProjectFormState();
 }
@@ -83,7 +84,7 @@ class EditProjectFormState extends State<EditProjectForm> {
   @override
   Widget build(BuildContext context) {
     if (projectManager?.value == null) {
-      return Card();
+      return const Card();
     } else {
       // Build a Form widget using the _formKey created above.
       final project = projectManager!.value!;
@@ -100,19 +101,19 @@ class EditProjectFormState extends State<EditProjectForm> {
               title: TextFormField(
                 controller: displayNameController,
               ),
-              subtitle: Text("Display Name"),
+              subtitle: const Text("Display Name"),
             ),
             ListTile(
               title: TextFormField(
                 controller: descriptionController,
               ),
-              subtitle: Text("Description"),
+              subtitle: const Text("Description"),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Cancel"),
+                  child: const Text("Cancel"),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).pop();
                   },
@@ -121,7 +122,7 @@ class EditProjectFormState extends State<EditProjectForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  child: Text("Save"),
+                  child: const Text("Save"),
                   onPressed: () {
                     save(context);
                     Navigator.of(context, rootNavigator: true).pop();

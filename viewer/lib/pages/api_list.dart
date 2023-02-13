@@ -24,14 +24,12 @@ import '../models/selection.dart';
 class ApiListPage extends StatefulWidget {
   final String? name;
 
-  ApiListPage(String? name, {Key? key})
-      : name = name,
-        super(key: key);
+  const ApiListPage(this.name, {super.key});
   @override
-  _ApiListPageState createState() => _ApiListPageState();
+  ApiListPageState createState() => ApiListPageState();
 }
 
-class _ApiListPageState extends State<ApiListPage> {
+class ApiListPageState extends State<ApiListPage> {
   // convert /projects/{project}/locations/global/apis
   // to projects/{project}/locations/global
   String parentName() {
@@ -57,7 +55,7 @@ class _ApiListPageState extends State<ApiListPage> {
             ],
           ),
           body: Column(
-            children: [
+            children: const [
               Expanded(
                 child: ApiListCard(
                   singleColumn: true,

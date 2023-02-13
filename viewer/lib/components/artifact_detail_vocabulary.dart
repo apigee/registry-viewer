@@ -20,10 +20,11 @@ import '../helpers/extensions.dart';
 class VocabularyArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
-  VocabularyArtifactCard(this.artifact, {this.selflink});
+  const VocabularyArtifactCard(this.artifact, {this.selflink, super.key});
 
+  @override
   Widget build(BuildContext context) {
-    Vocabulary vocabulary = new Vocabulary.fromBuffer(artifact.contents);
+    Vocabulary vocabulary = Vocabulary.fromBuffer(artifact.contents);
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -41,7 +42,7 @@ class VocabularyArtifactCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("schemas", vocabulary.schemas),
                 ),
-                VerticalDivider(width: 7),
+                const VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("properties", vocabulary.properties),
                 ),
@@ -54,7 +55,7 @@ class VocabularyArtifactCard extends StatelessWidget {
                 Expanded(
                   child: WordCountListCard("operations", vocabulary.operations),
                 ),
-                VerticalDivider(width: 7),
+                const VerticalDivider(width: 7),
                 Expanded(
                   child: WordCountListCard("parameters", vocabulary.parameters),
                 ),
@@ -70,7 +71,7 @@ class VocabularyArtifactCard extends StatelessWidget {
 class WordCountListCard extends StatefulWidget {
   final String name;
   final List<WordCount> wordCountList;
-  WordCountListCard(this.name, this.wordCountList);
+  const WordCountListCard(this.name, this.wordCountList, {super.key});
 
   @override
   WordCountListCardState createState() => WordCountListCardState();
@@ -79,12 +80,13 @@ class WordCountListCard extends StatefulWidget {
 class WordCountListCardState extends State<WordCountListCard> {
   final ScrollController controller = ScrollController();
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           width: double.infinity,
           color: Theme.of(context).splashColor,
           child: Text(
@@ -103,14 +105,14 @@ class WordCountListCardState extends State<WordCountListCard> {
                 final wordCount = widget.wordCountList[index];
                 return Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 40,
                       child: Text(
                         "${wordCount.count}",
                         textAlign: TextAlign.end,
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Flexible(
                       child: Text(
                         wordCount.word,

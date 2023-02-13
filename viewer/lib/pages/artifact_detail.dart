@@ -21,7 +21,7 @@ import '../helpers/title.dart';
 
 class ArtifactDetailPage extends StatelessWidget {
   final String? name;
-  ArtifactDetailPage({this.name});
+  const ArtifactDetailPage({super.key, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +40,13 @@ class ArtifactDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(pageTitle(this.name) ?? "Artifact Details"),
+          title: Text(pageTitle(name) ?? "Artifact Details"),
           actions: <Widget>[
             homeButton(context),
           ],
         ),
         body: Column(
-          children: [
+          children: const [
             Expanded(
               child: ArtifactDetailCard(editable: true),
             ),

@@ -16,11 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:registry/registry.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'custom_search_box.dart';
 import 'filter.dart';
 import 'artifact_add.dart';
-import 'artifact_delete.dart';
 import '../models/artifact.dart';
 import '../models/string.dart';
 import '../models/selection.dart';
@@ -35,14 +33,14 @@ typedef ArtifactSelectionHandler = Function(
 class ArtifactListCard extends StatefulWidget {
   final ObservableStringFn getObservableResourceName;
   final bool singleColumn;
-  ArtifactListCard(this.getObservableResourceName,
-      {required this.singleColumn});
+  const ArtifactListCard(this.getObservableResourceName,
+      {required this.singleColumn, super.key});
 
   @override
-  _ArtifactListCardState createState() => _ArtifactListCardState();
+  ArtifactListCardState createState() => ArtifactListCardState();
 }
 
-class _ArtifactListCardState extends State<ArtifactListCard>
+class ArtifactListCardState extends State<ArtifactListCard>
     with AutomaticKeepAliveClientMixin {
   late ObservableString observableSubjectName;
   String? subjectName;
@@ -51,7 +49,7 @@ class _ArtifactListCardState extends State<ArtifactListCard>
   @override
   bool get wantKeepAlive => true;
 
-  _ArtifactListCardState() {
+  ArtifactListCardState() {
     artifactService = ArtifactService();
     pageLoadController = PagewiseLoadController<Artifact>(
         pageSize: pageSize,
@@ -64,9 +62,7 @@ class _ArtifactListCardState extends State<ArtifactListCard>
     pageLoadController?.reset();
     setState(() {
       subjectName = observableSubjectName.value;
-      if (subjectName == null) {
-        subjectName = "";
-      }
+      subjectName ??= "";
     });
   }
 
@@ -86,7 +82,8 @@ class _ArtifactListCardState extends State<ArtifactListCard>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    Function add = () {
+
+    add() {
       final selection = SelectionProvider.of(context);
       showDialog(
           context: context,
@@ -94,17 +91,18 @@ class _ArtifactListCardState extends State<ArtifactListCard>
             return SelectionProvider(
               selection: selection!,
               child: AlertDialog(
-                content: AddArtifactForm(subjectName),
+                content: AddArtifactForm(subjectName!),
               ),
             );
           });
-    };
+    }
+
     return ObservableStringProvider(
       observable: ObservableString(),
       child: Card(
         child: Column(
           children: [
-            filterBar(context, ArtifactSearchBox(),
+            filterBar(context, const ArtifactSearchBox(),
                 type: "artifacts",
                 add: add,
                 refresh: () => pageLoadController!.reset()),
@@ -132,18 +130,14 @@ class ArtifactListView extends StatefulWidget {
   final PagewiseLoadController<Artifact>? pageLoadController;
   final bool singleColumn;
 
-  ArtifactListView(
-    this.getObservableResourceName,
-    this.selectionHandler,
-    this.artifactService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const ArtifactListView(this.getObservableResourceName, this.selectionHandler,
+      this.artifactService, this.pageLoadController, this.singleColumn,
+      {super.key});
   @override
-  _ArtifactListViewState createState() => _ArtifactListViewState();
+  ArtifactListViewState createState() => ArtifactListViewState();
 }
 
-class _ArtifactListViewState extends State<ArtifactListView> {
+class ArtifactListViewState extends State<ArtifactListView> {
   String? parentName;
   int selectedIndex = -1;
   ObservableString? filter;
@@ -187,7 +181,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Artifact>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -237,7 +231,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
         widget.selectionHandler?.call(context, artifact);
       },
       trailing: IconButton(
-        icon: Icon(Icons.open_in_new),
+        icon: const Icon(Icons.open_in_new),
         tooltip: "open",
         onPressed: () {
           Navigator.pushNamed(
@@ -252,7 +246,7 @@ class _ArtifactListViewState extends State<ArtifactListView> {
 
 // ArtifactSearchBox provides a search box for artifacts.
 class ArtifactSearchBox extends CustomSearchBox {
-  ArtifactSearchBox()
+  const ArtifactSearchBox({super.key})
       : super(
           "Filter Artifacts",
           "artifact_id.contains('TEXT')",

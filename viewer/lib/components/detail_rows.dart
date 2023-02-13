@@ -30,12 +30,12 @@ class ResourceNameButtonRow extends StatelessWidget {
   final String? name;
   final void Function()? show;
   final void Function()? edit;
-  ResourceNameButtonRow({this.name, this.show, this.edit});
+  const ResourceNameButtonRow({this.name, this.show, this.edit, super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.fromLTRB(16, 13, 16, 13),
+      padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -52,6 +52,7 @@ class ResourceNameButtonRow extends StatelessWidget {
           if (show != null)
             Flexible(
               child: GestureDetector(
+                onTap: show,
                 child: Text(
                   name!,
                   style: Theme.of(context)
@@ -61,11 +62,11 @@ class ResourceNameButtonRow extends StatelessWidget {
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
-                onTap: show,
               ),
             ),
           if (edit != null)
             GestureDetector(
+              onTap: edit ?? () {},
               child: Text(
                 "EDIT",
                 style: Theme.of(context)
@@ -74,7 +75,6 @@ class ResourceNameButtonRow extends StatelessWidget {
                     .copyWith(color: Theme.of(context).primaryColor),
                 textAlign: TextAlign.right,
               ),
-              onTap: edit != null ? edit : () {},
             ),
         ],
       ),
@@ -85,12 +85,12 @@ class ResourceNameButtonRow extends StatelessWidget {
 class PanelNameRow extends StatelessWidget {
   final String? name;
   final Widget? button;
-  PanelNameRow({this.name, this.button});
+  const PanelNameRow({this.name, this.button, super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).canvasColor,
-      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -103,7 +103,7 @@ class PanelNameRow extends StatelessWidget {
               overflow: TextOverflow.clip,
             ),
           ),
-          (button != null) ? button! : SizedBox(width: 0, height: 0),
+          (button != null) ? button! : const SizedBox(width: 0, height: 0),
         ],
       ),
     );
@@ -113,7 +113,7 @@ class PanelNameRow extends StatelessWidget {
 class TitleRow extends StatelessWidget {
   final String text;
   final Function? action;
-  TitleRow(this.text, {this.action});
+  const TitleRow(this.text, {this.action, super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -121,16 +121,17 @@ class TitleRow extends StatelessWidget {
         action != null
             ? Expanded(
                 child: GestureDetector(
-                    child: Text(
-                      text,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: Theme.of(context).primaryColor),
-                      textAlign: TextAlign.left,
-                      softWrap: true,
-                    ),
-                    onTap: action as void Function()?),
+                  onTap: action as void Function()?,
+                  child: Text(
+                    text,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Theme.of(context).primaryColor),
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                  ),
+                ),
               )
             : Expanded(
                 child: Text(
@@ -147,7 +148,7 @@ class TitleRow extends StatelessWidget {
 
 class SuperTitleRow extends StatelessWidget {
   final String text;
-  SuperTitleRow(this.text);
+  const SuperTitleRow(this.text, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -169,7 +170,7 @@ class BodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
   final bool wrap;
-  BodyRow(this.text, {this.style, this.wrap = false});
+  const BodyRow(this.text, {this.style, this.wrap = false, super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -188,7 +189,7 @@ class BodyRow extends StatelessWidget {
 class LinkifiedBodyRow extends StatelessWidget {
   final String text;
   final TextStyle? style;
-  LinkifiedBodyRow(this.text, {this.style});
+  const LinkifiedBodyRow(this.text, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     final textStyle = style ?? Theme.of(context).textTheme.bodyLarge!;
@@ -213,7 +214,7 @@ class LinkifiedBodyRow extends StatelessWidget {
 class LinkRow extends StatelessWidget {
   final String text;
   final String url;
-  LinkRow(this.text, this.url);
+  const LinkRow(this.text, this.url, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -243,13 +244,13 @@ class LinkRow extends StatelessWidget {
 class StringValueRow extends StatelessWidget {
   final String label;
   final String value;
-  StringValueRow(this.label, this.value);
+  const StringValueRow(this.label, this.value, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: Text(label + " " + value,
+          child: Text("$label $value",
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyMedium),
         ),
@@ -261,7 +262,7 @@ class StringValueRow extends StatelessWidget {
 class TimestampRow extends StatelessWidget {
   final Timestamp created;
   final Timestamp updated;
-  TimestampRow(this.created, this.updated);
+  const TimestampRow(this.created, this.updated, {super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -270,7 +271,7 @@ class TimestampRow extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                "created " + format(created),
+                "created ${format(created)}",
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inconsolata(),
                 softWrap: false,
@@ -283,7 +284,7 @@ class TimestampRow extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                "updated " + format(updated),
+                "updated ${format(updated)}",
                 textAlign: TextAlign.left,
                 style: GoogleFonts.inconsolata(),
                 softWrap: false,
@@ -299,7 +300,7 @@ class TimestampRow extends StatelessWidget {
 
 class DetailRow extends StatelessWidget {
   final String text;
-  DetailRow(this.text);
+  const DetailRow(this.text, {super.key});
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -307,8 +308,8 @@ class DetailRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
-            Divider(thickness: 2),
+            const SizedBox(height: 10),
+            const Divider(thickness: 2),
             Text(
               text.trim(),
               style: GoogleFonts.robotoMono(color: Colors.grey[500]),
@@ -324,7 +325,7 @@ class DetailRow extends StatelessWidget {
 class LabelsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  LabelsRow(this.map, {this.style});
+  const LabelsRow(this.map, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -335,7 +336,7 @@ class LabelsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
             color: Theme.of(context).primaryColorLight,
             child: Text(labelText(key, map[key])),
           ),
@@ -347,16 +348,16 @@ class LabelsRow extends StatelessWidget {
     if (value == "true") {
       return key;
     } else if (value == "false") {
-      return "!" + key;
+      return "!$key";
     }
-    return key + ":" + value;
+    return "$key:$value";
   }
 }
 
 class AnnotationsRow extends StatelessWidget {
   final Map<String, String> map;
   final TextStyle? style;
-  AnnotationsRow(this.map, {this.style});
+  const AnnotationsRow(this.map, {this.style, super.key});
   @override
   Widget build(BuildContext context) {
     var keys = map.keys.toList();
@@ -367,9 +368,9 @@ class AnnotationsRow extends StatelessWidget {
       children: <Widget>[
         for (var key in keys)
           Container(
-            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
             color: Theme.of(context).primaryColorLight,
-            child: Text(key + ":" + map[key]!),
+            child: Text("$key:${map[key]!}"),
           ),
       ],
     );
@@ -378,11 +379,11 @@ class AnnotationsRow extends StatelessWidget {
 
 class PageSection extends StatelessWidget {
   final List<Widget>? children;
-  PageSection({this.children});
+  const PageSection({this.children, super.key});
   @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];
-    rows.add(SizedBox(height: 10));
+    rows.add(const SizedBox(height: 10));
     rows.addAll(children!);
     return Column(
       children: rows,

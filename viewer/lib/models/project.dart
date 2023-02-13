@@ -16,22 +16,22 @@ import 'package:registry/registry.dart';
 
 extension Display on Project {
   String nameForDisplay() {
-    if (this.displayName != "") {
-      return this.displayName;
+    if (displayName != "") {
+      return displayName;
     } else {
-      return this.name;
+      return name;
     }
   }
 
   String routeNameForDetail() {
-    return "/" + this.name;
+    return "/$name";
   }
 
   String routeNameForApis() {
-    return "/" + this.name + "/apis";
+    return "/$name/apis";
   }
 
   String routeNameForArtifacts() {
-    return "/" + this.name + "/artifacts";
+    return "/$name/artifacts";
   }
 }

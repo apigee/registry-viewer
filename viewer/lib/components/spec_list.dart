@@ -27,20 +27,20 @@ typedef SpecSelectionHandler = Function(BuildContext context, ApiSpec spec);
 // SpecListCard is a card that displays a list of specs.
 class SpecListCard extends StatefulWidget {
   final bool singleColumn;
-  SpecListCard({required this.singleColumn});
+  const SpecListCard({required this.singleColumn, super.key});
 
   @override
-  _SpecListCardState createState() => _SpecListCardState();
+  SpecListCardState createState() => SpecListCardState();
 }
 
-class _SpecListCardState extends State<SpecListCard>
+class SpecListCardState extends State<SpecListCard>
     with AutomaticKeepAliveClientMixin {
   SpecService? specService;
   PagewiseLoadController<ApiSpec>? pageLoadController;
   @override
   bool get wantKeepAlive => true;
 
-  _SpecListCardState() {
+  SpecListCardState() {
     specService = SpecService();
     pageLoadController = PagewiseLoadController<ApiSpec>(
         pageSize: pageSize,
@@ -56,7 +56,7 @@ class _SpecListCardState extends State<SpecListCard>
       child: Card(
         child: Column(
           children: [
-            filterBar(context, SpecSearchBox(),
+            filterBar(context, const SpecSearchBox(),
                 refresh: () => pageLoadController!.reset()),
             Expanded(
               child: SpecListView(
@@ -80,18 +80,15 @@ class SpecListView extends StatefulWidget {
   final PagewiseLoadController<ApiSpec>? pageLoadController;
   final bool singleColumn;
 
-  SpecListView(
-    this.selectionHandler,
-    this.specService,
-    this.pageLoadController,
-    this.singleColumn,
-  );
+  const SpecListView(this.selectionHandler, this.specService,
+      this.pageLoadController, this.singleColumn,
+      {super.key});
 
   @override
-  _SpecListViewState createState() => _SpecListViewState();
+  SpecListViewState createState() => SpecListViewState();
 }
 
-class _SpecListViewState extends State<SpecListView> {
+class SpecListViewState extends State<SpecListView> {
   String? versionName;
   int selectedIndex = -1;
   Selection? selection;
@@ -143,7 +140,7 @@ class _SpecListViewState extends State<SpecListView> {
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<ApiSpec>(
-        itemBuilder: this._itemBuilder,
+        itemBuilder: _itemBuilder,
         pageLoadController: widget.pageLoadController,
         controller: scrollController,
       ),
@@ -192,7 +189,7 @@ class _SpecListViewState extends State<SpecListView> {
         },
         trailing: IconButton(
           //color: Colors.black,
-          icon: Icon(Icons.open_in_new),
+          icon: const Icon(Icons.open_in_new),
           tooltip: "open",
           onPressed: () {
             Navigator.pushNamed(
@@ -208,7 +205,7 @@ class _SpecListViewState extends State<SpecListView> {
 
 // SpecSearchBox provides a search box for specs.
 class SpecSearchBox extends CustomSearchBox {
-  SpecSearchBox()
+  const SpecSearchBox({super.key})
       : super(
           "Filter Specs",
           "spec_id.contains('TEXT')",

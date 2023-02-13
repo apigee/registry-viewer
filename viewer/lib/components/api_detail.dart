@@ -29,11 +29,12 @@ import '../service/registry.dart';
 class ApiDetailCard extends StatefulWidget {
   final bool? selflink;
   final bool? editable;
-  ApiDetailCard({this.selflink, this.editable});
-  _ApiDetailCardState createState() => _ApiDetailCardState();
+  const ApiDetailCard({super.key, this.selflink, this.editable});
+  @override
+  ApiDetailCardState createState() => ApiDetailCardState();
 }
 
-class _ApiDetailCardState extends State<ApiDetailCard>
+class ApiDetailCardState extends State<ApiDetailCard>
     with AutomaticKeepAliveClientMixin {
   ApiManager? apiManager;
   Selection? selection;
@@ -99,7 +100,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: DialogBuilder(
                   child: EditAPIForm(),
                 ),
@@ -119,7 +120,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,11 +128,11 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                     PageSection(children: [
                       TitleRow(api.displayName, action: selflink),
                     ]),
-                    if (api.labels.length > 0)
+                    if (api.labels.isNotEmpty)
                       PageSection(children: [
                         LabelsRow(api.labels),
                       ]),
-                    if (api.annotations.length > 0)
+                    if (api.annotations.isNotEmpty)
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
@@ -140,16 +141,16 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                         TimestampRow(api.createTime, api.updateTime),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          child: Text("Versions"),
+                          child: const Text("Versions"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -158,7 +159,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Deployments"),
+                          child: const Text("Deployments"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -167,7 +168,7 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Artifacts"),
+                          child: const Text("Artifacts"),
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
@@ -177,22 +178,21 @@ class _ApiDetailCardState extends State<ApiDetailCard>
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
-                          SelectionProvider.of(context)!.apiName.value +
-                          "/artifacts/summary",
+                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/summary",
                     ),
                     PageSection(
                       children: [
                         MarkdownBody(
                           data: api.description,
                           onTapLink: (text, url, title) {
-                            launch(url!);
+                            launchUrl(Uri.parse(url!));
                           },
                         ),
                       ],

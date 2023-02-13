@@ -21,18 +21,16 @@ import '../models/selection.dart';
 import '../models/highlight.dart';
 
 String stringForLocation(LintLocation location) {
-  return "[${location.startPosition.lineNumber}:" +
-      "${location.startPosition.columnNumber}-" +
-      "${location.endPosition.lineNumber}:" +
-      "${location.endPosition.columnNumber}]";
+  return "[${location.startPosition.lineNumber}:${location.startPosition.columnNumber}-${location.endPosition.lineNumber}:${location.endPosition.columnNumber}]";
 }
 
 class LintArtifactCard extends StatefulWidget {
   final Artifact artifact;
   final Function? selflink;
-  LintArtifactCard(this.artifact, {this.selflink});
+  const LintArtifactCard(this.artifact, {this.selflink, super.key});
 
-  _LintArtifactCardState createState() => _LintArtifactCardState();
+  @override
+  LintArtifactCardState createState() => LintArtifactCardState();
 }
 
 class FileProblem {
@@ -41,7 +39,7 @@ class FileProblem {
   FileProblem(this.file, this.problem);
 }
 
-class _LintArtifactCardState extends State<LintArtifactCard> {
+class LintArtifactCardState extends State<LintArtifactCard> {
   Lint? lint;
   List<FileProblem> problems = [];
   final ScrollController controller = ScrollController();
@@ -70,14 +68,15 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     if (lint == null) {
-      lint = new Lint.fromBuffer(widget.artifact.contents);
-      lint!.files.forEach((file) {
-        file.problems.forEach((problem) {
+      lint = Lint.fromBuffer(widget.artifact.contents);
+      for (var file in lint!.files) {
+        for (var problem in file.problems) {
           problems.add(FileProblem(file, problem));
-        });
-      });
+        }
+      }
     }
     return Card(
       child: Column(
@@ -118,14 +117,12 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                         color: (selectedIndex == index)
                             ? Theme.of(context).primaryColor.withAlpha(64)
                             : Theme.of(context).canvasColor,
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              problem.file.filePath +
-                                  " " +
-                                  stringForLocation(problem.problem.location),
+                              "${problem.file.filePath} ${stringForLocation(problem.problem.location)}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -133,17 +130,17 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
                               softWrap: false,
                               overflow: TextOverflow.clip,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
-                              "${problem.problem.message}",
+                              problem.problem.message,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             if (problem.problem.suggestion != "")
                               Text(
-                                "${problem.problem.suggestion}",
+                                problem.problem.suggestion,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -185,15 +182,15 @@ class _LintArtifactCardState extends State<LintArtifactCard> {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,

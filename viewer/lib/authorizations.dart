@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // User IDs that are authorized to use the app.
-const authorized_users = ['timburks@gmail.com'];
+const authorizedUsers = ['timburks@gmail.com'];
 
 // Domains where all users are authorized to use the app.
-const authorized_domains = ['google.com'];
+const authorizedDomains = ['google.com'];

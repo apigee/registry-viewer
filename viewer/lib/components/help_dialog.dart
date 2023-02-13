@@ -19,11 +19,11 @@ void showHelp(context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: new Text("Help"),
-        content: new Text(""),
+        title: const Text("Help"),
+        content: const Text(""),
         actions: <Widget>[
-          new TextButton(
-            child: new Text("Close"),
+          TextButton(
+            child: const Text("Close"),
             onPressed: () {
               Navigator.of(context).pop();
             },

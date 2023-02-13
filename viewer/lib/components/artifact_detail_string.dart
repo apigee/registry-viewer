@@ -26,7 +26,8 @@ class StringArtifactCard extends StatelessWidget {
   final Artifact artifact;
   final Function? selflink;
   final bool? editable;
-  StringArtifactCard(this.artifact, {this.selflink, this.editable});
+  const StringArtifactCard(this.artifact,
+      {this.selflink, this.editable, super.key});
   @override
   Widget build(BuildContext context) {
     Function? editableFn = onlyIf(editable, () {
@@ -36,7 +37,7 @@ class StringArtifactCard extends StatelessWidget {
           builder: (BuildContext context) {
             return SelectionProvider(
               selection: selection!,
-              child: AlertDialog(
+              child: const AlertDialog(
                 content: EditArtifactForm(),
               ),
             );
@@ -56,7 +57,7 @@ class StringArtifactCard extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 width: double.infinity,
                 child: Text(
                   artifact.stringValue,

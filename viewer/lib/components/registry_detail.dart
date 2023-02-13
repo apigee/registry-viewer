@@ -16,12 +16,13 @@ import 'package:flutter/material.dart';
 import 'detail_rows.dart';
 
 class RegistryDetailCard extends StatelessWidget {
+  const RegistryDetailCard({super.key});
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyMedium;
     return Card(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

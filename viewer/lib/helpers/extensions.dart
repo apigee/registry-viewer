@@ -14,19 +14,19 @@
 
 extension ListReduction on List {
   List allButLast() {
-    return this.sublist(1, this.length - 1);
+    return sublist(1, length - 1);
   }
 }
 
 extension StringReduction on String {
   String allButLast(String separator) {
-    return this.split(separator).allButLast().join(separator);
+    return split(separator).allButLast().join(separator);
   }
 }
 
 extension StringSplitting on String {
   String last(int n) {
-    final parts = this.split("/");
+    final parts = split("/");
     final sublist = parts.sublist(parts.length - 2 * n, parts.length - 0);
     return sublist.join("/");
   }

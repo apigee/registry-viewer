@@ -19,21 +19,19 @@ import 'detail_rows.dart';
 import '../helpers/extensions.dart';
 
 String stringForLocation(LintLocation location) {
-  return "[${location.startPosition.lineNumber}:" +
-      "${location.startPosition.columnNumber}-" +
-      "${location.endPosition.lineNumber}:" +
-      "${location.endPosition.columnNumber}]";
+  return "[${location.startPosition.lineNumber}:${location.startPosition.columnNumber}-${location.endPosition.lineNumber}:${location.endPosition.columnNumber}]";
 }
 
 class LintStatsArtifactCard extends StatefulWidget {
   final Artifact artifact;
   final Function? selflink;
-  LintStatsArtifactCard(this.artifact, {this.selflink});
+  const LintStatsArtifactCard(this.artifact, {this.selflink, super.key});
 
-  _LintStatsArtifactCardState createState() => _LintStatsArtifactCardState();
+  @override
+  LintStatsArtifactCardState createState() => LintStatsArtifactCardState();
 }
 
-class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
+class LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
   LintStats? lintstats;
   final ScrollController controller = ScrollController();
   int selectedIndex = -1;
@@ -48,10 +46,9 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
-    if (lintstats == null) {
-      lintstats = new LintStats.fromBuffer(widget.artifact.contents);
-    }
+    lintstats ??= LintStats.fromBuffer(widget.artifact.contents);
     return Card(
       child: Column(
         children: [
@@ -81,7 +78,7 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
                         color: (selectedIndex == index)
                             ? Theme.of(context).primaryColor.withAlpha(64)
                             : Theme.of(context).canvasColor,
-                        padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -127,15 +124,15 @@ class _LintStatsArtifactCardState extends State<LintStatsArtifactCard> {
     return TableRow(
       children: [
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             label,
             textAlign: TextAlign.left,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Text(
             value,
             textAlign: TextAlign.left,

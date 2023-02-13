@@ -39,7 +39,7 @@ class StatusService {
       }
       return client.getStatus(Empty(), options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -56,7 +56,7 @@ class ProjectService {
 
   Future<List<Project>> _getProjects({offset = int, limit = int}) async {
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getAdminClient()!;
     final request = ListProjectsRequest();
@@ -77,7 +77,7 @@ class ProjectService {
       return response.projects;
     } catch (err) {
       onError();
-      throw err;
+      rethrow;
     }
   }
 
@@ -91,7 +91,7 @@ class ProjectService {
     try {
       return client.getProject(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -115,8 +115,8 @@ class ApiService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
-      carry = Map();
+      tokens = {};
+      carry = {};
     }
     final client = getClient();
     final request = ListApisRequest();
@@ -158,7 +158,7 @@ class ApiService {
       return apis;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -169,7 +169,7 @@ class ApiService {
     try {
       return client.getApi(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -185,7 +185,7 @@ class ApiService {
     try {
       return client.updateApi(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -208,7 +208,7 @@ class VersionService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiVersionsRequest();
@@ -228,7 +228,7 @@ class VersionService {
       return response.apiVersions;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -239,7 +239,7 @@ class VersionService {
     try {
       return client.getApiVersion(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -277,7 +277,7 @@ class SpecService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiSpecsRequest();
@@ -297,7 +297,7 @@ class SpecService {
       return response.apiSpecs;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 }
@@ -319,7 +319,7 @@ class DeploymentService {
       return null;
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListApiDeploymentsRequest();
@@ -339,7 +339,7 @@ class DeploymentService {
       return response.apiDeployments;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -350,7 +350,7 @@ class DeploymentService {
     try {
       return client.getApiDeployment(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
@@ -390,7 +390,7 @@ class ArtifactService {
       parent += "/locations/global";
     }
     if (offset == 0) {
-      tokens = Map();
+      tokens = {};
     }
     final client = getClient();
     final request = ListArtifactsRequest();
@@ -410,7 +410,7 @@ class ArtifactService {
       return response.artifacts;
     } catch (err) {
       reportError(context, err);
-      throw err;
+      rethrow;
     }
   }
 
@@ -423,7 +423,7 @@ class ArtifactService {
     try {
       return client.createArtifact(request, options: callOptions());
     } catch (err) {
-      print('Caught error: $err');
+      debugPrint('Caught error: $err');
       return null;
     }
   }
