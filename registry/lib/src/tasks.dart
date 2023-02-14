@@ -20,7 +20,7 @@ import 'grpc_client.dart';
 import 'generated/google/cloud/apigeeregistry/v1/registry_service.pbgrpc.dart';
 
 abstract class Task {
-  void run(RegistryClient client);
+  Future<void> run(RegistryClient client);
   String name();
 }
 
@@ -29,7 +29,7 @@ class TaskProcessor {
   final int width;
   TaskProcessor(this.queue, this.width);
 
-  void run() async {
+  Future<void> run() async {
     var futures = <Future>[];
     for (var i = 0; i < width; i++) {
       futures.add(startWorker(i, queue));
@@ -90,7 +90,7 @@ class TaskProcessor {
       } else if (data is Task) {
         print('->[$id] ${data.name()}');
         try {
-          data.run(client);
+          await data.run(client);
         } catch (error) {
           print("$error");
         }

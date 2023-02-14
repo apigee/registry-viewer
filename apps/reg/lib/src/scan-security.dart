@@ -18,8 +18,6 @@ import 'package:args/command_runner.dart';
 import 'package:registry/registry.dart' as rpc;
 import 'package:yaml/yaml.dart';
 
-final source = "discovery";
-
 class ScanSecurityCommand extends Command {
   final name = "security";
   final description = "Scan security fields in OpenAPI specs.";
@@ -39,12 +37,12 @@ class ScanSecurityCommand extends Command {
   }
 
   void run() async {
-    if (argResults['version'] == null) {
+    if (argResults!['version'] == null) {
       throw UsageException("Please specify --version", this.argParser.usage);
     }
 
-    String versionName = argResults['version'];
-    String filter = argResults['filter'] ?? "";
+    String versionName = argResults!['version'];
+    String filter = argResults!['filter'] ?? "";
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
@@ -75,7 +73,7 @@ class ScanSecurityCommand extends Command {
             if (doc["openapi"] != null) {
               // look for openapi v3 security
               var security = doc["security"];
-              var securitySchemes = null;
+              dynamic securitySchemes = null;
               if (doc["components"] != null) {
                 securitySchemes = doc["components"]["securitySchemes"];
               }
@@ -98,7 +96,7 @@ class ScanSecurityCommand extends Command {
   }
 }
 
-String typeFromMimeType(String mimeType) {
+String? typeFromMimeType(String mimeType) {
   RegExp mimeTypePattern = new RegExp(r"^application/x.([^\+;]*)(.*)?$");
   var match = mimeTypePattern.firstMatch(mimeType);
   if (match != null) {

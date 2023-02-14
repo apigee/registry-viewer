@@ -31,11 +31,11 @@ class LabelAPIsCommand extends Command {
   }
 
   void run() async {
-    if (argResults['project'] == null) {
+    if (argResults!['project'] == null) {
       throw UsageException("Please specify --project", this.argParser.usage);
     }
 
-    final projectName = argResults['project'];
+    final projectName = argResults!['project'];
 
     final channel = rpc.createClientChannel();
     final client = rpc.RegistryClient(channel, options: rpc.callOptions());
@@ -52,11 +52,11 @@ class LabelAPIsCommand extends Command {
 
     await channel.shutdown();
 
-    await rpc.TaskProcessor(tasks, 64).run();
+    await rpc.TaskProcessor(tasks, 4).run();
   }
 }
 
-String typeFromMimeType(String mimeType) {
+String? typeFromMimeType(String mimeType) {
   RegExp mimeTypePattern = new RegExp(r"^application/x.([^\+;]*)(.*)?$");
   var match = mimeTypePattern.firstMatch(mimeType);
   if (match != null) {
@@ -66,24 +66,24 @@ String typeFromMimeType(String mimeType) {
 }
 
 class LabelApiTask implements rpc.Task {
-  final String apiName;
+  final String? apiName;
   LabelApiTask(this.apiName);
 
-  String name() => apiName;
+  String name() => apiName!;
 
-  void run(rpc.RegistryClient client) async {
-    var getRequest = rpc.GetApiRequest()..name = apiName;
+  Future<void> run(rpc.RegistryClient client) async {
+    var getRequest = rpc.GetApiRequest()..name = apiName!;
     rpc.Api api = await client.getApi(getRequest);
 
     int versionCount = 0;
     int specCount = 0;
-    Map<String, bool> apiSpecTypes = {};
+    Map<String?, bool> apiSpecTypes = {};
     await rpc.listAPIVersions(
       client,
-      parent: apiName,
+      parent: apiName!,
       f: (version) async {
         versionCount++;
-        Map<String, bool> versionSpecTypes = {};
+        Map<String?, bool> versionSpecTypes = {};
         await rpc.listAPISpecs(client, parent: version.name, f: (spec) {
           specCount++;
           var type = typeFromMimeType(spec.mimeType);
@@ -102,7 +102,7 @@ class LabelApiTask implements rpc.Task {
     api.labels["versions"] = "$versionCount";
     api.labels["specs"] = "$specCount";
     for (var key in apiSpecTypes.keys) {
-      api.labels[key] = "true";
+      api.labels[key!] = "true";
     }
     var updateRequest = rpc.UpdateApiRequest()
       ..api = api
