@@ -18,7 +18,7 @@ import 'grpc_client.dart';
 
 void nil() {}
 
-void listProjects(AdminClient client,
+Future<void> listProjects(AdminClient client,
     {Function f = nil, String filter = ''}) async {
   var request = ListProjectsRequest()
     ..filter = filter
@@ -35,7 +35,7 @@ void listProjects(AdminClient client,
   }
 }
 
-void listAPIs(RegistryClient client,
+Future<void> listAPIs(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
   var request = ListApisRequest()
     ..parent = parent
@@ -53,7 +53,7 @@ void listAPIs(RegistryClient client,
   }
 }
 
-void listAPIVersions(RegistryClient client,
+Future<void> listAPIVersions(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
   var request = ListApiVersionsRequest()
     ..parent = parent
@@ -72,7 +72,7 @@ void listAPIVersions(RegistryClient client,
   }
 }
 
-void listAPISpecs(RegistryClient client,
+Future<void> listAPISpecs(RegistryClient client,
     {Function f = nil, String parent = '', String filter = ''}) async {
   var request = ListApiSpecsRequest()
     ..parent = parent

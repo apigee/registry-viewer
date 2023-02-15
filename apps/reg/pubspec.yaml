@@ -2,11 +2,9 @@ name: reg
 description: Manage information in an API Registry.
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
-  importer:
-    path: ../importer
   registry:
     path: ../../registry
   archive: ^3.0.0
