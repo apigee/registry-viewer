@@ -12,14 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:io';
-import 'dart:io' show Platform;
 import 'package:args/command_runner.dart';
 import 'package:registry/registry.dart';
-import 'package:yaml/yaml.dart';
-
-String? userHome() =>
-    Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
 
 class ConfigListCommand extends Command {
   final name = "list";
@@ -28,34 +22,7 @@ class ConfigListCommand extends Command {
   ConfigCommand() {}
 
   void run() async {
-    String home = userHome()!;
-    String configPath = home + "/.config/registry/active_config";
-    String contents = new File(configPath).readAsStringSync();
-    print(contents);
-
-    String activePath = home + "/.config/registry/" + contents;
-    contents = new File(activePath).readAsStringSync();
-    print(contents);
-
-    var doc = loadYaml(contents);
-    print(doc);
-
-    var registry_address = doc["registry"]["address"];
-    print("address = $registry_address");
-
-    var registry_insecure = doc["registry"]["insecure"];
-    print("insecure = $registry_insecure");
-
-    var registry_project = doc["registry"]["project"];
-    print("project = $registry_project");
-
-    var token_source = doc["token-source"];
-    print("token source = $token_source");
-
-    var parts = token_source.split(" ");
-    var result = await Process.run(parts[0], parts.sublist(1));
-
-    String token = result.stdout;
-    print("token = $token");
+    var config = readConfig();
+    print(config);
   }
 }
