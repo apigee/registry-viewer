@@ -1,4 +1,4 @@
-// Copyright 2021 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,20 +13,13 @@
 // limitations under the License.
 
 import 'package:args/command_runner.dart';
+import 'config-list.dart';
 
-import 'config.dart';
-import 'label.dart';
-import 'scan.dart';
+class ConfigCommand extends Command {
+  final name = "config";
+  final description = "Configure access to the registry.";
 
-CommandRunner root() {
-  return CommandRunner("reg", "Another API Registry tool.")
-    ..addCommand(ConfigCommand())
-    ..addCommand(LabelCommand())
-    ..addCommand(ScanCommand());
-}
-
-void run(args) {
-  root().run(args).catchError((e) {
-    print("$e");
-  });
+  ConfigCommand() {
+    this.addSubcommand(ConfigListCommand());
+  }
 }
