@@ -32,6 +32,22 @@ class ArtifactDetailPage extends StatelessWidget {
       parts.insert(3, "global");
       parts.insert(3, "locations");
       String name2 = parts.join("/");
+
+      // is there a spec name in the name? if so, select it
+      if (name2.contains("/specs/")) {
+        debugPrint("2 $name2");
+
+        List parts = name2.split("/");
+
+        String name3 = parts.sublist(0, 11).join("/");
+        debugPrint("3 $name3");
+
+        List parts2 = name3.split("@");
+        String name4 = parts2[0];
+        debugPrint("4 $name4");
+
+        selection.updateSpecName(name4.substring(1));
+      }
       selection.updateArtifactName(name2.substring(1));
     });
 

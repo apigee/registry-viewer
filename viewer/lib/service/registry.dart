@@ -15,6 +15,8 @@
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import 'package:grpc/grpc.dart';
+
 import '../helpers/root.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
@@ -306,6 +308,11 @@ class ArtifactManager extends ResourceManager<Artifact> {
         artifact.mimeType = contents.contentType;
         return artifact;
       });
+    }).onError((GrpcError e, StackTrace st) {
+      if (e.code == StatusCode.notFound) {
+        debugPrint("NOT FOUND");
+      }
+      return Artifact();
     });
   }
 

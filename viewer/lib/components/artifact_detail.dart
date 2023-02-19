@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'detail_rows.dart';
 import 'artifact_detail_complexity.dart';
+import 'artifact_detail_conformance.dart';
 import 'artifact_detail_message.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
@@ -109,10 +110,14 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
           selflink: selflink,
           editable: widget.editable,
         );
+      // specialized cards
       case "application/octet-stream;type=gnostic.metrics.Complexity":
         return ComplexityArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
+        return ConformanceReportArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=gnostic.metrics.Vocabulary":
         return VocabularyArtifactCard(artifact, selflink: selflink);
+      // generic cards
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
         return MessageArtifactCard(
             artifact, ApiSpecExtensionList.fromBuffer(artifact.contents),
@@ -156,10 +161,6 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
         return MessageArtifactCard(
             artifact, ScoreDefinition.fromBuffer(artifact.contents),
-            selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
-        return MessageArtifactCard(
-            artifact, ConformanceReport.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
         return MessageArtifactCard(
