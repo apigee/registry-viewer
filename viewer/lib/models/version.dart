@@ -16,11 +16,16 @@ import 'package:registry/registry.dart';
 
 extension Display on ApiVersion {
   String nameForDisplay() {
+    String s;
     if (displayName != "") {
-      return displayName;
+      s = displayName;
     } else {
-      return name.split("/").last;
+      s = name.split("/").last;
     }
+    if (state != "") {
+      s += " ($state)";
+    }
+    return s;
   }
 
   String routeNameForDetail() {

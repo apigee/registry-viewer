@@ -310,7 +310,7 @@ class ArtifactManager extends ResourceManager<Artifact> {
       });
     }).onError((GrpcError e, StackTrace st) {
       if (e.code == StatusCode.notFound) {
-        debugPrint("NOT FOUND");
+        debugPrint("not found ($name)");
       }
       return Artifact();
     });

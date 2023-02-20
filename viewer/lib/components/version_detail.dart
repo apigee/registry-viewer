@@ -99,7 +99,6 @@ class VersionDetailCardState extends State<VersionDetailCard>
     if (versionManager?.value == null) {
       return emptyCard(context);
     }
-
     Function? selflink = onlyIf(widget.selflink, () {
       ApiVersion version = (versionManager?.value)!;
       Navigator.pushNamed(
@@ -125,6 +124,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
 
     Api? api = apiManager!.value;
     ApiVersion version = versionManager!.value!;
+    var versionTitle = version.nameForDisplay();
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,8 +144,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
                     PageSection(
                       children: [
                         SuperTitleRow(api?.displayName ?? ""),
-                        TitleRow(version.name.split("/").last,
-                            action: selflink),
+                        TitleRow(versionTitle, action: selflink),
                       ],
                     ),
                     if (version.labels.isNotEmpty)
