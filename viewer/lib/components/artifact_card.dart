@@ -17,17 +17,19 @@ import 'package:registry/registry.dart';
 import '../models/artifact.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
+import 'artifact_detail_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-// ArtifactText displays a text artifact.
-class ArtifactText extends StatefulWidget {
+// ArtifactCard displays an arbitrary artifact.
+class ArtifactCard extends StatefulWidget {
   final String Function() artifactName;
 
-  const ArtifactText(this.artifactName, {super.key});
+  const ArtifactCard(this.artifactName, {super.key});
   @override
-  ArtifactTextState createState() => ArtifactTextState();
+  ArtifactCardState createState() => ArtifactCardState();
 }
 
-class ArtifactTextState extends State<ArtifactText> {
+class ArtifactCardState extends State<ArtifactCard> {
   ArtifactManager? artifactManager;
   Selection? selection;
 
@@ -74,11 +76,48 @@ class ArtifactTextState extends State<ArtifactText> {
   @override
   Widget build(BuildContext context) {
     if (artifactManager?.value == null) {
-      return const SizedBox(height: 0);
+      return Container(color: Colors.red);
     }
+
     Artifact artifact = artifactManager!.value!;
-    if (artifact.stringValue == "") {
-      return const SizedBox(height: 0);
+    if (artifact.mimeType.startsWith("application/yaml") ||
+        artifact.mimeType.startsWith("application/json")) {
+      return StringArtifactCard(artifact, editable: false);
+    }
+    switch (artifact.mimeType) {
+      case "text/plain":
+        return StringArtifactCard(
+          artifact,
+        );
+      // specialized cards
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
+        ReferenceList referenceList =
+            ReferenceList.fromBuffer(artifact.contents);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(referenceList.displayName,
+                style: Theme.of(context).textTheme.titleSmall!),
+            for (var reference in referenceList.references)
+              GestureDetector(
+                child: Text(reference.displayName,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: Theme.of(context).primaryColor)),
+                onTap: () async {
+                  if (await canLaunchUrl(Uri.parse(reference.uri))) {
+                    await launchUrl(Uri.parse(reference.uri));
+                  } else {
+                    throw 'Could not launch ${reference.uri}';
+                  }
+                },
+              ),
+            Divider(
+              color: Theme.of(context).primaryColor,
+            ),
+          ],
+        );
     }
     return Text(
       artifact.stringValue,

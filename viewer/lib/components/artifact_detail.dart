@@ -21,6 +21,8 @@ import 'artifact_detail_message.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
+import 'artifact_detail_score.dart';
+import 'artifact_detail_scorecard.dart';
 import 'artifact_detail_string.dart';
 import 'artifact_detail_vocabulary.dart';
 import '../components/empty.dart';
@@ -131,9 +133,7 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
             artifact, Lifecycle.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
-        return MessageArtifactCard(
-            artifact, ReferenceList.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ReferencesArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
         return MessageArtifactCard(
             artifact, TaxonomyList.fromBuffer(artifact.contents),
@@ -147,13 +147,9 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
             artifact, Receipt.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
-        return MessageArtifactCard(
-            artifact, Score.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ScoreArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
-        return MessageArtifactCard(
-            artifact, ScoreCard.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ScoreCardArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
         return MessageArtifactCard(
             artifact, ScoreCardDefinition.fromBuffer(artifact.contents),
@@ -170,8 +166,6 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
         return LintArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.LintStats":
         return LintStatsArtifactCard(artifact, selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.References":
-        return ReferencesArtifactCard(artifact, selflink: selflink);
     }
 
     // otherwise return a default display of the artifact

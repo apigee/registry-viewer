@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
+import '../components/artifact_card.dart';
 import '../components/artifact_text.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
@@ -182,20 +183,19 @@ class ApiDetailCardState extends State<ApiDetailCard>
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
                           "${SelectionProvider.of(context)!.apiName.value}/artifacts/summary",
                     ),
-                    PageSection(
-                      children: [
-                        MarkdownBody(
-                          data: api.description,
-                          onTapLink: (text, url, title) {
-                            launchUrl(Uri.parse(url!));
-                          },
-                        ),
-                      ],
+                    ArtifactCard(
+                      () =>
+                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/related",
+                    ),
+                    MarkdownBody(
+                      data: api.description,
+                      onTapLink: (text, url, title) {
+                        launchUrl(Uri.parse(url!));
+                      },
                     ),
                   ],
                 ),
