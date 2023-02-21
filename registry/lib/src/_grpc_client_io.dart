@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import 'package:grpc/grpc.dart' as grpc;
-import 'dart:io' show Platform;
+import 'dart:io';
+import 'package:yaml/yaml.dart';
 
-String? token; // auth token
+Config? config;
 
-// unused in non-web builds
+// This is a stub; this function is only called in web builds.
 void setRegistryUserToken(String token) {}
 
 class ConnectionError extends Error {
@@ -30,24 +31,16 @@ class ConnectionError extends Error {
   }
 }
 
-bool unset(String s) {
-  return (s == "");
-}
-
 grpc.ClientChannel createClientChannel() {
-  Map<String, String> env = Platform.environment;
-  token = env['APG_REGISTRY_TOKEN'];
-  final insecure = env['APG_REGISTRY_INSECURE'] == "1";
-  if (!insecure && unset(token!)) {
-    throw ConnectionError("APG_REGISTRY_TOKEN not set");
+  if (config == null) {
+    config = readConfig();
   }
-  final address = env['APG_REGISTRY_ADDRESS'];
-  if (unset(address!)) {
-    throw ConnectionError("APG_REGISTRY_ADDRESS not set");
-  }
+  final insecure = config!.insecure;
+  final address = config!.address;
+
   final parts = address.split(":");
   if (parts.length != 2) {
-    throw ConnectionError("APG_REGISTRY_ADDRESS must have the form host:port");
+    throw ConnectionError("registry address must have the form host:port");
   }
   final host = parts[0];
   final port = int.parse(parts[1]);
@@ -60,10 +53,59 @@ grpc.ClientChannel createClientChannel() {
 }
 
 grpc.CallOptions callOptions() {
-  if (token == null) {
+  if ((config == null) || (config!.token == "")) {
     return grpc.CallOptions();
   }
-  Map<String, String> metadata = {"authorization": "Bearer " + token!};
+  Map<String, String> metadata = {"authorization": "Bearer " + config!.token};
   grpc.CallOptions callOptions = grpc.CallOptions(metadata: metadata);
   return callOptions;
+}
+
+String? userHome() =>
+    Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+
+Config readConfig() {
+  String home = userHome()!;
+  String configPath = home + "/.config/registry/active_config";
+  String contents = new File(configPath).readAsStringSync();
+  String activePath = home + "/.config/registry/" + contents;
+  contents = new File(activePath).readAsStringSync();
+  var doc = loadYaml(contents);
+  String address = doc["registry"]["address"];
+  bool insecure = doc["registry"]["insecure"];
+  String project = doc["registry"]["project"];
+  String tokenSource = doc["token-source"];
+  return Config(
+      address: address,
+      insecure: insecure,
+      project: project,
+      tokenSource: tokenSource)
+    ..fetchToken();
+}
+
+class Config {
+  final String address;
+  final bool insecure;
+  final String project;
+  final String tokenSource;
+  String token = "";
+  Config({
+    required this.address,
+    required this.insecure,
+    required this.project,
+    required this.tokenSource,
+  }) {}
+  String toString() {
+    return "address=$address insecure=$insecure project=$project tokenSource=$tokenSource token=$token";
+  }
+
+  void fetchToken() {
+    print("fetching token for $this");
+    if (tokenSource != "") {
+      var parts = tokenSource.split(" ");
+      var result = Process.runSync(parts[0], parts.sublist(1));
+      token = result.stdout;
+      print("token = $token");
+    }
+  }
 }
