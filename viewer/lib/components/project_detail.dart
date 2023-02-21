@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/artifact_text.dart';
+import '../components/artifact_card.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -163,10 +163,13 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(height: 10),
-                    ArtifactText(
+                    ArtifactCard(
                       () =>
                           "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/summary",
+                    ),
+                    ArtifactCard(
+                      () =>
+                          "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/related",
                     ),
                     PageSection(
                       children: [

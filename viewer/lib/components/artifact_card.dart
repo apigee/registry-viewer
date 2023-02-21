@@ -19,6 +19,7 @@ import '../models/selection.dart';
 import '../service/registry.dart';
 import 'artifact_detail_string.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yaml/yaml.dart';
 
 // ArtifactCard displays an arbitrary artifact.
 class ArtifactCard extends StatefulWidget {
@@ -80,16 +81,44 @@ class ArtifactCardState extends State<ArtifactCard> {
     }
 
     Artifact artifact = artifactManager!.value!;
-    if (artifact.mimeType.startsWith("application/yaml") ||
-        artifact.mimeType.startsWith("application/json")) {
-      return StringArtifactCard(artifact, editable: false);
-    }
+    debugPrint(artifact.mimeType);
     switch (artifact.mimeType) {
       case "text/plain":
         return StringArtifactCard(
           artifact,
         );
       // specialized cards
+      case "application/yaml;type=Summary":
+        var doc = loadYaml(artifact.stringValue);
+        var stats =
+            "${doc["apis"]} APIs | ${doc["versions"]} Versions | ${doc["specs"]} Specs";
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(stats, style: Theme.of(context).textTheme.titleSmall!),
+          Divider(
+            color: Theme.of(context).primaryColor,
+          ),
+          Table(columnWidths: const {
+            0: IntrinsicColumnWidth(),
+            1: IntrinsicColumnWidth(),
+            2: IntrinsicColumnWidth(),
+          }, children: [
+            TableRow(children: [
+              Text("MIME types",
+                  style: Theme.of(context).textTheme.titleSmall!),
+              Text("  count", style: Theme.of(context).textTheme.titleSmall!),
+            ]),
+            for (var key in doc["mimetypes"].keys)
+              TableRow(children: [
+                Text(key),
+                Text("  ${doc["mimetypes"][key]}",
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.titleSmall!),
+              ]),
+          ]),
+          Divider(
+            color: Theme.of(context).primaryColor,
+          ),
+        ]);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
         ReferenceList referenceList =
             ReferenceList.fromBuffer(artifact.contents);
@@ -122,7 +151,6 @@ class ArtifactCardState extends State<ArtifactCard> {
     return Text(
       artifact.stringValue,
       textAlign: TextAlign.left,
-      style: Theme.of(context).textTheme.titleSmall!,
     );
   }
 }
