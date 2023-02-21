@@ -136,48 +136,6 @@ class ApiDetailCardState extends State<ApiDetailCard>
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
-                    PageSection(
-                      children: [
-                        TimestampRow(api.createTime, api.updateTime),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Versions"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForVersions(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Deployments"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForDeployments(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,

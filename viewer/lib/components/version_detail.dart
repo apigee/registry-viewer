@@ -155,43 +155,6 @@ class VersionDetailCardState extends State<VersionDetailCard>
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),
-                    PageSection(
-                      children: [
-                        TimestampRow(version.createTime, version.updateTime),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Specs"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              version.routeNameForSpecs(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              version.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>

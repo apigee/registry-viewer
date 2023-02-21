@@ -130,34 +130,11 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                     const SizedBox(height: 10),
                     TitleRow(project.displayName, action: selflink),
                     const SizedBox(height: 10),
-                    TimestampRow(project.createTime, project.updateTime),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("APIs"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              project.routeNameForApis(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              project.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
+                    MarkdownBody(
+                      data: project.description,
+                      onTapLink: (text, url, title) {
+                        launchUrl(Uri.parse(url!));
+                      },
                     ),
                     const SizedBox(height: 10),
                     Divider(
@@ -170,16 +147,6 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                     ArtifactCard(
                       () =>
                           "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/related",
-                    ),
-                    PageSection(
-                      children: [
-                        MarkdownBody(
-                          data: project.description,
-                          onTapLink: (text, url, title) {
-                            launchUrl(Uri.parse(url!));
-                          },
-                        ),
-                      ],
                     ),
                   ],
                 ),
