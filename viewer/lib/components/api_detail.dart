@@ -17,6 +17,7 @@ import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
+import '../components/artifact_attributes.dart';
 import '../components/artifact_card.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
@@ -139,6 +140,10 @@ class ApiDetailCardState extends State<ApiDetailCard>
                     const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
+                    ),
+                    ArtifactAttributesCard(
+                      () =>
+                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/origin",
                     ),
                     ArtifactCard(
                       () =>
