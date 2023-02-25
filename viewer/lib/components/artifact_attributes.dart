@@ -129,7 +129,7 @@ class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
     AttributesDefinition definition =
         AttributesDefinition.fromBuffer(definitionArtifact.contents);
 
-    Attributes attributes = Attributes.fromBuffer(artifact.contents);
+    Attributes facet = Attributes.fromBuffer(artifact.contents);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,15 +137,16 @@ class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
             style: Theme.of(context).textTheme.titleSmall!),
         Table(children: [
           for (var attribute in definition.attributes)
-            TableRow(children: [
-              Text(attribute.title),
-              MarkdownBody(
-                data: attributes.values[attribute.name] ?? 'unavailable',
-                onTapLink: (text, url, title) {
-                  launchUrl(Uri.parse(url!));
-                },
-              ),
-            ]),
+            if (facet.values[attribute.name] != null)
+              TableRow(children: [
+                Text(attribute.title),
+                MarkdownBody(
+                  data: facet.values[attribute.name] ?? "",
+                  onTapLink: (text, url, title) {
+                    launchUrl(Uri.parse(url!));
+                  },
+                ),
+              ]),
         ]),
         Divider(
           color: Theme.of(context).primaryColor,

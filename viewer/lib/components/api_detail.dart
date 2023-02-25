@@ -19,6 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
 import '../components/artifact_attributes.dart';
 import '../components/artifact_card.dart';
+import '../components/artifact_section.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -141,17 +142,8 @@ class ApiDetailCardState extends State<ApiDetailCard>
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    ArtifactAttributesCard(
-                      () =>
-                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/origin",
-                    ),
-                    ArtifactCard(
-                      () =>
-                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/summary",
-                    ),
-                    ArtifactCard(
-                      () =>
-                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/related",
+                    ArtifactSection(
+                      () => SelectionProvider.of(context)!.apiName.value,
                     ),
                     MarkdownBody(
                       data: api.description,

@@ -50,6 +50,7 @@ class Registry {
   Map<String, DeploymentManager> deploymentManagers = {};
   Map<String, SpecManager> specManagers = {};
   Map<String?, ArtifactManager> artifactManagers = {};
+  Map<String?, ArtifactListManager> artifactListManagers = {};
 
   ProjectManager? getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -97,6 +98,14 @@ class Registry {
       artifactManagers[name] = ArtifactManager(name);
     }
     return artifactManagers[name];
+  }
+
+  ArtifactListManager? getArtifactListManager(String? name) {
+    Manager.removeUnused(artifactListManagers);
+    if (artifactListManagers[name] == null) {
+      artifactListManagers[name] = ArtifactListManager(name);
+    }
+    return artifactListManagers[name];
   }
 }
 
@@ -335,5 +344,25 @@ class ArtifactManager extends ResourceManager<Artifact> {
     return getClient()
         .deleteArtifact(request, options: callOptions())
         .then((empty) => Future);
+  }
+}
+
+class ArtifactListManager extends ResourceManager<ListArtifactsResponse> {
+  ArtifactListManager(String? name) : super(name);
+  @override
+  Future<ListArtifactsResponse> fetchFuture(
+      RegistryClient client, AdminClient? adminClient) {
+    final request = ListArtifactsRequest();
+    request.parent = name!;
+    return client
+        .listArtifacts(request, options: callOptions())
+        .then((response) {
+      return response;
+    }).onError((GrpcError e, StackTrace st) {
+      if (e.code == StatusCode.notFound) {
+        debugPrint("not found ($name)");
+      }
+      return ListArtifactsResponse();
+    });
   }
 }
