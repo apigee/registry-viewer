@@ -228,7 +228,7 @@ class SpecFileCardState extends State<SpecFileCard> {
       } else {
         // multi-file view
         return CustomSplitView(
-          viewMode: SplitViewMode.Horizontal,
+          viewMode: SplitViewMode.Vertical,
           view1: Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
