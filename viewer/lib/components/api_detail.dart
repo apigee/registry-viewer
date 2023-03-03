@@ -17,7 +17,7 @@ import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
-import '../components/artifact_attributes.dart';
+import '../components/artifact_fields.dart';
 import '../components/artifact_card.dart';
 import '../components/artifact_section.dart';
 import '../components/detail_rows.dart';

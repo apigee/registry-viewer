@@ -55,9 +55,9 @@ protoc \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/registry_service.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_models.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/admin_service.proto \
-	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/attributes.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/display_settings.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/extensions.proto \
+	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/fields.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/lifecycle.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/references.proto \
 	${REGISTRY}/google/cloud/apigeeregistry/v1/apihub/taxonomies.proto \

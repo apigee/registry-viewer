@@ -14,7 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
-import 'package:viewer/components/artifact_attributes.dart';
+import 'package:viewer/components/artifact_fields.dart';
 import 'package:viewer/components/artifact_card.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
@@ -82,8 +82,7 @@ class ArtifactSectionState extends State<ArtifactSection> {
     List<Artifact> artifacts = artifactListManager!.value!.artifacts;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       for (var a in artifacts)
-        if (kind(a.mimeType) == "Attributes")
-          ArtifactAttributesCard(() => a.name),
+        if (kind(a.mimeType) == "FieldSet") ArtifactFieldSetCard(() => a.name),
       for (var a in artifacts)
         if (kind(a.mimeType) == "ReferenceList") ArtifactCard(() => a.name),
       for (var a in artifacts)

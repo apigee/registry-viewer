@@ -124,13 +124,13 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
         return MessageArtifactCard(
             artifact, ApiSpecExtensionList.fromBuffer(artifact.contents),
             selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Attributes":
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSet":
         return MessageArtifactCard(
-            artifact, Attributes.fromBuffer(artifact.contents),
+            artifact, FieldSet.fromBuffer(artifact.contents),
             selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.AttributesDefinition":
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSetDefinition":
         return MessageArtifactCard(
-            artifact, AttributesDefinition.fromBuffer(artifact.contents),
+            artifact, FieldSetDefinition.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
         return MessageArtifactCard(

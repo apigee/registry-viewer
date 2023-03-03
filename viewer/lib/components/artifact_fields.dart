@@ -20,16 +20,16 @@ import '../service/registry.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-// ArtifactAttributesCard displays an arbitrary artifact.
-class ArtifactAttributesCard extends StatefulWidget {
+// ArtifactFieldSetCard displays an arbitrary artifact.
+class ArtifactFieldSetCard extends StatefulWidget {
   final String Function() artifactName;
 
-  const ArtifactAttributesCard(this.artifactName, {super.key});
+  const ArtifactFieldSetCard(this.artifactName, {super.key});
   @override
-  ArtifactAttributesCardState createState() => ArtifactAttributesCardState();
+  ArtifactFieldSetCardState createState() => ArtifactFieldSetCardState();
 }
 
-class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
+class ArtifactFieldSetCardState extends State<ArtifactFieldSetCard> {
   ArtifactManager? artifactManager;
   ArtifactManager? definitionManager;
   Selection? selection;
@@ -42,8 +42,8 @@ class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
       return;
     }
     Artifact artifact = artifactManager!.value!;
-    Attributes attributes = Attributes.fromBuffer(artifact.contents);
-    setDefinitionName(attributes.definitionName);
+    FieldSet fieldset = FieldSet.fromBuffer(artifact.contents);
+    setDefinitionName(fieldset.definitionName);
     setState(() {});
   }
 
@@ -117,7 +117,7 @@ class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
     Artifact artifact = artifactManager!.value!;
     debugPrint(artifact.mimeType);
     if (artifact.mimeType !=
-        "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.Attributes") {
+        "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSet") {
       return Container(color: Colors.purple);
     }
 
@@ -126,22 +126,22 @@ class ArtifactAttributesCardState extends State<ArtifactAttributesCard> {
     }
 
     Artifact definitionArtifact = definitionManager!.value!;
-    AttributesDefinition definition =
-        AttributesDefinition.fromBuffer(definitionArtifact.contents);
+    FieldSetDefinition definition =
+        FieldSetDefinition.fromBuffer(definitionArtifact.contents);
 
-    Attributes facet = Attributes.fromBuffer(artifact.contents);
+    FieldSet fieldset = FieldSet.fromBuffer(artifact.contents);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(definition.description,
             style: Theme.of(context).textTheme.titleSmall!),
         Table(children: [
-          for (var attribute in definition.attributes)
-            if (facet.values[attribute.name] != null)
+          for (var field in definition.fields)
+            if (fieldset.values[field.id] != null)
               TableRow(children: [
-                Text(attribute.title),
+                Text(field.displayName),
                 MarkdownBody(
-                  data: facet.values[attribute.name] ?? "",
+                  data: fieldset.values[field.id] ?? "",
                   onTapLink: (text, url, title) {
                     launchUrl(Uri.parse(url!));
                   },
