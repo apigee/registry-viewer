@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const pathLength = 3;
-
-// title converts a path into a string suitable for display in the app bar.
-String title(String path) {
-  path = path.replaceAll("/locations/global", "");
-  var parts = path.split("/").sublist(1);
-  if (parts.length > pathLength) {
-    parts = parts.sublist(parts.length - pathLength);
-    parts.insert(0, "...");
-  }
+// Convert a widget name to the corresponding resource name.
+String resourceNameForWidgetName(String name) {
+  List parts = name.substring(1).split("/");
+  parts.insert(2, "global");
+  parts.insert(2, "locations");
   return parts.join("/");
 }
 
-String? pageTitle(String? path) {
-  if (path == null) {
-    return null;
-  }
-  if (path[0] == '/') {
-    path = path.substring(1);
-  }
-  return path;
+String specRevisionNameForArtifactName(String name) {
+  return name.split("/").sublist(0, 10).join("/");
+}
+
+String specNameForSpecRevisionName(String name) {
+  return name.split("@")[0];
 }
