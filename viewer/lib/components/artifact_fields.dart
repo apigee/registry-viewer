@@ -14,7 +14,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
-import '../models/artifact.dart';
 import '../models/selection.dart';
 import '../service/registry.dart';
 import 'package:url_launcher/url_launcher.dart';

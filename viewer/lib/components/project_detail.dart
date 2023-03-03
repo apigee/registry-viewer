@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/artifact_card.dart';
 import '../components/artifact_section.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
