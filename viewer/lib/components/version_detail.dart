@@ -129,11 +129,6 @@ class VersionDetailCardState extends State<VersionDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: version.name.split("/").sublist(4).join("/"),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -143,6 +138,7 @@ class VersionDetailCardState extends State<VersionDetailCard>
                   children: [
                     PageSection(
                       children: [
+                        Text(version.name.split("/").sublist(6).join("/")),
                         SuperTitleRow(api?.displayName ?? ""),
                         TitleRow(versionTitle, action: selflink),
                       ],

@@ -136,11 +136,14 @@ class ArtifactFieldSetCardState extends State<ArtifactFieldSetCard> {
           child: Text(definition.displayName,
               style: Theme.of(context).textTheme.titleSmall!),
         ),
-        Table(children: [
+        Table(columnWidths: const {
+          0: IntrinsicColumnWidth(),
+          1: IntrinsicColumnWidth(),
+        }, children: [
           for (var field in definition.fields)
             if (fieldset.values[field.id] != null)
               TableRow(children: [
-                Text(field.displayName),
+                Text("${field.displayName} "),
                 MarkdownBody(
                   data: fieldset.values[field.id] ?? "",
                   onTapLink: (text, url, title) {

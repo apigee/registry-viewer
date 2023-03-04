@@ -91,33 +91,35 @@ class ArtifactCardState extends State<ArtifactCard> {
       case "application/yaml;type=Summary":
         var doc = loadYaml(artifact.stringValue);
         var stats =
-            "${doc["apis"]} APIs | ${doc["versions"]} Versions | ${doc["specs"]} Specs";
+            "${doc["apis"] ?? 0} APIs | ${doc["versions"] ?? 0} Versions | ${doc["specs"] ?? 0} Specs";
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(stats, style: Theme.of(context).textTheme.titleSmall!),
           Divider(
             color: Theme.of(context).primaryColor,
           ),
-          Table(columnWidths: const {
-            0: IntrinsicColumnWidth(),
-            1: IntrinsicColumnWidth(),
-            2: IntrinsicColumnWidth(),
-          }, children: [
-            TableRow(children: [
-              Text("MIME types",
-                  style: Theme.of(context).textTheme.titleSmall!),
-              Text("  count", style: Theme.of(context).textTheme.titleSmall!),
-            ]),
-            for (var key in doc["mimetypes"].keys)
+          if ((doc["mimetypes"] != null) && (doc["mimetypes"].length > 0))
+            Table(columnWidths: const {
+              0: IntrinsicColumnWidth(),
+              1: IntrinsicColumnWidth(),
+              2: IntrinsicColumnWidth(),
+            }, children: [
               TableRow(children: [
-                Text(key),
-                Text("  ${doc["mimetypes"][key]}",
-                    textAlign: TextAlign.right,
+                Text("MIME types",
                     style: Theme.of(context).textTheme.titleSmall!),
+                Text("  count", style: Theme.of(context).textTheme.titleSmall!),
               ]),
-          ]),
-          Divider(
-            color: Theme.of(context).primaryColor,
-          ),
+              for (var key in doc["mimetypes"].keys)
+                TableRow(children: [
+                  Text(key),
+                  Text("  ${doc["mimetypes"][key]}",
+                      textAlign: TextAlign.right,
+                      style: Theme.of(context).textTheme.titleSmall!),
+                ]),
+            ]),
+          if ((doc["mimetypes"] != null) && (doc["mimetypes"].length > 0))
+            Divider(
+              color: Theme.of(context).primaryColor,
+            ),
         ]);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
         ReferenceList referenceList =

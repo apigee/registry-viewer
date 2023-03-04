@@ -113,11 +113,6 @@ class ApiDetailCardState extends State<ApiDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: api.name.split("/").sublist(4).join("/"),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -126,6 +121,9 @@ class ApiDetailCardState extends State<ApiDetailCard>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PageSection(children: [
+                      Text(
+                        api.name.split("/").sublist(4).join("/"),
+                      ),
                       TitleRow(api.displayName, action: selflink),
                     ]),
                     if (api.labels.isNotEmpty)

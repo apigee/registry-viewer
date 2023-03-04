@@ -152,11 +152,6 @@ class SpecDetailCardState extends State<SpecDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: spec.name.last(1),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -166,6 +161,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
                   children: [
                     PageSection(
                       children: [
+                        Text(spec.name.split("/").sublist(8).join("/")),
                         SuperTitleRow(
                             "${api.displayName}/${version.name.split("/").last}"),
                         TitleRow(spec.name.split("/").last, action: selflink),

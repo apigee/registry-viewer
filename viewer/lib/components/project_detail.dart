@@ -115,11 +115,6 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: project.name,
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -127,7 +122,7 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    Text(project.name),
                     TitleRow(project.displayName, action: selflink),
                     const SizedBox(height: 10),
                     MarkdownBody(

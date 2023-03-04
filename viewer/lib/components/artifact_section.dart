@@ -87,9 +87,17 @@ class ArtifactSectionState extends State<ArtifactSection> {
         if (kind(a.mimeType) == "ReferenceList") ArtifactCard(() => a.name),
       for (var a in artifacts)
         if (kind(a.mimeType) == "Summary") ArtifactCard(() => a.name),
-      for (var a in artifacts)
-        Row(children: [
-          Text("${id(a.name)} - ${kind(a.mimeType)}"),
+      if (artifacts.isNotEmpty)
+        Table(children: [
+          TableRow(children: [
+            Text("Artifacts", style: Theme.of(context).textTheme.titleSmall!),
+            Text("kind", style: Theme.of(context).textTheme.titleSmall!),
+          ]),
+          for (var a in artifacts)
+            TableRow(children: [
+              Text("${id(a.name)} "),
+              Text(kind(a.mimeType)),
+            ]),
         ]),
       Divider(
         color: Theme.of(context).primaryColor,
