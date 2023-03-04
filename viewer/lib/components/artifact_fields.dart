@@ -114,7 +114,6 @@ class ArtifactFieldSetCardState extends State<ArtifactFieldSetCard> {
     }
 
     Artifact artifact = artifactManager!.value!;
-    debugPrint(artifact.mimeType);
     if (artifact.mimeType !=
         "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSet") {
       return Container(color: Colors.purple);
@@ -132,8 +131,11 @@ class ArtifactFieldSetCardState extends State<ArtifactFieldSetCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(definition.description,
-            style: Theme.of(context).textTheme.titleSmall!),
+        Tooltip(
+          message: definition.description,
+          child: Text(definition.displayName,
+              style: Theme.of(context).textTheme.titleSmall!),
+        ),
         Table(children: [
           for (var field in definition.fields)
             if (fieldset.values[field.id] != null)
