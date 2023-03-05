@@ -81,7 +81,6 @@ class ArtifactCardState extends State<ArtifactCard> {
     }
 
     Artifact artifact = artifactManager!.value!;
-    debugPrint(artifact.mimeType);
     switch (artifact.mimeType) {
       case "text/plain":
         return StringArtifactCard(
@@ -124,6 +123,9 @@ class ArtifactCardState extends State<ArtifactCard> {
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
         ReferenceList referenceList =
             ReferenceList.fromBuffer(artifact.contents);
+        if (referenceList.references.isEmpty) {
+          return const SizedBox();
+        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
