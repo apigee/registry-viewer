@@ -34,16 +34,20 @@ Widget filterBar(
       automaticallyImplyLeading: false,
       title: filterField,
       actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          tooltip: "refresh",
-          onPressed: refresh as void Function()?,
+        ExcludeFocus(
+          child: IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: "refresh",
+            onPressed: refresh as void Function()?,
+          ),
         ),
         if (type != null)
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: tooltip,
-            onPressed: add as void Function()?,
+          ExcludeFocus(
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: tooltip,
+              onPressed: add as void Function()?,
+            ),
           ),
       ],
     ),

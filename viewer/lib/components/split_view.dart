@@ -24,11 +24,11 @@ class CustomSplitView extends StatefulWidget {
   final double initialWeight;
 
   const CustomSplitView({
+    super.key,
     this.viewMode,
     this.view1,
     this.view2,
-    this.initialWeight = 0.5, // this currently doesn't do anything
-    super.key,
+    this.initialWeight = 0.33,
   });
 
   @override
@@ -48,6 +48,8 @@ class CustomSplitViewState extends State<CustomSplitView>
       gripSize: 10,
       gripColor: Theme.of(context).highlightColor,
       gripColorActive: Theme.of(context).dividerColor,
+      controller: SplitViewController(
+          weights: [widget.initialWeight, 1.0 - widget.initialWeight]),
       children: [
         ThresholdBox(
           side: (widget.viewMode == SplitViewMode.Vertical)

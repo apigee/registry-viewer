@@ -138,6 +138,7 @@ class ApiListViewState extends State<ApiListView> {
       widget.pageLoadController!.reset();
       selectedIndex = -1;
     }
+
     return Scrollbar(
       controller: scrollController,
       child: PagewiseListView<Api>(
@@ -189,15 +190,17 @@ class ApiListViewState extends State<ApiListView> {
           selection?.updateApiName(api.name);
           widget.selectionHandler?.call(context, api);
         },
-        trailing: IconButton(
-          icon: const Icon(Icons.open_in_new),
-          tooltip: "open",
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              api.routeNameForDetail(),
-            );
-          },
+        trailing: ExcludeFocus(
+          child: IconButton(
+            icon: const Icon(Icons.open_in_new),
+            tooltip: "open",
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                api.routeNameForDetail(),
+              );
+            },
+          ),
         ),
       ),
     );

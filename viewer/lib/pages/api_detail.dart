@@ -100,7 +100,6 @@ class ApiDetailPage extends StatelessWidget {
                           )
                         : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            initialWeight: 0.33,
                             view1: VersionListCard(singleColumn: false),
                             view2: VersionDetailCard(
                               selflink: true,
@@ -113,7 +112,6 @@ class ApiDetailPage extends StatelessWidget {
                           )
                         : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            initialWeight: 0.33,
                             view1: DeploymentListCard(
                               singleColumn: false,
                             ),

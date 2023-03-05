@@ -42,14 +42,16 @@ class CustomSearchBoxState extends State<CustomSearchBox> {
         controller: searchTextController,
         decoration: InputDecoration(
             prefixIcon: const Icon(Icons.search, color: Colors.black),
-            suffixIcon: IconButton(
-              color: Colors.black,
-              icon: const Icon(Icons.clear),
-              tooltip: "Clear",
-              onPressed: () {
-                searchTextController.clear();
-                ObservableStringProvider.of(context)!.update("");
-              },
+            suffixIcon: ExcludeFocus(
+              child: IconButton(
+                color: Colors.black,
+                icon: const Icon(Icons.clear),
+                tooltip: "Clear",
+                onPressed: () {
+                  searchTextController.clear();
+                  ObservableStringProvider.of(context)!.update("");
+                },
+              ),
             ),
             border: InputBorder.none,
             hintText: widget.hintText),
