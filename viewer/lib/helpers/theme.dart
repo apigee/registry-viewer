@@ -18,7 +18,7 @@ ThemeData appTheme() {
   ThemeData theme = ThemeData();
   return ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: Colors.white,
+    colorSchemeSeed: Colors.blue,
     appBarTheme: AppBarTheme(titleTextStyle: theme.textTheme.titleSmall),
   );
 }
