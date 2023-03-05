@@ -160,6 +160,12 @@ abstract class ResourceManager<T> extends Manager {
   Future<T> fetchFuture(RegistryClient client, AdminClient? adminClient);
 }
 
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
+
 class ProjectManager extends ResourceManager<Project> {
   ProjectManager(String name) : super(name);
   @override
@@ -169,7 +175,10 @@ class ProjectManager extends ResourceManager<Project> {
     if (adminClient != null) {
       return adminClient.getProject(request, options: callOptions());
     }
-    return Future.value(Project(name: name));
+    return Future.value(Project(
+      name: name,
+      displayName: name?.replaceAll("projects/", "").capitalize(),
+    ));
   }
 
   void update(Project newValue, List<String> paths, Function onError) {

@@ -65,6 +65,9 @@ String? userHome() =>
     Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
 
 Config readConfig() {
+  if (config != null) {
+    return config!;
+  }
   String home = userHome()!;
   String configPath = home + "/.config/registry/active_config";
   String contents = new File(configPath).readAsStringSync();
@@ -75,12 +78,13 @@ Config readConfig() {
   bool insecure = doc["registry"]["insecure"];
   String project = doc["registry"]["project"];
   String tokenSource = doc["token-source"];
-  return Config(
+  config = Config(
       address: address,
       insecure: insecure,
       project: project,
       tokenSource: tokenSource)
     ..fetchToken();
+  return config!;
 }
 
 class Config {
