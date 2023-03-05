@@ -31,18 +31,24 @@ class Home extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: narrow(context)
-                ? const ProjectListCard(
-                    singleColumn: true,
-                  )
-                : const CustomSplitView(
-                    viewMode: SplitViewMode.Horizontal,
-                    initialWeight: 0.33,
-                    view1: ProjectListCard(
-                      singleColumn: false,
-                    ),
-                    view2: ProjectDetailCard(selflink: true, editable: true),
-                  ),
+            child: TabBarView(
+              children: [
+                narrow(context)
+                    ? const ProjectListCard(
+                        singleColumn: true,
+                      )
+                    : const CustomSplitView(
+                        viewMode: SplitViewMode.Horizontal,
+                        initialWeight: 0.33,
+                        view1: ProjectListCard(
+                          singleColumn: false,
+                        ),
+                        view2:
+                            ProjectDetailCard(selflink: true, editable: true),
+                      ),
+                Card(),
+              ],
+            ),
           ),
           const BottomBar(),
         ],
