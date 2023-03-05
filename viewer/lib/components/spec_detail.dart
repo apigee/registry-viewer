@@ -20,7 +20,6 @@ import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
 import '../components/empty.dart';
-import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
 import '../service/registry.dart';
