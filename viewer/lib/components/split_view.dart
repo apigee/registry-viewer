@@ -77,6 +77,7 @@ class ThresholdBox extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
       return ClipRect(
         child: OverflowBox(
+          alignment: Alignment.centerLeft,
           maxHeight: max(constraints.maxHeight, height),
           maxWidth: max(constraints.maxWidth, width),
           child: child,
