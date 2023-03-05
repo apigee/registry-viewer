@@ -17,8 +17,10 @@ import 'package:flutter/material.dart';
 ThemeData appTheme() {
   ThemeData theme = ThemeData();
   return ThemeData(
-    useMaterial3: true,
+    useMaterial3: false,
     colorSchemeSeed: Colors.blue,
-    appBarTheme: AppBarTheme(titleTextStyle: theme.textTheme.titleSmall),
+    appBarTheme: AppBarTheme(
+      titleTextStyle: theme.textTheme.titleSmall!.copyWith(color: Colors.white),
+    ),
   );
 }

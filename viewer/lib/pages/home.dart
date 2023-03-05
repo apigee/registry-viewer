@@ -23,10 +23,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          applicationName,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: const Text(applicationName),
       ),
       body: const Home(),
     );

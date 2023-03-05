@@ -72,7 +72,7 @@ class ApiDetailPage extends StatelessWidget {
                 ),
                 Tab(
                   child: Text(
-                    "Deployments",
+                    "Deploys",
                     overflow: TextOverflow.clip,
                     maxLines: 1,
                   ),

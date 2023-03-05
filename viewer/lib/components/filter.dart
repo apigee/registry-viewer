@@ -33,10 +33,12 @@ Widget filterBar(
       elevation: 0,
       automaticallyImplyLeading: false,
       title: filterField,
+      backgroundColor: Theme.of(context).highlightColor,
       actions: <Widget>[
         ExcludeFocus(
           child: IconButton(
             icon: const Icon(Icons.refresh),
+            color: Colors.black,
             tooltip: "refresh",
             onPressed: refresh as void Function()?,
           ),
@@ -45,6 +47,7 @@ Widget filterBar(
           ExcludeFocus(
             child: IconButton(
               icon: const Icon(Icons.add),
+              color: Colors.black,
               tooltip: tooltip,
               onPressed: add as void Function()?,
             ),
