@@ -191,29 +191,6 @@ class SpecDetailCardState extends State<SpecDetailCard>
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              spec.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
                     ArtifactText(
                       () =>
                           "${SelectionProvider.of(context)!.specName.value}/artifacts/summary",
