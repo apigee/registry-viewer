@@ -21,7 +21,7 @@
 # Available platforms will depend on the local installation of Docker.
 
 # ORGANIZATION should be dockerhub organization that will host the images
-ORGANIZATION=apiregistry
+#ORGANIZATION=
 
 SUFFIX=""
 CONTAINERS=("registry-viewer")
