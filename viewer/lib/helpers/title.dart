@@ -17,7 +17,6 @@ const pathLength = 3;
 // title converts a path into a string suitable for display in the app bar.
 String title(String path) {
   path = path.replaceAll("/locations/global", "");
-
   var parts = path.split("/").sublist(1);
   if (parts.length > pathLength) {
     parts = parts.sublist(parts.length - pathLength);

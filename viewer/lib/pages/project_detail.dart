@@ -72,7 +72,6 @@ class ProjectDetailPage extends StatelessWidget {
                         ? const ApiListCard(singleColumn: true)
                         : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            initialWeight: 0.33,
                             view1: ApiListCard(singleColumn: false),
                             view2: ApiDetailCard(
                               selflink: true,
@@ -86,7 +85,6 @@ class ProjectDetailPage extends StatelessWidget {
                           )
                         : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            initialWeight: 0.5,
                             view1: ArtifactListCard(
                               SelectionProvider.project,
                               singleColumn: false,

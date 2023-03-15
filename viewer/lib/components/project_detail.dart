@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../components/artifact_text.dart';
+import '../components/artifact_section.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -115,11 +115,6 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: project.name,
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -127,56 +122,22 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    Text(project.name),
                     TitleRow(project.displayName, action: selflink),
                     const SizedBox(height: 10),
-                    TimestampRow(project.createTime, project.updateTime),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("APIs"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              project.routeNameForApis(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              project.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
+                    MarkdownBody(
+                      data: project.description,
+                      onTapLink: (text, url, title) {
+                        launchUrl(Uri.parse(url!));
+                      },
                     ),
                     const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(height: 10),
-                    ArtifactText(
+                    ArtifactSection(
                       () =>
-                          "${SelectionProvider.of(context)!.projectName.value}/locations/global/artifacts/summary",
-                    ),
-                    PageSection(
-                      children: [
-                        MarkdownBody(
-                          data: project.description,
-                          onTapLink: (text, url, title) {
-                            launchUrl(Uri.parse(url!));
-                          },
-                        ),
-                      ],
+                          "${SelectionProvider.of(context)!.projectName.value}/locations/global",
                     ),
                   ],
                 ),

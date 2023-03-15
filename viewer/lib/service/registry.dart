@@ -15,6 +15,8 @@
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
+import 'package:grpc/grpc.dart';
+
 import '../helpers/root.dart';
 
 RegistryClient getClient() => RegistryClient(createClientChannel());
@@ -48,6 +50,7 @@ class Registry {
   Map<String, DeploymentManager> deploymentManagers = {};
   Map<String, SpecManager> specManagers = {};
   Map<String?, ArtifactManager> artifactManagers = {};
+  Map<String?, ArtifactListManager> artifactListManagers = {};
 
   ProjectManager? getProjectManager(String name) {
     Manager.removeUnused(projectManagers);
@@ -95,6 +98,14 @@ class Registry {
       artifactManagers[name] = ArtifactManager(name);
     }
     return artifactManagers[name];
+  }
+
+  ArtifactListManager? getArtifactListManager(String? name) {
+    Manager.removeUnused(artifactListManagers);
+    if (artifactListManagers[name] == null) {
+      artifactListManagers[name] = ArtifactListManager(name);
+    }
+    return artifactListManagers[name];
   }
 }
 
@@ -149,6 +160,12 @@ abstract class ResourceManager<T> extends Manager {
   Future<T> fetchFuture(RegistryClient client, AdminClient? adminClient);
 }
 
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
+
 class ProjectManager extends ResourceManager<Project> {
   ProjectManager(String name) : super(name);
   @override
@@ -158,7 +175,10 @@ class ProjectManager extends ResourceManager<Project> {
     if (adminClient != null) {
       return adminClient.getProject(request, options: callOptions());
     }
-    return Future.value(Project(name: name));
+    return Future.value(Project(
+      name: name,
+      displayName: name?.replaceAll("projects/", "").capitalize(),
+    ));
   }
 
   void update(Project newValue, List<String> paths, Function onError) {
@@ -306,6 +326,11 @@ class ArtifactManager extends ResourceManager<Artifact> {
         artifact.mimeType = contents.contentType;
         return artifact;
       });
+    }).onError((GrpcError e, StackTrace st) {
+      if (e.code == StatusCode.notFound) {
+        debugPrint("not found ($name)");
+      }
+      return Artifact();
     });
   }
 
@@ -328,5 +353,25 @@ class ArtifactManager extends ResourceManager<Artifact> {
     return getClient()
         .deleteArtifact(request, options: callOptions())
         .then((empty) => Future);
+  }
+}
+
+class ArtifactListManager extends ResourceManager<ListArtifactsResponse> {
+  ArtifactListManager(String? name) : super(name);
+  @override
+  Future<ListArtifactsResponse> fetchFuture(
+      RegistryClient client, AdminClient? adminClient) {
+    final request = ListArtifactsRequest();
+    request.parent = name!;
+    return client
+        .listArtifacts(request, options: callOptions())
+        .then((response) {
+      return response;
+    }).onError((GrpcError e, StackTrace st) {
+      if (e.code == StatusCode.notFound) {
+        debugPrint("not found ($name)");
+      }
+      return ListArtifactsResponse();
+    });
   }
 }

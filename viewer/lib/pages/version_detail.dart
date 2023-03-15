@@ -76,7 +76,6 @@ class VersionDetailPage extends StatelessWidget {
                           )
                         : const CustomSplitView(
                             viewMode: SplitViewMode.Horizontal,
-                            initialWeight: 0.33,
                             view1: SpecListCard(
                               singleColumn: false,
                             ),

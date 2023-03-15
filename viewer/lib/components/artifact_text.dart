@@ -74,10 +74,12 @@ class ArtifactTextState extends State<ArtifactText> {
   @override
   Widget build(BuildContext context) {
     if (artifactManager?.value == null) {
-      return Container();
+      return const SizedBox(height: 0);
     }
-
     Artifact artifact = artifactManager!.value!;
+    if (artifact.stringValue == "") {
+      return const SizedBox(height: 0);
+    }
     return Text(
       artifact.stringValue,
       textAlign: TextAlign.left,

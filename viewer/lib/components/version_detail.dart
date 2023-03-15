@@ -99,7 +99,6 @@ class VersionDetailCardState extends State<VersionDetailCard>
     if (versionManager?.value == null) {
       return emptyCard(context);
     }
-
     Function? selflink = onlyIf(widget.selflink, () {
       ApiVersion version = (versionManager?.value)!;
       Navigator.pushNamed(
@@ -125,15 +124,11 @@ class VersionDetailCardState extends State<VersionDetailCard>
 
     Api? api = apiManager!.value;
     ApiVersion version = versionManager!.value!;
+    var versionTitle = version.nameForDisplay();
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: version.name.split("/").sublist(4).join("/"),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -143,9 +138,9 @@ class VersionDetailCardState extends State<VersionDetailCard>
                   children: [
                     PageSection(
                       children: [
+                        Text(version.name.split("/").sublist(6).join("/")),
                         SuperTitleRow(api?.displayName ?? ""),
-                        TitleRow(version.name.split("/").last,
-                            action: selflink),
+                        TitleRow(versionTitle, action: selflink),
                       ],
                     ),
                     if (version.labels.isNotEmpty)
@@ -156,43 +151,6 @@ class VersionDetailCardState extends State<VersionDetailCard>
                       PageSection(children: [
                         AnnotationsRow(version.annotations),
                       ]),
-                    PageSection(
-                      children: [
-                        TimestampRow(version.createTime, version.updateTime),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Specs"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              version.routeNameForSpecs(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              version.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
                     const SizedBox(height: 10),
                     ArtifactText(
                       () =>

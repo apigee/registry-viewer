@@ -25,24 +25,34 @@ Widget filterBar(
   if (type != null) {
     tooltip += " $type";
   }
-  return AppBar(
-    centerTitle: true,
-    primary: false,
-    elevation: 0,
-    automaticallyImplyLeading: false,
-    title: filterField,
-    actions: <Widget>[
-      IconButton(
-        icon: const Icon(Icons.refresh),
-        tooltip: "refresh",
-        onPressed: refresh as void Function()?,
-      ),
-      if (type != null)
-        IconButton(
-          icon: const Icon(Icons.add),
-          tooltip: tooltip,
-          onPressed: add as void Function()?,
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    child: AppBar(
+      centerTitle: true,
+      primary: false,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      title: filterField,
+      backgroundColor: Theme.of(context).highlightColor,
+      actions: <Widget>[
+        ExcludeFocus(
+          child: IconButton(
+            icon: const Icon(Icons.refresh),
+            color: Colors.black,
+            tooltip: "refresh",
+            onPressed: refresh as void Function()?,
+          ),
         ),
-    ],
+        if (type != null)
+          ExcludeFocus(
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              color: Colors.black,
+              tooltip: tooltip,
+              onPressed: add as void Function()?,
+            ),
+          ),
+      ],
+    ),
   );
 }

@@ -24,11 +24,11 @@ class CustomSplitView extends StatefulWidget {
   final double initialWeight;
 
   const CustomSplitView({
+    super.key,
     this.viewMode,
     this.view1,
     this.view2,
-    this.initialWeight = 0.5,
-    super.key,
+    this.initialWeight = 0.33,
   });
 
   @override
@@ -46,6 +46,10 @@ class CustomSplitViewState extends State<CustomSplitView>
     return SplitView(
       viewMode: widget.viewMode!,
       gripSize: 10,
+      gripColor: Theme.of(context).highlightColor,
+      gripColorActive: Theme.of(context).dividerColor,
+      controller: SplitViewController(
+          weights: [widget.initialWeight, 1.0 - widget.initialWeight]),
       children: [
         ThresholdBox(
           side: (widget.viewMode == SplitViewMode.Vertical)
@@ -70,13 +74,14 @@ class ThresholdBox extends StatelessWidget {
   final double width;
   final double height;
   const ThresholdBox(
-      {this.child, this.side, this.width = 400, this.height = 100, super.key});
+      {this.child, this.side, this.width = 300, this.height = 100, super.key});
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return ClipRect(
         child: OverflowBox(
+          alignment: Alignment.centerLeft,
           maxHeight: max(constraints.maxHeight, height),
           maxWidth: max(constraints.maxWidth, width),
           child: child,

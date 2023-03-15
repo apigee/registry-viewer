@@ -228,12 +228,12 @@ class SpecFileCardState extends State<SpecFileCard> {
       } else {
         // multi-file view
         return CustomSplitView(
-          viewMode: SplitViewMode.Horizontal,
+          viewMode: SplitViewMode.Vertical,
+          initialWeight: 0.25,
           view1: Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: specManager!.value!.filename),
                 Expanded(
                   child: SizedBox(
                     width: double.infinity,
@@ -292,7 +292,6 @@ class SpecFileCardState extends State<SpecFileCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PanelNameRow(name: items![selectedItemIndex].headerValue),
                 Expanded(
                   child: SizedBox(
                     width: double.infinity,

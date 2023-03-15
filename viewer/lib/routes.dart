@@ -32,6 +32,8 @@ import 'pages/artifact_detail.dart';
 import 'pages/signin.dart';
 import 'pages/home.dart';
 
+const enableSignups = false;
+
 class RegistryRouter {
   RegExp? projectRegExp,
       apisRegExp,
@@ -90,7 +92,7 @@ class RegistryRouter {
   MaterialPageRoute generateRoute(RouteSettings settings) {
     debugPrint("routing ${settings.name!}");
 
-    if (kIsWeb || Platform.isAndroid) {
+    if (enableSignups && (kIsWeb || Platform.isAndroid)) {
       if ((settings.name == "/") ||
           (currentUser == null) ||
           (currentUserIsAuthorized == false)) {

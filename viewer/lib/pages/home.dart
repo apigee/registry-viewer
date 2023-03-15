@@ -14,18 +14,64 @@
 
 import 'package:flutter/material.dart';
 import '../application.dart';
-import '../components/home.dart';
+import 'package:split_view/split_view.dart';
+import '../components/about.dart';
+import '../components/project_detail.dart';
+import '../components/project_list.dart';
+import '../models/selection.dart';
+import '../components/bottom_bar.dart';
+import '../components/split_view.dart';
+import '../helpers/media.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(applicationName),
+    final Selection selection = Selection();
+    return SelectionProvider(
+      selection: selection,
+      child: DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        animationDuration: const Duration(milliseconds: 100),
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(applicationName),
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: "Projects"),
+                Tab(text: "About"),
+              ],
+            ),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    narrow(context)
+                        ? const ProjectListCard(
+                            singleColumn: true,
+                          )
+                        : const CustomSplitView(
+                            viewMode: SplitViewMode.Horizontal,
+                            initialWeight: 0.33,
+                            view1: ProjectListCard(
+                              singleColumn: false,
+                            ),
+                            view2: ProjectDetailCard(
+                                selflink: true, editable: true),
+                          ),
+                    const AboutCard(),
+                  ],
+                ),
+              ),
+              const BottomBar(),
+            ],
+          ),
+        ),
       ),
-      body: const Home(),
     );
   }
 }

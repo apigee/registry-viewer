@@ -16,10 +16,13 @@ import 'package:flutter/material.dart';
 import 'package:registry/registry.dart';
 import 'detail_rows.dart';
 import 'artifact_detail_complexity.dart';
+import 'artifact_detail_conformance.dart';
 import 'artifact_detail_message.dart';
 import 'artifact_detail_lint.dart';
 import 'artifact_detail_lintstats.dart';
 import 'artifact_detail_references.dart';
+import 'artifact_detail_score.dart';
+import 'artifact_detail_scorecard.dart';
 import 'artifact_detail_string.dart';
 import 'artifact_detail_vocabulary.dart';
 import '../components/empty.dart';
@@ -109,13 +112,25 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
           selflink: selflink,
           editable: widget.editable,
         );
+      // specialized cards
       case "application/octet-stream;type=gnostic.metrics.Complexity":
         return ComplexityArtifactCard(artifact, selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
+        return ConformanceReportArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=gnostic.metrics.Vocabulary":
         return VocabularyArtifactCard(artifact, selflink: selflink);
+      // generic cards
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ApiSpecExtensionList":
         return MessageArtifactCard(
             artifact, ApiSpecExtensionList.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSet":
+        return MessageArtifactCard(
+            artifact, FieldSet.fromBuffer(artifact.contents),
+            selflink: selflink);
+      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.FieldSetDefinition":
+        return MessageArtifactCard(
+            artifact, FieldSetDefinition.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.DisplaySettings":
         return MessageArtifactCard(
@@ -126,9 +141,7 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
             artifact, Lifecycle.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.ReferenceList":
-        return MessageArtifactCard(
-            artifact, ReferenceList.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ReferencesArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.TaxonomyList":
         return MessageArtifactCard(
             artifact, TaxonomyList.fromBuffer(artifact.contents),
@@ -142,13 +155,9 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
             artifact, Receipt.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.Score":
-        return MessageArtifactCard(
-            artifact, Score.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ScoreArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCard":
-        return MessageArtifactCard(
-            artifact, ScoreCard.fromBuffer(artifact.contents),
-            selflink: selflink);
+        return ScoreCardArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreCardDefinition":
         return MessageArtifactCard(
             artifact, ScoreCardDefinition.fromBuffer(artifact.contents),
@@ -156,10 +165,6 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.scoring.ScoreDefinition":
         return MessageArtifactCard(
             artifact, ScoreDefinition.fromBuffer(artifact.contents),
-            selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.ConformanceReport":
-        return MessageArtifactCard(
-            artifact, ConformanceReport.fromBuffer(artifact.contents),
             selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.StyleGuide":
         return MessageArtifactCard(
@@ -169,8 +174,6 @@ class ArtifactDetailCardState extends State<ArtifactDetailCard>
         return LintArtifactCard(artifact, selflink: selflink);
       case "application/octet-stream;type=google.cloud.apigeeregistry.v1.style.LintStats":
         return LintStatsArtifactCard(artifact, selflink: selflink);
-      case "application/octet-stream;type=google.cloud.apigeeregistry.v1.apihub.References":
-        return ReferencesArtifactCard(artifact, selflink: selflink);
     }
 
     // otherwise return a default display of the artifact

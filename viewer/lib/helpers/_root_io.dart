@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:io';
+import 'package:registry/registry.dart';
 
 String root() {
-  Map<String, String> env = Platform.environment;
-  var r = env['APG_REGISTRY_ROOT'];
-  if (r == null) {
-    return "/";
+  var config = readConfig();
+  var a = config.address;
+  var r = config.project;
+  if (r != "" && a.contains("googleapis.com")) {
+    return "/projects/$r";
   }
-  return r;
+  return "/";
 }

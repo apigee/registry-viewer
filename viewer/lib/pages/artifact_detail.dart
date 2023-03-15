@@ -17,6 +17,7 @@ import '../models/selection.dart';
 import '../components/artifact_detail.dart';
 import '../components/bottom_bar.dart';
 import '../components/home_button.dart';
+import '../helpers/names.dart';
 import '../helpers/title.dart';
 
 class ArtifactDetailPage extends StatelessWidget {
@@ -28,11 +29,13 @@ class ArtifactDetailPage extends StatelessWidget {
     final Selection selection = Selection();
 
     Future.delayed(const Duration(), () {
-      List parts = name!.split("/");
-      parts.insert(3, "global");
-      parts.insert(3, "locations");
-      String name2 = parts.join("/");
-      selection.updateArtifactName(name2.substring(1));
+      String artifactName = resourceNameForWidgetName(name!);
+      if (artifactName.contains("/specs/")) {
+        String specRevisionName = specRevisionNameForArtifactName(artifactName);
+        String specName = specRevisionName.split("@")[0];
+        selection.updateSpecName(specName);
+      }
+      selection.updateArtifactName(artifactName);
     });
 
     return SelectionProvider(

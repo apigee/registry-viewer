@@ -33,6 +33,9 @@ export 'src/generated/google/cloud/apigeeregistry/v1/apihub/display_settings.pbj
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/extensions.pb.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/extensions.pbenum.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/extensions.pbjson.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/apihub/fields.pb.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/apihub/fields.pbenum.dart';
+export 'src/generated/google/cloud/apigeeregistry/v1/apihub/fields.pbjson.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/lifecycle.pb.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/lifecycle.pbenum.dart';
 export 'src/generated/google/cloud/apigeeregistry/v1/apihub/lifecycle.pbjson.dart';

@@ -129,11 +129,6 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: deployment.name.split("/").sublist(4).join("/"),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -143,6 +138,7 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
                   children: [
                     PageSection(
                       children: [
+                        Text(deployment.name.split("/").sublist(6).join("/")),
                         SuperTitleRow(api?.displayName ?? ""),
                         TitleRow(deployment.name.split("/").last,
                             action: selflink),
@@ -161,29 +157,6 @@ class DeploymentDetailCardState extends State<DeploymentDetailCard>
                         TimestampRow(deployment.createTime,
                             deployment.revisionUpdateTime),
                       ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              deployment.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(height: 10),
                     ArtifactText(

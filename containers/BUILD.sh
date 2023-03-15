@@ -23,19 +23,9 @@
 # ORGANIZATION should be dockerhub organization that will host the images
 #ORGANIZATION=
 
-#TARGET=dev
-
-if [[ $TARGET == "dev" ]]
-then
-  # If TARGET is specified as "dev", container names have the suffix "-dev".
-  SUFFIX="-$TARGET"
-  CONTAINERS=("registry-viewer")
-  PLATFORMS="linux/amd64,linux/arm64"
-else
-  SUFFIX=""
-  CONTAINERS=("registry-viewer")
-  PLATFORMS="linux/amd64,linux/arm64"
-fi
+SUFFIX=""
+CONTAINERS=("registry-viewer")
+PLATFORMS="linux/amd64,linux/arm64"
 
 # This builds each desired container sequentially.
 for CONTAINER in ${CONTAINERS[*]}; do

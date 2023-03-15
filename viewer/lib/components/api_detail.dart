@@ -17,7 +17,7 @@ import 'package:registry/registry.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/api_edit.dart';
-import '../components/artifact_text.dart';
+import '../components/artifact_section.dart';
 import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/empty.dart';
@@ -113,11 +113,6 @@ class ApiDetailCardState extends State<ApiDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: api.name.split("/").sublist(4).join("/"),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -126,6 +121,9 @@ class ApiDetailCardState extends State<ApiDetailCard>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PageSection(children: [
+                      Text(
+                        api.name.split("/").sublist(4).join("/"),
+                      ),
                       TitleRow(api.displayName, action: selflink),
                     ]),
                     if (api.labels.isNotEmpty)
@@ -136,66 +134,18 @@ class ApiDetailCardState extends State<ApiDetailCard>
                       PageSection(children: [
                         AnnotationsRow(api.annotations),
                       ]),
-                    PageSection(
-                      children: [
-                        TimestampRow(api.createTime, api.updateTime),
-                      ],
-                    ),
                     const SizedBox(height: 10),
                     Divider(
                       color: Theme.of(context).primaryColor,
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Versions"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForVersions(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Deployments"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForDeployments(),
-                            );
-                          },
-                        ),
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              api.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
+                    ArtifactSection(
+                      () => SelectionProvider.of(context)!.apiName.value,
                     ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    ArtifactText(
-                      () =>
-                          "${SelectionProvider.of(context)!.apiName.value}/artifacts/summary",
-                    ),
-                    PageSection(
-                      children: [
-                        MarkdownBody(
-                          data: api.description,
-                          onTapLink: (text, url, title) {
-                            launchUrl(Uri.parse(url!));
-                          },
-                        ),
-                      ],
+                    MarkdownBody(
+                      data: api.description,
+                      onTapLink: (text, url, title) {
+                        launchUrl(Uri.parse(url!));
+                      },
                     ),
                   ],
                 ),

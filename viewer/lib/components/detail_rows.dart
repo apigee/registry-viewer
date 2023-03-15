@@ -337,7 +337,7 @@ class LabelsRow extends StatelessWidget {
         for (var key in keys)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-            color: Theme.of(context).primaryColorLight,
+            color: Theme.of(context).splashColor,
             child: Text(labelText(key, map[key])),
           ),
       ],
@@ -369,7 +369,7 @@ class AnnotationsRow extends StatelessWidget {
         for (var key in keys)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-            color: Theme.of(context).primaryColorLight,
+            color: Theme.of(context).splashColor,
             child: Text("$key:${map[key]!}"),
           ),
       ],
@@ -386,6 +386,7 @@ class PageSection extends StatelessWidget {
     rows.add(const SizedBox(height: 10));
     rows.addAll(children!);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: rows,
     );
   }

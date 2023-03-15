@@ -20,7 +20,6 @@ import '../components/detail_rows.dart';
 import '../components/dialog_builder.dart';
 import '../components/spec_edit.dart';
 import '../components/empty.dart';
-import '../helpers/extensions.dart';
 import '../models/selection.dart';
 import '../models/spec.dart';
 import '../service/registry.dart';
@@ -152,11 +151,6 @@ class SpecDetailCardState extends State<SpecDetailCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResourceNameButtonRow(
-            name: spec.name.last(1),
-            show: selflink as void Function()?,
-            edit: editable as void Function()?,
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -166,6 +160,7 @@ class SpecDetailCardState extends State<SpecDetailCard>
                   children: [
                     PageSection(
                       children: [
+                        Text(spec.name.split("/").sublist(8).join("/")),
                         SuperTitleRow(
                             "${api.displayName}/${version.name.split("/").last}"),
                         TitleRow(spec.name.split("/").last, action: selflink),
@@ -194,29 +189,6 @@ class SpecDetailCardState extends State<SpecDetailCard>
                         BodyRow("SHA-256 ${spec.hash}", style: codeStyle),
                         TimestampRow(spec.createTime, spec.revisionUpdateTime),
                       ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("Artifacts"),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              spec.routeNameForArtifacts(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(height: 10),
                     ArtifactText(

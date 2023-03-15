@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:flutter/material.dart';
+// Convert a widget name to the corresponding resource name.
+String resourceNameForWidgetName(String name) {
+  List parts = name.substring(1).split("/");
+  parts.insert(2, "global");
+  parts.insert(2, "locations");
+  return parts.join("/");
+}
 
-ThemeData appTheme() {
-  ThemeData theme = ThemeData();
-  return ThemeData(
-    useMaterial3: false,
-    colorSchemeSeed: Colors.blue,
-    appBarTheme: AppBarTheme(
-      titleTextStyle: theme.textTheme.titleSmall!.copyWith(color: Colors.white),
-    ),
-  );
+String specRevisionNameForArtifactName(String name) {
+  return name.split("/").sublist(0, 10).join("/");
+}
+
+String specNameForSpecRevisionName(String name) {
+  return name.split("@")[0];
 }
