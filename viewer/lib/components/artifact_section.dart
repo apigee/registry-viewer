@@ -81,6 +81,10 @@ class ArtifactSectionState extends State<ArtifactSection> {
 
     List<Artifact> artifacts = artifactListManager!.value!.artifacts;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      if (artifacts.isNotEmpty)
+        Divider(
+          color: Theme.of(context).primaryColor,
+        ),
       for (var a in artifacts)
         if (kind(a.mimeType) == "FieldSet") ArtifactFieldSetCard(() => a.name),
       for (var a in artifacts)
@@ -99,9 +103,6 @@ class ArtifactSectionState extends State<ArtifactSection> {
               Text(kind(a.mimeType)),
             ]),
         ]),
-      Divider(
-        color: Theme.of(context).primaryColor,
-      ),
     ]);
   }
 }
