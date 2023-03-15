@@ -135,11 +135,11 @@ class ApiDetailCardState extends State<ApiDetailCard>
                         AnnotationsRow(api.annotations),
                       ]),
                     const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
                     ArtifactSection(
                       () => SelectionProvider.of(context)!.apiName.value,
+                    ),
+                    Divider(
+                      color: Theme.of(context).primaryColor,
                     ),
                     MarkdownBody(
                       data: api.description,

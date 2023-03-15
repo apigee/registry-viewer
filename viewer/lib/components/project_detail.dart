@@ -132,9 +132,6 @@ class ProjectDetailCardState extends State<ProjectDetailCard>
                       },
                     ),
                     const SizedBox(height: 10),
-                    Divider(
-                      color: Theme.of(context).primaryColor,
-                    ),
                     ArtifactSection(
                       () =>
                           "${SelectionProvider.of(context)!.projectName.value}/locations/global",
