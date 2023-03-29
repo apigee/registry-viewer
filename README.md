@@ -18,6 +18,8 @@ govern APIs through their lifecycles.
 
 Please tell us about your experience if you use it.
 
+![API list](images/api-list.png)
+
 ## The Implementation
 
 The Registry Viewer is a Flutter application written in Dart. It can be run
