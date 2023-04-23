@@ -55,6 +55,7 @@ dependencies:
   yaml: ^3.1.1
   registry:
     path: ../registry
+  deep_pick: ^1.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1
