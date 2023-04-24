@@ -31,12 +31,14 @@ class SearchCard extends StatefulWidget {
   SearchCardState createState() => SearchCardState();
 }
 
-class SearchCardState extends State<SearchCard> {
+class SearchCardState extends State<SearchCard>
+    with AutomaticKeepAliveClientMixin {
   ObservableString results = ObservableString();
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    int? totalHits;
     Object? json;
     var f = NumberFormat("#.##", "en_US");
 
@@ -58,7 +60,7 @@ class SearchCardState extends State<SearchCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "total hits: ${pick(json, 'total_hits').asIntOrNull()}"),
+                        "total hits: ${pick(json, 'total_hits').asIntOrNull() ?? 0}"),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: pick(json, 'hits').asListOrEmpty((p0) {
@@ -70,10 +72,22 @@ class SearchCardState extends State<SearchCard> {
                                 Text(
                                   "(${f.format(p0('score').asDoubleOrThrow())}) ",
                                 ),
-                                Text(p0('id').asStringOrThrow(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!),
+                                GestureDetector(
+                                  onTap: () async {
+                                    Navigator.pushNamed(
+                                      context,
+                                      routeNameForSpec(
+                                          p0('id').asStringOrThrow()),
+                                    );
+                                  },
+                                  child: Text(p0('id').asStringOrThrow(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                ),
                               ]),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,6 +113,7 @@ class SearchCardState extends State<SearchCard> {
                                                   .copyWith(
                                                       color: Theme.of(context)
                                                           .primaryColor)),
+                                          const SizedBox(height: 10),
                                           RichText(
                                               text: textSpan(
                                                   context, entry.value[0])),
@@ -130,7 +145,12 @@ class SearchCardState extends State<SearchCard> {
   }
 }
 
+String routeNameForSpec(String spec) {
+  return "/${spec.replaceAll("/locations/global", "")}";
+}
+
 TextSpan textSpan(BuildContext context, String text) {
+  text = text.replaceAll("…", "...");
   final re = RegExp(r'\u001B\[(\d+)m');
   var parts = text.split(re);
   var children = <TextSpan>[];
@@ -168,6 +188,7 @@ class FullTextSearchBoxState extends State<FullTextSearchBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       margin: const EdgeInsets.fromLTRB(
         0,
         8,
@@ -205,23 +226,4 @@ void fetch(String query, ObservableString? results) async {
   debugPrint('Response status: ${response.statusCode}');
   debugPrint('Response body: ${response.body}');
   results?.value = response.body;
-}
-
-class SearchResults {
-  SearchResults({required this.totalHits, required this.maxScore});
-  final int totalHits;
-  final double maxScore;
-
-  factory SearchResults.fromJson(Map<String, dynamic> data) {
-    final totalHits = data['total_hits'] as int;
-
-    double maxScore;
-    try {
-      maxScore = data['max_score'] as double;
-    } catch (e) {
-      maxScore = (data['max_score'] as int).toDouble();
-    }
-
-    return SearchResults(totalHits: totalHits, maxScore: maxScore);
-  }
 }
