@@ -21,7 +21,6 @@ import '../components/project_list.dart';
 import '../models/selection.dart';
 import '../components/bottom_bar.dart';
 import '../components/split_view.dart';
-import '../components/search.dart';
 import '../helpers/media.dart';
 
 class HomePage extends StatelessWidget {
@@ -32,7 +31,7 @@ class HomePage extends StatelessWidget {
     return SelectionProvider(
       selection: selection,
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         initialIndex: 0,
         animationDuration: const Duration(milliseconds: 100),
         child: Scaffold(
@@ -43,7 +42,6 @@ class HomePage extends StatelessWidget {
               tabs: [
                 Tab(text: "Projects"),
                 Tab(text: "About"),
-                Tab(text: "Search"),
               ],
             ),
           ),
@@ -66,7 +64,6 @@ class HomePage extends StatelessWidget {
                                 selflink: true, editable: true),
                           ),
                     const AboutCard(),
-                    const SearchCard(),
                   ],
                 ),
               ),
