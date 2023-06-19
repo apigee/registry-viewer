@@ -7,14 +7,14 @@ if [ ! -d "api-common-protos" ]
 then
   git clone https://github.com/googleapis/api-common-protos
 else
-  echo "Using previous download of third_party/api-common-protos."
+  echo "Using previous download of googleapis/api-common-protos."
 fi
 
 if [ ! -d "gnostic" ]
 then
   git clone https://github.com/google/gnostic
 else
-  echo "Using previous download of third_party/gnostic."
+  echo "Using previous download of google/gnostic."
 fi
 
 if [ ! -d "registry" ]

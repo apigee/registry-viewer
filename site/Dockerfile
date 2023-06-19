@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This Dockerfile builds an image that runs the web server.
 ARG FLUTTER_VERSION=3.10.5
 ARG PROTOBUF_VERSION=3.20.1
-ARG GO_VERSION=1.18
+ARG GO_VERSION=1.20
 
 FROM ubuntu:latest as flutter
 ARG FLUTTER_VERSION
