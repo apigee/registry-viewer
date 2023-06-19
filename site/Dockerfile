@@ -36,6 +36,8 @@ RUN PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
 RUN curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz && \
     tar -xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C /
 
+RUN git config --global --add safe.directory /flutter
+
 RUN flutter pub global activate protoc_plugin
 
 RUN flutter config --enable-web
