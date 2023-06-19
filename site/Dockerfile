@@ -32,13 +32,15 @@ RUN apt-get update -y && apt-get install curl unzip xz-utils git make -y && \
     curl -LO $PB_REL/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-x86_64.zip && \
     unzip protoc-${PROTOBUF_VERSION}-linux-x86_64.zip -d /usr/local
 
-RUN export PATH="$PATH":"$HOME/.pub-cache/bin"
+RUN mkdir -p $HOME/.pub-cache/bin
+ENV PATH="$PATH:$HOME/.pub-cache/bin"
 
 RUN curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz && \
     tar -xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C / && \
     git config --global --add safe.directory /flutter && \
-    flutter pub global activate protoc_plugin &&  \
-    flutter config --enable-web && \
+    flutter pub global activate protoc_plugin
+
+RUN flutter config --enable-web && \
     make create && make protos && make staging
 
 # Use the official Golang image to create a build artifact.
