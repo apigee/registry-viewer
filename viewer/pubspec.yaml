@@ -40,21 +40,22 @@ dependencies:
 
   archive: ^3.3.1
   async: ^2.8.2
-  flutter_linkify: ^5.0.2
+  flutter_linkify: ^6.0.0
   flutter_markdown: ^0.6.13+1
   flutter_pagewise: ^2.0.4
-  google_fonts: ^4.0.3
+  google_fonts: ^5.1.0
   google_sign_in: ^6.0.2
   grpc: ^3.0.2
-  http: ^0.13.5
+  http: ^1.0.0
   intl: ^0.18.0
-  protobuf: ^2.1.0
+  protobuf: ^3.0.0
   split_view: ^3.2.1
   universal_html: ^2.0.8
   url_launcher: ^6.1.6
   yaml: ^3.1.1
   registry:
     path: ../registry
+  deep_pick: ^1.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1

@@ -8,7 +8,7 @@ dependencies:
   registry:
     path: ../../registry
   archive: ^3.0.0
-  http: ^0.13.0
+  http: ^1.0.0
   grpc: ^3.0.0
 
 dev_dependencies:

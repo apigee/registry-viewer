@@ -175,10 +175,11 @@ class ProjectManager extends ResourceManager<Project> {
     if (adminClient != null) {
       return adminClient.getProject(request, options: callOptions());
     }
-    return Future.value(Project(
-      name: name,
-      displayName: name?.replaceAll("projects/", "").capitalize(),
-    ));
+    return Future.value(
+      Project()
+        ..name = name!
+        ..displayName = name!.replaceAll("projects/", "").capitalize(),
+    );
   }
 
   void update(Project newValue, List<String> paths, Function onError) {

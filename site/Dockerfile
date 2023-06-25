@@ -12,32 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This Dockerfile builds an image that runs the web server.
-ARG FLUTTER_VERSION=3.7.0
+ARG FLUTTER_VERSION=3.10.5
 ARG PROTOBUF_VERSION=3.20.1
-ARG GO_VERSION=1.18
+ARG GO_VERSION=1.20
 
 FROM ubuntu:latest as flutter
 ARG FLUTTER_VERSION
 ARG PROTOBUF_VERSION
 
-ENV PATH "$PATH:/flutter/bin:/flutter/.pub-cache/bin"
+ENV PATH "$PATH:/flutter/bin:/root/.pub-cache/bin"
 
 WORKDIR /app
 
 COPY . ./
 
-RUN apt-get update -y && apt-get install curl unzip xz-utils git make -y && \
-    PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
+RUN apt-get update -y && apt-get install curl unzip xz-utils git make -y
+
+RUN PB_REL="https://github.com/protocolbuffers/protobuf/releases" && \
     curl -LO $PB_REL/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-x86_64.zip && \
     unzip protoc-${PROTOBUF_VERSION}-linux-x86_64.zip -d /usr/local
 
 RUN curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz && \
-    tar -xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C / && \
-    git config --global --add safe.directory /flutter && \
-    flutter pub global activate protoc_plugin &&  \
-    flutter config --enable-web && \
-    make create && make protos && make staging
+    tar -xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz -C /
+
+RUN git config --global --add safe.directory /flutter
+
+RUN flutter pub global activate protoc_plugin
+
+RUN flutter config --enable-web
+RUN make create
+RUN make protos
+RUN make staging
 
 # Use the official Golang image to create a build artifact.
 # This is based on Debian and sets the GOPATH to /go.

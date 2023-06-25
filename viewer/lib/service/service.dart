@@ -35,7 +35,7 @@ class StatusService {
     try {
       final client = getAdminClient();
       if (client == null) {
-        return Future.value(Status(message: "ok"));
+        return Future.value(Status()..message = "ok");
       }
       return client.getStatus(Empty(), options: callOptions());
     } catch (err) {
@@ -84,7 +84,7 @@ class ProjectService {
   Future<Project>? getProject(String name) {
     final client = getAdminClient();
     if (client == null) {
-      return Future.value(Project(name: name));
+      return Future.value(Project()..name = name);
     }
     final request = GetProjectRequest();
     request.name = name;
